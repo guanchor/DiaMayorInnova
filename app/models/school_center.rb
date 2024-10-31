@@ -1,0 +1,2 @@
+class SchoolCenter < ApplicationRecord
+end

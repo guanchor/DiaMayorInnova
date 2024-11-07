@@ -65,50 +65,54 @@ const AddClassGroup = () => {
 
     return (
         <>
-            { submitted ? (
+            {submitted ? (
                 <div>
                     <h4>Se ha enviado correctamente</h4>
-                <button onClick={newClassGroup}>Add</button>
+                    <button onClick={newClassGroup}>Añadir</button>
                 </div>
             ) : (
                 <>
-                <div>
-                    <label htmlFor="course">Course</label>
-                    <input type="number" id="course" required value={classGroup.course} onChange={handleInputChange} name="course" />
-                </div>
+                    <section>
+                        <h1>Creación de Grupo de Clase</h1>
+                        <div className="creation-form">
+                            <label htmlFor="course">Curso</label>
+                            <input type="number" id="course" required value={classGroup.course} onChange={handleInputChange} name="course" />
+                        </div>
 
-                <div>
-                    <label htmlFor="module">Module</label>
-                    <input type="text" id="module" required value={classGroup.module} onChange={handleInputChange} name="module" />
-                </div>
+                        <div className="creation-form">
+                            <label htmlFor="module">Módulo</label>
+                            <input type="text" id="module" required value={classGroup.module} onChange={handleInputChange} name="module" />
+                        </div>
 
-                <div>
-                    <label htmlFor="modality">Modality</label>
-                    <input type="text" id="modalitye" required value={classGroup.modality} onChange={handleInputChange} name="modality" />
-                </div>
+                        <div className="creation-form">
+                            <label htmlFor="modality">Modalidad</label>
+                            <input type="text" id="modalitye" required value={classGroup.modality} onChange={handleInputChange} name="modality" />
+                        </div>
 
-                <div>
-                    <label htmlFor="number_students">Number of Students</label>
-                    <input type="number" id="number_students" required value={classGroup.number_students} onChange={handleInputChange} name="number_students" />
-                </div>
+                        <div className="creation-form">
+                            <label htmlFor="number_students">Número de estudiantes</label>
+                            <input type="number" id="number_students" required value={classGroup.number_students} onChange={handleInputChange} name="number_students" />
+                        </div>
 
-                <div>
-                    <label htmlFor="max_students">Max Number of Students</label>
-                    <input type="number" id="max_students" required value={classGroup.max_students} onChange={handleInputChange} name="max_students" />
-                </div>
+                        <div className="creation-form">
+                            <label htmlFor="max_students">Máximo de estudiantes</label>
+                            <input type="number" id="max_students" required value={classGroup.max_students} onChange={handleInputChange} name="max_students" />
+                        </div>
 
-                <div>
-                    <label htmlFor="location">Location</label>
-                    <input type="text" id="location" required value={classGroup.location} onChange={handleInputChange} name="location" />
-                </div>
+                        <div className="creation-form">
+                            <label htmlFor="location">Localización del aula</label>
+                            <input type="text" id="location" required value={classGroup.location} onChange={handleInputChange} name="location" />
+                        </div>
 
-                <div>
-                    <label htmlFor="weekly_hours">Weekly hours</label>
-                    <input type="number" id="weekly_hours" required value={classGroup.weekly_hours} onChange={handleInputChange} name="weekly_hours" />
-                </div>
-
-                <button onClick={handleClick}>Mostrar la lista de Grupos de clase</button>
-                <button onClick={saveClassGroup}>Submit</button>
+                        <div className="creation-form">
+                            <label htmlFor="weekly_hours">Horas semanales</label>
+                            <input type="number" id="weekly_hours" required value={classGroup.weekly_hours} onChange={handleInputChange} name="weekly_hours" />
+                        </div>
+                        <div className="buttons-position">
+                            <button className="badge" onClick={handleClick}>Lista</button>
+                            <button className="badge" onClick={saveClassGroup}>Enviar</button>
+                        </div>
+                    </section>
                 </>
             )}
         </>

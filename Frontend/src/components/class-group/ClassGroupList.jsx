@@ -15,10 +15,10 @@ const ClassGroupsList = () => {
     retrieveClassGroups();
   }, []);
 
-/*   const onChangeSearchModule = e => {
-    const searchModule = e.target.value;
-    setSearchModule(searchModule);
-  }; */
+  /*   const onChangeSearchModule = e => {
+      const searchModule = e.target.value;
+      setSearchModule(searchModule);
+    }; */
 
   const retrieveClassGroups = () => {
     ClassGroupDataService.getAll()
@@ -43,7 +43,7 @@ const ClassGroupsList = () => {
 
   const handleAddClick = () => {
     navigate("/add");
-}
+  }
 
   const removeAllClassGroups = () => {
     ClassGroupDataService.removeAll()
@@ -68,61 +68,48 @@ const ClassGroupsList = () => {
   };
 
   return (
-    <div className="div-1">
-      <div className="div-2">
-        <h4>Class Groups List</h4>
-
+    <>
+      <section>
+        <h1>Lista de Grupos de Clase</h1>
+        <h4>Módulos</h4>
         <ul>
           {classGroups && classGroups.map((classGroup, index) => (
             <li onClick={() => setActiveClassGroup(classGroup, index)} key={index}>{classGroup.module}</li>
           ))}
         </ul>
-        <button onClick={handleAddClick}>Go Add</button>
-        <button onClick={removeAllClassGroups}>Remove All</button>
-      </div>
-      <div className="div-3">
+        <div className="buttons-position">
+          <button className="badge" onClick={handleAddClick}>ir a Añadir</button>
+          <button className="badge" onClick={removeAllClassGroups}>Borrar todos</button>
+        </div>
+      </section>
+      <section>
         {currentClassGroup ? (
-          <div className="div-4">
+          <section>
             <h4>Class Group</h4>
-            <div className="div-5">
-              <label><strong>Curso:</strong></label>{" "}
-              {currentClassGroup.course}
-            </div>
-            <div className="div-5">
-              <label><strong>Módulo:</strong></label>{" "}
-              {currentClassGroup.module}
-            </div>
-            <div className="div-5">
-              <label><strong>Modalidad:</strong></label>{" "}
-              {currentClassGroup.modality}
-            </div>
-            <div className="div-5">
-              <label><strong>Número de alumnos:</strong></label>{" "}
-              {currentClassGroup.number_students}
-            </div>
-            <div className="div-5">
-              <label><strong>Máximo número de alumnos:</strong></label>{" "}
-              {currentClassGroup.max_students}
-            </div>
-            <div className="div-5">
-              <label><strong>Aula:</strong></label>{" "}
-              {currentClassGroup.location}
-            </div>
-            <div className="div-5">
-              <label><strong>Horas semanales:</strong></label>{" "}
-              {currentClassGroup.weekly_hours}
-            </div>
-
-            <Link to={"/class-list/" + currentClassGroup.id}>Edit</Link>
-          </div>
+            <label><strong>Curso:</strong></label>{" "}
+            {currentClassGroup.course}
+            <label><strong>Módulo:</strong></label>{" "}
+            {currentClassGroup.module}
+            <label><strong>Modalidad:</strong></label>{" "}
+            {currentClassGroup.modality}
+            <label><strong>Número de alumnos:</strong></label>{" "}
+            {currentClassGroup.number_students}
+            <label><strong>Máximo número de alumnos:</strong></label>{" "}
+            {currentClassGroup.max_students}
+            <label><strong>Aula:</strong></label>{" "}
+            {currentClassGroup.location}
+            <label><strong>Horas semanales:</strong></label>{" "}
+            {currentClassGroup.weekly_hours}
+            <Link to={"/class-list/" + currentClassGroup.id}>Editar</Link>
+          </section>
         ) : (
           <div>
             <br />
-            <p>Please click on a Class Group...</p>
+            <p>Selecciona un grupo...</p>
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

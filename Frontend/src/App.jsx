@@ -7,7 +7,6 @@ import SchoolsCenters from './components/schoolCenters/SchoolCenters'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

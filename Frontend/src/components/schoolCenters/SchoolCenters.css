@@ -1,8 +1,9 @@
 .center_list{
+    font-size: 0.7rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
+    justify-content: start;
+    gap: 1rem;
     margin-top: 20px;
     padding: 1rem 2rem;
     border-radius: 0.25rem;
@@ -25,3 +26,36 @@
     border-radius: 0.25rem;
     margin-left: 1rem;
 }
+
+.createSchools_wrapper > form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & > .createSchool_submit{
+        align-self: flex-end;
+    }
+}
+
+
+
+fieldset{
+    border: none;
+    display: flex;
+    text-align: end;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 1rem;
+}
+
+label{
+    display: inline-block;
+    width: 100%;
+    align-items: end;
+
+    & > .schoolCenter_item{
+        width: 500px;
+    }
+}
+

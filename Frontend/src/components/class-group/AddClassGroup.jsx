@@ -73,7 +73,7 @@ const AddClassGroup = () => {
             ) : (
                 <>
                     <section>
-                        <h1>Creación de Grupo de Clase</h1>
+                        <h3>Creación de Grupo de Clase</h3>
                         <div className="creation-form">
                             <label htmlFor="course">Curso</label>
                             <input type="number" id="course" required value={classGroup.course} onChange={handleInputChange} name="course" />

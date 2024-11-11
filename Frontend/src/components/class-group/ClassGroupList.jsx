@@ -70,38 +70,52 @@ const ClassGroupsList = () => {
   return (
     <>
       <section>
-        <h1>Lista de Grupos de Clase</h1>
-        <h4>Módulos</h4>
-        <ul>
+        <h2>Lista de Grupos de Clase</h2>
+        <h3>Módulos</h3>
+        <ul className="classGroup_list">
           {classGroups && classGroups.map((classGroup, index) => (
             <li onClick={() => setActiveClassGroup(classGroup, index)} key={index}>{classGroup.module}</li>
           ))}
         </ul>
-        <div className="buttons-position">
-          <button className="badge" onClick={handleAddClick}>ir a Añadir</button>
-          <button className="badge" onClick={removeAllClassGroups}>Borrar todos</button>
-        </div>
+        <button onClick={handleAddClick}>ir a Añadir</button>
+        <button onClick={removeAllClassGroups}>Borrar todos</button>
       </section>
-      <section>
+
+      <section className="classGroup_wrapper">
         {currentClassGroup ? (
-          <section>
-            <h4>Class Group</h4>
-            <label><strong>Curso:</strong></label>{" "}
-            {currentClassGroup.course}
-            <label><strong>Módulo:</strong></label>{" "}
-            {currentClassGroup.module}
-            <label><strong>Modalidad:</strong></label>{" "}
-            {currentClassGroup.modality}
-            <label><strong>Número de alumnos:</strong></label>{" "}
-            {currentClassGroup.number_students}
-            <label><strong>Máximo número de alumnos:</strong></label>{" "}
-            {currentClassGroup.max_students}
-            <label><strong>Aula:</strong></label>{" "}
-            {currentClassGroup.location}
-            <label><strong>Horas semanales:</strong></label>{" "}
-            {currentClassGroup.weekly_hours}
-            <Link to={"/class-list/" + currentClassGroup.id}>Editar</Link>
-          </section>
+          <div className="currentClassGroup_detail">
+            <h3>Grupo de Clase</h3>
+            <div className="detail">
+              <label><strong>Curso:</strong></label>{" "}
+              {currentClassGroup.course}
+            </div>
+            <div className="detail">
+              <label><strong>Módulo:</strong></label>{" "}
+              {currentClassGroup.module}
+            </div>
+            <div className="detail">
+              <label><strong>Modalidad:</strong></label>{" "}
+              {currentClassGroup.modality}
+            </div>
+            <div className="detail">
+              <label><strong>Número de alumnos:</strong></label>{" "}
+              {currentClassGroup.number_students}
+            </div>
+            <div className="detail">
+              <label><strong>Máximo número de alumnos:</strong></label>{" "}
+              {currentClassGroup.max_students}
+            </div>
+            <div className="detail">
+              <label><strong>Aula:</strong></label>{" "}
+              {currentClassGroup.location}
+            </div>
+            <div className="detail">
+              <label><strong>Horas semanales:</strong></label>{" "}
+              {currentClassGroup.weekly_hours}
+            </div>
+
+            <Link to={"/class-list/" + currentClassGroup.id} className="classGroup_edit">Editar</Link>
+          </div>
         ) : (
           <div>
             <br />

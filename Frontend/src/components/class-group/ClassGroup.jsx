@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ClassGroupDataService from "../../services/ClassGroupService";
+import './ClassGroup.css';
 
 const ClassGroup = props => {
   const { id } = useParams();
@@ -68,9 +69,9 @@ const ClassGroup = props => {
   return (
     <>
       {currentClassGroup ? (
-        <div id="edit-classGroup">
-          <section>
-            <h1>Formulario de Edición</h1>
+        <section className="classGroup_wrapper">
+          <div className="currentClassGroup_detail">
+            <h3>Formulario de Edición</h3>
             <form className="edit-form">
               <label htmlFor="course" className="edit-input">Course</label>
               <input type="number" id="course" className="edit-input" required value={currentClassGroup.course} onChange={handleInputChange} name="course" />
@@ -88,26 +89,24 @@ const ClassGroup = props => {
               <input type="number" id="weekly_hours" className="edit-input" required value={currentClassGroup.weekly_hours} onChange={handleInputChange} name="weekly_hours" />
             </form>
 
-            <div className="buttons-position">
-              <button className="badge badge-danger mr-2" onClick={deleteClassGroup}>
-                Delete
-              </button>
-              <button
-                type="submit"
-                className="badge badge-success"
-                onClick={updateClassGroup}
-              >
-                Update
-              </button>
+            <button className="badge badge-danger mr-2" onClick={deleteClassGroup}>
+              Delete
+            </button>
+            <button
+              type="submit"
+              className="badge badge-success"
+              onClick={updateClassGroup}
+            >
+              Update
+            </button>
 
-              <button className="badge badge-danger mr-2" onClick={handleClick}>
-                Go List
-              </button>
-            </div>
-          </section>
+            <button className="badge badge-danger mr-2" onClick={handleClick}>
+              Go List
+            </button>
+          </div>
 
           <p>{message}</p>
-        </div>
+        </section>
       ) : (
         <div>
           <br />

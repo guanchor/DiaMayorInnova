@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SchoolsCenters from './components/schoolCenters/SchoolCenters'
+import Home from './pages/Home/Home'
 
 import './App.css'
 
@@ -12,6 +10,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/schools" element={<SchoolsCenters />}/>
         </Routes>
       </BrowserRouter>

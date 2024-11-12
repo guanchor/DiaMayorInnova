@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
-import "./SchoolCenters.css";
+import Header from '../header/Header.jsx';
+import './SchoolCenters.css';
+import NavBar from "../navBar/NavBar.jsx";
 
 const SchoolCenters = () => {
 
@@ -76,10 +78,12 @@ const SchoolCenters = () => {
 
   return (
     <>
+      <Header />
+      <NavBar />
       <h1>Centros Educativos</h1>
 
       <section>
-        <h2>Listado de centros</h2>
+        <h2>Listado de centros <i class="fi fi-rr-home"></i></h2>
         {schools.map((school, index) => (
           <ul className="center_list" key={index}>
             <li id={`name${index}`}>{school.school_name}</li>
@@ -140,7 +144,8 @@ const SchoolCenters = () => {
             ))}
         </div>
       </section>
-
+      Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
+      <div>Uicons by <a href="https://www.flaticon.com/uicons" title="Flaticon">Flaticon</a></div>
     </>
   )
 };

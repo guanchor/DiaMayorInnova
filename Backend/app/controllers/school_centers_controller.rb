@@ -1,6 +1,10 @@
 class SchoolCentersController < ApplicationController
   def index
-    @schools = SchoolCenter.all
+    if params[:school_name].present?
+      @schools = SchoolCenter.where("school_name LIKE ?", "%#{params[:school_name]}%")
+    else
+      @schools = SchoolCenter.all
+    end
     render json: @schools
   end
 

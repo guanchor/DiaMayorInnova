@@ -1,4 +1,6 @@
-:root {
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+ :root {
+  /*
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -11,7 +13,18 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+*/
+  --Color-Neutral-Dark: #374957;
+  --Color-Neutral-White: #FAFAFA;
+
+
+  --Color-Grey-grey-200: #C6C6C6;
+  --Color-Grey-grey-300: #ABABAB;
+
+  --gap-XXXL: 36px
+
 }
+/*
 
 a {
   font-weight: 500;
@@ -66,3 +79,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+ */

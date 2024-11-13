@@ -7,6 +7,7 @@ import NavBar from "../navBar/NavBar.jsx";
 const SchoolCenters = () => {
 
   const initialSchoolState = {
+    id: null,
     school_name: "",
     address: "",
     phone: "",
@@ -19,14 +20,26 @@ const SchoolCenters = () => {
   const [searchName, setSearchName] = useState("");
   const [formData , setFormData] = useState([initialSchoolState])
   const [currentSchool, setCurrentSchool] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const allSchools = () => {
     SchoolServices.getAll()
       .then(response => {
         setSchools(response.data);
-        console.log(response.data);
       })
   }
+
+  const getSchool = (id) => {
+    SchoolServices.get(id)
+      .then(response => {
+        setFormData(response.data);
+        console.log("repsuesta desde el get");
+        console.log(response);
+      }).catch(e => {
+        console.log(e);
+      });
+  }
+
 
   const findByName = (e) => {
     e.preventDefault();
@@ -44,14 +57,11 @@ const SchoolCenters = () => {
     setSearchName(findName);
   }
 
-
-
   const handleChange = e => {
     e.preventDefault();
     const { name, value } = e.target; 
     setFormData({ ...formData, [name]: value });
   };
-
 
   const addSchool = (e) => {
     e.preventDefault();
@@ -66,15 +76,35 @@ const SchoolCenters = () => {
     }
 
     const deleteSchool = (id) =>{
-        e.preventDefault();
-        console.log(id);
-        console.log("hola");
+      SchoolServices.remove(id)
+      .then(response => {
+        console.log(response.data);
+        allSchools();
+      }).catch(e => {
+        console.log(e);
+      });
     }
 
     useEffect(() => {
         allSchools();
       }, []);
 
+    const editSchool = (id) => {
+      getSchool(id);
+      setIsUpdate(true);
+    }
+
+    const updateSchool = (e) => {
+      e.preventDefault();
+      console.log(formData.id);
+      SchoolServices.update(formData.id, formData)
+      .then(response => {
+        console.log(response.data);
+        allSchools();
+      }).catch(e => {
+        console.log(e);
+      });
+    }
 
   return (
     <>
@@ -86,19 +116,21 @@ const SchoolCenters = () => {
           <h2>Listado de centros <i class="fi fi-rr-home"></i></h2>
           {schools.map((school, index) => (
             <ul className="center_list" key={index}>
+              <li id={`id${index}`}>{school.id}</li>
               <li id={`name${index}`}>{school.school_name}</li>
               <li id={`address${index}`}>{school.address}</li>
               <li id={`phone${index}`}>{school.phone}</li>
               <li id={`email${index}`}>{school.email}</li>
               <li id={`website${index}`}>{school.website}</li>
               <li id={`province${index}`}>{school.province}</li>
-              <li><button onClick={deleteSchool}>Eliminar</button></li>
+              <li><button onClick={() =>deleteSchool(school.id)}>Eliminar</button></li>
+              <li><button onClick={() =>editSchool(school.id)}>editar</button></li>
             </ul>
           ))}
         </section>
         <section className="createSchools_wrapper">
           <h2>Crear centros</h2>
-          <form action=""  onSubmit={addSchool}>
+          <form action=""  onSubmit={updateSchool}>
             <fieldset>
               <label>Nombre del centro
               <input type="text" name="school_name" id="schoolName_input" className="schoolCenter_item" placeholder="Nombre del centro" value={schools.school_name} onInput={handleChange} />
@@ -120,6 +152,7 @@ const SchoolCenters = () => {
               </label>
             </fieldset>
             <button type="submit" className="createSchool_submit">Crear nuevo</button>
+            {isUpdate && <button type="submit" className="createSchool_submit">Actualizar</button>}
           </form>
         </section>
         <section className="createSchools_wrapper">

@@ -1,3 +1,8 @@
+body{
+    background-color: #adadad;
+    color: black;
+}
+
 .center_list{
     font-size: 0.7rem;
     display: flex;

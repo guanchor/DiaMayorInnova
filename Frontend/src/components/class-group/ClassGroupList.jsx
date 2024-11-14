@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ClassGroupDataService from "../../services/ClassGroupService";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useResource } from "../../services/resource";
 
 const ClassGroupsList = () => {
   const [classGroups, setClassGroups] = useState([]);
@@ -9,6 +10,15 @@ const ClassGroupsList = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchModule, setSearchModule] = useState("");
   const navigate = useNavigate();
+
+  useEffect( () =>{
+    const [classGroupResource, classGroupsApi] = useResource('classGroups');
+
+    if (!classGroupResource.loaded && !classGroupResource.loading && !classGroupResource.error) {
+      classGroupsApi.get();
+      console.log('GET');
+    }
+  }, []);
 
 
   useEffect(() => {

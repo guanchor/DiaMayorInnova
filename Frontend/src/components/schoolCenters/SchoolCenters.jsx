@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
 import "./SchoolCenters.css";
+import { useResource } from "../../services/Resource.jsx";
 
 const SchoolCenters = () => {
 
@@ -19,13 +20,13 @@ const SchoolCenters = () => {
     const [updateState, setUpdateState] = useState(false);
     const [currentSchool, setCurrentSchool] = useState([]);
 
-    const allSchools = () => {
-        SchoolServices.getAll()
-            .then(response => {
-                setSchools(response.data);
-                console.log(response.data);
-            })
-    }
+    /*    const allSchools = () => {
+           SchoolServices.getAll()
+               .then(response => {
+                   setSchools(response.data);
+                   console.log(response.data);
+               })
+       } */
 
     const findByName = (e) => {
         e.preventDefault();
@@ -91,8 +92,14 @@ const SchoolCenters = () => {
         setFormData(initialSchoolState);
     }
 
+    const [schoolCentersResource, schoolCentersApi] = useResource('schoolCenters');
+
+
     useEffect(() => {
-        allSchools();
+        if (!schoolCentersResource.loaded && !schoolCentersResource.loading && !schoolCentersResource.error) {
+            schoolCentersApi.get();
+            console.log('GET');
+        }
     }, []);
 
 
@@ -102,7 +109,7 @@ const SchoolCenters = () => {
 
             <section>
                 <h2>Listado de centros</h2>
-                {schools.map((school, index) => (
+                {schoolCentersResource.data.map((school, index) => (
                     <ul className="center_list" key={index}>
                         <li id={`name${index}`}>{school.school_name}</li>
                         <li id={`address${index}`}>{school.address}</li>

@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/class-list" element={<ClassGroupsList />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/add" element={<AddClassGroup />} />
+          <Route path="/add-class-list" element={<AddClassGroup />} />
           <Route path="/class-list/:id" element={<ClassGroup />} />
           <Route path="*" element={<Home />} />
         </Routes>

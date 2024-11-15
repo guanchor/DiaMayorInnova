@@ -15,22 +15,6 @@ class SessionsController < Devise::SessionsController
         end
     end
 
-    # private 
-    #     def sign_in_params
-    #         params.require(:sign_in).permit(:email, :password)
-    #     end
-
-    #     def load_user
-    #         @user = User.find_for_database_authentication(email: sign_in_params[:email])
-    #         if @user
-    #             return @user
-    #         else
-    #             json_response "User not found", false, {}, :not_found
-    #         end
-    #     end
-    # end
-
-
     #Log out 
     def destroy
         sign_out @user
@@ -50,3 +34,16 @@ class SessionsController < Devise::SessionsController
         end
 
     end
+
+        def sign_in_params
+            params.require(:sign_in).permit(:email, :password)
+        end
+
+        def load_user
+            @user = User.find_for_database_authentication(email: sign_in_params[:email])
+            if @user
+                return @user
+            else
+                json_response "User not found", false, {}, :not_found
+            end
+        end

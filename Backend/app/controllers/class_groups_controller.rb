@@ -1,6 +1,10 @@
 class ClassGroupsController < ApplicationController
     def index
-        @classGroups = ClassGroup.all
+        if params[:module].present?
+            @classGroups = ClassGroup.where(module: params[:module])
+        else
+            @classGroups = ClassGroup.all
+        end
         render json: @classGroups
     end
     

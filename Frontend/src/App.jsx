@@ -1,5 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SchoolsCenters from './components/schoolCenters/SchoolCenters'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./pages/Home";
+import ClassGroupsList from "./components/class-group/ClassGroupList";
+import AddClassGroup from "./components/class-group/AddClassGroup";
+import ClassGroup from "./components/class-group/ClassGroup";
 import './App.css'
 import Home from './pages/Home'
 import AddAccountingPlan from './components/AddAccountingPlan'
@@ -18,10 +23,14 @@ function App() {
           <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
           <Route path="/home" element={<Home />} />
           <Route path="/schools" element={<SchoolsCenters />} />
+          <Route path="/class-list" element={<ClassGroupsList />} />
+          <Route path="/add-class-list" element={<AddClassGroup />} />
+          <Route path="/class-list/:id" element={<ClassGroup />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </>
   )
 }
 
-export default App
+export default App;

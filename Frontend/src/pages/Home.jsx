@@ -1,18 +1,18 @@
-// import Footer from "../components/Footer"
+import { useNavigate } from "react-router-dom";
+import Footer from "../components/footer/Footer";
 
-function Home(){
+function Home() {
+    const navigate = useNavigate();
 
-    // const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/class-list");
+    }
 
-    // const handleClick = () => {
-    //     navigate("/accounting-plans");
-    // }
-
-
-    return(
+    return (
         <>
             <p>Esto es una aplicación</p>
-            
+            <button onClick={handleClick}>Mostrar la lista de Grupos de clase</button>
+            <Footer />
         </>
     );
 }

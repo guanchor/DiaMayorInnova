@@ -21,7 +21,7 @@ const remove = id => {
 };
 
 const removeAll = () => {
-    return http.delete(`/class_groups/`);
+    return http.delete(`/class_groups`);
 };
 
 const findByModule = module => {

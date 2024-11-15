@@ -90,7 +90,7 @@ const ClassGroup = () => {
   };
 
   return (
-    <div>
+    <>
       {currentClassGroup ? (
         <div className="edit-form">
           <h4>Editor de Grupos de Clase</h4>
@@ -115,7 +115,7 @@ const ClassGroup = () => {
           <p>Selecciona un módulo...</p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -1,118 +1,117 @@
 import React, { useState } from "react";
 import ClassGroupDataService from "../../services/ClassGroupService";
 import { useNavigate } from "react-router-dom";
+import ClassGroupForm from "./ClassGroupForm";
 
 const AddClassGroup = () => {
-    const initialClassGroupState = {
-        id: null,
-        course: 0,
-        module: "",
-        modality: "",
-        number_students: 0,
-        max_students: 0,
-        location: "",
-        weekly_hours: 0
-    };
+  const initialClassGroupState = {
+    id: null,
+    course: 0,
+    module: "",
+    modality: "",
+    number_students: 0,
+    max_students: 0,
+    location: "",
+    weekly_hours: 0
+  };
 
-    const [classGroup, setClassGroup] = useState(initialClassGroupState);
-    const [submitted, setSubmitted] = useState(false);
-    const navigate = useNavigate();
+  const [classGroup, setClassGroup] = useState(initialClassGroupState);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate("/class-list");
+  const handleClick = () => {
+    navigate("/class-list");
+  }
+
+  const handleInputChange = (updatedClassGroup) => {
+    setClassGroup(updatedClassGroup);
+  };
+
+  const validateForm = () => {
+    const course = Number(classGroup.course);
+    const number_students = Number(classGroup.number_students);
+    const max_students = Number(classGroup.max_students);
+    const weekly_hours = Number(classGroup.weekly_hours);
+
+    if (course <= 0 || !classGroup.module || !classGroup.modality ||
+      number_students <= 0 || max_students <= 0 ||
+      !classGroup.location || weekly_hours <= 0) {
+      setError("Todos los campos son obligatorios y deben tener valores válidos.");
+      return false;
     }
+    if (classGroup.number_students > classGroup.max_students) {
+      setError("El número de estudiantes no puede ser mayor que el número máximo.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
 
-    const handleInputChange = event => {
-        const { name, value } = event.target;
-        setClassGroup({ ...classGroup, [name]: value });
-    };
+  const saveClassGroup = () => {
 
-    const saveClassGroup = () => {
-        let data = {
-            course: classGroup.course,
-            module: classGroup.module,
-            modality: classGroup.modality,
-            number_students: classGroup.number_students,
-            max_students: classGroup.max_students,
-            location: classGroup.location,
-            weekly_hours: classGroup.weekly_hours
-        };
+    if (validateForm()) {
+      let data = {
+        course: classGroup.course,
+        module: classGroup.module,
+        modality: classGroup.modality,
+        number_students: classGroup.number_students,
+        max_students: classGroup.max_students,
+        location: classGroup.location,
+        weekly_hours: classGroup.weekly_hours
+      };
 
-        ClassGroupDataService.create(data)
-            .then(response => {
-                setClassGroup({
-                    id: response.data.id,
-                    course: response.data.course,
-                    module: response.data.module,
-                    modality: response.data.modality,
-                    number_students: response.data.number_students,
-                    max_students: response.data.max_students,
-                    location: response.data.location,
-                    weekly_hours: response.data.weekly_hours
-                });
-                setSubmitted(true);
-                console.log(response.data);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    };
+      ClassGroupDataService.create(data)
+        .then(response => {
+          setClassGroup({
+            id: response.data.id,
+            course: response.data.course,
+            module: response.data.module,
+            modality: response.data.modality,
+            number_students: response.data.number_students,
+            max_students: response.data.max_students,
+            location: response.data.location,
+            weekly_hours: response.data.weekly_hours
+          });
+          setSubmitted(true);
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+          setError("Hubo un problema al guardar el grupo de clase.");
+        });
+    }
+  };
 
-    const newClassGroup = () => {
-        setClassGroup(initialClassGroupState);
-        setSubmitted(false);
-    };
+  const newClassGroup = () => {
+    setClassGroup(initialClassGroupState);
+    setSubmitted(false);
+    setError("");
+  };
 
-    return (
+  return (
+    <>
+      {submitted ? (
+        <div>
+          <h4>Se ha enviado correctamente</h4>
+          <button onClick={newClassGroup}>Añadir otro grupo</button>
+          <button onClick={handleClick}>Mostrar Lista</button>
+        </div>
+      ) : (
         <>
-            { submitted ? (
-                <div>
-                    <h4>Se ha enviado correctamente</h4>
-                <button onClick={newClassGroup}>Add</button>
-                </div>
-            ) : (
-                <>
-                <div>
-                    <label htmlFor="course">Course</label>
-                    <input type="number" id="course" required value={classGroup.course} onChange={handleInputChange} name="course" />
-                </div>
-
-                <div>
-                    <label htmlFor="module">Module</label>
-                    <input type="text" id="module" required value={classGroup.module} onChange={handleInputChange} name="module" />
-                </div>
-
-                <div>
-                    <label htmlFor="modality">Modality</label>
-                    <input type="text" id="modalitye" required value={classGroup.modality} onChange={handleInputChange} name="modality" />
-                </div>
-
-                <div>
-                    <label htmlFor="number_students">Number of Students</label>
-                    <input type="number" id="number_students" required value={classGroup.number_students} onChange={handleInputChange} name="number_students" />
-                </div>
-
-                <div>
-                    <label htmlFor="max_students">Max Number of Students</label>
-                    <input type="number" id="max_students" required value={classGroup.max_students} onChange={handleInputChange} name="max_students" />
-                </div>
-
-                <div>
-                    <label htmlFor="location">Location</label>
-                    <input type="text" id="location" required value={classGroup.location} onChange={handleInputChange} name="location" />
-                </div>
-
-                <div>
-                    <label htmlFor="weekly_hours">Weekly hours</label>
-                    <input type="number" id="weekly_hours" required value={classGroup.weekly_hours} onChange={handleInputChange} name="weekly_hours" />
-                </div>
-
-                <button onClick={handleClick}>Mostrar la lista de Grupos de clase</button>
-                <button onClick={saveClassGroup}>Submit</button>
-                </>
-            )}
+          <h4>Añadir Grupos de Clase</h4>
+          <ClassGroupForm
+            classGroup={classGroup}
+            onChange={handleInputChange}
+            onSubmit={saveClassGroup}
+            submitText="Submit"
+          />
+          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          <button onClick={handleClick}>Mostrar la lista de Grupos de clase</button>
         </>
-    );
+      )}
+    </>
+  );
 };
 
 export default AddClassGroup;

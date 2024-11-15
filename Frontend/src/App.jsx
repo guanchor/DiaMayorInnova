@@ -1,16 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import SchoolsCenters from './components/schoolCenters/SchoolCenters'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home";
+import AccountingPlan from './components/accounting-plan/AccountingPlan';
+import AccountingPlanList from './components/accounting-plan/ListAccountingPlan';
+import AddAccountingPlan from './components/accounting-plan/AddAccountingPlan';
+import ClassGroup from "./components/class-group/ClassGroup";
 import ClassGroupsList from "./components/class-group/ClassGroupList";
 import AddClassGroup from "./components/class-group/AddClassGroup";
-import ClassGroup from "./components/class-group/ClassGroup";
-import './App.css'
-import Home from './pages/Home'
-import AddAccountingPlan from './components/AddAccountingPlan'
-import AccountingPlanList from './components/ListAccountingPlan'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import AccountingPlan from './components/AccountingPlan'
+import SchoolsCenters from './components/schoolCenters/SchoolCenters'
+import './App.css';
 
 function App() {
 
@@ -18,10 +15,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/home" element={<Home />} />
           <Route path="/accounting-plans" element={<AccountingPlanList />} />
           <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
           <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
-          <Route path="/home" element={<Home />} />
           <Route path="/schools" element={<SchoolsCenters />} />
           <Route path="/class-list" element={<ClassGroupsList />} />
           <Route path="/add-class-list" element={<AddClassGroup />} />

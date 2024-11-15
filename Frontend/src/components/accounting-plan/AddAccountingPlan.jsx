@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AccountingPlanDataService from "../services/AccountingPlanService";
+import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
 
 const AddAccountingPlan = () => {

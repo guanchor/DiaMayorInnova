@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import AccountingPlanDataService from "../services/AccountingPlanService";
+import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
 
 const AccountingPlan = (props) => {

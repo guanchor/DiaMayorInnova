@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import AccountingPlanDataService from "../services/AccountingPlanService";
+import AccountingPlanDataService from "../../services/AccountingPlanService"
 import { Link } from "react-router-dom";
 import AddAccountingPlan from "./AddAccountingPlan";
 
@@ -61,7 +61,7 @@ const AccountingPlansList = () => {
                     ))}
                 </ul>
 
-                <button><Link to={"/add"}>Añadir nuevo plan</Link></button>
+                <button><Link to={"/add-accounting-plan"}>Añadir nuevo plan</Link></button>
                 <button onClick={removeAllAccountingPlans}>Borrar todo</button>
 
             </div>

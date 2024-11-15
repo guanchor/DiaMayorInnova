@@ -1,0 +1,45 @@
+.userMenu{
+    background-color: var(--Color-Neutral-Dark);
+    width: 268px;
+    padding: 20px 24px;
+    position: absolute;
+    right: 24px;
+    top: 74px;
+    display: flex;
+    flex-direction: column;
+    padding: var(--M, 20px) var(--L, 24px);
+    gap: var(--M, 20px);
+    color: var(--Color-Grey-grey-200);
+    border-radius: var(--xxs, 8px);   
+}
+
+.userMenu_item{
+    list-style: none;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: capitalize;
+    transition: background-color 200ms ease-in-out;
+    
+    &:hover .fi, :hover {
+        background-color: rgba(26, 26, 26, 0.158);
+        color: #fff;
+    }
+
+    & a {
+        display: flex;
+        gap: var(--xs, 12px);
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        border-radius: var(--xxs, 8px);
+        padding: var(--xs, 12px) var(--xxs, 8px);
+        cursor: pointer;
+
+        &> .fi {
+            font-size: medium;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+

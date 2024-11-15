@@ -1,20 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer/Footer";
+import Header from "../components/header/Header";
+import NavBar from "../components/navBar/NavBar";
+import SignUp from "../components/user/SignUp";
 
 function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate("/class-list");
-    }
+  const goClassList = () => {
+    navigate("/class-list");
+  }
 
-    return (
-        <>
-            <p>Esto es una aplicación</p>
-            <button onClick={handleClick}>Mostrar la lista de Grupos de clase</button>
-            <Footer />
-        </>
-    );
+  const goSchool = () => {
+    navigate("/schools");
+  }
+
+  const goAccountingPlan = () => {
+    navigate("/accounting-plans");
+  }
+
+
+  const goSignUp = () => {
+    navigate("/sign_up");
+  }
+
+  return (
+    <>
+      <Header />
+      <NavBar />
+      <main>
+        <h1>Inicio</h1>
+        <p>Esto es una aplicación</p>
+        <button onClick={goClassList}>Grupos</button>
+        <button onClick={goSchool}>Escuelas</button>
+        <button onClick={goAccountingPlan}>PGC</button>
+        <button onClick={goSignUp}>Registro</button>
+      </main>
+      <Footer />
+    </>
+  );
 }
 
 export default Home;

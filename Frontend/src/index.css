@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /*
   line-height: 1.5;
   font-weight: 400;
 
@@ -11,13 +12,29 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+*/
+  font-family: Quicksand;
+  --Color-Neutral-Dark: #374957;
+  --Color-Neutral-White: #FAFAFA;
+
+  --Color-Grey-grey-200: #C6C6C6;
+  --Color-Grey-grey-300: #ABABAB;
+
+  --gap-XXXL: 36px
 }
 
+main{
+  margin-left: 90px;
+  padding-top: 70px;
+  background-color: aqua;
+}
+/* 
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -47,9 +64,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -60,10 +79,12 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
-}
+} */

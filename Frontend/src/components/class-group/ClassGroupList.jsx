@@ -15,14 +15,6 @@ const ClassGroupsList = () => {
     retrieveClassGroups();
   }, []);
 
-<<<<<<< HEAD
-=======
-  /*   const onChangeSearchModule = e => {
-      const searchModule = e.target.value;
-      setSearchModule(searchModule);
-    }; */
-
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
   const retrieveClassGroups = () => {
     ClassGroupDataService.getAll()
       .then(response => {
@@ -47,20 +39,6 @@ const ClassGroupsList = () => {
   const handleAddClick = () => {
     navigate("/add");
   }
-<<<<<<< HEAD
-=======
-
-  const removeAllClassGroups = () => {
-    ClassGroupDataService.removeAll()
-      .then(response => {
-        console.log(response.data);
-        refreshList();
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
 
   const findByModule = () => {
     if (searchModule) {
@@ -84,7 +62,6 @@ const ClassGroupsList = () => {
   return (
     <>
       <section>
-<<<<<<< HEAD
         <h2>Class Groups List</h2>
 
         <div>
@@ -97,31 +74,18 @@ const ClassGroupsList = () => {
           <button onClick={findByModule}>Buscar</button>
         </div>
 
-=======
-        <h2>Lista de Grupos de Clase</h2>
-        <h3>Módulos</h3>
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
         <ul className="classGroup_list">
           {classGroups && classGroups.map((classGroup, index) => (
             <li onClick={() => setActiveClassGroup(classGroup, index)} key={index}>{classGroup.module}</li>
           ))}
         </ul>
-<<<<<<< HEAD
         <button onClick={handleAddClick}>Añadir</button>
-=======
-        <button onClick={handleAddClick}>ir a Añadir</button>
-        <button onClick={removeAllClassGroups}>Borrar todos</button>
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
       </section>
 
       <section className="classGroup_wrapper">
         {currentClassGroup ? (
           <div className="currentClassGroup_detail">
-<<<<<<< HEAD
             <h3>Grupos de Clase</h3>
-=======
-            <h3>Grupo de Clase</h3>
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
             <div className="detail">
               <label><strong>Curso:</strong></label>{" "}
               {currentClassGroup.course}
@@ -156,11 +120,7 @@ const ClassGroupsList = () => {
         ) : (
           <div>
             <br />
-<<<<<<< HEAD
             <p>Selecciona un módulo...</p>
-=======
-            <p>Selecciona un grupo...</p>
->>>>>>> 911f02c0e3f4e500a34c6ebedeff3e7689750f65
           </div>
         )}
       </section>

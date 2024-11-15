@@ -38,6 +38,13 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Devise
+  gem 'devise', '~> 4.2'
+
+  # Simple token authentication
+  gem 'simple_token_authentication','~> 1.0'
+
 end
 
 

@@ -24,7 +24,8 @@ const ClassGroupsList = () => {
       .then(response => {
         setClassGroups(response.data);
         console.log(response.data);
-      }).catch(e => {
+      })
+      .catch(e => {
         console.log(e);
       });
   };
@@ -43,12 +44,6 @@ const ClassGroupsList = () => {
       retrieveClassGroups();
     }
   };
-
-  /* const refreshList = () => {
-    retrieveClassGroups();
-    setCurrentClassGroup(null);
-    setCurrentIndex(-1);
-  }; */
 
   const setActiveClassGroup = (classGroup, index) => {
     setCurrentClassGroup(classGroup);

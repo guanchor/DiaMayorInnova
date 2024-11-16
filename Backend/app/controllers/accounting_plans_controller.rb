@@ -1,6 +1,10 @@
 class AccountingPlansController < ApplicationController
     def index
-        @accountingPlans = AccountingPlan.all
+        if params[:name].present?
+            @accountingPlans = AccountingPlan.where("name LIKE ?", "%#{params[:name]}%")
+        else
+            @accountingPlans = AccountingPlan.all
+        end
         render json: @accountingPlans
     end
 

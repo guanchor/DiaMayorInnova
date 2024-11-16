@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer/Footer";
 import Header from "../components/header/Header";
 import NavBar from "../components/navBar/NavBar";
-import SignUp from "../components/user/SignUp";
 
 function Home() {
   const navigate = useNavigate();

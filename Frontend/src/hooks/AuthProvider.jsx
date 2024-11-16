@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
         setUser(user);
         setToken(token);
         localStorage.setItem("site", token);
-        navigate("/class-list");
+        navigate("/Home");
       } else {
         throw new Error(response.data.message || "Error al registrar el usuario");
       }
@@ -100,7 +100,7 @@ const AuthProvider = ({ children }) => {
         setUser(user);
         setToken(token);
         localStorage.setItem("site", token);
-        navigate("/class-list");
+        navigate("/Home");
       } else {
         throw new Error(response.data.message || "Error en la autenticación");
       }

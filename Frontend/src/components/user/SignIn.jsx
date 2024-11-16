@@ -13,7 +13,6 @@ const SignIn = () => {
   const handleSubmitEvent = (e) => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
-      console.log("Antes del authSignInActionInput");
       auth.signInAction(input);
       return;
     }

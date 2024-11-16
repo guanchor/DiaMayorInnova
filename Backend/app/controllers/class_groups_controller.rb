@@ -1,7 +1,7 @@
 class ClassGroupsController < ApplicationController
     def index
         if params[:module].present?
-            @classGroups = ClassGroup.where(module: params[:module])
+            @classGroups = ClassGroup.where("module LIKE ?", "%#{params[:module]}%")
         else
             @classGroups = ClassGroup.all
         end

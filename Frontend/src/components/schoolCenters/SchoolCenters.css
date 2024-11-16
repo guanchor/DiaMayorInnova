@@ -1,9 +1,9 @@
-body{
+/* body{
     background-color: #adadad;
     color: black;
-}
+} */
 
-.center_list{
+.center_list {
     font-size: 0.7rem;
     display: flex;
     flex-wrap: wrap;
@@ -15,16 +15,16 @@ body{
     background-color: #eee;
 }
 
-.center_list > li{
+.center_list>li {
     list-style-type: none;
 
 }
 
-.createSchools_wrapper{
+.createSchools_wrapper {
     margin-top: 5rem;
 }
 
-.schoolCenter_item{
+.schoolCenter_item {
     background-color: #eee;
     padding: 0.5rem 1rem;
     border: none;
@@ -32,19 +32,19 @@ body{
     margin-left: 1rem;
 }
 
-.createSchools_wrapper > form{
+.createSchools_wrapper>form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
-    & > .createSchool_submit{
+    &>.createSchool_submit {
         align-self: flex-end;
     }
 }
 
 
 
-fieldset{
+fieldset {
     border: none;
     display: flex;
     text-align: end;
@@ -54,13 +54,12 @@ fieldset{
     gap: 1rem;
 }
 
-label{
+label {
     display: inline-block;
     width: 100%;
     align-items: end;
 
-    & > .schoolCenter_item{
+    &>.schoolCenter_item {
         width: 500px;
     }
 }
-

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
 import "./SchoolCenters.css";
+import NavBar from "../navegation-menu/nave-bar/NavBar.jsx";
 
 const SchoolCenters = () => {
     const initialSchoolState = {
@@ -103,7 +104,6 @@ const SchoolCenters = () => {
     return (
         <>
             <h1>Centros Educativos</h1>
-
             <section>
                 <h2>Listado de centros</h2>
                 {schools.map((school, index) => (

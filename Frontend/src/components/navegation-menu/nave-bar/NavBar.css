@@ -24,11 +24,11 @@
 }
 
 .navBar__item {
+  list-style: none;
   color: var(--color);
   background-color: var(--Color-Neutral-White);
   width: 180px;
   height: 56px;
-  padding: var(--gap-xxs) var(--gap-xs);
   display: flex;
   gap: var(--gap-s, );
   justify-content: start;

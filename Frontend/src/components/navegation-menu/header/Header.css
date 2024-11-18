@@ -1,6 +1,6 @@
   .header {
     position: fixed;
-    background: var(--Color-Neutral-Dark, #374957);
+    background: var(--Color-Principal);
     width: 100%;
     height: 60px;
     display: flex;
@@ -16,11 +16,11 @@
     font-size: x-large;
     cursor: pointer;
     display: flex;
-    color: var(--color-font-secundary);
+    color: var(--Color-letra-claro);
   }
 
   .logo {
-    color: var(--color-font-secundary);
+    color: var(--Color-letra-claro);
     padding: var(--gap-xxxs) 0;
     font-size: var(--text-mobile-subtitles-1);
     cursor: pointer;
@@ -87,12 +87,12 @@
   }
 
   .menuInfo_name {
-    color: var(--Color-grey-200, #C6C6C6);
+    color: var(--Color-letra-claro);
     font-weight: 600;
   }
 
   .menuInfo_rol {
-    color: var(--Color-grey-300, #ABABAB);
+    color: var(--Color-grey-300);
     font-size: 12px;
     font-weight: 700;
     line-height: 140%;
@@ -105,79 +105,26 @@
     }
 
     .header {
-      position: fixed;
-      background: var(--Color-Neutral-Dark, #374957);
-      width: 100%;
       height: 70px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: var(--gap-xs) var(--gap-l);
     }
 
     .logo {
-      color: var(--color-font-secundary);
-      border-radius: 0.25rem;
-      padding: var(--gap-xxxs) 0;
-      margin: 0;
       font-size: var(--text-desktop-subtitles-1);
-      cursor: pointer;
     }
 
     .header_userZone {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .header_userZone {
-      display: flex;
-      gap: var(--XL, 28px);
-    }
-
-    .header_item {
-      list-style: none;
-
-      &>a {
-        padding: var(--gap-xxxs) 6px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: inherit;
-      }
-
-      & :where(:hover, :focus) .fi {
-        color: #fff;
-      }
+      gap: var(--gap-m);
     }
 
     .userZone {
-      display: flex;
-      align-items: center;
-      gap: var(--XXXL, 36px);
-      border-left: 1px solid #ABABAB;
+      gap: var(--gap-xl);
       padding: 0 16px;
-      cursor: pointer;
-
-    }
-
-    .header_menu .fi {
-      font-size: large;
-      color: var(--Color-grey-200, #C6C6C6);
-      transition: color 200ms ease-in-out;
-    }
-
-
-    .userZone_menu {
-      display: flex;
-      gap: 16px;
     }
 
     .userZone_userFoto {
       width: 50px;
       height: 50px;
-      border-radius: 50%;
-      background-color: #eee;
     }
 
     .menuInfo {
@@ -187,18 +134,6 @@
       align-items: flex-start;
       justify-content: center;
       font-style: normal;
-      line-height: 140%;
-    }
-
-    .menuInfo_name {
-      color: var(--Color-grey-200, #C6C6C6);
-      font-weight: 600;
-    }
-
-    .menuInfo_rol {
-      color: var(--Color-grey-300, #ABABAB);
-      font-size: 12px;
-      font-weight: 700;
       line-height: 140%;
     }
   }

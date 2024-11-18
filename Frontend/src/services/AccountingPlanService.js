@@ -1,7 +1,5 @@
 import http from "../http-common";
 
-
-
 const getAll = () => {
     return http.get("/accounting_plans"); // "Backend/config/routes.rb"
 };
@@ -26,7 +24,9 @@ const removeAll = () => {
     return http.delete("/accounting_plans");
 };
 
-
+const findByName = name => {
+    return http.get(`/accounting_plans?name=${name}`);
+};
 
 const AccountingPlanService = {
     getAll,
@@ -35,6 +35,7 @@ const AccountingPlanService = {
     update,
     remove,
     removeAll,
+    findByName
 };
 
 export default AccountingPlanService;

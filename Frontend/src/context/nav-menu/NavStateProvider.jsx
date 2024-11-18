@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { navContext } from './navMenuContext'
+import { useAuth } from '../../hooks/AuthProvider';
 
 const NavStateProvider = ({ children }) => {
   const [menuState, setMenuState] = useState(false);
   const [name, setName] = useState("Pedro Picapiedra")
   const [rol, setRol] = useState("Estudiante")
   const [dropdownState, setdropdownState] = useState(false);
+  const { user } = useAuth();
 
   const changeMenu = () => {
     setMenuState(!menuState);
@@ -14,6 +16,14 @@ const NavStateProvider = ({ children }) => {
   const changeDropmenu = () => {
     setdropdownState(!dropdownState);
   }
+
+  const setUser = () => {
+    setName(user ? user.email.split('@')[0] : "Pedro Picapiedra");
+  }
+
+  useEffect(() => {
+    setUser();
+  }, [user])
 
   return (
     <navContext.Provider value={

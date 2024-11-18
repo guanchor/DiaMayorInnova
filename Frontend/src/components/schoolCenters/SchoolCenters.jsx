@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
+import { Link } from "react-router-dom";
 import "./SchoolCenters.css";
 import NavBar from "../navegation-menu/nave-bar/NavBar.jsx";
 
@@ -105,6 +106,9 @@ const SchoolCenters = () => {
         <>
             <h1>Centros Educativos</h1>
             <section>
+                <Link to={"/home"}>
+                    Volver al home
+                </Link>
                 <h2>Listado de centros</h2>
                 {schools.map((school, index) => (
                     <ul className="center_list" key={index}>

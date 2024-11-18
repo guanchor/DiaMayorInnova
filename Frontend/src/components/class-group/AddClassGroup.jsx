@@ -40,7 +40,7 @@ const AddClassGroup = () => {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     }
-    if (classGroup.number_students > classGroup.max_students) {
+    if (number_students > max_students) {
       setError("El número de estudiantes no puede ser mayor que el número máximo.");
       return false;
     }

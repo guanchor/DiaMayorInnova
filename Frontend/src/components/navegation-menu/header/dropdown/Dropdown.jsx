@@ -1,13 +1,12 @@
 import DropdownContent from "./DropdownContent";
-import './Dropdown.css';
 import { useContext, useEffect, useRef, useState } from "react";
 import { navContext } from "../../../../context/nav-menu/navMenuContext";
+import './Dropdown.css';
 
 const Dropdown = () => {
   const { name, rol, dropdownState, setdropdownState, changeDropmenu } = useContext(navContext);
 
   /* sugerencia de mi pana , pero ns si se hace asi, no he buscado info , es para cuando se picha fuera del menu se cierre*/
-
   const dropdownRef = useRef(null);
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -25,6 +24,7 @@ const Dropdown = () => {
   }, []);
 
   /* hasta aqui la sugerencia */
+
 
 
   return (

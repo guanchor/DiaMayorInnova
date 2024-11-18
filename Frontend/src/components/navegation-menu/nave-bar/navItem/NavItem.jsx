@@ -1,12 +1,15 @@
-import { NavLink, useNavigate ,useLocation} from 'react-router-dom';
+import { NavLink,useLocation} from 'react-router-dom';
+import { navContext } from '../../../../context/nav-menu/navMenuContext';
 import './NavItem.css';
+import { useContext } from 'react';
 
 const NavItem = ({ icon, name, url = "/home" }) => {
   const location = useLocation();
   const isActive = location.pathname === url;
+  const { changeMenu } = useContext(navContext);
 
   return (
-    <li className={`navBar__item ${isActive ? 'pg--active' : ''}`}>
+    <li className={`navBar__item ${isActive ? 'pg--active' : ''}`} onClick={changeMenu}>
       <NavLink className="nav_link" to={url}>
         <i className={icon}></i>
         <p className='navBar__text'>{name}</p>

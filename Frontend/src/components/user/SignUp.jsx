@@ -8,6 +8,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmation_password: "",
+    featured_image: null,
   });
 
   const navigate = useNavigate();
@@ -16,9 +17,10 @@ const SignUp = () => {
 
   const auth = useAuth();
 
-
   const handleSubmitEvent = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('featured_image', this.state.featured_image);
 
     if (!input.email || !input.password || !input.confirmation_password) {
       setError("Por favor, complete todos los campos.");
@@ -46,6 +48,10 @@ const SignUp = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const onImageChange = event => {
+    this.setInput({ featured_image: event.target.files[0] });
   };
 
   const handleClick = () => {
@@ -91,6 +97,18 @@ const SignUp = () => {
             value={input.confirmation_password}
             onChange={handleInput}
             required
+          />
+        </div>
+
+        <div className="form_control">
+          <label htmlFor="image_featured">Confirmar Password:</label>
+          <input
+            type="file"
+            id="image_featured"
+            name="image_featured"
+            accept="image/*"
+            multiple={false}
+            onChange={onImageChange}
           />
         </div>
 

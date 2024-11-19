@@ -2,11 +2,27 @@ class RegistrationsController < Devise::RegistrationsController
     before_action :ensure_auth_header_present, only: :create
 
   def create
-    email, password, password_confirmation = decode_auth_header
-
-    user = User.new(email: email, password: password, password_confirmation: password_confirmation)
+    featured_image = params[:featured_image]
+    email, password = decode_auth_header
+    
+    if featured_image.present?
+      user = User.new(email: email, password: password, featured_image: featured_image)
+      if user.save
+        json_response "Signed Up Succesfully", true, { user: user, data: featured_image }, :ok
+      else
+        json_response "Something wrong", false, {}, :unprocessable_entity
+      end
+    else  
+      user = User.new(email: email, password: password)
+      if user.save
+        json_response "Signed Up Succesfully", true, { user: user}, :ok
+      else
+        json_response "Something wrong", false, {}, :unprocessable_entity
+      end
+    end
+    
     if user.save
-      json_response "Signed Up Succesfully", true, { user: user }, :ok
+      json_response "Signed Up Succesfully", true, { user: user, data: featured_image }, :ok
     else
       json_response "Something wrong", false, {}, :unprocessable_entity
     end
@@ -25,8 +41,8 @@ class RegistrationsController < Devise::RegistrationsController
 
     decode_credentials = Base64.decode64(encoded_credentials)
 
-    email, password, password_confirmation = decode_credentials.split(":")
+    email, password = decode_credentials.split(":")
 
-    [email, password, password_confirmation]
+    [email, password]
   end
 end 

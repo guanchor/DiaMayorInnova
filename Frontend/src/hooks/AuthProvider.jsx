@@ -39,12 +39,12 @@ const AuthProvider = ({ children }) => {
           logOut();
         }
       } catch (error) {
-        if(error.response && error.response.status === 401){
+        if (error.response && error.response.status === 401) {
           setError("Token inválido o sesión expirada.");
           logOut();
         } else {
-        setError("Error de autenticación.");
-        logOut();
+          setError("Error de autenticación.");
+          logOut();
         }
       } finally {
         setLoading(false);
@@ -149,7 +149,7 @@ const AuthProvider = ({ children }) => {
       setToken(null);
       localStorage.removeItem("site");
       navigate("/Home");
-      
+
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
       setUser(null);

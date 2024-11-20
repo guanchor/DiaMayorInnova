@@ -10,8 +10,13 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("userAvatarUrl después de actualizar:", userAvatarUrl);
+  }, [userAvatarUrl]);
+  
   useEffect(() => {
     const checkTokenValidity = async () => {
       if (!token) {
@@ -34,6 +39,12 @@ const AuthProvider = ({ children }) => {
 
         if (response.data.is_success) {
           setUser(response.data.data.user);
+          const avatarUrl = response.data.data.user.featured_image
+            ? `http://localhost:3000${avatarUrl}`
+            : null;
+            if (!userAvatarUrl) {
+              setUserAvatarUrl(avatarUrl);
+            }
         } else {
           setError("Token inválido, Por favor, inicie sesión nuevamente.");
           logOut();
@@ -52,7 +63,7 @@ const AuthProvider = ({ children }) => {
     };
 
     checkTokenValidity();
-  }, [token, navigate]);
+  }, [token, navigate, userAvatarUrl]);
 
 
   useEffect(() => {
@@ -75,16 +86,14 @@ const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  const signUpAction = async (encodedCredentials) => {
+  const signUpAction = async (encodedCredentials, formData) => {
     try {
-      let response = await axios.post("http://localhost:3000/sign_up",
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Basic ${encodedCredentials}`,
-          },
-        });
+      let response = await axios.post("http://localhost:3000/sign_up", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Basic ${encodedCredentials}`,
+        },
+      });
 
       if (response.data && response.data.is_success) {
         const user = response.data.data.user;
@@ -117,23 +126,33 @@ const AuthProvider = ({ children }) => {
         const { user, token } = response.data.data;
         setUser(user);
         setToken(token);
-        navigate("/Home");
+        const avatarUrl = `http://localhost:3000${user.featured_image}`;
+        setUserAvatarUrl(avatarUrl);
+        // navigate("/Home");
+        return response;
       } else {
         throw new Error(response.data.message || "Error en la autenticación");
       }
     } catch (err) {
       console.error(err);
-      alert("Error de autenticación.");
+      throw err;
+      // alert("Error de autenticación.");
     }
   };
 
   const sendAuthRequest = async (endpoint, credentials) => {
-    return axios.post(`http://localhost:3000/${endpoint}`, {}, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": credentials ? `Basic ${credentials}` : "",
-      },
-    });
+    try {
+      const response = await axios.post(`http://localhost:3000/${endpoint}`, {}, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": credentials ? `Basic ${credentials}` : "",
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error en sendAuthRequest", error);
+      throw error;
+    }
   };
 
   const logOut = async () => {
@@ -147,6 +166,7 @@ const AuthProvider = ({ children }) => {
 
       setUser(null);
       setToken(null);
+      setUserAvatarUrl(null);
       localStorage.removeItem("site");
       navigate("/Home");
 
@@ -154,6 +174,7 @@ const AuthProvider = ({ children }) => {
       console.error("Error al cerrar sesión:", error);
       setUser(null);
       setToken(null);
+      setUserAvatarUrl(null);
       navigate("/sign_in");
     }
   };
@@ -163,7 +184,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error }}>
+    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error, setUserAvatarUrl, userAvatarUrl }}>
       {children}
     </AuthContext.Provider>
   );

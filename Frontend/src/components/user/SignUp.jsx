@@ -19,9 +19,7 @@ const SignUp = () => {
 
   const handleSubmitEvent = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('featured_image', this.state.featured_image);
-
+    
     if (!input.email || !input.password || !input.confirmation_password) {
       setError("Por favor, complete todos los campos.");
       return;
@@ -32,10 +30,17 @@ const SignUp = () => {
       return;
     }
 
+    console.log("Imagen a enviar linea 33 SignUp:", input.featured_image);
+    const formData = new FormData();
+    
+    if (input.featured_image) {
+      formData.append('featured_image', input.featured_image);
+    }
+
     const credentials = encodeCredentials(input.email, input.password, input.confirmation_password);
 
     console.log("Enviando solicitud de registro con:", input);
-    auth.signUpAction(credentials).then((response) => {
+    auth.signUpAction(credentials, formData).then((response) => {
       console.log("Usuario registrado", response);
     }).catch((error) => {
       setError("Hubo un error al registar el usuario.");
@@ -50,8 +55,8 @@ const SignUp = () => {
     }));
   };
 
-  const onImageChange = event => {
-    this.setInput({ featured_image: event.target.files[0] });
+  const onImageChange = (event) => {
+    setInput({ ...input, featured_image: event.target.files[0] });
   };
 
   const handleClick = () => {
@@ -101,11 +106,11 @@ const SignUp = () => {
         </div>
 
         <div className="form_control">
-          <label htmlFor="image_featured">Confirmar Password:</label>
+          <label htmlFor="featured_image">Sube una imagen de perfil:</label>
           <input
             type="file"
-            id="image_featured"
-            name="image_featured"
+            id="featured_image"
+            name="featured_image"
             accept="image/*"
             multiple={false}
             onChange={onImageChange}

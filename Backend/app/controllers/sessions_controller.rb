@@ -32,7 +32,7 @@ class SessionsController < Devise::SessionsController
 
       if user && user.valid_password?(password)
         sign_in(user)
-        json_response("Signed In Successfully", true, { user: user, token: user.authentication_token }, :ok)
+        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token }, :ok)
       else
         json_response("Invalid credentials", false, {}, :unauthorized)
       end
@@ -59,5 +59,15 @@ class SessionsController < Devise::SessionsController
     else
       json_response "Invalid Token", false, {}, :not_found
     end
-  end  
+  end
+  def user_with_image(user)
+    user_data = user.as_json
+
+    if user.featured_image.attached?
+      user_data[:featured_image] = rails_blob_url(user.featured_image, only_path: true)
+    else
+      user_data[:featured_image] = nil
+    end
+    return user_data
+  end
 end

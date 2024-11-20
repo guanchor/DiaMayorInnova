@@ -6,7 +6,7 @@ import "./NavBar.css";
 
 const NavBar = () => {
   const { menuState, changeMenu } = useContext(navContext);
-
+ 
   return (
     <>
       <nav className={menuState ? "navBar_container nav--active" : "navBar_container"}>

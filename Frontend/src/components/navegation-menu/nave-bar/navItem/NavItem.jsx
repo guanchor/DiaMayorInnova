@@ -1,7 +1,7 @@
 import { NavLink,useLocation} from 'react-router-dom';
 import { navContext } from '../../../../context/nav-menu/navMenuContext';
-import './NavItem.css';
 import { useContext } from 'react';
+import './NavItem.css';
 
 const NavItem = ({ icon, name, url = "/home" }) => {
   const location = useLocation();

@@ -40,7 +40,8 @@
     background-color 100ms ease-out,
     color 100ms ease-out,
     border-radius 200ms ease-out,
-    border 100ms ease-out;
+    border 100ms ease-out,
+    box-shadow 200ms ease-in-out ;
 
   &:hover {
     background-color: var(--background-color-dark);

@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     console.log("userAvatarUrl después de actualizar:", userAvatarUrl);
   }, [userAvatarUrl]);
-  
+
   useEffect(() => {
     const checkTokenValidity = async () => {
       if (!token) {
@@ -42,9 +42,9 @@ const AuthProvider = ({ children }) => {
           const avatarUrl = response.data.data.user.featured_image
             ? `http://localhost:3000${avatarUrl}`
             : null;
-            if (!userAvatarUrl) {
-              setUserAvatarUrl(avatarUrl);
-            }
+          if (!userAvatarUrl) {
+            setUserAvatarUrl(avatarUrl);
+          }
         } else {
           setError("Token inválido, Por favor, inicie sesión nuevamente.");
           logOut();
@@ -128,7 +128,7 @@ const AuthProvider = ({ children }) => {
         setToken(token);
         const avatarUrl = `http://localhost:3000${user.featured_image}`;
         setUserAvatarUrl(avatarUrl);
-        // navigate("/Home");
+        navigate("/Home");
         return response;
       } else {
         throw new Error(response.data.message || "Error en la autenticación");

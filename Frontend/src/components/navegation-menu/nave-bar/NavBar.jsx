@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { navContext } from "../../../context/nav-menu/navMenuContext";
 import NavItem from "./navItem/NavItem";
 import { routes } from "../../../services/NavRoutes";
@@ -6,6 +6,7 @@ import "./NavBar.css";
 
 const NavBar = () => {
   const { menuState, changeMenu } = useContext(navContext);
+  const [user , setUser] = useState("student");
  
   return (
     <>
@@ -13,7 +14,7 @@ const NavBar = () => {
         <i className="fi fi-rr-x close" onClick={changeMenu}></i>
         <ul className="navBar__list" >
           {routes.map((route) => {
-            if (route.rol.includes("student")) {
+            if (route.rol.includes(user)) {
               return <NavItem key={route.to} icon={route.icon} name={route.name} url={route.to} />
             } else return null;
           })}

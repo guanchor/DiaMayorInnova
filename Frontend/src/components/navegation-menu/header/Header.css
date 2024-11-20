@@ -63,11 +63,17 @@
     cursor: pointer;
   }
 
-  .header_userZone .fi {
+  .fi-rr-bell {
     font-size: large;
     color: var(--Color-grey-200, #C6C6C6);
     transition: color 200ms ease-in-out;
+
+    & :where(:hover, :focus) .fi {
+      color: red;
+    }
   }
+
+
 
 
   .userZone_menu {
@@ -76,10 +82,14 @@
   }
 
   .userZone_userFoto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     background-color: #eee;
+    border: solid 2px var(--Color-letra-claro);
   }
 
   .menuInfo {
@@ -125,6 +135,8 @@
     .userZone_userFoto {
       width: 50px;
       height: 50px;
+      object-fit: cover;
+      object-position: 50% 0 ; 
     }
 
     .menuInfo {

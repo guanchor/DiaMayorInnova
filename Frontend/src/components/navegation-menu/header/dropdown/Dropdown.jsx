@@ -2,9 +2,11 @@ import DropdownContent from "./DropdownContent";
 import { useContext, useEffect, useRef, useState } from "react";
 import { navContext } from "../../../../context/nav-menu/navMenuContext";
 import './Dropdown.css';
+import { useAuth } from "../../../../hooks/AuthProvider";
 
 const Dropdown = () => {
   const { name, rol, dropdownState, setdropdownState, changeDropmenu } = useContext(navContext);
+  const { user, userAvatarUrl } = useAuth();
 
   /* sugerencia de mi pana , pero ns si se hace asi, no he buscado info , es para cuando se picha fuera del menu se cierre*/
   const dropdownRef = useRef(null);
@@ -25,15 +27,20 @@ const Dropdown = () => {
 
   /* hasta aqui la sugerencia */
 
-
+  const userName = user ? user.email.split('@')[0] : "Pedro Picapiedra";
+  const avatarUrl = userAvatarUrl;
 
   return (
     <div ref={dropdownRef} className="dropdown-container">
       <a className="userZone" tabIndex={0} onClick={changeDropmenu} >
         <div className="userZone_menu">
-          <div className='userZone_userFoto' ></div>
+          {avatarUrl ? (
+                <img src={avatarUrl} alt="Avatar" className="userZone_userFoto" />
+              ) : (
+                <i className=" text__user fi fi-rr-user"></i>
+              )}
           <div className='menuInfo'>
-            <p className='menuInfo_name'>{name}</p>
+            <p className='menuInfo_name'>{userName}</p>
             <p className='menuInfo_rol'>{rol}</p>
           </div>
         </div>

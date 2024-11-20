@@ -3,6 +3,7 @@ import Dropdown from './dropdown/Dropdown';
 import { useContext } from "react";
 import { navContext } from "../../../context/nav-menu/navMenuContext";
 import './Header.css';
+import { NavLink } from 'react-router-dom';
 
 
 const Header = () => {
@@ -14,8 +15,7 @@ const Header = () => {
       <a href="/" className='logo'>Innova</a>
       <div className="header_userZone">
         <ul className='header_menu'>
-          <li className='header_item'><a href="/home" tabIndex={0}><i className='fi fi-rr-bell'></i></a></li>
-          <li className='header_item'><a href="" tabIndex={0}><i className='fi fi-rr-comment-alt' > </i></a></li>
+          <li className='header_item'><NavLink to="/home" tabIndex={0}><i className='fi fi-rr-bell'></i></NavLink></li>
         </ul>
         <Dropdown />
       </div>

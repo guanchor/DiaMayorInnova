@@ -45,6 +45,8 @@ group :development, :test do
   # Simple token authentication
   gem 'simple_token_authentication','~> 1.0'
 
+  gem 'active_model_serializers'
+
 end
 
 

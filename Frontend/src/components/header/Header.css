@@ -1,0 +1,111 @@
+*, #root{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: none;
+}
+
+.header{
+    position: fixed;
+    background: var(--Color-Neutral-Dark, #374957);
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+}
+
+.logo{
+    width: 156px;
+    height: 48px;
+    background-color: rgb(206, 206, 206);
+    border-radius: 0.25rem;
+    padding: 0;
+    margin: 0;
+}
+
+.header_userZone{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.header_menu{
+    display: flex;
+    gap: var(--XL, 28px);
+}
+
+.header_item{
+    list-style: none;
+    &> a{
+        padding: 4px 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    & :where(:hover,:focus) .fi{
+        color: #fff;
+    }
+}
+
+.userZone{
+    display: flex;
+    align-items: center;
+    gap: var(--XXXL, 36px);
+    border-left: 1px solid #ABABAB;
+    padding: 0 16px;
+    cursor: pointer;
+    
+}
+
+.fi{
+    font-size: x-large;
+    color: var(--Color-Grey-grey-200, #C6C6C6);
+    transition: color 200ms ease-in-out;
+}
+
+
+.userZone_menu{
+    display: flex;
+    gap: 16px;
+}
+
+.userZone_userFoto{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #eee;
+    background-size: cover;
+    background-position: center;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+.menuInfo{
+    display: flex;
+    flex-direction: column;
+    gap: var(--xxxs, 4px);
+    align-items: flex-start;
+    justify-content: center;
+    font-style: normal;
+    line-height: 140%;
+}
+
+.menuInfo_name{
+    color: var(--Color-Grey-grey-200, #C6C6C6);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.menuInfo_rol{
+    color: var(--Color-Grey-grey-300, #ABABAB);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 140%;    
+}

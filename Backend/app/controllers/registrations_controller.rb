@@ -2,11 +2,22 @@ class RegistrationsController < Devise::RegistrationsController
     before_action :ensure_auth_header_present, only: :create
 
   def create
-    email, password, password_confirmation = decode_auth_header
+    email, password = decode_auth_header
+    featured_image = params[:featured_image]
+    
+    user = User.new(email: email, password: password)
+    if featured_image.present?
+      user.featured_image = featured_image
+    end
 
-    user = User.new(email: email, password: password, password_confirmation: password_confirmation)
     if user.save
-      json_response "Signed Up Succesfully", true, { user: user }, :ok
+      user_data = user.as_json
+      if user.featured_image.attached?
+        user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
+      else
+        user_data[:featured_image] = nil
+      end
+      json_response "Signed Up Succesfully", true, { user: user_data}, :ok
     else
       json_response "Something wrong", false, {}, :unprocessable_entity
     end
@@ -25,8 +36,8 @@ class RegistrationsController < Devise::RegistrationsController
 
     decode_credentials = Base64.decode64(encoded_credentials)
 
-    email, password, password_confirmation = decode_credentials.split(":")
+    email, password = decode_credentials.split(":")
 
-    [email, password, password_confirmation]
+    [email, password]
   end
 end 

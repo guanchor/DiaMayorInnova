@@ -9,40 +9,88 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      axios
-        .post("http://localhost:3000/validate_token",
+    console.log("userAvatarUrl después de actualizar:", userAvatarUrl);
+  }, [userAvatarUrl]);
+
+  useEffect(() => {
+    const checkTokenValidity = async () => {
+      if (!token) {
+        setLoading(false);
+        navigate("/sign_in");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          "http://localhost:3000/validate_token",
           {},
           {
             headers: {
               "AUTH-TOKEN": token,
             },
-          })
-        .then((response) => {
-          if (response.data.is_success) {
-            setUser(response.data.data.user);
-          } else {
-            setError("Token inválido. Por favor, inicie sesión nuevamente.");
-            logOut();
           }
-        })
-        .catch(() => {
+        );
+
+        if (response.data.is_success) {
+          setUser(response.data.data.user);
+          const avatarUrl = response.data.data.user.featured_image
+            ? `http://localhost:3000${avatarUrl}`
+            : null;
+          if (!userAvatarUrl) {
+            setUserAvatarUrl(avatarUrl);
+          }
+        } else {
+          setError("Token inválido, Por favor, inicie sesión nuevamente.");
+          logOut();
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          setError("Token inválido o sesión expirada.");
+          logOut();
+        } else {
           setError("Error de autenticación.");
           logOut();
-        });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkTokenValidity();
+  }, [token, navigate, userAvatarUrl]);
+
+
+  useEffect(() => {
+    const handleNavigation = () => {
+      checkTokenValidity();
+    };
+
+    window.addEventListener("beforeunload", handleNavigation);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleNavigation);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("site", token);
+    } else {
+      localStorage.removeItem("site");
     }
   }, [token]);
 
-  const signUpAction = async (encodedCredentials) => {
+  const signUpAction = async (encodedCredentials, formData) => {
     try {
-      let response = await axios.post("http://localhost:3000/sign_up", 
-        {},
-        {
+      let response = await axios.post("http://localhost:3000/sign_up", formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           "Authorization": `Basic ${encodedCredentials}`,
         },
       });
@@ -53,7 +101,6 @@ const AuthProvider = ({ children }) => {
 
         setUser(user);
         setToken(token);
-        localStorage.setItem("site", token);
         navigate("/Home");
       } else {
         throw new Error(response.data.message || "Error al registrar el usuario");
@@ -70,43 +117,41 @@ const AuthProvider = ({ children }) => {
 
       if (data.email && data.password) {
         const credentials = encodeCredentials(data.email, data.password);
-
-        response = await axios.post(
-          "http://localhost:3000/sign_in",
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Basic ${credentials}`,
-            },
-          }
-        );
+        response = await sendAuthRequest("sign_in", credentials);
       } else if (data.authentication_token) {
-        response = await axios.post(
-          "http://localhost:3000/sign_in",
-          { user: { authentication_token: data.authentication_token } },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        response = await sendAuthRequest("sign_in", data.authentication_token);
       }
-      console.log("Response Data:", response.data);
-      if (response.data && response.data.is_success) {
-        const user = response.data.data.user;
-        const token = response.data.data.token;
 
+      if (response.data && response.data.is_success) {
+        const { user, token } = response.data.data;
         setUser(user);
         setToken(token);
-        localStorage.setItem("site", token);
+        const avatarUrl = `http://localhost:3000${user.featured_image}`;
+        setUserAvatarUrl(avatarUrl);
         navigate("/Home");
+        return response;
       } else {
         throw new Error(response.data.message || "Error en la autenticación");
       }
     } catch (err) {
       console.error(err);
-      alert("Error de autenticación.");
+      throw err;
+      // alert("Error de autenticación.");
+    }
+  };
+
+  const sendAuthRequest = async (endpoint, credentials) => {
+    try {
+      const response = await axios.post(`http://localhost:3000/${endpoint}`, {}, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": credentials ? `Basic ${credentials}` : "",
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error en sendAuthRequest", error);
+      throw error;
     }
   };
 
@@ -121,17 +166,25 @@ const AuthProvider = ({ children }) => {
 
       setUser(null);
       setToken(null);
+      setUserAvatarUrl(null);
       localStorage.removeItem("site");
-
       navigate("/Home");
+
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      alert("Error al cerrar sesión en el servidor.");
+      setUser(null);
+      setToken(null);
+      setUserAvatarUrl(null);
+      navigate("/sign_in");
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error }}>
+    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error, setUserAvatarUrl, userAvatarUrl }}>
       {children}
     </AuthContext.Provider>
   );

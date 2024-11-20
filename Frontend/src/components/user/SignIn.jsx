@@ -8,12 +8,36 @@ const SignIn = () => {
     password: "",
   });
   const navigate = useNavigate();
-
   const auth = useAuth();
+
+  /*   const handleSubmitEvent = (e) => {
+      e.preventDefault();
+      if (input.email !== "" && input.password !== "") {
+        auth.signInAction(input);
+        return;
+      }
+      console.log(input.email + " y " + input.password);
+      alert("Please provide a valid input");
+    }; */
+
   const handleSubmitEvent = (e) => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
-      auth.signInAction(input);
+      auth.signInAction(input)
+      .then((response) => {
+        console.log("Server response in SignIn.jsx:", response);
+        const user = response?.data?.data?.user;
+        console.log("User from response:", user);
+        if (user && user.featured_image) {
+          const avatarUrl = `http://localhost:3000${user.featured_image}`;
+          console.log("Avatar URL:", avatarUrl);
+          auth.setUserAvatarUrl(avatarUrl);
+        } else {
+          console.error("Response is missing user or featured_image");
+        }
+      }).catch((error) => {
+        console.error("Error during sign-in:", error);
+      });
       return;
     }
     console.log(input.email + " y " + input.password);

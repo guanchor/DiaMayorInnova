@@ -17,6 +17,15 @@ class SessionsController < Devise::SessionsController
     json_response "Log Out Succesfully", true, {}, :ok
   end
 
+  def me
+    user = User.find_by(authentication_token: request.headers["AUTH-TOKEN"])
+    if user
+      json_response("User details", true, { user: user_with_image(user) }, :ok)
+    else
+      json_response("Not authenticated", false, {}, :unauthorized)
+    end
+  end
+
   private
 
   def authenticate_with_basic_auth
@@ -32,7 +41,7 @@ class SessionsController < Devise::SessionsController
 
       if user && user.valid_password?(password)
         sign_in(user)
-        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token }, :ok)
+        json_response("Signed In Successfully", true, { user: user_with_image(user) }, :ok)
       else
         json_response("Invalid credentials", false, {}, :unauthorized)
       end

@@ -4,8 +4,8 @@ import { useAuth } from '../../hooks/AuthProvider';
 
 const NavStateProvider = ({ children }) => {
   const [menuState, setMenuState] = useState(false);
-  const [name, setName] = useState("Pedro Picapiedra")
-  const [rol, setRol] = useState("Estudiante")
+  const [name, setName] = useState("Pedro Picapiedra");
+  const [rol, setRol] = useState("Estudiante");
   const [dropdownState, setdropdownState] = useState(false);
   const { user } = useAuth();
 
@@ -18,7 +18,11 @@ const NavStateProvider = ({ children }) => {
   }
 
   const setUser = () => {
-    setName(user ? user.email.split('@')[0] : "Pedro Picapiedra");
+    if (user && user.email) {
+    setName(user.email.split('@')[0]);
+    } else {
+      setName("Pedro Picapiedra");
+    }
   }
 
   useEffect(() => {

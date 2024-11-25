@@ -15,7 +15,7 @@ const DropdownContent = () => {
       <ul className="userMenu">
         {(rol === "Profesor" || rol === "Admin") && (<li className="userMenu_item" tabIndex={0} onClick={changeRol}><a> <i className="fi fi-rr-user"></i> Cambio de usuario</a></li>)}
         <li className="userMenu_item" tabIndex={0}><a> <i className="fi fi-rr-info"></i> Ayuda y privacidad</a></li>
-        <li className="userMenu_item" tabIndex={0} onClick={() => auth.logOut()}><a> <i className="fi fi-rr-power"></i> Cerrar Sesión</a></li>
+        <li className="userMenu_item" tabIndex={0} onClick={() => auth.logOut(true)}><a> <i className="fi fi-rr-power"></i> Cerrar Sesión</a></li>
       </ul>
     </>
   )

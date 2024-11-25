@@ -27,8 +27,14 @@ const Dropdown = () => {
 
   /* hasta aqui la sugerencia */
 
-  const userName = user ? user.email.split('@')[0] : "Pedro Picapiedra";
+  const userName = user && user.email ? user.email.split('@')[0] : "Pedro Picapiedra";
   const avatarUrl = userAvatarUrl;
+
+  // Agregar logs para verificar
+  useEffect(() => {
+    console.log("User:", user);
+    console.log("Avatar URL:", avatarUrl);
+  }, [user, avatarUrl]);
 
   return (
     <div ref={dropdownRef} className="dropdown-container">

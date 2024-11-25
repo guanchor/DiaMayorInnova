@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     post 'sign_up', to: 'registrations#create'
     post 'sign_in', to: 'sessions#create'
     delete 'log_out', to: 'sessions#destroy'
+    get 'me', to: 'sessions#me'
     post 'validate_token', to: 'tokens#validate_token'
   end
 

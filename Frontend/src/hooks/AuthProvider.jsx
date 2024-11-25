@@ -7,107 +7,94 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("site") || "");
+  const [token, setToken] = useState(() => localStorage.getItem("auth_token") || "");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("userAvatarUrl después de actualizar:", userAvatarUrl);
-  }, [userAvatarUrl]);
+  const clearInvalidToken = () => {
+    localStorage.removeItem("auth_token");
+    setToken(null);
+    setUser(null);
+    setUserAvatarUrl(null);
+    setError("El token ha expirado o es inválido. Por favor, inicie sesión nuevamente.");
+    navigate("/sign_in");
+  };
 
-  useEffect(() => {
-    const checkTokenValidity = async () => {
-      if (!token) {
-        setLoading(false);
-        navigate("/sign_in");
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          "http://localhost:3000/validate_token",
-          {},
-          {
-            headers: {
-              "AUTH-TOKEN": token,
-            },
-          }
-        );
-
-        if (response.data.is_success) {
-          setUser(response.data.data.user);
-          const avatarUrl = response.data.data.user.featured_image
-            ? `http://localhost:3000${avatarUrl}`
-            : null;
-          if (!userAvatarUrl) {
-            setUserAvatarUrl(avatarUrl);
-          }
-        } else {
-          setError("Token inválido, Por favor, inicie sesión nuevamente.");
-          logOut();
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setError("Token inválido o sesión expirada.");
-          logOut();
-        } else {
-          setError("Error de autenticación.");
-          logOut();
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkTokenValidity();
-  }, [token, navigate, userAvatarUrl]);
-
-
-  useEffect(() => {
-    const handleNavigation = () => {
-      checkTokenValidity();
-    };
-
-    window.addEventListener("beforeunload", handleNavigation);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleNavigation);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem("site", token);
-    } else {
-      localStorage.removeItem("site");
+  const restoreUserFromToken = async () => {
+    if (!token) {
+      setLoading(false);
+      navigate("/sign_in");
+      return;
     }
+
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:3000/me", {
+        headers: { "AUTH-TOKEN": token },
+      });
+
+      if (response.data.is_success) {
+        const userData = response.data.data.user;
+        setUser(userData);
+
+        setUserAvatarUrl(
+          userData.featured_image ? `http://localhost:3000${userData.featured_image}` : null
+        );
+      } else {
+        console.log("Se ejecuta este 1");
+        clearInvalidToken(); // Token invalid
+      }
+
+    } catch (err) {
+      console.error("Error al restaurar el usuario:", err);
+      setError("No se pudo restaurar la sesión. Inicie sesión nuevamente.");
+      console.log("Se ejecuta este 2");
+      clearInvalidToken();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    restoreUserFromToken();
   }, [token]);
 
   const signUpAction = async (encodedCredentials, formData) => {
     try {
-      let response = await axios.post("http://localhost:3000/sign_up", formData, {
+      const response = await axios.post("http://localhost:3000/sign_up", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": `Basic ${encodedCredentials}`,
+          Authorization: `Basic ${encodedCredentials}`,
         },
       });
 
       if (response.data && response.data.is_success) {
-        const user = response.data.data.user;
-        const token = response.data.data.token;
+        const userData = response.data.data?.user;
+        const { authentication_token, featured_image } = userData;
 
-        setUser(user);
-        setToken(token);
+        console.log("Datos del usuario:", userData);
+        console.log("Token de autenticación:", authentication_token);
+        console.log("Imagen destacada:", featured_image);
+
+        setUser(userData);
+        setToken(authentication_token);
+        localStorage.setItem("auth_token", authentication_token);
+
+        setUserAvatarUrl(
+          featured_image
+            ? `http://localhost:3000${featured_image}`
+            : null
+        );
+
         navigate("/Home");
       } else {
         throw new Error(response.data.message || "Error al registrar el usuario");
       }
     } catch (err) {
-      console.error("Error al enviar solicitud de registro", err);
-      alert("Error al registrar el usuario.");
+      console.error("Error al registrar el usuario:", err);
+      setError("Error al registrar el usuario. Por favor, intente nuevamente.");
     }
   };
 
@@ -116,46 +103,64 @@ const AuthProvider = ({ children }) => {
       let response;
 
       if (data.email && data.password) {
+        //console.log("Credenciales codificadas:", encodeCredentials(data.email, data.password));
         const credentials = encodeCredentials(data.email, data.password);
-        response = await sendAuthRequest("sign_in", credentials);
+        response = await axios.post("http://localhost:3000/sign_in", {}, {
+          headers: { Authorization: `Basic ${credentials}` },
+        });
       } else if (data.authentication_token) {
-        response = await sendAuthRequest("sign_in", data.authentication_token);
+        response = await axios.post("http://localhost:3000/sign_in", {}, {
+          headers: { "AUTH-TOKEN": data.authentication_token },
+        });
       }
 
-      if (response.data && response.data.is_success) {
-        const { user, token } = response.data.data;
+      //console.log("Respuesta completa del servidor:", response);
+      //console.log("HASTA AQUI LLEGA"); // CORRECTO
+      if (!response || !response.data) {
+        console.log("ENTRA?"); // CORRECTO, NO ENTRA
+        console.error("Respuesta inválida del servidor:", response);
+        throw new Error("El servidor no devolvió datos válidos.");
+      }
+
+      else if (response && response.data && response.data.is_success) {
+        //console.log("ENTRA HASTA AQUÍ"); // CORRECTO
+        const { user } = response.data.data;
+        const authToken = user.authentication_token;
+
+        //console.log("ENTRA HASTA AQUÍ user", user); // CORRECTO
+        //console.log("ENTRA HASTA AQUÍ authToken", authToken); // CORRECTO
+        if (!user || !authToken) {
+          throw new Error("La respuesta no contiene usuario o token.");
+        }
+
         setUser(user);
-        setToken(token);
-        const avatarUrl = `http://localhost:3000${user.featured_image}`;
-        setUserAvatarUrl(avatarUrl);
+        setToken(authToken);
+        localStorage.setItem("auth_token", authToken);
+
+        //console.log("El AVATAR:", response.data.data.user.featured_image); // HASTA AQUÍ LLEGA BIEN
+        setUserAvatarUrl(user.featured_image ? `http://localhost:3000${user.featured_image}` : null);
+
         navigate("/Home");
-        return response;
       } else {
-        throw new Error(response.data.message || "Error en la autenticación");
+        console.error("Respuesta del servidor está incompleta:", response.data);
+        throw new Error("La respuesta del servidor no contiene usuario o token.");
       }
     } catch (err) {
-      console.error(err);
-      throw err;
-      // alert("Error de autenticación.");
+      console.error("Error de autenticación:", err);
+      setError("Error de autenticación. Por favor, verifica tus credenciales.");
     }
   };
 
-  const sendAuthRequest = async (endpoint, credentials) => {
-    try {
-      const response = await axios.post(`http://localhost:3000/${endpoint}`, {}, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": credentials ? `Basic ${credentials}` : "",
-        },
-      });
-      return response;
-    } catch (error) {
-      console.error("Error en sendAuthRequest", error);
-      throw error;
-    }
-  };
+  //console.log("Token almacenado en localStorage:", localStorage.getItem("auth_token"));
+  //console.log("Token en contexto", token);
+  //console.log("Usuario en contexto", user);
+  //console.log("Avatar en contexto", userAvatarUrl);
 
-  const logOut = async () => {
+  const logOut = async (explicit = false) => {
+    if (!explicit) {
+      return;
+    }
+
     try {
       await axios.delete("http://localhost:3000/log_out", {
         headers: {
@@ -163,13 +168,12 @@ const AuthProvider = ({ children }) => {
           "AUTH-TOKEN": token,
         },
       });
-
       setUser(null);
       setToken(null);
       setUserAvatarUrl(null);
-      localStorage.removeItem("site");
-      navigate("/Home");
-
+      setError(null);
+      localStorage.removeItem("auth_token");
+      navigate("/sign_in");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
       setUser(null);
@@ -184,14 +188,23 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error, setUserAvatarUrl, userAvatarUrl }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        signUpAction,
+        signInAction,
+        logOut,
+        userAvatarUrl,
+        setUserAvatarUrl,
+        error
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthProvider;
+export const useAuth = () => useContext(AuthContext);
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-}
+export default AuthProvider;

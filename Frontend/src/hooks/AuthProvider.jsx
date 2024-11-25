@@ -1,9 +1,9 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import encodeCredentials from "../utils/authUtils";
+import { AuthContext } from "../context/AuthContext";
 
-const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,10 +12,6 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("userAvatarUrl después de actualizar:", userAvatarUrl);
-  }, [userAvatarUrl]);
 
   useEffect(() => {
     const checkTokenValidity = async () => {
@@ -46,7 +42,7 @@ const AuthProvider = ({ children }) => {
             setUserAvatarUrl(avatarUrl);
           }
         } else {
-          setError("Token inválido, Por favor, inicie sesión nuevamente.");
+          setError("Por favor, inicie sesión nuevamente.");
           logOut();
         }
       } catch (error) {
@@ -179,19 +175,21 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
-    <AuthContext.Provider value={{ token, user, signUpAction, signInAction, logOut, error, setUserAvatarUrl, userAvatarUrl }}>
+    <AuthContext.Provider value={{
+      token,
+      user,
+      signUpAction,
+      signInAction,
+      logOut,
+      error,
+      setUserAvatarUrl,
+      userAvatarUrl,
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export default AuthProvider;
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-}

@@ -28,6 +28,17 @@ const findByName = name => {
   return http.get(`/school_centers?school_name=${name}`);
 }
 
+const getSchools = async () => {
+  const { data } = await http.get("/school_centers")
+  console.log(data);
+  return data;
+}
+const getAccounting = async () => {
+  const { data } = await http.get("/accounting_plans")
+  console.log(data);
+  return data;
+}
+
 export default {
   getAll,
   get,
@@ -35,5 +46,7 @@ export default {
   update,
   remove,
   removeAll,
-  findByName
+  findByName,
+  getSchools,
+  getAccounting,
 };

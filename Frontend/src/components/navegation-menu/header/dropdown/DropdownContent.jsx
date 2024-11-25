@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { useAuth } from "../../../../hooks/AuthProvider";
+import { useAuth } from "../../../../hooks/useAuth";
 
 const DropdownContent = () => {
-  
+
   const auth = useAuth();
 
   const [rol, setRol] = useState("Profesor");

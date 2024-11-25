@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { navContext } from './navMenuContext'
-import { useAuth } from '../../hooks/AuthProvider';
+import { useAuth } from '../../hooks/useAuth';
 
 const NavStateProvider = ({ children }) => {
   const [menuState, setMenuState] = useState(false);

@@ -1,7 +1,9 @@
-/* body{
-    background-color: #adadad;
-    color: black;
-} */
+.school__wrapper {
+    padding: 30px 20px 0 0;
+    height: 100dvh;
+    overflow-y: scroll;
+    text-align: center;
+}
 
 .center_list {
     font-size: 0.7rem;

@@ -15,3 +15,15 @@
   accPlan3 = AccountingPlan.create(name: "PGC prueba2", description: "Plan para probar el Crud 2", acronym: "PGC prueba2")
   school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
   school1 = SchoolCenter.create(school_name: "IES Siete Palmas",address: "calle de siete palmas 1",phone: "987654321",email: "sietePalmas@ies.elrincon.es",website: "www.sietePalmas.es",province: "Las Palmas")
+
+
+  solution1= Solution.create(description: "Descripcion solución 1 de prueba")
+  solution2= Solution.create(description: "Descripcion solución 2 de prueba")
+
+  entry1= Entry.create(solution:solution1, entry_number: 1, entry_date: Date.new(2024,11,25))
+  entry2= Entry.create(solution:solution2, entry_number: 2, entry_date: Date.new(2024,11,26))
+
+  annotation1 = Annotation.create(entry: entry1, number: 1, debe: 0 , haber: 100)
+  annotation2 = Annotation.create(entry: entry1, number: 2, debe: 100 , haber: 0)
+  annotation3 = Annotation.create(entry: entry2, number: 1, debe: 0 , haber: 300)
+  annotation4 = Annotation.create(entry: entry2, number: 2, debe: 300 , haber: 0)

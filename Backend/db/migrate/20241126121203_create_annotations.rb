@@ -3,8 +3,8 @@ class CreateAnnotations < ActiveRecord::Migration[7.2]
     create_table :annotations do |t|
       t.references :entry, null: false, foreign_key: true
       t.integer :number
-      t.integer :debe
-      t.integer :haber
+      t.integer :credit
+      t.integer :debit
       t.timestamps
     end
   end

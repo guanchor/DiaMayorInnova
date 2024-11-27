@@ -50,6 +50,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "annotations", force: :cascade do |t|
+    t.bigint "entry_id", null: false
+    t.integer "number"
+    t.integer "debit"
+    t.integer "credit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_annotations_on_entry_id"
+  end
+
   create_table "class_groups", force: :cascade do |t|
     t.integer "course"
     t.string "module"
@@ -60,6 +70,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
     t.integer "weekly_hours"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.bigint "solution_id", null: false
+    t.integer "entry_number"
+    t.date "entry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["solution_id"], name: "index_entries_on_solution_id"
   end
 
   create_table "school_centers", force: :cascade do |t|
@@ -97,6 +116,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "solutions", force: :cascade do |t|
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -115,4 +140,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
+  add_foreign_key "annotations", "entries"
+  add_foreign_key "entries", "solutions"
 end

@@ -34,8 +34,12 @@
   task2.statements << statement2
 
 
-  solution1= Solution.create(description: "Descripcion solución 1 de prueba")
-  solution2= Solution.create(description: "Descripcion solución 2 de prueba")
+  solution1= Solution.create(description: "Descripcion solución 1 de prueba", statement: statement1)
+  solution2= Solution.create(description: "Descripcion solución 2 de prueba", statement: statement2)
+  solution3= Solution.create(description: "Descripcion solución 3 de prueba", statement: statement3)
+  solution4= Solution.create(description: "Descripcion solución 4 de prueba", statement: statement4)
+  solution5= Solution.create(description: "Descripcion solución 5 de prueba", statement: statement5)
+  solution6= Solution.create(description: "Descripcion solución 6 de prueba", statement: statement6)
 
   entry1= Entry.create(solution:solution1, entry_number: 1, entry_date: Date.new(2024,11,25))
   entry2= Entry.create(solution:solution2, entry_number: 2, entry_date: Date.new(2024,11,26))

@@ -49,6 +49,6 @@
   account2 = Account.create(accountNumber: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
   account3 = Account.create(accountNumber: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
 
-  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts: account1)
-  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts_id: account2)
-  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts_id: account3)
+  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1)
+  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2)
+  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3)

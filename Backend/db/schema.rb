@@ -94,10 +94,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
   create_table "help_examples", force: :cascade do |t|
     t.text "creditMoves"
     t.text "debitMoves"
-    t.bigint "accounts_id", null: false
+    t.bigint "account_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["accounts_id"], name: "index_help_examples_on_accounts_id"
+    t.index ["account_id"], name: "index_help_examples_on_account_id"
   end
 
   create_table "school_centers", force: :cascade do |t|
@@ -160,7 +160,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
-  add_foreign_key "help_examples", "accounts", column: "accounts_id"
+  add_foreign_key "help_examples", "accounts"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
 end

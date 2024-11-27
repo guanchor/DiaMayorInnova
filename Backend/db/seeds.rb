@@ -44,3 +44,8 @@
   annotation2 = Annotation.create(entry: entry1, number: 2, debit: 100 , credit: 0)
   annotation3 = Annotation.create(entry: entry2, number: 1, debit: 0 , credit: 300)
   annotation4 = Annotation.create(entry: entry2, number: 2, debit: 300 , credit: 0)
+
+  account1 = Account.create(accountNumber: 1234, description: "Cuenta de prueba número 1", accounting_plan_id: accPlan1)
+  account2 = Account.create(accountNumber: 6543, description: "Cuenta de prueba número 2", accounting_plan_id: accPlan2)
+  account3 = Account.create(accountNumber: 2711, description: "Cuenta de prueba número 3", accounting_plan_id: accPlan3)
+  

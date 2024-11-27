@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  accountNumber: 1
+  description: MyString
+  accounting_plan: one
+
+two:
+  accountNumber: 1
+  description: MyString
+  accounting_plan: two

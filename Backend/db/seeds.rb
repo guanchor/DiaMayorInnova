@@ -40,7 +40,7 @@
   entry1= Entry.create(solution:solution1, entry_number: 1, entry_date: Date.new(2024,11,25))
   entry2= Entry.create(solution:solution2, entry_number: 2, entry_date: Date.new(2024,11,26))
 
-  annotation1 = Annotation.create(entry: entry1, number: 1, debe: 0 , haber: 100)
-  annotation2 = Annotation.create(entry: entry1, number: 2, debe: 100 , haber: 0)
-  annotation3 = Annotation.create(entry: entry2, number: 1, debe: 0 , haber: 300)
-  annotation4 = Annotation.create(entry: entry2, number: 2, debe: 300 , haber: 0)
+  annotation1 = Annotation.create(entry: entry1, number: 1, debit: 0 , credit: 100)
+  annotation2 = Annotation.create(entry: entry1, number: 2, debit: 100 , credit: 0)
+  annotation3 = Annotation.create(entry: entry2, number: 1, debit: 0 , credit: 300)
+  annotation4 = Annotation.create(entry: entry2, number: 2, debit: 300 , credit: 0)

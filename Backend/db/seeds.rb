@@ -45,7 +45,10 @@
   annotation3 = Annotation.create(entry: entry2, number: 1, debit: 0 , credit: 300)
   annotation4 = Annotation.create(entry: entry2, number: 2, debit: 300 , credit: 0)
 
-  account1 = Account.create(accountNumber: 1234, description: "Cuenta de prueba número 1", accounting_plan_id: accPlan1)
-  account2 = Account.create(accountNumber: 6543, description: "Cuenta de prueba número 2", accounting_plan_id: accPlan2)
-  account3 = Account.create(accountNumber: 2711, description: "Cuenta de prueba número 3", accounting_plan_id: accPlan3)
-  
+  account1 = Account.create(accountNumber: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlan1, name: "Cuenta 1")
+  account2 = Account.create(accountNumber: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
+  account3 = Account.create(accountNumber: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
+
+  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts: account1)
+  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts_id: account2)
+  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", accounts_id: account3)

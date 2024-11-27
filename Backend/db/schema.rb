@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_27_171157) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_171157) do
   create_table "accounts", force: :cascade do |t|
     t.integer "accountNumber"
     t.string "description"
+    t.string "name"
     t.bigint "accounting_plan_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -90,6 +91,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_171157) do
     t.index ["solution_id"], name: "index_entries_on_solution_id"
   end
 
+  create_table "help_examples", force: :cascade do |t|
+    t.text "creditMoves"
+    t.text "debitMoves"
+    t.bigint "accounts_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_id"], name: "index_help_examples_on_accounts_id"
+  end
+
   create_table "school_centers", force: :cascade do |t|
     t.string "school_name"
     t.string "address"
@@ -150,6 +160,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_171157) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
+  add_foreign_key "help_examples", "accounts", column: "accounts_id"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
 end

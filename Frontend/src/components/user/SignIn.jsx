@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/AuthProvider";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./Sign.css";
 
@@ -19,6 +19,12 @@ const SignIn = () => {
           console.log("Server response in SignIn.jsx:", response);
           const user = response?.data?.data?.user;
           console.log("User from response:", user);
+          const roles = response?.data?.data?.roles;
+          console.log("Roles from response:", roles);
+          // Guardar roles en el contexto si no se han guardado aún
+          if (roles) {
+            auth.setRoles(roles);  // Guardamos los roles en el contexto
+          }
           if (user && user.featured_image) {
             const avatarUrl = `http://localhost:3000${user.featured_image}`;
             console.log("Avatar URL:", avatarUrl);

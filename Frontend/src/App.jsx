@@ -7,7 +7,7 @@ import ClassGroup from "./components/class-group/ClassGroup";
 import ClassGroupsList from "./pages/class-group/ClassGroupList";
 import AddClassGroup from "./components/class-group/AddClassGroup";
 import SchoolsCenters from './components/schoolCenters/SchoolCenters'
-import AuthProvider from "./hooks/AuthProvider";
+import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
 import SignUp from "./components/user/SignUp";
@@ -30,7 +30,7 @@ function App() {
               <Route path="/sign_in" element={<SignIn />} />
               <Route path="/pruebas" element={<Practica />} />
               <Route path="*" element={<Practica />} />
-              <Route element={<PrivateRoute />}>
+              <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']}/>}>
                 <Route path="/accounting-plans" element={<AccountingPlanList />} />
                 <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                 <Route path="/accounting-plans/:id" element={<AccountingPlan />} />

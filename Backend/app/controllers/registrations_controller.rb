@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+    skip_before_action :authenticate_user!, only: [:create]
     before_action :ensure_auth_header_present, only: :create
 
   def create

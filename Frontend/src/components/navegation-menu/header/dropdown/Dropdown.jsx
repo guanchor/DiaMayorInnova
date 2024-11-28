@@ -2,7 +2,7 @@ import DropdownContent from "./DropdownContent";
 import { useContext, useEffect, useRef, useState } from "react";
 import { navContext } from "../../../../context/nav-menu/navMenuContext";
 import './Dropdown.css';
-import { useAuth } from "../../../../hooks/AuthProvider";
+import { useAuth } from "../../../../context/AuthContext";
 
 const Dropdown = () => {
   const { name, rol, dropdownState, setdropdownState, changeDropmenu } = useContext(navContext);

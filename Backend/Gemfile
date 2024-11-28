@@ -47,6 +47,8 @@ group :development, :test do
 
   gem 'active_model_serializers'
 
+  # An authorization library for Ruby which restricts what resources a given user is allowed to access.
+  gem 'cancancan'
 end
 
 

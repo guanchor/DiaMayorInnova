@@ -1,7 +1,12 @@
 import http from "../http-common";
 
+const token = localStorage.getItem("site");
+console.log("Token being sent:", token);
+
 const getAll = () => {
-    return http.get("/class_groups");
+    return http.get("/class_groups", {
+        headers: { "AUTH-TOKEN": token },
+    });
 };
 
 const get = id => {

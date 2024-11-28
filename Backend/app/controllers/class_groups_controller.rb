@@ -1,5 +1,11 @@
 class ClassGroupsController < ApplicationController
+    before_action :authenticate_user!
+    # Esto protege las rutas de 'show', 'index', 'create', 'update', 'destroy'
+    load_and_authorize_resource
+
     def index
+        Rails.logger.debug "Current User: #{current_user.inspect}"
+        
         if params[:module].present?
             @classGroups = ClassGroup.where("module LIKE ?", "%#{params[:module]}%")
         else

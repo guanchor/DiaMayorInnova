@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+  skip_before_action :authenticate_user!, only: [:create, :destroy]
   before_action :valid_token, only: :destroy
   before_action :authenticate_with_basic_auth, only: :create
   skip_before_action :verify_signed_out_user, only: :destroy
@@ -32,7 +33,7 @@ class SessionsController < Devise::SessionsController
 
       if user && user.valid_password?(password)
         sign_in(user)
-        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token }, :ok)
+        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, roles: user.roles.pluck(:name) }, :ok)
       else
         json_response("Invalid credentials", false, {}, :unauthorized)
       end

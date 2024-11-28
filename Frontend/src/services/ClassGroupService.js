@@ -3,10 +3,19 @@ import http from "../http-common";
 const token = localStorage.getItem("site");
 console.log("Token being sent:", token);
 
-const getAll = () => {
-    return http.get("/class_groups", {
-        headers: { "AUTH-TOKEN": token },
-    });
+const getAll = async () => {
+    try {
+        const token = await localStorage.getItem("site");
+        console.log("Token being sent:", token);
+        const authToken = http.get("/class_groups", {
+            headers: { "AUTH-TOKEN": token },
+        });
+        return authToken;
+    }
+    catch (error) {
+        console.error("error ", error)
+        return null;
+    }
 };
 
 const get = id => {

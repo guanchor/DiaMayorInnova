@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   resources :class_groups
   resources :accounting_plans
   resources :school_centers
+  resources :annotations
+  resources :entries
+  resources :solutions
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_for :users 
   devise_scope :user do

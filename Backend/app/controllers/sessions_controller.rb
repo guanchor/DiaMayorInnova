@@ -11,7 +11,7 @@ class SessionsController < Devise::SessionsController
       json_response("Missing parameters or token", false, {}, :bad_request)
     end
   end
-
+  
   def destroy
     sign_out @user
     @user.generate_new_authentication_token

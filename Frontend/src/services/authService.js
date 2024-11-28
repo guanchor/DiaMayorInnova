@@ -6,7 +6,14 @@ const authService = {
   validateToken: (token) =>
     axios.post(`${API_BASE_URL}/validate_token`, {}, {
       headers: { "AUTH-TOKEN": token },
-    }),
+    }).then((response) => {
+      console.log("Respuesta de validación de token:", response);
+      return response;
+    })
+      .catch((error) => {
+        console.error("Error al validar token:", error);
+        throw error;
+      }),
 
   signUp: (formData, encodedCredentials) =>
     axios.post(`${API_BASE_URL}/sign_up`, formData, {
@@ -20,6 +27,8 @@ const authService = {
     if (!credentials && !token) {
       throw new Error("Se requiere credentials o token para autenticarse.");
     }
+
+    console.log("Las credenciales en AuthService.js", credentials);
     return axios.post(`${API_BASE_URL}/sign_in`, {}, {
       headers: {
         "Authorization": credentials ? `Basic ${credentials}` : token,

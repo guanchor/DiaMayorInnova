@@ -17,16 +17,24 @@ const useAuthLogic = (navigate) => {
     }
 
     try {
+      console.log("Token a validar:", token);
       const response = await authService.validateToken(token);
+      console.log("Respuesta del servidor:", response);
 
       if (response.data.is_success) {
         const userData = response.data.data.user;
-        const rolesData = response.data.data.roles;
-        setUser(userData);
-        setRoles(rolesData);
-        setUserAvatarUrl(
-          userData.featured_image ? `${API_BASE_URL}${userData.featured_image}` : null
-        );
+        const roles = response.data.data.roles;
+        const newToken = response.data.data.token;
+        if (userData && roles) {
+          setUser(userData);
+          setRoles(roles);
+          localStorage.setItem("site", newToken);
+          setUserAvatarUrl(
+            userData.featured_image ? `${API_BASE_URL}${userData.featured_image}` : null
+          );
+        } else {
+          setError("Respuesta del servidor incompleta.");
+        }
       } else {
         logOut();
         setError("Token inválido.");
@@ -34,6 +42,7 @@ const useAuthLogic = (navigate) => {
     } catch (err) {
       logOut();
       setError("Error de autenticación.");
+      console.error("Error en validación de token:", err);
     } finally {
       setLoading(false);
     }
@@ -57,9 +66,13 @@ const useAuthLogic = (navigate) => {
     }
   };
 
-  const signInAction = async (credentials) => {
+  const signInAction = async (email, password) => {
     try {
+      const credentials = btoa(`${email}:${password}`);
+      console.log("Credenciales codificadas:", credentials);
+
       const response = await authService.signIn(credentials);
+      console.log("Respuesta del servidor:", response);
 
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;
@@ -75,7 +88,12 @@ const useAuthLogic = (navigate) => {
       }
     } catch (err) {
       console.error("Error en login:", err);
-      throw err;
+      if (err.response) {
+        // Si el error viene de la respuesta del servidor
+        alert(`Error: ${err.response.data.message || 'Problema al autenticar.'}`);
+      } else {
+        alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales.");
+      }
     }
   };
 

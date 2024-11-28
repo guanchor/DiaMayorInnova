@@ -14,7 +14,7 @@ const SignIn = () => {
   const handleSubmitEvent = (e) => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
-      auth.signInAction(input)
+      auth.signInAction(input.email, input.password)
         .then((response) => {
           console.log("Server response in SignIn.jsx:", response);
           const user = response?.data?.data?.user;
@@ -34,6 +34,7 @@ const SignIn = () => {
           }
         }).catch((error) => {
           console.error("Error during sign-in:", error);
+          alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales.");
         });
       return;
     }

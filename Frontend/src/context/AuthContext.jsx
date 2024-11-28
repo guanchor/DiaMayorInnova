@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [auth.token]);
 
-  if (auth.loading) {
+  if (auth.loading || !auth.roles) {
     return <div>Loading...</div>;
   }
 

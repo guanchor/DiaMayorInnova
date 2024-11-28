@@ -1,6 +1,8 @@
 class RegistrationsController < Devise::RegistrationsController
-    skip_before_action :authenticate_user!, only: [:create]
+    # skip_before_action :authenticate_user!, only: [:create]
+    before_action :authenticate_user!
     before_action :ensure_auth_header_present, only: :create
+    load_and_authorize_resource
 
   def create
     email, password = decode_auth_header

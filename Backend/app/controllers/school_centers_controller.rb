@@ -1,4 +1,7 @@
 class SchoolCentersController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
+
   def index
     if params[:school_name].present?
       @schools = SchoolCenter.where("school_name LIKE ?", "%#{params[:school_name]}%")

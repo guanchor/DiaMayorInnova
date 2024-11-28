@@ -26,18 +26,22 @@ function App() {
           <div className='app-main'>
             <Routes>
               <Route path="/home" element={<Home />} />
-              <Route path="/sign_up" element={<SignUp />} />
               <Route path="/sign_in" element={<SignIn />} />
               <Route path="/pruebas" element={<Practica />} />
               <Route path="*" element={<Practica />} />
-              <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']}/>}>
+              <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
                 <Route path="/accounting-plans" element={<AccountingPlanList />} />
-                <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                 <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
-                <Route path="/schools" element={<SchoolsCenters />} />
-                <Route path="/class-list" element={<ClassGroupsList />} />
-                <Route path="/add-class-list" element={<AddClassGroup />} />
-                <Route path="/class-list/:id" element={<ClassGroup />} />
+                <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                  <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
+                  <Route path="/schools" element={<SchoolsCenters />} />
+                  <Route path="/class-list" element={<ClassGroupsList />} />
+                  <Route path="/add-class-list" element={<AddClassGroup />} />
+                  <Route path="/class-list/:id" element={<ClassGroup />} />
+                  <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+                    <Route path="/sign_up" element={<SignUp />} />
+                  </Route>
+                </Route>
               </Route>
             </Routes>
           </div>

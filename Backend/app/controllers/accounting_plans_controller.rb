@@ -1,4 +1,7 @@
 class AccountingPlansController < ApplicationController
+    before_action :authenticate_user!
+    load_and_authorize_resource
+    
     def index
         if params[:name].present?
             @accountingPlans = AccountingPlan.where("name LIKE ?", "%#{params[:name]}%")

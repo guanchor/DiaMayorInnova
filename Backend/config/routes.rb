@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   resources :school_centers
   resources :accounts
   resources :help_examples
-  
+  resources :annotations
+  resources :entries
+  resources :solutions
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_for :users 
   devise_scope :user do

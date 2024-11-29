@@ -7,8 +7,8 @@ class Ability
     user ||= User.new # Crea un usuario invitado si no está logueado.
 
     if user.admin?
-    # Los admin pueden gestionar todo
-    can :manage, :all
+      # Los admin pueden gestionar todo
+      can :manage, :all
     elsif user.teacher?
       # Los teachers pueden gestionar todos los class_groups
       can :manage, ClassGroup

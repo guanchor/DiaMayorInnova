@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ClassGroupDataService from "../../services/ClassGroupService";
-import { useAuth } from "../../hooks/AuthProvider";
+import { useAuth } from "../../context/AuthContext";
 import "./ClassGroup.css";
 
 const ClassGroupsList = () => {

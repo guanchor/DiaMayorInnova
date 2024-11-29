@@ -95,6 +95,23 @@
     puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
   end
 
+  user = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
+    u.name = "Miguel"
+    u.first_lastName = "Figueroa"
+    u.second_lastName = "García"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+
+  admin_role = Role.find_by(name: 'teacher')
+  if admin_role && !user.has_role?('teacher')
+    user.roles << admin_role
+    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
+  end
+
   user = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
     u.name = "Echedey"
     u.first_lastName = "Henríquez"

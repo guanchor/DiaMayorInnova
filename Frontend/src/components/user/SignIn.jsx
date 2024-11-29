@@ -30,11 +30,11 @@ const SignIn = () => {
             console.log("Avatar URL:", avatarUrl);
             auth.setUserAvatarUrl(avatarUrl);
           } else {
-            console.error("Response is missing user or featured_image");
+            console.log("Response is missing user or featured_image");
           }
         }).catch((error) => {
           console.error("Error during sign-in:", error);
-          alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales.");
+          alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales SIGNIN.");
         });
       return;
     }

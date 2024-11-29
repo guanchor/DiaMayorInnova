@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 
 const http = axios.create({
-    baseURL: "http://localhost:3000", //Rails url
+    baseURL: API_BASE_URL, //Rails url
     headers: {
         "Content-Type": "application/json"
     }

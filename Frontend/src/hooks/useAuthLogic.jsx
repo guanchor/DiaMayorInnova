@@ -1,5 +1,6 @@
 import { useState } from "react";
 import authService from "../services/authService";
+import { API_BASE_URL } from "../config";
 
 const useAuthLogic = (navigate) => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const useAuthLogic = (navigate) => {
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const checkTokenValidity = async () => {
+  const checkTokenValidity = async (requiredRoles = []) => {
     if (!token) {
       setLoading(false);
       navigate("/sign_in");
@@ -25,6 +26,7 @@ const useAuthLogic = (navigate) => {
         const userData = response.data.data.user;
         const roles = response.data.data.roles;
         const newToken = response.data.data.token;
+
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);
@@ -32,8 +34,14 @@ const useAuthLogic = (navigate) => {
           setUserAvatarUrl(
             userData.featured_image ? `${API_BASE_URL}${userData.featured_image}` : null
           );
+
+          const hasAccess = requiredRoles.every((role) => roles.includes(role));
+          if (!hasAccess) {
+            setError("No tienes permiso para acceder a esta ruta.");
+            navigate("/sign_in"); // Redirige a una página de error o a otra ruta
+          }
         } else {
-          setError("Respuesta del servidor incompleta.");
+          setError("Información de usuario incompleta.");
         }
       } else {
         logOut();
@@ -72,7 +80,7 @@ const useAuthLogic = (navigate) => {
       console.log("Credenciales codificadas:", credentials);
 
       const response = await authService.signIn(credentials);
-      console.log("Respuesta del servidor:", response);
+      console.log("Respuesta del servidor completa:", response);
 
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;
@@ -90,8 +98,10 @@ const useAuthLogic = (navigate) => {
       console.error("Error en login:", err);
       if (err.response) {
         // Si el error viene de la respuesta del servidor
+        console.error("Error en respuesta del servidor:", err.response.data);
         alert(`Error: ${err.response.data.message || 'Problema al autenticar.'}`);
       } else {
+        console.error("Error desconocido:", err);
         alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales.");
       }
     }
@@ -125,6 +135,7 @@ const useAuthLogic = (navigate) => {
     signUpAction,
     signInAction,
     logOut,
+    setError,
   };
 };
 

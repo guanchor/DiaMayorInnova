@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   if (auth.loading || !auth.roles) {
     return <div>Loading...</div>;
   }
-
+  console.log("DESDE CONTEXT:", auth);
   return (
     <AuthContext.Provider value={auth}>
       {children}

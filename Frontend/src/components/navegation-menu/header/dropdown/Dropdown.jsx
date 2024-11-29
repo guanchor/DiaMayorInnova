@@ -5,10 +5,9 @@ import './Dropdown.css';
 import { useAuth } from "../../../../context/AuthContext";
 
 const Dropdown = () => {
+  console.log("DESDE DROPDOWN", useAuth());
   const { dropdownState, setdropdownState, changeDropmenu } = useContext(navContext);
-  const { user, userAvatarUrl, roles } = useAuth();
-
-  console.log(roles);
+  const { user, userAvatarUrl } = useAuth();
 
   /* sugerencia de mi pana , pero ns si se hace asi, no he buscado info , es para cuando se picha fuera del menu se cierre*/
   const dropdownRef = useRef(null);
@@ -29,7 +28,7 @@ const Dropdown = () => {
 
   /* hasta aqui la sugerencia */
 
-  const userName = user ? user.email.split('@')[0] : "Pedro Picapiedra";
+  const userName = data.data.user ? data.data.user.name : "Pedro Picapiedra";
   const avatarUrl = userAvatarUrl;
 
   return (
@@ -43,7 +42,7 @@ const Dropdown = () => {
           )}
           <div className='menuInfo'>
             <p className='menuInfo_name'>{userName}</p>
-            <p className='menuInfo_rol'>{roles}</p>
+            <p className='menuInfo_rol'>jeje</p>
           </div>
         </div>
         <i className='fi fi-rr-angle-small-down'></i>

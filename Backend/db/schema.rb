@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,6 +115,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "statement_id", null: false
+    t.index ["statement_id"], name: "index_solutions_on_statement_id"
   end
 
   create_table "statements", force: :cascade do |t|
@@ -160,7 +162,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_182817) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
-  add_foreign_key "help_examples", "accounts"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
 end

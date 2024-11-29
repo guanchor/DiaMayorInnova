@@ -47,7 +47,7 @@ class SessionsController < Devise::SessionsController
 
     if user
       sign_in(user)
-      json_response("Signed In Successfully", true, { user: user }, :ok)
+      json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, roles: user.roles.pluck(:name) }, :ok)
     else
       json_response("Invalid or expired authentication token", false, {}, :unauthorized)
     end
@@ -61,6 +61,7 @@ class SessionsController < Devise::SessionsController
       json_response "Invalid Token", false, {}, :not_found
     end
   end
+  
   def user_with_image(user)
     user_data = user.as_json
 

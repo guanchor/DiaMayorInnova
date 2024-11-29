@@ -15,7 +15,7 @@ const authService = {
       }),
 
   signUp: (formData, encodedCredentials) =>
-    axios.post(`${API_BASE_URL}/sign_up`, formData, {
+    axios.post(`${API_BASE_URL}/users`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         "Authorization": `Basic ${encodedCredentials}`,

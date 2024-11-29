@@ -5,12 +5,14 @@ Rails.application.routes.draw do
   resources :school_centers
   resources :tasks
   resources :statements
+  resources :roles, only: [:index]
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  devise_for :users 
+  devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
   devise_scope :user do
-    post 'sign_up', to: 'registrations#create'
+    #post 'sign_up', to: 'registrations#create'
     post 'sign_in', to: 'sessions#create'
+    #get 'sign_up', to: 'registrations#new'
     delete 'log_out', to: 'sessions#destroy'
     post 'validate_token', to: 'tokens#validate_token'
   end
@@ -22,5 +24,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  root to: 'registrations#create'
+  root to: 'sessions#create'
 end

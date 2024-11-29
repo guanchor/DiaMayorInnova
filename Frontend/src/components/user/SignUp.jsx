@@ -48,7 +48,7 @@ const SignUp = () => {
     }
 
     console.log("Imagen a enviar linea 33 SignUp:", input.featured_image);
-    
+
     const formData = new FormData();
     formData.append("name", input.name);
     formData.append("first_lastName", input.first_lastName);
@@ -56,7 +56,7 @@ const SignUp = () => {
     if (input.featured_image) {
       formData.append('featured_image', input.featured_image);
     }
-    formData.append("roles", JSON.stringify(input.roles));
+    formData.append("roles", JSON.stringify(input.roles));//json to string -> roles to string.
 
     const credentials = encodeCredentials(input.email, input.password, input.confirmation_password);
 

@@ -64,9 +64,6 @@ const useAuthLogic = (navigate) => {
       const response = await authService.signUp(formData, encodedCredentials);
 
       if (response.data.is_success) {
-        const { user, token } = response.data.data;
-        setUser(user);
-        setToken(token);
         navigate("/Home");
       } else {
         throw new Error(response.data.message || "Error al registrar.");

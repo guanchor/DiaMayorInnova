@@ -78,6 +78,40 @@
     puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
   end
 
+  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
+    u.name = "Admin"
+    u.first_lastName = "Admin"
+    u.second_lastName = "Admin"
+    u.password = 'password123'
+    u.password_confirmation = 'password123'
+  end
+
+  # Asignar el rol 'admin' al usuario
+  admin_role = Role.find_by(name: 'teacher')
+  if admin_role && !user.has_role?('teacher')
+    user.roles << admin_role
+    puts "Rol 'admin' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
+  end
+
+  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
+    u.name = "Admin"
+    u.first_lastName = "Admin"
+    u.second_lastName = "Admin"
+    u.password = 'password123'
+    u.password_confirmation = 'password123'
+  end
+
+  # Asignar el rol 'admin' al usuario
+  admin_role = Role.find_by(name: 'student')
+  if admin_role && !user.has_role?('student')
+    user.roles << admin_role
+    puts "Rol 'admin' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
+  end
+
   user = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
     u.name = "Tiburcio"
     u.first_lastName = "Cruz"
@@ -127,3 +161,4 @@
   else
     puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
   end
+  

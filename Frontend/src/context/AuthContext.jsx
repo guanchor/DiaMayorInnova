@@ -10,9 +10,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     auth.checkTokenValidity();
-  }, [auth.token]);
-
-  useEffect(() => {
     if (auth.token) {
       localStorage.setItem("site", auth.token);
     } else {
@@ -23,7 +20,7 @@ export const AuthProvider = ({ children }) => {
   if (auth.loading || !auth.roles) {
     return <div>Loading...</div>;
   }
-  console.log("DESDE CONTEXT:", auth);
+  //console.log("DESDE CONTEXT:", auth);
   return (
     <AuthContext.Provider value={auth}>
       {children}

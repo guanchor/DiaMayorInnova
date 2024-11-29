@@ -20,13 +20,15 @@ const useAuthLogic = (navigate) => {
     try {
       console.log("Token a validar:", token);
       const response = await authService.validateToken(token);
-      console.log("Respuesta del servidor:", response);
+      //console.log("Respuesta del servidor:", response);
 
       if (response.data.is_success) {
         const userData = response.data.data.user;
         const roles = response.data.data.roles;
-        const newToken = response.data.data.token;
-
+        const newToken = response.data.data.user.authentication_token;
+        //console.log("USER:", userData);
+        //console.log("ROLES:", roles);
+        //console.log("TOKEN:", newToken);
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);
@@ -77,10 +79,10 @@ const useAuthLogic = (navigate) => {
   const signInAction = async (email, password) => {
     try {
       const credentials = btoa(`${email}:${password}`);
-      console.log("Credenciales codificadas:", credentials);
+      //console.log("Credenciales codificadas:", credentials);
 
       const response = await authService.signIn(credentials);
-      console.log("Respuesta del servidor completa:", response);
+      //console.log("Respuesta del servidor completa:", response);
 
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;

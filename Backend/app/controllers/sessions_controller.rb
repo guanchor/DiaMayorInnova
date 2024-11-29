@@ -1,6 +1,6 @@
 class SessionsController < Devise::SessionsController
   skip_before_action :authenticate_user!, only: [:create, :destroy]
-  before_action :valid_token, only: :destroy
+  before_action :validate_token, only: :destroy
   before_action :authenticate_with_basic_auth, only: :create
   skip_before_action :verify_signed_out_user, only: :destroy
 
@@ -16,6 +16,15 @@ class SessionsController < Devise::SessionsController
     sign_out @user
     @user.generate_new_authentication_token
     json_response "Log Out Succesfully", true, {}, :ok
+  end
+
+  def valid_token
+    @user = User.find_by authentication_token: request.headers["AUTH-TOKEN"]
+    if @user
+      json_response("Token validado exitosamente", true, { user: @user, roles: @user.roles.pluck(:name), user: user_with_image(@user) }, :ok)
+    else
+      json_response "Invalid Token", false, {}, :not_found
+    end
   end
 
   private
@@ -53,7 +62,7 @@ class SessionsController < Devise::SessionsController
     end
   end
 
-  def valid_token
+  def validate_token
     @user = User.find_by authentication_token: request.headers["AUTH-TOKEN"]
     if @user
       return @user

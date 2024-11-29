@@ -162,6 +162,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_27_075852) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
+  add_foreign_key "solutions", "statements"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
 end

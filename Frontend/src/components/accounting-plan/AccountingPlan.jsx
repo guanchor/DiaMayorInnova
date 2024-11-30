@@ -15,8 +15,12 @@ const AccountingPlan = (props) => {
   };
 
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(initialAccountingPlanState);
-
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (id) getAccountingPlan(id);
+  }, [id]);
 
   const getAccountingPlan = (id) => {
     AccountingPlanDataService.get(id)
@@ -29,25 +33,34 @@ const AccountingPlan = (props) => {
       });
   };
 
-  useEffect(() => {
-    if (id) getAccountingPlan(id);
-  }, [id]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentAccountingPlan({ ...currentAccountingPlan, [name]: value });
   };
 
+  const validateForm = () => {
+    if (!currentAccountingPlan.name || !currentAccountingPlan.description || !currentAccountingPlan.acronym) {
+      setError("Todos los campos son obligatorios y deben tener valores válidos.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
   const updateAccountingPlan = () => {
+    if (validateForm()) {
     AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
       .then(response => {
         console.log(response.data);
-        setMessage("Accounting plan updated succesfully");
+        setMessage("El plan de cuentas fue actualizado correctamente.");
       })
       .catch(e => {
         console.log(e);
+        setError("Hubo un problema al actualizar el plan de cuentas.");
       });
-  };
+  }
+};
 
   const deleteAccountingPlan = () => {
     AccountingPlanDataService.remove(currentAccountingPlan.id)
@@ -62,10 +75,6 @@ const AccountingPlan = (props) => {
 
   return (
     <>
-      <Link to={"/accounting-plans/"}>
-        Volver
-      </Link>
-
       {currentAccountingPlan ? (
         <div>
           <h4>Accounting Plan</h4>
@@ -104,10 +113,11 @@ const AccountingPlan = (props) => {
               />
             </div>
           </form>
-
+          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
           <button onClick={updateAccountingPlan}>Editar</button>
-
           <button onClick={deleteAccountingPlan}>Borrar</button>
+          <p>{message}</p>
+          <Link to={"/accounting-plans/"}>Volver</Link>
         </div>
       ) : (
         <div>

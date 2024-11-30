@@ -59,9 +59,9 @@ const useAuthLogic = (navigate) => {
     }
   };
 
-  const signUpAction = async (encodedCredentials, formData) => {
+  const signUpAction = async (formData) => {
     try {
-      const response = await authService.signUp(formData, encodedCredentials);
+      const response = await authService.signUp(formData);
 
       if (response.data.is_success) {
         navigate("/Home");

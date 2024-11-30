@@ -6,17 +6,26 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find(params[:id])
-    render json: @task
+    @task = Task.includes(:statements).find(params[:id])
+    render json: @task.to_json(include: :statements)
   end
 
   def create
-    @task = Task.create(
+    task = Task.create(
       title: params[:title],
       opening_date: params[:opening_date],
       closing_date: params[:closing_date]
     )
-    render json: @task
+    if task.save
+      if params[:statement_ids].present?
+        statements = Statement.where(id: params[:statement_ids])
+        task.statements << statements
+      end
+
+      render json: task, status: :created
+    else
+      render json: { error: task.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update

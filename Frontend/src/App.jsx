@@ -15,6 +15,9 @@ import NavegationMenu from './components/navegation-menu/NavegationMenu';
 import Practica from './pages/Practica';
 import './App.css';
 import './assets/Styles/Global.css';
+import TaskListAndDetails from './components/task/taskListAndDetails';
+import StatementsList from './components/statements/StatementList';
+import StatementForm from './components/statements/StatementForm';
 
 function App() {
 
@@ -33,6 +36,9 @@ function App() {
                 <Route path="/accounting-plans" element={<AccountingPlanList />} />
                 <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                  <Route path="/tasks" element={<TaskListAndDetails/>} />
+                  <Route path="/statements" element={<StatementsList/>} />
+                  <Route path="/add-statements" element={<StatementForm/>} />
                   <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                   <Route path="/schools" element={<SchoolsCenters />} />
                   <Route path="/class-list" element={<ClassGroupsList />} />

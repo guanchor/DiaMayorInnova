@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_30_165308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -130,6 +130,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
     t.text "explanation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.boolean "is_public", default: false
+    t.index ["user_id"], name: "index_statements_on_user_id"
   end
 
   create_table "task_statements", force: :cascade do |t|
@@ -181,7 +184,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
+  add_foreign_key "help_examples", "accounts"
   add_foreign_key "solutions", "statements"
+  add_foreign_key "statements", "users"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
   add_foreign_key "user_roles", "roles"

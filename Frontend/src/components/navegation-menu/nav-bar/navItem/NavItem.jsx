@@ -1,4 +1,4 @@
-import { NavLink,useLocation} from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { navContext } from '../../../../context/nav-menu/navMenuContext';
 import { useContext } from 'react';
 import './NavItem.css';

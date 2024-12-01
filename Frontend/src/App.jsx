@@ -12,7 +12,9 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
 import SignUp from "./components/user/SignUp";
 import NavegationMenu from './components/navegation-menu/NavegationMenu';
-import Practica from './pages/Practica';
+import TaskPage from "./pages/task-page/TaskPage"
+import NavStateProvider from "./context/nav-menu/NavStateProvider";
+
 import './App.css';
 import './assets/Styles/Global.css';
 
@@ -22,29 +24,31 @@ function App() {
     <>
       <Router>
         <AuthProvider>
-          <NavegationMenu />
-          <div className='app-main'>
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/sign_in" element={<SignIn />} />
-              <Route path="/pruebas" element={<Practica />} />
-              <Route path="*" element={<Practica />} />
-              <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
-                <Route path="/accounting-plans" element={<AccountingPlanList />} />
-                <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
-                <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
-                  <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
-                  <Route path="/schools" element={<SchoolsCenters />} />
-                  <Route path="/class-list" element={<ClassGroupsList />} />
-                  <Route path="/add-class-list" element={<AddClassGroup />} />
-                  <Route path="/class-list/:id" element={<ClassGroup />} />
-                  <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-                    <Route path="/sign_up" element={<SignUp />} />
+          <NavStateProvider>
+            <NavegationMenu />
+            <div className='app-main'>
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/*" element={<Home />} />
+                <Route path="/sign_in" element={<SignIn />} />
+                <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
+                  <Route path="/accounting-plans" element={<AccountingPlanList />} />
+                  <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
+                  <Route path="/modes" element={<TaskPage />} />
+                  <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                    <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
+                    <Route path="/schools" element={<SchoolsCenters />} />
+                    <Route path="/class-list" element={<ClassGroupsList />} />
+                    <Route path="/add-class-list" element={<AddClassGroup />} />
+                    <Route path="/class-list/:id" element={<ClassGroup />} />
+                    <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+                      <Route path="/sign_up" element={<SignUp />} />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </div>
+              </Routes>
+            </div>
+          </NavStateProvider>
         </AuthProvider>
       </Router>
     </>

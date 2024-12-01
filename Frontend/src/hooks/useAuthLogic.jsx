@@ -26,13 +26,9 @@ const useAuthLogic = (navigate) => {
         const userData = response.data.data.user;
         const roles = response.data.data.roles;
         const newToken = response.data.data.user.authentication_token;
-        //console.log("USER:", userData);
-        //console.log("ROLES:", roles);
-        //console.log("TOKEN:", newToken);
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);
-          console.log("desde la validacion !!!!!!!!!!!!!!!!!!!!!!", roles)
           localStorage.setItem("site", newToken);
           setUserAvatarUrl(
             userData.featured_image ? `${API_BASE_URL}${userData.featured_image}` : null

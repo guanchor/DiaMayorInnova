@@ -1,14 +1,13 @@
 import Header from "./header/Header";
-import NavBar from "./nave-bar/NavBar";
-import NavStateProvider from "../../context/nav-menu/NavStateProvider";
+import NavBar from "./nav-bar/NavBar";
 
 const NavegationMenu = () => {
 
   return (
-    <NavStateProvider>
+    <>
       <Header />
       <NavBar />
-    </NavStateProvider>
+    </>
   )
 }
 export default NavegationMenu;

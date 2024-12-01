@@ -1,6 +1,6 @@
-.shortcut__container{
-  width: 100px;
-  height: 100px;
+.shortcut__container {
+  width: 120px;
+  height: 120px;
   background-color: var(--Color-Principal);
   color: var(--Color-letra-claro);
   display: flex;
@@ -8,34 +8,35 @@
   justify-content: center;
   align-items: center;
   gap: var(--gap-xxs);
-  border-radius: var(--r-xs);  
+  border-radius: var(--r-xs);
   cursor: pointer;
   box-shadow: var(--box-shadow-btn);
 
-  &:hover{
+  &:hover {
     background-color: var(--Color-Principal-claro);
   }
 
-  &:focus{
+  &:focus {
     background-color: var(--Color-Principal-claro);
     border: 1px solid var(--color-Principal);
   }
 
-  &:active{
+  &:active {
     background-color: var(--Color-Principal-oscuro);
     box-shadow: none;
   }
 }
 
 
-.shortcut__icon{
+.shortcut__icon {
   font-size: 30px;
   display: flex;
 }
 
-.shortcut__text{
+.shortcut__text {
   font-size: 1rem;
   font-weight: 600;
   line-height: 140%;
-  
+  text-transform: capitalize;
+
 }

@@ -346,14 +346,3 @@ a {
     overflow: hidden;
   }
 }
-
-.practica {
-  padding: 20px;
-  display: flex;
-  gap: 20px;
-  height: 300px;
-  justify-content: center;
-  align-items: center;
-
-
-}

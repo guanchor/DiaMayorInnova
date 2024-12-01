@@ -2,12 +2,11 @@ import DropdownContent from "./DropdownContent";
 import { useContext, useEffect, useRef, useState } from "react";
 import { navContext } from "../../../../context/nav-menu/navMenuContext";
 import './Dropdown.css';
-import { useAuth } from "../../../../context/AuthContext";
 
 const Dropdown = () => {
   //console.log("DESDE DROPDOWN", useAuth());
-  const { dropdownState, setdropdownState, changeDropmenu } = useContext(navContext);
-  const { user, userAvatarUrl, roles } = useAuth();
+  const { dropdownState, setdropdownState, changeDropmenu, userName, userAvatarUrl, rol } = useContext(navContext);
+
 
   /* sugerencia de mi pana , pero ns si se hace asi, no he buscado info , es para cuando se picha fuera del menu se cierre*/
   const dropdownRef = useRef(null);
@@ -28,7 +27,7 @@ const Dropdown = () => {
 
   /* hasta aqui la sugerencia */
 
-  const userName = user ? user.name : "Pedro Picapiedra";
+
   const avatarUrl = userAvatarUrl;
 
   return (
@@ -42,7 +41,7 @@ const Dropdown = () => {
           )}
           <div className='menuInfo'>
             <p className='menuInfo_name'>{userName}</p>
-            <p className='menuInfo_rol'>{roles}</p>
+            <p className='menuInfo_rol'>{rol}</p>
           </div>
         </div>
         <i className='fi fi-rr-angle-small-down'></i>

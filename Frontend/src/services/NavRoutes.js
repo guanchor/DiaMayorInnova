@@ -18,15 +18,9 @@ routes.push({
   to: "/task",
   icon: "fi fi-rr-graduation-cap",
   name: "tareas",
-  rol: ["teacher", "admin", "student"],
+  rol: ["teacher", "admin"],
 })
 
-routes.push({
-  to: "/calendar",
-  icon: "fi fi-rr-calendar",
-  name: "calendario",
-  rol: ["teacher", "admin", "student"],
-})
 
 routes.push({
   to: "/schools",

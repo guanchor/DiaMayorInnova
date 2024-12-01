@@ -5,16 +5,16 @@ import { routes } from "../../../services/NavRoutes";
 import "./NavBar.css";
 
 const NavBar = () => {
-  const { menuState, changeMenu } = useContext(navContext);
-  const [user , setUser] = useState("student");
- 
+  const { menuState, changeMenu, rol } = useContext(navContext);
+
+
   return (
     <>
       <nav className={menuState ? "navBar_container nav--active" : "navBar_container"}>
         <i className="fi fi-rr-x close" onClick={changeMenu}></i>
         <ul className="navBar__list" >
           {routes.map((route) => {
-            if (route.rol.includes(user)) {
+            if (route.rol.includes(rol)) {
               return <NavItem key={route.to} icon={route.icon} name={route.name} url={route.to} />
             } else return null;
           })}

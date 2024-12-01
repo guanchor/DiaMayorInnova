@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
 import { Link } from "react-router-dom";
 import "./SchoolCenters.css";
-import NavBar from "../navegation-menu/nave-bar/NavBar.jsx";
 
 const SchoolCenters = () => {
     const initialSchoolState = {

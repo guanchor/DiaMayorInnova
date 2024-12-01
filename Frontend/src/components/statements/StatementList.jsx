@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import statementService from "../../services/statementService";
 import StatementForm from "./StatementForm";
+import StatementDetails from "./StatementDetails";
 
 const StatementsList = () => {
   const { user, loading: authLoading } = useAuth();
   const [statements, setStatements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFormVisible, setFormVisible] = useState(false);
+  const [selectedStatementId, setSelectedStatementId] = useState(null);
+
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -63,11 +67,16 @@ const StatementsList = () => {
             <p>
               <strong>Visibilidad:</strong> {statement.is_public ? "Público" : "Privado"}
             </p>
+            <button onClick={() => setSelectedStatementId(statement.id)}>
+              Ver detalles
+            </button>
           </li>
         ))}
       </ul>
       <button onClick={() => setFormVisible(true)}>Crear Nuevo Enunciado</button>
       {isFormVisible && <StatementForm onStatementCreated={handleStatementCreated} />}
+
+      {selectedStatementId && <StatementDetails statementId={selectedStatementId} />}
     </div>
   );
 };

@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
 import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
+import { useAuth } from "../../context/AuthContext";
 
 const TaskListAndDetails = () => {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]); // Lista de tareas
   const [selectedTask, setSelectedTask] = useState(null); // Tarea seleccionada
-  const [loading, setLoading] = useState(true); // Indicador de carga
+  const [loading, setLoading] = useState(false); // Indicador de carga
   const [error, setError] = useState(null); // Manejo de errores
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [isEditingTask, setIsEditingTask] = useState(false); // Controlador para cambiar a modo de edición
@@ -15,19 +17,31 @@ const TaskListAndDetails = () => {
   // Obtener todas las tareas al cargar el componente
   useEffect(() => {
     const fetchTasks = async () => {
+      setLoading(true);
       try {
+        console.log("Solicitando tareas al servicio...");
         const response = await taskService.getAllTasks();
-        setTasks(response.data);
+        console.log("Tareas recibidas:", response.data);
+        const filteredTasks = response.data.filter((task) => task.created_by === user.id);
+        setTasks(filteredTasks);
       } catch (err) {
         setError("Error al cargar las tareas.");
         console.error("Error fetching tasks:", err);
       } finally {
+        console.log("Finalizando la carga de tareas.");
         setLoading(false);
       }
     };
-
-    fetchTasks();
-  }, []);
+    console.log("Usuario actual:", user);
+    if (user?.id){
+      console.log("Cargando tareas para el usuario:", user.id);
+      fetchTasks(); // Solo intenta cargar si el usuario está autenticado
+    }else {
+      console.log("Usuario no autenticado o ID faltante.");
+      setLoading(false);
+      setTasks([]);
+    }
+  }, [user]);
 
   // Obtener los detalles de la tarea seleccionada
   const fetchTaskDetails = async (taskId) => {
@@ -84,7 +98,8 @@ const TaskListAndDetails = () => {
     }
   };
 
-  if (loading) return <p>Cargando...</p>;
+  if (!user) return <p>Cargando usuario...</p>;
+  if (loading) return <p>Cargando tareas... Por favor espera.</p>;
   if (error) return <p>{error}</p>;
 
   return (

@@ -1,7 +1,8 @@
 class TasksController < ApplicationController
-
+  before_action :authenticate_user!
+  
   def index
-    @tasks = Task.all
+    @tasks = Task.where(created_by: current_user.id)
     render json: @tasks
   end
 
@@ -11,17 +12,17 @@ class TasksController < ApplicationController
   end
 
   def create
-    task = Task.create(
+    task = Task.new(
       title: params[:title],
       opening_date: params[:opening_date],
-      closing_date: params[:closing_date]
+      closing_date: params[:closing_date],
+      created_by: current_user.id
     )
     if task.save
       if params[:statement_ids].present?
         statements = Statement.where(id: params[:statement_ids])
         task.statements << statements
       end
-
       render json: task, status: :created
     else
       render json: { error: task.errors.full_messages }, status: :unprocessable_entity
@@ -31,14 +32,21 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
 
-    if task_params[:statement_ids].present?
-      @task.statement_ids = task_params[:statement_ids]
-    end
-
     if @task.update(task_params)
-      render json: @task, status: :ok
+      if params[:statement_ids].present?
+        statements = Statement.where(id: params[:statement_ids])
+
+        if statements.count == params[:statement_ids].length
+          @task.statements.clear
+          @task.statements << statements
+        else
+          render json: { error: "Algunos enunciados no existen" }, status: :unprocessable_entity
+          return
+        end
+      end
+      render json: @task.to_json(include: :statements), status: :ok
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -49,7 +57,7 @@ class TasksController < ApplicationController
     render json: @tasks
   end
 
-   # Nuevo método para eliminar un enunciado de una tarea
+
    def destroy_statement
     @task = Task.find(params[:task_id])
     @statement = Statement.find(params[:statement_id])
@@ -64,6 +72,6 @@ class TasksController < ApplicationController
   private 
 
   def task_params
-    params.require(:task).permit(:title, :description, statement_ids: [])
+    params.require(:task).permit(:title, :opening_date, :closing_date, statement_ids: [])
   end
 end

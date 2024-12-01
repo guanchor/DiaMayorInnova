@@ -44,24 +44,27 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
     fetchStatements();
   }, [selectedTask]);
 
+  const arraysAreEqual = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) return false;
+    return arr1.every((id, index) => id === arr2[index]);
+  };
+
   const hasChanges = () => {
     return (
       title !== initialTask.title ||
       openingDate !== initialTask.openingDate ||
       closingDate !== initialTask.closingDate ||
-      !selectedStatements.every((id, index) => id === initialTask.statementIds[index])
+      !arraysAreEqual(selectedStatements, initialTask.statementIds)
     );
   };
 
   // Handle statement selection
   const handleStatementSelection = (statementId) => {
-    if (selectedStatements.includes(statementId)) {
-      setSelectedStatements((prev) =>
-        prev.filter((id) => id !== statementId)
-      );
-    } else {
-      setSelectedStatements((prev) => [...prev, statementId]);
-    }
+    setSelectedStatements((prev) =>
+      prev.includes(statementId)
+        ? prev.filter((id) => id !== statementId) // Desmarcar
+        : [...prev, statementId] // Marcar
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -78,9 +81,9 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
       title,
       opening_date: openingDate,
       closing_date: closingDate,
-      statement_ids: selectedStatements.lenght > 0 ? selectedStatements : []
+      statement_ids: selectedStatements.length > 0 ? selectedStatements : []
     };
-
+console.log("Datossssssssss actualizados: ",updatedTask);
     try {
       const response = await taskService.updateTask(selectedTask.id, updatedTask);
       onTaskUpdated(response.data);  // Notificar a TaskListAndDetails para que actualice la tarea

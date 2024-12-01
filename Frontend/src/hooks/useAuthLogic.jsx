@@ -29,6 +29,9 @@ const useAuthLogic = (navigate) => {
         //console.log("USER:", userData);
         //console.log("ROLES:", roles);
         //console.log("TOKEN:", newToken);
+        console.log("Token en useAuthLogic antes de validación:", newToken);
+        console.log("User en useAuthLogic antes de validación:", user);
+        console.log("UserDataaaaaaa en useAuthLogic antes de validación:", userData);
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);

@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     delete '/statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
   end
   
-  resources :statements
+  resources :statements, only: [:index, :show] do
+    post 'add_solution', on: :member
+  end
+
   resources :roles, only: [:index]
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

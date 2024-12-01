@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import statementService from "../../services/statementService";
 import taskService from "../../services/taskService";
+import { useAuth } from "../../context/AuthContext";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [openingDate, setOpeningDate] = useState("");
   const [closingDate, setClosingDate] = useState("");
@@ -12,6 +14,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
 
   // Fetch all statements of the user
   useEffect(() => {
+    console.log("Usuario en TaskCreateForm:", user);
     const fetchStatements = async () => {
       try {
         const response = await statementService.getAllStatements();
@@ -40,6 +43,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       opening_date: openingDate,
       closing_date: closingDate,
       statement_ids: selectedStatements,
+      created_by: user.id,
     };
 
     try {

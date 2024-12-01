@@ -43,9 +43,10 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     };
 
     try {
-      const newTask = await taskService.createTask(taskData);
+      const response = await taskService.createTask(taskData);
+      const createdTask = await taskService.getTaskWithStatements(response.data.id);
       alert("Tarea creada con éxito");
-      onTaskCreated(newTask); // Notificar al componente padre
+      onTaskCreated(createdTask.data); // Notificar al componente padre
     } catch (error) {
       console.error("Error creando la tarea:", error);
     }

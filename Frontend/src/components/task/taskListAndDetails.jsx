@@ -45,7 +45,21 @@ const TaskListAndDetails = () => {
 
   // Función para manejar la creación de una nueva tarea
   const handleTaskCreated = (newTask) => {
+    if (newTask?.title) {
     setTasks((prevTasks) => [...prevTasks, newTask]);
+    } else {
+      // Si la tarea creada no tiene el título, recargamos la lista completa
+    const fetchTasks = async () => {
+      try {
+        const response = await taskService.getAllTasks();
+        setTasks(response.data); // Recarga la lista
+      } catch (err) {
+        setError("Error al cargar las tareas.");
+        console.error("Error fetching tasks:", err);
+      }
+    };
+    fetchTasks();
+  }
     setIsCreatingTask(false); // Volver a la vista de lista de tareas
   };
 
@@ -86,7 +100,7 @@ const TaskListAndDetails = () => {
             <h2>Lista de Tareas</h2>
             <ul>
               {tasks.map((task) => (
-                <li key={task.id}>
+                <li key={`${task.id}-${task.created_at}`}>
                   <button onClick={() => fetchTaskDetails(task.id)}>
                     {task.title}
                   </button>
@@ -115,7 +129,7 @@ const TaskListAndDetails = () => {
                 {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
                   <ul>
                     {selectedTask.statements.map((statement) => (
-                      <li key={statement.id}>
+                      <li key={`${statement.id}-${statement.created_at}`}>
                         <strong>Definición:</strong> {statement.definition}
                         <br />
                         <strong>Explicación:</strong> {statement.explanation}

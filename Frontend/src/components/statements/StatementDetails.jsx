@@ -10,7 +10,7 @@ const StatementDetails = ({ statementId }) => {
       try {
         setLoading(true);
         const response = await statementService.getStatement(statementId);
-        setStatement(response.data); // Aquí almacenas los detalles del enunciado, incluidas las soluciones
+        setStatement(response.data); // Incluye las soluciones, entradas y anotaciones
       } catch (error) {
         console.error("Error obteniendo el enunciado:", error.response || error);
       } finally {
@@ -36,17 +36,38 @@ const StatementDetails = ({ statementId }) => {
       <p><strong>Visibilidad:</strong> {statement.is_public ? "Público" : "Privado"}</p>
 
       <h4>Soluciones:</h4>
-      <ul>
-        {statement.solutions && statement.solutions.length > 0 ? (
-          statement.solutions.map((solution) => (
-            <li key={solution.id}>
-              <p>{solution.content}</p>
-            </li>
-          ))
-        ) : (
-          <p>No hay soluciones disponibles.</p>
-        )}
-      </ul>
+      {statement.solutions && statement.solutions.length > 0 ? (
+        statement.solutions.map((solution) => (
+          <div key={solution.id} style={{ marginBottom: "1.5rem" }}>
+            <h5>{solution.description}</h5>
+            <h6>Entradas:</h6>
+            {solution.entries && solution.entries.length > 0 ? (
+              solution.entries.map((entry) => (
+                <div key={entry.id} style={{ marginBottom: "1rem", paddingLeft: "1rem" }}>
+                  <p>
+                    <strong>Entrada #{entry.entry_number}</strong> - Fecha: {entry.entry_date}
+                  </p>
+                  <ul>
+                    {entry.annotations && entry.annotations.length > 0 ? (
+                      entry.annotations.map((annotation) => (
+                        <li key={annotation.id}>
+                          Número: {annotation.number}, Crédito: {annotation.credit}, Débito: {annotation.debit}
+                        </li>
+                      ))
+                    ) : (
+                      <li>No hay anotaciones para esta entrada.</li>
+                    )}
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <p>No hay entradas para esta solución.</p>
+            )}
+          </div>
+        ))
+      ) : (
+        <p>No hay soluciones disponibles.</p>
+      )}
     </div>
   );
 };

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import statementService from "../../services/statementService";
 import taskService from "../../services/taskService";
 import { useAuth } from "../../context/AuthContext";
+import TaskForm from "./TaskForm.jsx";
+import TaskPreview from "./TaskPreview.jsx";
+import StatementsSelection from "./StatementsSelection.jsx";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { user } = useAuth();
@@ -10,11 +13,10 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [closingDate, setClosingDate] = useState("");
   const [statements, setStatements] = useState([]);
   const [selectedStatements, setSelectedStatements] = useState([]);
-  const [showPreview, setShowPreview] = useState(false);
+  const [solutions, setSolutions] = useState({});
+  const [editMode, setEditMode] = useState(false);
 
-  // Fetch all statements of the user
   useEffect(() => {
-    console.log("Usuario en TaskCreateForm:", user);
     const fetchStatements = async () => {
       try {
         const response = await statementService.getAllStatements();
@@ -27,7 +29,6 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     fetchStatements();
   }, []);
 
-  // Toggle statement selection
   const handleStatementSelection = (statement) => {
     if (selectedStatements.includes(statement.id)) {
       setSelectedStatements((prev) => prev.filter((id) => id !== statement.id));
@@ -36,7 +37,19 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     }
   };
 
-  // Submit the task
+  const handleViewSolutions = async (statementId) => {
+    try {
+      const response = await statementService.getSolutions(statementId);
+      setSolutions((prev) => ({ ...prev, [statementId]: response.data }));
+    } catch (error) {
+      console.error("Error fetching solutions:", error);
+    }
+  };
+
+  const handleEditSolutions = (statementId) => {
+    setEditMode((prev) => (prev === statementId ? false : statementId));
+  };
+
   const handleSubmit = async () => {
     const taskData = {
       title,
@@ -57,91 +70,36 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   };
 
   return (
-    <div>
-      {showPreview ? (
-        // Preview Section
-        <div>
-          <h2>Previsualización</h2>
-          <p>
-            <strong>Título:</strong> {title}
-          </p>
-          <p>
-            <strong>Fecha de apertura:</strong>{" "}
-            {new Date(openingDate).toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Fecha de cierre:</strong>{" "}
-            {new Date(closingDate).toLocaleString()}
-          </p>
-          <h3>Enunciados seleccionados:</h3>
-          {selectedStatements.length > 0 ? (
-            <ul>
-              {statements
-                .filter((s) => selectedStatements.includes(s.id))
-                .map((statement) => (
-                  <li key={statement.id}>
-                    <strong>Definición:</strong> {statement.definition}
-                    <br />
-                    <strong>Explicación:</strong> {statement.explanation}
-                  </li>
-                ))}
-            </ul>
-          ) : (
-            <p>No se han seleccionado enunciados.</p>
-          )}
-          <button onClick={() => setShowPreview(false)}>Volver al formulario</button>
-          <button onClick={handleSubmit}>Finalizar</button>
-        </div>
-      ) : (
-        // Form Section
-        <form>
-          <h2>Crear Tarea</h2>
-          <div>
-            <label>Título:</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Fecha de apertura:</label>
-            <input
-              type="date"
-              value={openingDate}
-              onChange={(e) => setOpeningDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Fecha de cierre:</label>
-            <input
-              type="datetime-local"
-              value={closingDate}
-              onChange={(e) => setClosingDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <h3>Seleccionar Enunciados</h3>
-            <ul>
-              {statements.map((statement) => (
-                <li key={statement.id}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedStatements.includes(statement.id)}
-                      onChange={() => handleStatementSelection(statement)}
-                    />
-                    {statement.definition}
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <button type="button" onClick={() => setShowPreview(true)}>
-            Previsualizar
-          </button>
-        </form>
-      )}
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <TaskForm
+        title={title}
+        setTitle={setTitle}
+        openingDate={openingDate}
+        setOpeningDate={setOpeningDate}
+        closingDate={closingDate}
+        setClosingDate={setClosingDate}
+      />
+      <div style={{ width: "45%", marginLeft: "20px" }}>
+        <StatementsSelection
+          statements={statements}
+          selectedStatements={selectedStatements}
+          handleStatementSelection={handleStatementSelection}
+          handleViewSolutions={handleViewSolutions}
+          handleEditSolutions={handleEditSolutions}
+          solutions={solutions}
+          editMode={editMode}
+        />
+        <TaskPreview
+          title={title}
+          openingDate={openingDate}
+          closingDate={closingDate}
+          statements={statements}
+          selectedStatements={selectedStatements}
+        />
+        <button type="button" onClick={handleSubmit}>
+          Finalizar
+        </button>
+      </div>
     </div>
   );
 };

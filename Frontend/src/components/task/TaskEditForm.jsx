@@ -11,6 +11,7 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
   const [openingDate, setOpeningDate] = useState(selectedTask?.opening_date || "");
   const [closingDate, setClosingDate] = useState(selectedTask?.closing_date || "");
   const [statements, setStatements] = useState(selectedTask?.statements || []);
+  const [loading, setLoading] = useState(true);
   const [selectedStatements, setSelectedStatements] = useState(
     selectedTask?.statements?.map((statement) => statement.id) || []
   );
@@ -35,6 +36,7 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
     const fetchStatements = async () => {
       try {
         const response = await statementService.getAllStatements();
+        console.log("RESPUESTA EN TASKEDITFORM", response.data);
         setStatements(response.data); // Almacenamos todos los enunciados disponibles
       } catch (error) {
         console.error("Error al obtener los enunciados:", error);
@@ -60,11 +62,13 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
 
   // Handle statement selection
   const handleStatementSelection = (statementId) => {
-    setSelectedStatements((prev) =>
-      prev.includes(statementId)
-        ? prev.filter((id) => id !== statementId) // Desmarcar
-        : [...prev, statementId] // Marcar
-    );
+    setSelectedStatements((prevSelectedStatements) => {
+      if (prevSelectedStatements.includes(statementId)) {
+        return prevSelectedStatements.filter(id => id !== statementId);
+      }else{
+        return [...prevSelectedStatements, statementId];
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -86,6 +90,7 @@ const TaskEditForm = ({ selectedTask, onTaskUpdated }) => {
 console.log("Datossssssssss actualizados: ",updatedTask);
     try {
       const response = await taskService.updateTask(selectedTask.id, updatedTask);
+      console.log("UPDATEDDDDDD task response:", response.data); // Debug log
       onTaskUpdated(response.data);  // Notificar a TaskListAndDetails para que actualice la tarea
       navigate("/tasks");
     } catch (error) {

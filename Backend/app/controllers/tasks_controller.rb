@@ -30,12 +30,16 @@ class TasksController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
-    @task.update(
-      title: params[:title],
-      opening_date: params[:opening_date],
-      closing_date: params[:closing_date]
-    )
-    render json: @task
+
+    if task_params[:statement_ids].present?
+      @task.statement_ids = task_params[:statement_ids]
+    end
+
+    if @task.update(task_params)
+      render json: @task, status: :ok
+    else
+      render json: @task.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -43,5 +47,23 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.destroy
     render json: @tasks
+  end
+
+   # Nuevo método para eliminar un enunciado de una tarea
+   def destroy_statement
+    @task = Task.find(params[:task_id])
+    @statement = Statement.find(params[:statement_id])
+
+    # Eliminar la relación entre la tarea y el enunciado
+    @task.statements.delete(@statement)
+
+    # Retornar la tarea actualizada con los enunciados restantes
+    render json: @task.to_json(include: :statements), status: :ok
+  end
+
+  private 
+
+  def task_params
+    params.require(:task).permit(:title, :description, statement_ids: [])
   end
 end

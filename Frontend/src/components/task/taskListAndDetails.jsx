@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
+import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
 
 const TaskListAndDetails = () => {
   const [tasks, setTasks] = useState([]); // Lista de tareas
   const [selectedTask, setSelectedTask] = useState(null); // Tarea seleccionada
-  const [statements, setStatements] = useState([]); // Enunciados de la tarea seleccionada
   const [loading, setLoading] = useState(true); // Indicador de carga
   const [error, setError] = useState(null); // Manejo de errores
   const [isCreatingTask, setIsCreatingTask] = useState(false);
+  const [isEditingTask, setIsEditingTask] = useState(false); // Controlador para cambiar a modo de edición
 
   // Obtener todas las tareas al cargar el componente
   useEffect(() => {
@@ -18,7 +20,7 @@ const TaskListAndDetails = () => {
         setTasks(response.data);
       } catch (err) {
         setError("Error al cargar las tareas.");
-        console.error(err);
+        console.error("Error fetching tasks:", err);
       } finally {
         setLoading(false);
       }
@@ -27,13 +29,12 @@ const TaskListAndDetails = () => {
     fetchTasks();
   }, []);
 
-  // Obtener los enunciados al seleccionar una tarea
+  // Obtener los detalles de la tarea seleccionada
   const fetchTaskDetails = async (taskId) => {
     setLoading(true);
     try {
       const response = await taskService.getTaskWithStatements(taskId);
       setSelectedTask(response.data);
-      setStatements(response.data.statements);
     } catch (err) {
       setError("Error al cargar los detalles de la tarea.");
       console.error(err);
@@ -48,55 +49,100 @@ const TaskListAndDetails = () => {
     setIsCreatingTask(false); // Volver a la vista de lista de tareas
   };
 
+  // Función para manejar la actualización de la tarea
+  const handleTaskUpdated = (updatedTask) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
+    setSelectedTask(updatedTask); // Actualizar la tarea seleccionada
+    setIsEditingTask(false); // Volver a los detalles
+  };
+
+  // Función para manejar la eliminación de un enunciado
+  const handleDeleteStatement = async (taskId, statementId) => {
+    try {
+      await taskService.deleteStatementFromTask(taskId, statementId);
+      // Actualizar los enunciados de la tarea después de la eliminación
+      const updatedTask = await taskService.getTaskWithStatements(taskId);
+      setSelectedTask(updatedTask.data);
+    } catch (error) {
+      console.error("Error al eliminar el enunciado:", error);
+    }
+  };
+
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
-      {/* Lista de tareas */}
-      <div>
-        <h2>Lista de Tareas</h2>
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.id}>
-              <button onClick={() => fetchTaskDetails(task.id)}>
-                {task.title}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <button onClick={() => setIsCreatingTask(true)}>Crear Nueva Tarea</button>
-      </div>
+    <div>
+      {isCreatingTask ? (
+        <TaskCreateForm onTaskCreated={handleTaskCreated} />
+      ) : isEditingTask ? (
+        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} />
+      ) : (
+        <div style={{ display: "flex", gap: "20px" }}>
+          {/* Lista de tareas */}
+          <div>
+            <h2>Lista de Tareas</h2>
+            <ul>
+              {tasks.map((task) => (
+                <li key={task.id}>
+                  <button onClick={() => fetchTaskDetails(task.id)}>
+                    {task.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button onClick={() => setIsCreatingTask(true)}>Crear Nueva Tarea</button>
+          </div>
 
-      {/* Detalles de la tarea seleccionada */}
-      <div>
-        {selectedTask ? (
-          <>
-            <h2>Detalles de la Tarea</h2>
-            <h3>{selectedTask.title}</h3>
-            <p>Fecha de apertura: {new Date(selectedTask.opening_date).toLocaleDateString()}</p>
-            <p>Fecha de cierre: {new Date(selectedTask.closing_date).toLocaleString()}</p>
+          {/* Detalles de la tarea seleccionada */}
+          <div>
+            {selectedTask ? (
+              <>
+                <h2>Detalles de la Tarea</h2>
+                <h3>{selectedTask.title}</h3>
+                <p>
+                  Fecha de apertura:{" "}
+                  {new Date(selectedTask.opening_date).toLocaleDateString()}
+                </p>
+                <p>
+                  Fecha de cierre:{" "}
+                  {new Date(selectedTask.closing_date).toLocaleString()}
+                </p>
 
-            <h3>Enunciados</h3>
-            {statements.length > 0 ? (
-              <ul>
-                {statements.map((statement) => (
-                  <li key={statement.id}>
-                    <strong>Definición:</strong> {statement.definition}
-                    <br />
-                    <strong>Explicación:</strong> {statement.explanation}
-                  </li>
-                ))}
-              </ul>
+                <h3>Enunciados</h3>
+                {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
+                  <ul>
+                    {selectedTask.statements.map((statement) => (
+                      <li key={statement.id}>
+                        <strong>Definición:</strong> {statement.definition}
+                        <br />
+                        <strong>Explicación:</strong> {statement.explanation}
+                        <button
+                          onClick={() =>
+                            handleDeleteStatement(selectedTask.id, statement.id)
+                          }
+                        >
+                          Eliminar
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No hay enunciados para esta tarea.</p>
+                )}
+
+                <button onClick={() => setIsEditingTask(true)}>
+                  Editar tarea
+                </button>
+              </>
             ) : (
-              <p>No hay enunciados para esta tarea.</p>
+              <p>Selecciona una tarea para ver los detalles.</p>
             )}
-          </>
-        ) : (
-          <p>Selecciona una tarea para ver los detalles.</p>
-        )}
-      </div>
-      {isCreatingTask && <TaskCreateForm onTaskCreated={handleTaskCreated} />}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

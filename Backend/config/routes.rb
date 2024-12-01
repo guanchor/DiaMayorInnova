@@ -9,8 +9,10 @@ Rails.application.routes.draw do
   resources :entries
   resources :solutions
 
-
-  resources :tasks
+  resources :tasks do
+    delete '/statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
+  end
+  
   resources :statements
   resources :roles, only: [:index]
   

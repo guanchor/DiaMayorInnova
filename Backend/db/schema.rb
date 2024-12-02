@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_02_193006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +67,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
     t.integer "debit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_annotations_on_account_id"
     t.index ["entry_id"], name: "index_annotations_on_entry_id"
   end
 
@@ -179,8 +181,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_090135) do
   add_foreign_key "accounts", "accounting_plans"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "annotations", "accounts"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
+  add_foreign_key "help_examples", "accounts"
   add_foreign_key "solutions", "statements"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"

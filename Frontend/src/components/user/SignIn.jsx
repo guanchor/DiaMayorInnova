@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./Sign.css";
 
 const SignIn = () => {
+
+
+
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -16,18 +19,14 @@ const SignIn = () => {
     if (input.email !== "" && input.password !== "") {
       auth.signInAction(input.email, input.password)
         .then((response) => {
-          //console.log("Server response in SignIn.jsx:", response);
           const user = response?.data?.data?.user;
-          //console.log("User from response:", user);
           const roles = response?.data?.data?.roles;
-          //console.log("Roles from response:", roles);
           // Guardar roles en el contexto si no se han guardado aún
           if (roles) {
             auth.setRoles(roles);  // Guardamos los roles en el contexto
           }
           if (user && user.featured_image) {
             const avatarUrl = `http://localhost:3000${user.featured_image}`;
-            //console.log("Avatar URL:", avatarUrl);
             auth.setUserAvatarUrl(avatarUrl);
           } else {
             console.log("Response is missing user or featured_image");
@@ -38,7 +37,7 @@ const SignIn = () => {
         });
       return;
     }
-    //console.log(input.email + " y " + input.password);
+
     alert("Please provide a valid input");
   };
 
@@ -50,7 +49,7 @@ const SignIn = () => {
     }));
   };
 
-  const handleClick = () => {
+  const handleClick = () => { //preguntar eche
     navigate("/");
   }
 

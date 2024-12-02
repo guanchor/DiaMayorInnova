@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { navContext } from './navMenuContext'
 import { useAuth } from '../../context/AuthContext';
 
@@ -33,6 +33,12 @@ const NavStateProvider = ({ children }) => {
   const setStudentRol = () => {
     setRol("student")
   }
+
+  useEffect(() => {
+    setRol(roles[0]);
+  }, [roles])
+
+
 
 
   return (

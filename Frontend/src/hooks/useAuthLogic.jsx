@@ -80,10 +80,10 @@ const useAuthLogic = (navigate) => {
   const signInAction = async (email, password) => {
     try {
       const credentials = btoa(`${email}:${password}`);
-      //console.log("Credenciales codificadas:", credentials);
+      //console.log("CODIFICAAAADAAAAAASSSS:", credentials);
 
       const response = await authService.signIn(credentials);
-      //console.log("Respuesta del servidor completa:", response);
+      //console.log("RESPUESTA DEL SERVIDOR COMPLETA EN AUTHLOGIC:", response);
 
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;

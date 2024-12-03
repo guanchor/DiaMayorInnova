@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import statementService from "../../services/statementService";
-import SolutionForm from "../solution/SolutionForm";
+import SolutionList from "../solution/SolutionList";
 
 
 const StatementForm = ({ onStatementCreated }) => {
@@ -10,20 +10,20 @@ const StatementForm = ({ onStatementCreated }) => {
 
   // Estado para manejar las soluciones, entradas y anotaciones
   const [solutions, setSolutions] = useState([{
-      description: "",
-      entries: [{
-          entry_number: 1,
-          entry_date: "",
-          annotations: [{ number: 1, credit: 0, debit: 0 }],
-        }],
-    }]);
+    description: "",
+    entries: [{
+      entry_number: 1,
+      entry_date: "",
+      annotations: [{ number: 1, credit: 0, debit: 0 }],
+    }],
+  }]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const statementData = { 
-      definition, 
-      explanation, 
-      is_public: isPublic, 
+    const statementData = {
+      definition,
+      explanation,
+      is_public: isPublic,
       solutions_attributes: solutions.map((solution) => ({
         description: solution.description,
         entries_attributes: solution.entries.map((entry) => ({
@@ -80,15 +80,8 @@ const StatementForm = ({ onStatementCreated }) => {
           />
         </label>
       </div>
-      {solutions.map((solution, index) => (
-        <SolutionForm
-          key={index}
-          solution={solution}
-          solutionIndex={index}
-          solutions={solutions}
-          setSolutions={setSolutions}
-        />
-      ))}
+
+      <SolutionList solutions={solutions} setSolutions={setSolutions} />
       <button type="submit">Crear Enunciado</button>
     </form>
   );

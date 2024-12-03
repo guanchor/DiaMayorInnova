@@ -15,8 +15,6 @@
   accPlan3 = AccountingPlan.create(name: "PGC prueba2", description: "Plan para probar el Crud 2", acronym: "PGC prueba2")
   school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
   school1 = SchoolCenter.create(school_name: "IES Siete Palmas",address: "calle de siete palmas 1",phone: "987654321",email: "sietePalmas@ies.elrincon.es",website: "www.sietePalmas.es",province: "Las Palmas")
-  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0))
-  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0))
 
   # Crear roles si no existen
   roles = %w[admin teacher student]
@@ -51,7 +49,6 @@
     u.password_confirmation = 'elrincon'
   end
 
-
   teacher_role = Role.find_by(name: 'teacher')
   if teacher_role && !user2.has_role?('teacher')
     user2.roles << teacher_role
@@ -67,7 +64,6 @@
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
   end
-
 
   teacher_role = Role.find_by(name: 'teacher')
   if teacher_role && !user.has_role?('teacher')
@@ -93,6 +89,9 @@
     puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
   end
   
+  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+
   statement1 = Statement.create(definition: "Compramos mercaderías a 30 días por 1250€. El proveedor nos incluye en factura un descuento comercial del 2%. Además, la compra tiene unos gastos de transporte de 100€", explanation: "Explicación 1", user: user2, is_public: false)
   statement2 = Statement.create(definition: "Vendemos mercaderías por valor de 3000€. Para el cobro giramos una letra de cambio a 30 días, que es aceptada.", explanation: "Explicación 2", user: user2, is_public: false)
   statement3 = Statement.create(definition: "Devolvemos mercaderías por valor de 200€  al proveedor, por estar inservibles.", explanation: "Explicación 3", user: user2, is_public: false)

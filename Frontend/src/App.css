@@ -9,7 +9,6 @@
 
 .home_section {
   padding: 0;
-  opacity: 1;
   width: 100%;
   height: 100%;
   display: grid;
@@ -20,11 +19,6 @@
     "main main aside"
     "main main aside";
 
-  transition: opacity 200ms ease-in-out;
-
-  @starting-style {
-    opacity: 0;
-  }
 }
 
 .top {

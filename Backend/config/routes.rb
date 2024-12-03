@@ -9,9 +9,15 @@ Rails.application.routes.draw do
   resources :entries
   resources :solutions
 
+  resources :tasks do
+    delete '/statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
+  end
+  
+  resources :statements, only: [:create, :index, :show, :update, :destroy] do
+    post 'add_solution', on: :member
+    get 'solutions', to: 'statements#get_solutions', on: :member
+  end
 
-  resources :tasks
-  resources :statements
   resources :roles, only: [:index]
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -24,7 +30,7 @@ Rails.application.routes.draw do
     post 'validate_token', to: 'sessions#valid_token'
   end
 
-  resources :users, only: [:index, :show, :create, :update, :destroy]
+  #resources :users, only: [:index, :show, :create, :update, :destroy]
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

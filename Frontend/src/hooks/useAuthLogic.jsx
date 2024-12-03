@@ -26,6 +26,12 @@ const useAuthLogic = (navigate) => {
         const userData = response.data.data.user;
         const roles = response.data.data.roles;
         const newToken = response.data.data.user.authentication_token;
+        //console.log("USER:", userData);
+        //console.log("ROLES:", roles);
+        //console.log("TOKEN:", newToken);
+        console.log("Token en useAuthLogic antes de validación:", newToken);
+        console.log("User en useAuthLogic antes de validación:", user);
+        console.log("UserDataaaaaaa en useAuthLogic antes de validación:", userData);
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);
@@ -55,9 +61,9 @@ const useAuthLogic = (navigate) => {
     }
   };
 
-  const signUpAction = async (encodedCredentials, formData) => {
+  const signUpAction = async (formData) => {
     try {
-      const response = await authService.signUp(formData, encodedCredentials);
+      const response = await authService.signUp(formData);
 
       if (response.data.is_success) {
         navigate("/Home");
@@ -73,10 +79,10 @@ const useAuthLogic = (navigate) => {
   const signInAction = async (email, password) => {
     try {
       const credentials = btoa(`${email}:${password}`);
-      //console.log("Credenciales codificadas:", credentials);
+      //console.log("CODIFICAAAADAAAAAASSSS:", credentials);
 
       const response = await authService.signIn(credentials);
-      //console.log("Respuesta del servidor completa:", response);
+      //console.log("RESPUESTA DEL SERVIDOR COMPLETA EN AUTHLOGIC:", response);
 
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;

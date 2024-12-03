@@ -9,12 +9,12 @@ export const AuthProvider = ({ children }) => {
   const auth = useAuthLogic(navigate);
 
   useEffect(() => {
-    auth.checkTokenValidity();
-    if (auth.token) {
-      localStorage.setItem("site", auth.token);
-    } else {
-      localStorage.removeItem("site");
-    }
+      auth.checkTokenValidity();
+      if (auth.token) {
+        localStorage.setItem("site", auth.token);
+      } else {
+        localStorage.removeItem("site");
+      }
   }, [auth.token]);
 
   if (auth.loading || !auth.roles) {

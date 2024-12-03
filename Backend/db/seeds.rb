@@ -15,14 +15,89 @@
   accPlan3 = AccountingPlan.create(name: "PGC prueba2", description: "Plan para probar el Crud 2", acronym: "PGC prueba2")
   school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
   school1 = SchoolCenter.create(school_name: "IES Siete Palmas",address: "calle de siete palmas 1",phone: "987654321",email: "sietePalmas@ies.elrincon.es",website: "www.sietePalmas.es",province: "Las Palmas")
-  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0))
-  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0))
-  statement1 = Statement.create(definition: "Compramos mercaderías a 30 días por 1250€. El proveedor nos incluye en factura un descuento comercial del 2%. Además, la compra tiene unos gastos de transporte de 100€", explanation: "Explicación 1")
-  statement2 = Statement.create(definition: "Vendemos mercaderías por valor de 3000€. Para el cobro giramos una letra de cambio a 30 días, que es aceptada.", explanation: "Explicación 2")
-  statement3 = Statement.create(definition: "Devolvemos mercaderías por valor de 200€  al proveedor, por estar inservibles.", explanation: "Explicación 3")
-  statement4 = Statement.create(definition: "El proveedor nos hace un descuento del 20% en la mercancía que está un poco defectuosa. Se paga al proveedor mediante transferencia.", explanation: "Explicación 4")
-  statement5 = Statement.create(definition: "Descontamos la letra de cambio en la entidad bancaria, la cual nos cobra una comisión de 30€ y unos intereses de 80€.", explanation: "Explicación 5")
-  statement6 = Statement.create(definition: "Se devenga la nómina de uno de nuestros trabajadores. El importe íntegro es de 2000€. La cuota empresarial a la Seguridad Social asciende a 700€. La cuota de la SS del trabajador sería de 30€. La retención de IRPF sería de 350€. Pasada 1 semana se paga mediante trasferencia bancaria.", explanation: "Explicación 6")
+
+  # Crear roles si no existen
+  roles = %w[admin teacher student]
+
+  roles.each do |role_name|
+    Role.find_or_create_by(name: role_name)
+  end
+
+  # Crear un usuario de ejemplo (o encontrar uno existente)
+  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
+    u.name = "Admin"
+    u.first_lastName = "Admin"
+    u.second_lastName = "Admin"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+  # Asignar el rol 'admin' al usuario
+  admin_role = Role.find_by(name: 'admin')
+  if admin_role && !user.has_role?('admin')
+    user.roles << admin_role
+    puts "Rol 'admin' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
+  end
+
+  user2 = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
+    u.name = "Tiburcio"
+    u.first_lastName = "Cruz"
+    u.second_lastName = "Ravelo"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+  teacher_role = Role.find_by(name: 'teacher')
+  if teacher_role && !user2.has_role?('teacher')
+    user2.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user2.email}"
+  else
+    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
+  end
+
+  user = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
+    u.name = "Miguel"
+    u.first_lastName = "Figueroa"
+    u.second_lastName = "García"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+  teacher_role = Role.find_by(name: 'teacher')
+  if teacher_role && !user.has_role?('teacher')
+    user.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
+  end
+
+  user = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
+    u.name = "Echedey"
+    u.first_lastName = "Henríquez"
+    u.second_lastName = "Hernández"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+  student_rol = Role.find_by(name: 'student')
+  if student_rol && !user.has_role?('student')
+    user.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
+  end
+  
+  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+
+  statement1 = Statement.create(definition: "Compramos mercaderías a 30 días por 1250€. El proveedor nos incluye en factura un descuento comercial del 2%. Además, la compra tiene unos gastos de transporte de 100€", explanation: "Explicación 1", user: user2, is_public: false)
+  statement2 = Statement.create(definition: "Vendemos mercaderías por valor de 3000€. Para el cobro giramos una letra de cambio a 30 días, que es aceptada.", explanation: "Explicación 2", user: user2, is_public: false)
+  statement3 = Statement.create(definition: "Devolvemos mercaderías por valor de 200€  al proveedor, por estar inservibles.", explanation: "Explicación 3", user: user2, is_public: false)
+  statement4 = Statement.create(definition: "El proveedor nos hace un descuento del 20% en la mercancía que está un poco defectuosa. Se paga al proveedor mediante transferencia.", explanation: "Explicación 4", user: user2, is_public: false)
+  statement5 = Statement.create(definition: "Descontamos la letra de cambio en la entidad bancaria, la cual nos cobra una comisión de 30€ y unos intereses de 80€.", explanation: "Explicación 5", user: user2, is_public: true)
+  statement6 = Statement.create(definition: "Se devenga la nómina de uno de nuestros trabajadores. El importe íntegro es de 2000€. La cuota empresarial a la Seguridad Social asciende a 700€. La cuota de la SS del trabajador sería de 30€. La retención de IRPF sería de 350€. Pasada 1 semana se paga mediante trasferencia bancaria.", explanation: "Explicación 6", user: user2, is_public: false)
 
   task1.statements << statement1
   task1.statements << statement2
@@ -56,113 +131,3 @@
   helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1)
   helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2)
   helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3)
-
-  # Crear roles si no existen
-  roles = %w[admin teacher student]
-
-  roles.each do |role_name|
-    Role.find_or_create_by(name: role_name)
-  end
-
-  # Crear un usuario de ejemplo (o encontrar uno existente)
-  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
-    u.name = "Admin"
-    u.first_lastName = "Admin"
-    u.second_lastName = "Admin"
-    u.password = 'password123'
-    u.password_confirmation = 'password123'
-  end
-
-  # Asignar el rol 'admin' al usuario
-  admin_role = Role.find_by(name: 'admin')
-  if admin_role && !user.has_role?('admin')
-    user.roles << admin_role
-    puts "Rol 'admin' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
-  end
-
-  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
-    u.name = "Admin"
-    u.first_lastName = "Admin"
-    u.second_lastName = "Admin"
-    u.password = 'password123'
-    u.password_confirmation = 'password123'
-  end
-
-  # Asignar el rol 'admin' al usuario
-  admin_role = Role.find_by(name: 'teacher')
-  if admin_role && !user.has_role?('teacher')
-    user.roles << admin_role
-    puts "Rol 'admin' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
-  end
-
-  user = User.find_or_create_by(email: 'admin@admin.es') do |u|
-    u.name = "Admin"
-    u.first_lastName = "Admin"
-    u.second_lastName = "Admin"
-    u.password = 'password123'
-    u.password_confirmation = 'password123'
-  end
-
-  # Asignar el rol 'admin' al usuario
-  admin_role = Role.find_by(name: 'student')
-  if admin_role && !user.has_role?('student')
-    user.roles << admin_role
-    puts "Rol 'admin' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
-  end
-
-  user = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
-    u.name = "Tiburcio"
-    u.first_lastName = "Cruz"
-    u.second_lastName = "Ravelo"
-    u.password = 'elrincon'
-    u.password_confirmation = 'elrincon'
-  end
-
-
-  admin_role = Role.find_by(name: 'teacher')
-  if admin_role && !user.has_role?('teacher')
-    user.roles << admin_role
-    puts "Rol 'teacher' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
-  end
-
-  user = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
-    u.name = "Miguel"
-    u.first_lastName = "Figueroa"
-    u.second_lastName = "García"
-    u.password = 'elrincon'
-    u.password_confirmation = 'elrincon'
-  end
-
-
-  admin_role = Role.find_by(name: 'teacher')
-  if admin_role && !user.has_role?('teacher')
-    user.roles << admin_role
-    puts "Rol 'teacher' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
-  end
-
-  user = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
-    u.name = "Echedey"
-    u.first_lastName = "Henríquez"
-    u.second_lastName = "Hernández"
-    u.password = 'elrincon'
-    u.password_confirmation = 'elrincon'
-  end
-
-  admin_role = Role.find_by(name: 'student')
-  if admin_role && !user.has_role?('student')
-    user.roles << admin_role
-    puts "Rol 'student' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
-  end
-  

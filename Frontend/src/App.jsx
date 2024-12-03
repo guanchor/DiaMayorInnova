@@ -13,6 +13,7 @@ import SignIn from "./components/user/SignIn";
 import SignUp from "./components/user/SignUp";
 import TaskPage from "./pages/task-page/TaskPage"
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
+import NavegationMenu from "./components/navegation-menu/NavegationMenu";
 
 import './App.css';
 import './assets/Styles/Global.css';
@@ -28,6 +29,7 @@ function App() {
       <Router>
         <AuthProvider>
           <NavStateProvider>
+            <NavegationMenu />
             <div className='app-main'>
               <Routes>
                 <Route path="/home" element={<Home />} />

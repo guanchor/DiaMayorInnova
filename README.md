@@ -6,6 +6,52 @@
 
 The project involves the development, by the students of IES El Rincón, of a cross-platform application that will assist students in the Professional Family of Administration and Management with the modules TEB, TUM, EPE, PNG, and COB in carrying out accounting entries. The application will allow the implementation of aids related to accounting accounts, as well as practical examples based on the proposed activities, which will serve as a guide and support in the learning process. The starting point is the spreadsheet created by the project coordinator. The project aims to create an application that will replace this spreadsheet, enabling its functionality on any mobile device, tablet, or PC.
 
+## About The Project
+
+The application to be developed aims to be an easy-to-use learning tool for both students and teachers. It should work on mobile devices, tablets, and PCs. There will be three modes of use:
+
+Exam Mode: The student completes the task without any additional aids.
+Learning Mode: A mode for learning, where aids are provided.
+Exercise Mode: Similar to Exam Mode, but students can also complete it at home.
+Teachers will have the ability to create statements (tasks) and also add solutions for each one. The application should automatically grade the tasks, calculating the corresponding mark. These marks will be accessible to the teachers, who can download them. Additionally, the statements created by the teachers can be set as private (only visible to the creator) or public (available for other teachers to use).
+
+There will be three types of users with different permissions:
+
+Administrator (Admin): Has full permissions in the application.
+Teachers: Can create statements, set them as public or private, and assign tasks (a set of statements) to a group of students within a specified period. They can also view the marks of the students who have completed the tasks.
+Students: In Learning Mode, they can perform tasks without these tasks being created on the platform. In Exercise Mode, they can complete tasks assigned by their teacher, view solutions, and save results. In Exam Mode, students will complete tasks without aids, similar to Exercise Mode.
+The application will also manage student groups so that teachers can view and manage the tasks for each group.
+
+Support for multiple school centers can be added, although it is not a priority, to identify which center each student and teacher belongs to.
+
+In the Diary tab, accounting entries will be managed, which are related to the statements. A statement generally corresponds to an entry, although there may be cases where a statement involves multiple entries. Additionally, an entry may have several accounting postings, and although the order of the postings may vary, the solution remains valid. In some cases, the same statement may have more than one solution, in which case the teacher must enter all possible solutions.
+
+In the Ledger tab, a dynamic table will be automatically generated based on the data from the Diary.
+
+In the Trial Balance tab, the data will also be automatically calculated from the information in the Diary.
+
+The PGC tab will be used to access the General Accounting Plan, particularly the PGC for SMEs. There will be five types of accounting plans provided in Excel format by IES Santa Brígida. Each accounting plan has five columns: account number, account definition, debit reasons, credit reasons, and the type of account (asset, liability, income, or expense). Additionally, teachers can activate or deactivate aids (examples of how to use the accounts) in this tab, and these aids will be available to students while working on the accounting entries in the Diary tab.
+
+This set of features forms an integrated application designed to facilitate learning in accounting with support for task creation, automatic grading, and result management.
+
+## Diagrams
+### Use Case Diagram
+As explained in the previous section, we visually illustrate in the following diagram all the actions that each of the roles can perform.
+<div style="text-align: center; height: fit-content; margin: 20px 0">
+    <img src="./Docs/Screenshots/casos.png" alt="use case diagram" width="90%">
+</div>
+
+### Class Diagram
+<div style="text-align: center; height: fit-content; margin: 20px 0">
+    <img src="./Docs/Screenshots/Diagrama.png" alt="class diagram" width="90%">
+</div>
+
+Thanks to the class diagram, we can start identifying the different entities that need to be created to create the database.
+
+## Figma Prototype 🎨
+
+Once we have a first idea of the application, we can start to create the prototype, to create it we have used Figma, here is the prototype. [Figma Prototype](https://www.figma.com/design/umvmGhnsnixHyXQL10bJx4/Dia-mayor?node-id=0-1&t=BXY9WzeRwVCoMg57-1)
+
 ## Getting Started 🚀
 
 See Installation for instructions on how to deploy the project.

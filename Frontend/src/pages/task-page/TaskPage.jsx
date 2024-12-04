@@ -1,9 +1,12 @@
 import React from 'react'
+import EntriesSection from '../../components/entries-section/EntriesSection'
+import "./TaskPage.css"
 
 const TaskPage = () => {
   return (
-    <div>
-      <p>Task Page</p>
+    <div className='task_page_container'>
+      <p className='head_task'>Task Page</p>
+      <EntriesSection />
     </div>
   )
 }

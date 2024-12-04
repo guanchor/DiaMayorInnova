@@ -131,3 +131,15 @@
   helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1)
   helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2)
   helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3)
+
+  mark1 = Mark.create(mark: 5.5)
+  mark2 = Mark.create(mark: 9)
+  mark3 = Mark.create(mark: 7.5)
+
+  student_entrie1 = StudentEntry.create(entry_number: 1, entry_date:  Date.new(2024,11,25), mark: mark1 )
+  student_entrie2 = StudentEntry.create(entry_number: 2, entry_date:  Date.new(2024,11,25), mark: mark2)
+  student_entrie3 = StudentEntry.create(entry_number: 3, entry_date:  Date.new(2024,11,25), mark: mark3 )
+
+  student_annotation1 = StudentAnnotation.create(number: 1, account_number: 1234, credit: 100 , debit: 0, student_entry: student_entrie1, account: account1)
+  student_annotation1 = StudentAnnotation.create(number: 2, account_number: 1334, credit: 0 , debit: 1000, student_entry: student_entrie2, account: account2)
+  student_annotation1 = StudentAnnotation.create(number: 3, account_number: 2234, credit: 100 , debit: 0, student_entry: student_entrie3, account: account3)

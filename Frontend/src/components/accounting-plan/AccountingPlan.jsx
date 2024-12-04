@@ -78,7 +78,7 @@ const AccountingPlan = (props) => {
       {currentAccountingPlan ? (
         <div>
           <h4>Accounting Plan</h4>
-          <form>
+          <form className=".accounting-plan__form">
             <div>
               <label htmlFor="name">Nombre</label>
               <input

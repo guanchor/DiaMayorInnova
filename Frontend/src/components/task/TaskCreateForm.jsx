@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import TaskForm from "./TaskForm.jsx";
 import TaskPreview from "./TaskPreview.jsx";
 import StatementsSelection from "./StatementsSelection.jsx";
+import "./TaskPage.css";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { user } = useAuth();
@@ -31,9 +32,9 @@ const TaskCreateForm = ({ onTaskCreated }) => {
 
   const handleStatementSelection = (statement) => {
     if (selectedStatements.includes(statement.id)) {
-      setSelectedStatements((prev) => prev.filter((id) => id !== statement.id));
+      setSelectedStatements((prevSelected) => prevSelected.filter((id) => id !== statement.id));
     } else {
-      setSelectedStatements((prev) => [...prev, statement.id]);
+      setSelectedStatements((prevSelected) => [...prevSelected, statement.id]);
     }
   };
 
@@ -48,6 +49,10 @@ const TaskCreateForm = ({ onTaskCreated }) => {
 
   const handleEditSolutions = (statementId) => {
     setEditMode((prev) => (prev === statementId ? false : statementId));
+  };
+
+  const handleRemoveStatement = (statementId) => {
+    setSelectedStatements((prev) => prev.filter((id) => id !== statementId));
   };
 
   const handleSubmit = async () => {
@@ -70,7 +75,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <>
       <TaskForm
         title={title}
         setTitle={setTitle}
@@ -78,29 +83,26 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         setOpeningDate={setOpeningDate}
         closingDate={closingDate}
         setClosingDate={setClosingDate}
+        handleSubmit={handleSubmit}
       />
-      <div style={{ width: "45%", marginLeft: "20px" }}>
-        <StatementsSelection
-          statements={statements}
-          selectedStatements={selectedStatements}
-          handleStatementSelection={handleStatementSelection}
-          handleViewSolutions={handleViewSolutions}
-          handleEditSolutions={handleEditSolutions}
-          solutions={solutions}
-          editMode={editMode}
-        />
-        <TaskPreview
-          title={title}
-          openingDate={openingDate}
-          closingDate={closingDate}
-          statements={statements}
-          selectedStatements={selectedStatements}
-        />
-        <button type="button" onClick={handleSubmit}>
-          Finalizar
-        </button>
-      </div>
-    </div>
+      <StatementsSelection
+        statements={statements}
+        selectedStatements={selectedStatements}
+        handleStatementSelection={handleStatementSelection}
+        handleViewSolutions={handleViewSolutions}
+        handleEditSolutions={handleEditSolutions}
+        solutions={solutions}
+        editMode={editMode}
+      />
+      <TaskPreview
+        title={title}
+        openingDate={openingDate}
+        closingDate={closingDate}
+        statements={statements}
+        selectedStatements={selectedStatements}
+        handleRemoveStatement={handleRemoveStatement}
+      />
+    </>
   );
 };
 

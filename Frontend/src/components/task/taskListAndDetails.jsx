@@ -4,6 +4,7 @@ import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
 import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
 import { useAuth } from "../../context/AuthContext";
+import "./TaskPage.css";
 
 const TaskListAndDetails = () => {
   const { user } = useAuth();
@@ -103,7 +104,7 @@ const TaskListAndDetails = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <main className="task-page">
       {isCreatingTask ? (
         <TaskCreateForm onTaskCreated={handleTaskCreated} />
       ) : isEditingTask ? (
@@ -146,8 +147,6 @@ const TaskListAndDetails = () => {
                     {selectedTask.statements.map((statement) => (
                       <li key={`${statement.id}-${statement.created_at}`}>
                         <strong>Definición:</strong> {statement.definition}
-                        <br />
-                        <strong>Explicación:</strong> {statement.explanation}
                         <button
                           onClick={() =>
                             handleDeleteStatement(selectedTask.id, statement.id)
@@ -172,7 +171,7 @@ const TaskListAndDetails = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

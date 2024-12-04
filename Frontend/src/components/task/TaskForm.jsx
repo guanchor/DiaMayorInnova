@@ -1,34 +1,46 @@
 import React from "react";
+import "./TaskPage.css";
 
-const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate }) => {
+const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit }) => {
   return (
-    <form style={{ width: "45%" }}>
-      <h2>Crear Tarea</h2>
-      <div>
-        <label>Título:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Fecha de apertura:</label>
-        <input
-          type="date"
-          value={openingDate}
-          onChange={(e) => setOpeningDate(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Fecha de cierre:</label>
-        <input
-          type="datetime-local"
-          value={closingDate}
-          onChange={(e) => setClosingDate(e.target.value)}
-        />
-      </div>
-    </form>
+    <section className="task-page__form">
+      <form className="task-page__form--form">
+        <h2 className="task-page__header">Crear Tarea</h2>
+        <div>
+          <label className="task-page__label--title">Tarea:</label>
+          <input
+            className="task-page__input"
+            type="text"
+            placeholder="Título de la tarea"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="task-page__dates">
+          <div className="task-page__date">
+            <label className="task-page__label">Fecha de apertura:</label>
+            <input
+              className="task-page__input"
+              type="date"
+              value={openingDate}
+              onChange={(e) => setOpeningDate(e.target.value)}
+            />
+          </div>
+          <div className="task-page__date">
+            <label className="task-page__label">Fecha de cierre:</label>
+            <input
+              className="task-page__input"
+              type="datetime-local"
+              value={closingDate}
+              onChange={(e) => setClosingDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <button type="button" className="task-page__button--form" onClick={handleSubmit}>
+          Finalizar
+        </button>
+      </form>
+    </section>
   );
 };
 

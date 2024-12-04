@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SolutionsViewer from "../solution/SolutionsViewer";
 import statementService from "../../services/statementService";
+import "./TaskPage.css";
 
 const StatementsSelection = ({
   statements,
@@ -49,50 +50,58 @@ const StatementsSelection = ({
     return <div>Error: No se recibieron enunciados válidos</div>;
   }
   return (
-    <div>
-      <h3>Seleccionar Enunciados</h3>
-      <ul>
-        {statements.map((statement) => (
-          <li key={statement.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedStatements.includes(statement.id)}
-                onChange={() => handleStatementSelection(statement)}
-              />
-              {statement.definition}
-            </label>
-            <button type="button" onClick={() => viewSolutions(statement.id)}>
-              Ver Soluciones
-            </button>
-            <button type="button" onClick={() => handleEditSolutions(statement.id)}>
-              {editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}
-            </button>
-            {solutions[statement.id] && !editMode === statement.id && (
-              <ul>
-                {solutions[statement.id].map((solution) => (
-                  <li key={solution.id}>{solution.description}</li>
-                ))}
-              </ul>
-
-            )}
-            {editMode === statement.id && (
-              <div>
-                <h4>Editar Soluciones</h4>
-                {/* Formulario para editar las soluciones */}
-                <button type="button">Guardar Cambios</button>
+    <section className="task-page__selection">
+      <div className="task-page__selection--content">
+        <h3 className="task-page__header">Enunciados</h3>
+        <ul className="task-page__list">
+          {statements.map((statement) => (
+            <li className="task-page__list-item" key={statement.id}>
+              <div className="task-page__statement-container">
+                <span className="task-page__statement">{statement.definition}</span>
+                <div className="task-page__actions">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedStatements.includes(statement.id)}
+                      onChange={() => handleStatementSelection(statement)}
+                    />
+                    <span className="task-page__button-text">Añadir</span>
+                  </label>
+                  <button className="task-page__button--edit" type="button" onClick={() => viewSolutions(statement.id)}>
+                    <i className="fi fi-rr-interrogation interrogation"></i>
+                    <span className="task-page__button-text">Ver Soluciones</span>
+                  </button>
+                  <button className="task-page__button--edit" type="button" onClick={() => handleEditSolutions(statement.id)}>
+                    <i className="fi fi-rr-pencil pencil"></i>
+                    {editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}
+                  </button>
+                </div>
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
-      {showSolutions && (
-        <div>
-          <button onClick={hideSolutions}>Cerrar Soluciones</button>
-          <SolutionsViewer solutions={currentSolutions} />
-        </div>
-      )}
-    </div>
+              {solutions[statement.id] && !editMode === statement.id && (
+                <ul>
+                  {solutions[statement.id].map((solution) => (
+                    <li key={solution.id}>{solution.description}</li>
+                  ))}
+                </ul>
+              )}
+              {editMode === statement.id && (
+                <div>
+                  <span className="task-page__button-text">Editar Soluciones</span>
+                  {/* Formulario para editar las soluciones */}
+                  <button type="button">Guardar Cambios</button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+        {showSolutions && (
+          <div className="task-page__solutions-viewer">
+            <button className="task-page__button" onClick={hideSolutions}>Cerrar Soluciones</button>
+            <SolutionsViewer solutions={currentSolutions} />
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 

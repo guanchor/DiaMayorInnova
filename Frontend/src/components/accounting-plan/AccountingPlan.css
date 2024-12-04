@@ -63,7 +63,7 @@ input {
   border-radius: 5px;
 }
 
-form {
+.accounting-plan__form {
   max-width: 500px; 
   margin: 0 auto;
 }

@@ -4,6 +4,7 @@ import { navContext } from '../context/nav-menu/navMenuContext';
 import Shortcuts from "../components/shortcuts/Shortcuts";
 import StudentMark from "../components/student-mark/StudentMark";
 import StudentAside from "../components/student-aside/StudentAside";
+import TaskListAndDetails from "../components/task/taskListAndDetails";
 
 
 function Home() {
@@ -40,11 +41,11 @@ function Home() {
               <button onClick={() => navigate("/class-list")}>Mostrar la lista de Grupos de clase</button>
               <button onClick={() => navigate("/accounting-plans")}>Mostrar la lista de Accounting plans</button>
               <button onClick={() => navigate("/schools")}>Mostrar Schools centers</button>
-              <button onClick={() => navigate("/tasks")}>Mostrar Tareas</button>
+              <button onClick={() => navigate("/tasks", { state: { createTask: true } })}>Crear Tarea</button>
               <button onClick={() => navigate("/statements")}>Mostrar Enunciados</button>
             </div>
           </section>
-          <aside className="aside"></aside>
+          <aside className="aside"><TaskListAndDetails /></aside>
         </main>
       </>
     )

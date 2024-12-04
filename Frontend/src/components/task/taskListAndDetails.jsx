@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
 import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
@@ -7,42 +7,46 @@ import { useAuth } from "../../context/AuthContext";
 import "./TaskPage.css";
 
 const TaskListAndDetails = () => {
+  const location = useLocation();
   const { user } = useAuth();
-  const [tasks, setTasks] = useState([]); // Lista de tareas
-  const [selectedTask, setSelectedTask] = useState(null); // Tarea seleccionada
-  const [loading, setLoading] = useState(false); // Indicador de carga
-  const [error, setError] = useState(null); // Manejo de errores
+  const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
-  const [isEditingTask, setIsEditingTask] = useState(false); // Controlador para cambiar a modo de edición
+  const [isEditingTask, setIsEditingTask] = useState(false);
 
   // Obtener todas las tareas al cargar el componente
   useEffect(() => {
+    if (location.state?.createTask) {
+      setIsCreatingTask(true);
+    }
     const fetchTasks = async () => {
       setLoading(true);
       try {
-        console.log("Solicitando tareas al servicio...");
+        //console.log("Solicitando tareas al servicio...");
         const response = await taskService.getAllTasks();
-        console.log("Tareas recibidas:", response.data);
+        //console.log("Tareas recibidas:", response.data);
         const filteredTasks = response.data.filter((task) => task.created_by === user.id);
         setTasks(filteredTasks);
       } catch (err) {
         setError("Error al cargar las tareas.");
         console.error("Error fetching tasks:", err);
       } finally {
-        console.log("Finalizando la carga de tareas.");
+        //console.log("Finalizando la carga de tareas.");
         setLoading(false);
       }
     };
-    console.log("Usuario actual:", user);
-    if (user?.id){
-      console.log("Cargando tareas para el usuario:", user.id);
+    //console.log("Usuario actual:", user);
+    if (user?.id) {
+      //console.log("Cargando tareas para el usuario:", user.id);
       fetchTasks(); // Solo intenta cargar si el usuario está autenticado
-    }else {
-      console.log("Usuario no autenticado o ID faltante.");
+    } else {
+      //console.log("Usuario no autenticado o ID faltante.");
       setLoading(false);
       setTasks([]);
     }
-  }, [user]);
+  }, [user, location.state]);
 
   // Obtener los detalles de la tarea seleccionada
   const fetchTaskDetails = async (taskId) => {
@@ -61,20 +65,20 @@ const TaskListAndDetails = () => {
   // Función para manejar la creación de una nueva tarea
   const handleTaskCreated = (newTask) => {
     if (newTask?.title) {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+      setTasks((prevTasks) => [...prevTasks, newTask]);
     } else {
       // Si la tarea creada no tiene el título, recargamos la lista completa
-    const fetchTasks = async () => {
-      try {
-        const response = await taskService.getAllTasks();
-        setTasks(response.data); // Recarga la lista
-      } catch (err) {
-        setError("Error al cargar las tareas.");
-        console.error("Error fetching tasks:", err);
-      }
-    };
-    fetchTasks();
-  }
+      const fetchTasks = async () => {
+        try {
+          const response = await taskService.getAllTasks();
+          setTasks(response.data); // Recarga la lista
+        } catch (err) {
+          setError("Error al cargar las tareas.");
+          console.error("Error fetching tasks:", err);
+        }
+      };
+      fetchTasks();
+    }
     setIsCreatingTask(false); // Volver a la vista de lista de tareas
   };
 
@@ -106,14 +110,14 @@ const TaskListAndDetails = () => {
   return (
     <main className="task-page">
       {isCreatingTask ? (
-        <TaskCreateForm onTaskCreated={handleTaskCreated} />
+        <TaskCreateForm onTaskCreated={handleTaskCreated} /> // Esto es el botón Crear tarea una vez le das al enunciado 
       ) : isEditingTask ? (
-        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} />
+        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} /> // Esto es editar la tarea
       ) : (
         <div style={{ display: "flex", gap: "20px" }}>
           {/* Lista de tareas */}
           <div>
-            <h2>Lista de Tareas</h2>
+            <h2>Tareas Activa</h2>
             <ul>
               {tasks.map((task) => (
                 <li key={`${task.id}-${task.created_at}`}>

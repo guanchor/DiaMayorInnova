@@ -8,9 +8,9 @@ scRoutes.push({
 })
 
 scRoutes.push({
-  to: "/task",
+  to: "/tasks",
   icon: "fi fi-rr-graduation-cap",
-  name: "tareas",
+  name: "Crear tarea",
   rol: ["teacher"],
 })
 

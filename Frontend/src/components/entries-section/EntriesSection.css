@@ -1,0 +1,15 @@
+.entry_container {
+  padding: var(--gap-m);
+  background-color: var(--Color-White);
+  border-radius: var(--r-xs);
+  grid-area: entry;
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-s);
+  overflow-y: scroll;
+
+}
+
+.entry_container::-webkit-scrollbar {
+  display: none;
+}

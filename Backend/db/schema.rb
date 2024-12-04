@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_02_193006) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_04_111958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,6 +102,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_193006) do
     t.index ["account_id"], name: "index_help_examples_on_account_id"
   end
 
+  create_table "marks", force: :cascade do |t|
+    t.decimal "mark"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -135,6 +141,28 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_193006) do
     t.bigint "user_id", null: false
     t.boolean "is_public", default: false
     t.index ["user_id"], name: "index_statements_on_user_id"
+  end
+
+  create_table "student_annotations", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.integer "number"
+    t.integer "account_number"
+    t.integer "credit"
+    t.integer "debit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "student_entry_id", null: false
+    t.index ["account_id"], name: "index_student_annotations_on_account_id"
+    t.index ["student_entry_id"], name: "index_student_annotations_on_student_entry_id"
+  end
+
+  create_table "student_entries", force: :cascade do |t|
+    t.integer "entry_number"
+    t.date "entry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "mark_id", null: false
+    t.index ["mark_id"], name: "index_student_entries_on_mark_id"
   end
 
   create_table "task_statements", force: :cascade do |t|
@@ -191,6 +219,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_193006) do
   add_foreign_key "help_examples", "accounts"
   add_foreign_key "solutions", "statements"
   add_foreign_key "statements", "users"
+  add_foreign_key "student_annotations", "accounts"
+  add_foreign_key "student_annotations", "student_entries"
+  add_foreign_key "student_entries", "marks"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
   add_foreign_key "user_roles", "roles"

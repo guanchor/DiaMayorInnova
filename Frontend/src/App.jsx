@@ -15,6 +15,14 @@ import NavegationMenu from './components/navegation-menu/NavegationMenu';
 import TaskPage from "./pages/task-page/TaskPage"
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
 
+import Account from './components/account/Account';
+import AccountList from './components/account/ListAccount';
+import AddAccount from './components/account/AddAccount';
+import HelpExample from './components/help-example/HelpExample';
+import HelpExampleList from './components/help-example/ListHelpExample';
+import AddHelpExample from './components/help-example/AddHelpExample';
+
+
 import './App.css';
 import './assets/Styles/Global.css';
 
@@ -34,6 +42,14 @@ function App() {
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
                   <Route path="/accounting-plans" element={<AccountingPlanList />} />
                   <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
+                   {/* PRUEBA COMPONENTES ACCOUNTS AND HELP EXAMPLES */}
+                  <Route path="/accounts" element={<AccountList />} />
+                  <Route path="/accounts/:id" element={<Account />} />
+                  <Route path="/add-account" element={<AddAccount />} />
+                  <Route path="/help-examples" element={<HelpExampleList />} />
+                  <Route path="/help-examples/:id" element={<HelpExample />} />
+                  <Route path="/add-help-example" element={<AddHelpExample />} />
+
                   <Route path="/modes" element={<TaskPage />} />
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
@@ -56,3 +72,5 @@ function App() {
 }
 
 export default App;
+
+// # A

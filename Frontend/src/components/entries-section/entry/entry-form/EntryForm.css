@@ -1,0 +1,32 @@
+.entry_form_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-xxs);
+}
+
+.entry_form {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: var(--gap-m);
+}
+
+.btn-trash {
+  padding: var(--gap-xxs);
+  background-color: transparent;
+  color: var(--Color-red-700);
+}
+
+.form_group {
+  font-size: var(--text-desktop-small);
+}
+
+.form_group:nth-child(1) {
+
+
+  >input {
+    width: 120px;
+  }
+}

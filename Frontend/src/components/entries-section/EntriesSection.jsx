@@ -4,13 +4,18 @@ import Entry from './entry/Entry'
 import "./EntriesSection.css"
 
 const EntriesSection = () => {
+
+  const entries = [1, 2, 3, 4, 5];
+
   return (
     <div className='entry_container'>
       <EntryHeader />
-      <Entry />
-      <Entry />
-      <Entry />
-      <Entry />
+      {
+        entries.map((index) => (
+          <Entry key={index} number={index} />
+        ))
+      }
+
     </div>
   )
 }

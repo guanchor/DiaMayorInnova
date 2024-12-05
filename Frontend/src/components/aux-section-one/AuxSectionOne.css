@@ -1,6 +1,6 @@
 .aux-section_one__container {
   grid-area: section1;
-  background-color: #00ffff;
+  background-color: var(--Color-White);
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
 }

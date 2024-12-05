@@ -31,6 +31,7 @@ const StatementForm = ({ onStatementCreated }) => {
           entry_date: entry.entry_date,
           annotations_attributes: entry.annotations.map((annotation) => ({
             number: annotation.number,
+            account_number: annotation.account_number,
             credit: annotation.credit,
             debit: annotation.debit,
           })),

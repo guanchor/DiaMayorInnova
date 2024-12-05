@@ -25,6 +25,9 @@ class StatementsController < ApplicationController
 
   def create
     @statement = current_user.statements.build(statement_params)
+
+    process_account_ids(@statement)
+
     if @statement.save
       render json: @statement, status: :created
     else
@@ -46,6 +49,8 @@ class StatementsController < ApplicationController
   # Nuevo método para agregar una solución a un enunciado
   def add_solution
     @solution = @statement.solutions.create(solution_params)
+    process_account_ids_in_solution(@solution)
+
     if @solution.save
       # Crear las entradas y anotaciones asociadas
       if params[:entries]
@@ -104,7 +109,8 @@ class StatementsController < ApplicationController
         annotations_attributes: [
           :number,
           :credit,
-          :debit
+          :debit,
+          :account_number
         ]
       ]
     ]
@@ -119,5 +125,25 @@ class StatementsController < ApplicationController
     @statement = Statement.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Statement not found' }, status: :not_found
+  end
+
+  def process_account_ids(statement)
+    statement.solutions.each do |solution|
+      solution.entries.each do |entry|
+        entry.annotations.each do |annotation|
+          Rails.logger.debug "Account number: #{annotation.account_number}"
+          if annotation.account_number.present?
+            account = Account.find_by(account_number: annotation.account_number)
+            if account
+              annotation.account_id = account.id
+            else
+              annotation.errors.add(:account_number, "no válido o no encontrado")
+            end
+          else
+            annotation.errors.add(:account_number, "es obligatorio")
+          end
+        end
+      end
+    end
   end
 end

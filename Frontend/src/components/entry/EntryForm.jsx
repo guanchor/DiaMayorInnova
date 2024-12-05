@@ -20,6 +20,7 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
     const updatedSolutions = [...solutions];
     updatedSolutions[solutionIndex].entries[entryIndex].annotations.push({
       number: updatedSolutions[solutionIndex].entries[entryIndex].annotations.length + 1,
+      account_number: 0,
       credit: 0,
       debit: 0,
     });
@@ -28,7 +29,7 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
 
   return (
     <div>
-      <label>Entrada {entryIndex + 1}:</label>
+      <label>Asiento {entryIndex + 1}:</label>
       <input
         type="number"
         name="entry_number"
@@ -41,7 +42,7 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
         value={entry.entry_date}
         onChange={handleEntryChange}
       />
-      <button type="button" onClick={removeEntry}>Eliminar Entrada</button>
+      <button type="button" onClick={removeEntry}>Eliminar Asiento</button>
 
       {entry.annotations.map((annotation, annotationIndex) => (
         <AnnotationForm
@@ -55,7 +56,7 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
         />
       ))}
 
-      <button type="button" onClick={addAnnotation}>Agregar Anotación</button>
+      <button type="button" onClick={addAnnotation}>Agregar Apunte</button>
     </div>
   );
 };

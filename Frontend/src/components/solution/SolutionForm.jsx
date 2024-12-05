@@ -13,7 +13,7 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
     updatedSolutions[solutionIndex].entries.push({
       entry_number: updatedSolutions[solutionIndex].entries.length + 1,
       entry_date: "",
-      annotations: [{ number: 1, credit: 0, debit: 0 }],
+      annotations: [{ number: 1, account_number: 0, credit: 0, debit: 0 }],
     });
     setSolutions(updatedSolutions);
   };
@@ -45,7 +45,7 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
         />
       ))}
 
-      <button type="button" onClick={addEntry}>Agregar Entrada</button>
+      <button type="button" onClick={addEntry}>Agregar Asiento</button>
     </div>
   );
 };

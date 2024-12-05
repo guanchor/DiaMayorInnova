@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
-import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
+import TaskEditForm from "./TaskEditForm";
 import { useAuth } from "../../context/AuthContext";
+import TaskModal from "../modal/TaskModal";
 import "./TaskPage.css";
 
 const TaskListAndDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -15,6 +17,7 @@ const TaskListAndDetails = () => {
   const [error, setError] = useState(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [isEditingTask, setIsEditingTask] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Obtener todas las tareas al cargar el componente
   useEffect(() => {
@@ -54,6 +57,7 @@ const TaskListAndDetails = () => {
     try {
       const response = await taskService.getTaskWithStatements(taskId);
       setSelectedTask(response.data);
+      setModalVisible(true);
     } catch (err) {
       setError("Error al cargar los detalles de la tarea.");
       console.error(err);
@@ -80,6 +84,7 @@ const TaskListAndDetails = () => {
       fetchTasks();
     }
     setIsCreatingTask(false); // Volver a la vista de lista de tareas
+    navigate("/Home");
   };
 
   // Función para manejar la actualización de la tarea
@@ -103,79 +108,99 @@ const TaskListAndDetails = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedTask(null);
+  };
+
   if (!user) return <p>Cargando usuario...</p>;
-  if (loading) return <p>Cargando tareas... Por favor espera.</p>;
+  if (loading) return <p>Cargando enunciados... Por favor espera.</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <main className="task-page">
+    <>
       {isCreatingTask ? (
-        <TaskCreateForm onTaskCreated={handleTaskCreated} /> // Esto es el botón Crear tarea una vez le das al enunciado 
+        <TaskCreateForm onTaskCreated={handleTaskCreated} />
       ) : isEditingTask ? (
-        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} /> // Esto es editar la tarea
+        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} />
       ) : (
-        <div style={{ display: "flex", gap: "20px" }}>
-          {/* Lista de tareas */}
-          <div>
-            <h2>Tareas Activa</h2>
-            <ul>
+        <>
+          <section className="task-list">
+            <h4 className="task-list__title">Tareas Activa</h4>
+            <ul className="task-list__items">
               {tasks.map((task) => (
-                <li key={`${task.id}-${task.created_at}`}>
-                  <button onClick={() => fetchTaskDetails(task.id)}>
-                    {task.title}
-                  </button>
+                <li key={`${task.id}-${task.created_at}`} className="task-list__item">
+                  <div className="task-list__item-content">
+                    <div className="task-list__square">
+                      <i className="fi fi-rr-pencil pencil"></i> {/* Icono centrado en el cuadrado */}
+                    </div>
+                    <div className="task-list__info">
+                      <p className="task-list__item-title">Tarea: {task.title}</p>
+                      <p className="task-list__closing-date">
+                        <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
+                      </p>
+                      <button onClick={() => fetchTaskDetails(task.id)}
+                        className="task-list__button">
+                        Ver Información
+                      </button>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
-            <button onClick={() => setIsCreatingTask(true)}>Crear Nueva Tarea</button>
-          </div>
+          </section>
 
           {/* Detalles de la tarea seleccionada */}
-          <div>
+          <TaskModal show={modalVisible} onClose={handleCloseModal}>
             {selectedTask ? (
-              <>
-                <h2>Detalles de la Tarea</h2>
-                <h3>{selectedTask.title}</h3>
-                <p>
-                  Fecha de apertura:{" "}
-                  {new Date(selectedTask.opening_date).toLocaleDateString()}
-                </p>
-                <p>
-                  Fecha de cierre:{" "}
-                  {new Date(selectedTask.closing_date).toLocaleString()}
-                </p>
-
-                <h3>Enunciados</h3>
-                {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
-                  <ul>
-                    {selectedTask.statements.map((statement) => (
-                      <li key={`${statement.id}-${statement.created_at}`}>
-                        <strong>Definición:</strong> {statement.definition}
-                        <button
-                          onClick={() =>
-                            handleDeleteStatement(selectedTask.id, statement.id)
-                          }
-                        >
-                          Eliminar
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No hay enunciados para esta tarea.</p>
-                )}
-
-                <button onClick={() => setIsEditingTask(true)}>
-                  Editar tarea
-                </button>
-              </>
+              <article className="task-details">
+                <header>
+                  <h3 className="task-details__title">{selectedTask.title}</h3>
+                </header>
+                <section>
+                  <p className="task-details__date">
+                    <strong>Fecha de apertura:{" "}</strong>
+                    {new Date(selectedTask.opening_date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong> Fecha de cierre:{" "}</strong>
+                    {new Date(selectedTask.closing_date).toLocaleString()}
+                  </p>
+                </section>
+                <section>
+                  <h3 className="task-details__statements-title">Enunciados</h3>
+                  {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
+                    <ul className="task-details__statements">
+                      {selectedTask.statements.map((statement) => (
+                        <li key={`${statement.id}-${statement.created_at}`} className="task-details__statement-item">
+                          <strong>Definición:</strong> {statement.definition}
+                          <button
+                            onClick={() =>
+                              handleDeleteStatement(selectedTask.id, statement.id)
+                            }
+                            className="task-details__delete-btn">
+                            Eliminar
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No hay enunciados para esta tarea.</p>
+                  )}
+                </section>
+                <footer>
+                  <button onClick={() => setIsEditingTask(true)} className="task-details__edit-btn">
+                    Editar tarea
+                  </button>
+                </footer>
+              </article>
             ) : (
-              <p>Selecciona una tarea para ver los detalles.</p>
+              <p>Cargando detalles...</p>
             )}
-          </div>
-        </div>
+          </TaskModal>
+        </>
       )}
-    </main>
+    </>
   );
 };
 

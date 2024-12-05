@@ -26,7 +26,7 @@ const SolutionsViewer = ({ solutions }) => {
                     {entry.annotations.map((annotation) => (
                       <li key={annotation.id}>
                         <p>
-                          Número: {annotation.number}, Crédito: {annotation.credit}, Débito: {annotation.debit}
+                          Número: {annotation.number}, Número de Cuenta: {annotation.account_number}, Crédito: {annotation.credit}, Débito: {annotation.debit}
                         </p>
                       </li>
                     ))}

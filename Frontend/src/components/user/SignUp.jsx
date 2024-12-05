@@ -46,10 +46,11 @@ const SignUp = () => {
       setError("Las contraseñas no coinciden.");
       return;
     }
-
     console.log("Imagen a enviar linea 33 SignUp:", input.featured_image);
 
     const formData = new FormData();
+    formData.append("email", input.email);
+    formData.append("password", input.password);
     formData.append("name", input.name);
     formData.append("first_lastName", input.first_lastName);
     formData.append("second_lastName", input.second_lastName);
@@ -58,13 +59,12 @@ const SignUp = () => {
     }
     formData.append("roles", JSON.stringify(input.roles));//json to string -> roles to string.
 
-    const credentials = encodeCredentials(input.email, input.password, input.confirmation_password);
-
     console.log("Enviando solicitud de registro con:", input);
-    auth.signUpAction(credentials, formData).then((response) => {
+    auth.signUpAction(formData).then((response) => {
       console.log("Usuario registrado", response);
     }).catch((error) => {
-      setError("Hubo un error al registar el usuario.");
+      console.error("Error de registro:", error);
+      setError(error.response?.data?.message || "Hubo un error al registar el usuario.");
     });
   };
 

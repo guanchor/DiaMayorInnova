@@ -52,26 +52,26 @@ const AddClassGroup = () => {
 
     if (validateForm()) {
       let data = {
-        course: classGroup.course,
-        module: classGroup.module,
-        modality: classGroup.modality,
-        number_students: classGroup.number_students,
-        max_students: classGroup.max_students,
-        location: classGroup.location,
-        weekly_hours: classGroup.weekly_hours
+        course: parseInt(classGroup.course),
+        module: classGroup.module.trim(),
+        modality: classGroup.modality.trim(),
+        number_students: parseInt(classGroup.number_students),
+        max_students: parseInt(classGroup.max_students),
+        location: classGroup.location.trim(),
+        weekly_hours: parseInt(classGroup.weekly_hours)
       };
 
       ClassGroupDataService.create(data)
         .then(response => {
           setClassGroup({
-            id: response.data.id,
-            course: response.data.course,
-            module: response.data.module,
-            modality: response.data.modality,
-            number_students: response.data.number_students,
-            max_students: response.data.max_students,
-            location: response.data.location,
-            weekly_hours: response.data.weekly_hours
+            id: parseInt(response.data.id),
+            course: parseInt(response.data.course),
+            module: response.data.module.trim(),
+            modality: response.data.modality.trim(),
+            number_students: parseInt(response.data.number_students),
+            max_students: parseInt(response.data.max_students),
+            location: response.data.location.trim(),
+            weekly_hours: parseInt(response.data.weekly_hours)
           });
           setSubmitted(true);
           console.log(response.data);

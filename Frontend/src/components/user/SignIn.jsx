@@ -16,8 +16,10 @@ const SignIn = () => {
 
   const handleSubmitEvent = (e) => {
     e.preventDefault();
+    //console.log("EMAILLLLLLLLLLLLLL", input.email);
+    //console.log("PASSWORDDDDDDDDDD", input.password);
     if (input.email !== "" && input.password !== "") {
-      auth.signInAction(input.email, input.password)
+      auth.signInAction(input.email.toLowerCase(), input.password)
         .then((response) => {
           const user = response?.data?.data?.user;
           const roles = response?.data?.data?.roles;

@@ -17,34 +17,32 @@ class SchoolCentersController < ApplicationController
   end
 
   def create
-    @school = SchoolCenter.create(
-      school_name: params[:school_name],
-      address: params[:address],
-      phone: params[:phone],
-      email: params[:email],
-      website: params[:website],
-      province: params[:province],
-    )
-  render json: @school
+    @school = SchoolCenter.new(school_center_params)
+
+    if @school.save
+      render json: @school, status: :created
+    else
+      render json: @school.errors, status: :unprocessable_entity
+    end
   end
 
   def update
     @school = SchoolCenter.find(params[:id])
-    @school.update(
-      school_name: params[:school_name],
-      address: params[:address],
-      phone: params[:phone],
-      email: params[:email],
-      website: params[:website],
-      province: params[:province]
-    )
-    render json: @school
+    if @school.update(school_center_params)
+      render json: @school
+    else
+      render json: @school.errors, status: :unprocessable_entity
     end
+  end
 
   def destroy
     @schools = SchoolCenter.all
     @school = SchoolCenter.find(params[:id])
     @school.destroy
     render json: @schools
+  end
+
+  def school_center_params
+    params.require(:school_center).permit(:school_name, :address, :phone, :email, :website, :province)
   end
 end

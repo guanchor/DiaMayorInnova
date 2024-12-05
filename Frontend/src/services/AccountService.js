@@ -21,7 +21,7 @@ const get = async (id) => {
 };
 
 const create = async (data) => {
-  console.log("servcio")
+
   try {
     const response = await http.post("/accounts", data);
     console.log(response);

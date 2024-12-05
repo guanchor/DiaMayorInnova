@@ -85,14 +85,14 @@ const Account = (props) => {
 
             <div>
               <label htmlFor="description">Descripción</label>
-              <input 
+              <input
                 id="description"
                 name="description"
                 type="text"
                 value={currentAccount.description}
                 onChange={handleInputChange}
-                required
-              />
+                required>
+              </input>
             </div>
 
             <div>
@@ -100,11 +100,11 @@ const Account = (props) => {
               <input 
                 id="accountPlan"
                 name="accountPlan"
-                type="text"
+                type="number"
                 value={currentAccount.accounting_plan}
                 onChange={handleInputChange}
-                required
-              />
+                required>
+                </input>
             </div>
 
             <div>
@@ -115,8 +115,8 @@ const Account = (props) => {
                 type="text"
                 value={currentAccount.name}
                 onChange={handleInputChange}
-                required
-              />
+                required>
+              </input>
             </div>
           </form>
 

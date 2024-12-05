@@ -13,8 +13,9 @@ class StudentAnnotationsController < ApplicationController
       render @studentAnnotation
     end
   
-    def create
+=begin     def create
       @studentAnnotation = StudentAnnotation.new(student_annotations_params)
+      logger.debug "ayudaaaaa #{@studentAnnotation.atributes.inspect}"
   
       if @studentAnnotation.save
         render json: @studentAnnotation, status: :created
@@ -22,7 +23,21 @@ class StudentAnnotationsController < ApplicationController
         render json: @studentAnnotation.errors, status: :unprocessable_entity
       end
     end
+=end
   
+    def create
+      @studentAnnotation = StudentAnnotation.create(
+        account_id: params[:account_id],
+        number: params[:number],
+        account_number: params[:account_number],
+        credit: params[:credit],
+        debit: params[:debit],
+        student_entry_id: params[:student_entry_id],
+      )
+      render json: @studentAnnotation
+    end
+
+
     def update
       @studentAnnotation = StudentAnnotation.find(params[:id])
       if @studentAnnotation.update(student_annotations_params)
@@ -39,7 +54,8 @@ class StudentAnnotationsController < ApplicationController
       render json: @studentAnnotations
     end
 
-    def student_annotations_params
+=begin     def student_annotations_params
       params.require(:student_annotation).permit(:number, :account_number, :credit, :debit, :entry_id, :account_id)
     end
+=end
   end

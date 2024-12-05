@@ -9,7 +9,6 @@ const EntryForm = ({ aptNumber }) => {
     account_id: 1,
     number: aptNumber,
     account_number: '',
-    accountName: '',
     debit: '',
     credit: '',
     student_entry_id: 1,
@@ -50,7 +49,7 @@ const EntryForm = ({ aptNumber }) => {
         </div>
         <div className="form_group">
           <label htmlFor="accountName">Nombre Cuenta</label>
-          <input type="text" id='accountName' name='accountName' onChange={handleChange} />
+          <input type="text" id='accountName' name='accountName' />
         </div>
         <div className="form_group">
           <label htmlFor="debit">Debe</label>

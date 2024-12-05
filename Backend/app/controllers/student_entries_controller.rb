@@ -13,7 +13,7 @@ class StudentEntriesController < ApplicationController
     render @studentEntry
   end
 
-  def create
+=begin   def create
     @studentEntry = StudentEntry.new(student_entry_params)
 
     if @studentEntry.save
@@ -21,6 +21,16 @@ class StudentEntriesController < ApplicationController
     else
       render json: @studentEntry.errors, status: :unprocessable_entity
     end
+  end
+=end
+
+  def create
+    @studentEntry = StudentEntry.create(
+      entry_number: params[:entry_number],
+      entry_date: params[:entry_date],
+      mark_id: params[:mark_id],
+    )
+    render json: @studentEntry
   end
 
   def update
@@ -39,7 +49,8 @@ class StudentEntriesController < ApplicationController
     render json: @studentEnties
   end
 
-  def student_entry_params
-    params.require(:student_entry).permit(:entry_number, :entry_date, :id_mark)
+=begin   def student_entry_params
+    params.require(:student_entry).permit(:entry_number, :entry_date, :mark)
   end
+=end
 end

@@ -2,17 +2,17 @@ import http from "../http-common";
 
 const getAll = async () => {
   try {
-    const response = http.get("/help-examples");
+    const response = http.get("/help_examples");
     return response;
   } catch (error) {
-    console.error("Error en la petición getAll", error);
+    console.error("Error en la petición getAll: ", error);
     return null;
   }
 };
 
 const get = async (id) => {
   try {
-    const response = await http.get(`/help-examples/${id}`);
+    const response = await http.get(`/help_examples/${id}`);
     return response;
   } catch (error) {
     console.log("Error en la petición get", error);
@@ -22,7 +22,7 @@ const get = async (id) => {
 
 const create = async (data) => {
   try {
-    const response = await http.post("/help-examples", data);
+    const response = await http.post("/help_examples", data);
     return response;
   } catch (error) {
     console.error("Error en la creación", error);
@@ -32,7 +32,7 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   try {
-    const response = await http.put(`/help-examples/${id}`, data);
+    const response = await http.put(`/help_examples/${id}`, data);
     return response;
   } catch (error) {
     console.error("Error en la actualización", error);
@@ -42,7 +42,7 @@ const update = async (id, data) => {
 
 const remove = async (id) => {
   try {
-    const response = await http.delete(`/help-examples/${id}`)
+    const response = await http.delete(`/help_examples/${id}`)
     return response;
   } catch (error) {
     console.error("Error en la eliminación", error);
@@ -52,7 +52,7 @@ const remove = async (id) => {
 
 const removeAll = async () => {
   try {
-    const response = await http.delete("/help-examples");
+    const response = await http.delete("/help_examples");
     return response;
   } catch (error) {
     console.error("Error en la eliminación global", error);
@@ -62,7 +62,7 @@ const removeAll = async () => {
 
 const findByAccount = async (account) => {
   try {
-    const response = await http.get(`/help-examples?account=${account}`);
+    const response = await http.get(`/help_examples?account=${account}`);
     return response;
   } catch (error) {
     console.error("Error en la búsqueda por cuenta", error);

@@ -9,11 +9,11 @@ const HelpExamplesList = () => {
   const [searchHelpExample, setSearchHelpExample] = useState("");
 
   useEffect(() => {
-    retrieveAccounts();
+    retrieveHelpExamples();
   }, []);
 
   const retrieveHelpExamples = () => {
-    HelpExampleService.getAll
+    HelpExampleService.getAll()
       .then(response => {
         setHelpExamples(response.data);
         console.log(response.data);
@@ -68,7 +68,7 @@ const HelpExamplesList = () => {
         <ul className='helpExample_list'>
           {helpExamples && helpExamples.map((helpExample, index) => (
             <li onClick={() => setActiveHelpExample(helpExample, index)} key={index}>
-              {helpExample.account}
+              Ayuda{helpExample.account}
             </li>
           ))}
         </ul>
@@ -95,7 +95,7 @@ const HelpExamplesList = () => {
                 {currentHelpExample.account}
               </label>
             </div>
-            <Link to={"/help-examples/" + currentAccount.id}>
+            <Link to={"/help-examples/" + currentHelpExample.id}>
               Editar
             </Link>
           </div>

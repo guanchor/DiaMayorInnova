@@ -73,7 +73,7 @@ const AccountsList = () => {
           ))}
         </ul>
 
-        <button><Link to={"/add-account"}>Añadir nuevo plan</Link></button>
+        <button><Link to={"/add-account"}>Añadir nueva cuenta</Link></button>
       </section>
 
       <section className='account_wrapper'>

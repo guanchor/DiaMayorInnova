@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import HelpExampleDataService from '../../services/HelpExampleService';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ const HelpExample = (props) => {
     id: null,
     creditMoves: "",
     debitMoves: "",
-    account: null,
+    account: 0,
   };
 
   const [currentHelpExample, setCurrentHelpExample] = useState(initialHelpExampleState);
@@ -77,7 +77,7 @@ const HelpExample = (props) => {
                 name="account"
                 type="text"
                 value={currentHelpExample.account}
-                onchange={handleInputChange}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -89,7 +89,7 @@ const HelpExample = (props) => {
                 name="debitMoves"
                 type="text"
                 value={currentHelpExample.debitMoves}
-                onchange={handleInputChange}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -101,11 +101,15 @@ const HelpExample = (props) => {
                 name="creditMoves"
                 type="text"
                 value={currentHelpExample.creditMoves}
-                onchange={handleInputChange}
+                onChange={handleInputChange}
                 required
               />
             </div>
           </form>
+
+          <button onClick={updateHelpExample}>Editar</button>
+
+          <button onClick={deleteHelpExample}>Eliminar</button>
         </div>
       ) : (
         <div>

@@ -6,7 +6,7 @@ const AddAccount = () => {
   const initialAccountState = {
     accountNumber: 0,
     description: "",
-    accounting_plan: 0, //!!!!!!!!!!!!!!!!!!!!!!!
+    accounting_plan_id: 0,
     name: "",
   };
   const [account, setAccount] = useState(initialAccountState);
@@ -21,7 +21,7 @@ const AddAccount = () => {
     var data = {
       accountNumber: account.accountNumber,
       description: account.description,
-      accounting_plan: account.accounting_plan,
+      accounting_plan_id: account.accounting_plan_id,
       name: account.name,
     };
 
@@ -31,7 +31,7 @@ const AddAccount = () => {
         id: response.data.id,
         accountNumber: response.data.accountNumber,
         description: response.data.description,
-        accounting_plan: response.data.accounting_plan,
+        accounting_plan_id: response.data.accounting_plan_id,
         name: response.data.name,
       });
       setSubmitted(true);
@@ -102,11 +102,11 @@ const AddAccount = () => {
               <label>Plan de cuentas</label>
               <input
                 type="text"
-                id='accounting_plan'
+                id='accounting_plan_id'
                 required
-                value={account.accounting_plan}
+                value={account.accounting_plan_id}
                 onChange={handleInputChange}
-                name='accounting_plan'
+                name='accounting_plan_id'
               />
             </div>
 

@@ -7,7 +7,7 @@ const AddHelpExample = () => {
     id: null,
     creditMoves: "",
     debitMoves: "",
-    account: null,
+    account_id: 0,
   };
   const [helpExample, setHelpExample] = useState(initialHelpExampleState);
   const [submitted, setSubmitted] = useState(false);
@@ -21,7 +21,7 @@ const AddHelpExample = () => {
     var data = {
       creditMoves: helpExample.creditMoves,
       debitMoves: helpExample.debitMoves,
-      account: helpExample.account,
+      account_id: helpExample.account_id,
     };
 
     HelpExampleDataService.create(data)
@@ -30,7 +30,7 @@ const AddHelpExample = () => {
         id: response.data.id,
         creditMoves: response.data.creditMoves,
         debitMoves: response.data.debitMoves,
-        account: response.data.account,
+        account_id: response.data.account_id,
       });
       setSubmitted(true);
       console.log(response.data);
@@ -54,8 +54,8 @@ const AddHelpExample = () => {
       <div>
         {submitted ? (
           <div>
-            <h4>You submitted succesfully</h4>
-            <button onClick={newHelpExample}>Añadir ejemplo</button>
+            <h4>Se ha creado el ejemplo</h4>
+            <button onClick={newHelpExample}>Añadir otro ejemplo</button>
           </div>
         ) : (
           <div>
@@ -88,11 +88,11 @@ const AddHelpExample = () => {
               <label>Cuenta</label>
               <input
                 type="text"
-                id='account'
+                id='account_id'
                 required
-                value={helpExample.account}
+                value={helpExample.account_id}
                 onChange={handleInputChange}
-                name='account'
+                name='account_id'
               />
             </div>
 

@@ -9,7 +9,7 @@ class MarksController < ApplicationController
   
     def show
       @mark = Mark.find(params[:id])
-      render @mark
+      render json: @mark
     end
   
     def create
@@ -39,6 +39,6 @@ class MarksController < ApplicationController
     end
 
     def mark_params
-      params.require(:mark).permit(:mark)
+      params.require(:mark).permit(:mark , :exercise_id)
     end
 end

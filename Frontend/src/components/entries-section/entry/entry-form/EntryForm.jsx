@@ -3,8 +3,6 @@ import "./EntryForm.css"
 import StudentAnnotationServices from '../../../../services/studentAnnotationServices'
 
 const EntryForm = ({ aptNumber }) => {
-
-
   const initialAnnotation = {
     account_id: 1,
     number: aptNumber,
@@ -15,21 +13,26 @@ const EntryForm = ({ aptNumber }) => {
   }
 
   const [currentAnnotation, setCurrentAnnotation] = useState(initialAnnotation);
+
   const deleteEntry = (e) => {
     e.preventDefault()
   }
 
-  const saveEntry = (e) => {
-    e.preventDefault()
-    StudentAnnotationServices.create(currentAnnotation).then
-      (response => {
-        console.log(response.data)
-      })
-      .catch(e => {
-        console.log(e)
-      })
+  /*   const saveEntry = (e) => {
+      e.preventDefault();
+      StudentAnnotationServices.create(currentAnnotation)
+        .then((response) => {
+          if (response && response.data) {
+            console.log(response.data);
+          } else {
+            console.error('Empty response or data property is null');
+          }
+        })
+        .catch((e) => {
+          console.error('Error:', e);
+        });
+    }; */
 
-  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -41,27 +44,25 @@ const EntryForm = ({ aptNumber }) => {
 
   return (
     <div className='entry_form_wrapper'>
-      <p>{aptNumber}</p>
+      <p className='entry_apt'>{aptNumber}</p>
       <form action="" className='entry_form'>
-        <div className="form_group">
-          <label htmlFor="account_number">Nº Cuenta</label>
-          <input type="number" id='account_number' name='account_number' onChange={handleChange} />
-        </div>
-        <div className="form_group">
-          <label htmlFor="accountName">Nombre Cuenta</label>
-          <input type="text" id='accountName' name='accountName' />
-        </div>
-        <div className="form_group">
-          <label htmlFor="debit">Debe</label>
-          <input type="number" id='debit' name='debit' onChange={handleChange} />
-        </div>
-        <div className="form_group">
-          <label htmlFor="credit">Haber</label>
-          <input type="number" id='credit' name='credit' onChange={handleChange} />
-        </div>
+        <fieldset className='form_inputs_container'>
+          <div className="form_group">
+            <input type="number" id='account_number' name='account_number' placeholder='12345' onChange={handleChange} />
+          </div>
+          <div className="form_group">
+            <input type="text" id='accountName' placeholder='Cuenta carne' name='accountName' />
+          </div>
+          <div className="form_group">
+            <input type="number" id='debit' name='debit' placeholder='0' onChange={handleChange} />
+          </div>
+          <div className="form_group">
+            <input type="number" id='credit' name='credit' placeholder='0' onChange={handleChange} />
+          </div>
+        </fieldset>
         <button className='btn-trash' onClick={deleteEntry}><i className='fi fi-rr-trash'></i></button>
-        <button className='btn-trash' onClick={saveEntry}><i className='fi fi-rr-disk'></i></button>
-      </form>
+        {/*         <button className='btn-trash' onClick={saveEntry}><i className='fi fi-rr-disk'></i></button>
+ */}      </form>
     </div>
   )
 }

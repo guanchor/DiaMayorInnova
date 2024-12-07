@@ -21,6 +21,7 @@ import TaskListAndDetails from './components/task/taskListAndDetails';
 import StatementsList from './components/statements/StatementList';
 import StatementForm from './components/statements/StatementForm';
 import TaskEditForm from './components/task/TaskEditForm';
+import Modes from './pages/modes/Modes';
 
 function App() {
 
@@ -32,13 +33,15 @@ function App() {
             <NavegationMenu />
             <div className='app-main'>
               <Routes>
-                <Route path="/home" element={<Home />} />
                 <Route path="/sign_in" element={<SignIn />} />
                 <Route path="*" element={<Home />} />
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
+                  <Route path="/home" element={<Home />} />
                   <Route path="/accounting-plans" element={<AccountingPlanList />} />
                   <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
-                  <Route path="/modes" element={<TaskPage />} />
+                  <Route path="/modes" element={<Modes />} >
+                    <Route path='tarea' element={<TaskPage />} />
+                  </Route>
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/tasks/:id" element={<TaskEditForm />} />
@@ -58,7 +61,7 @@ function App() {
             </div>
           </NavStateProvider>
         </AuthProvider>
-      </Router>
+      </Router >
     </>
   )
 }

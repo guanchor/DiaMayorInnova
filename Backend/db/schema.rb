@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_04_111958) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_06_191225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -93,6 +93,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_04_111958) do
     t.index ["solution_id"], name: "index_entries_on_solution_id"
   end
 
+  create_table "exercises", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_exercises_on_task_id"
+    t.index ["user_id"], name: "index_exercises_on_user_id"
+  end
+
   create_table "help_examples", force: :cascade do |t|
     t.text "creditMoves"
     t.text "debitMoves"
@@ -106,6 +115,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_04_111958) do
     t.decimal "mark"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "exercise_id", null: false
+    t.index ["exercise_id"], name: "index_marks_on_exercise_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -216,7 +227,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_04_111958) do
   add_foreign_key "annotations", "accounts"
   add_foreign_key "annotations", "entries"
   add_foreign_key "entries", "solutions"
+  add_foreign_key "exercises", "tasks"
+  add_foreign_key "exercises", "users"
   add_foreign_key "help_examples", "accounts"
+  add_foreign_key "marks", "exercises"
   add_foreign_key "solutions", "statements"
   add_foreign_key "statements", "users"
   add_foreign_key "student_annotations", "accounts"

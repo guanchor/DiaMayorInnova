@@ -337,6 +337,10 @@ a {
   }
 }
 
+input::placeholder {
+  color: var(--Color-grey-200);
+}
+
 @media (width > 800px) {
   .app-main {
     height: 100dvh;

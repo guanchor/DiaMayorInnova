@@ -5,7 +5,7 @@ import './NavItem.css';
 
 const NavItem = ({ icon, name, url = "/home" }) => {
   const location = useLocation();
-  const isActive = location.pathname === url;
+  const isActive = location.pathname.startsWith(url);
   const { changeMenu } = useContext(navContext);
 
   return (

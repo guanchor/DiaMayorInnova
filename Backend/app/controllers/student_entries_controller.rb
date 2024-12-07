@@ -1,6 +1,6 @@
 class StudentEntriesController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource
+  before_action :convert_entry_date, only: [:create, :update]
 
 
   def index
@@ -13,24 +13,13 @@ class StudentEntriesController < ApplicationController
     render @studentEntry
   end
 
-=begin   def create
-    @studentEntry = StudentEntry.new(student_entry_params)
-
-    if @studentEntry.save
-      render json: @studentEntry, status: :created
-    else
-      render json: @studentEntry.errors, status: :unprocessable_entity
-    end
-  end
-=end
-
   def create
-    @studentEntry = StudentEntry.create(
-      entry_number: params[:entry_number],
-      entry_date: params[:entry_date],
-      mark_id: params[:mark_id],
-    )
-    render json: @studentEntry
+    @student_entry = StudentEntry.new(student_entry_params)
+    if @student_entry.save
+      render json: @student_entry, status: :created
+    else
+      render json: @student_entry.errors, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -49,8 +38,11 @@ class StudentEntriesController < ApplicationController
     render json: @studentEnties
   end
 
-=begin   def student_entry_params
-    params.require(:student_entry).permit(:entry_number, :entry_date, :mark)
+  def student_entry_params 
+    params.require(:student_entry).permit(:entry_number, :entry_date , :mark_id)
   end
-=end
+
+  def convert_entry_date
+    params[:student_entry][:entry_date] = params[:student_entry][:entry_date].to_date if params[:student_entry][:entry_date].present?
+  end
 end

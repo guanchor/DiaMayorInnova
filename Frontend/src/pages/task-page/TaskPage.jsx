@@ -7,7 +7,7 @@ import "./TaskPage.css"
 const TaskPage = () => {
   return (
     <div className='task_page_container'>
-      <p className='head_task'>Task Page</p>
+      <p className='head_task'>Modo Tarea</p>
       <EntriesSection />
       <AuxSectionOne />
       <AuxSectionTwo />

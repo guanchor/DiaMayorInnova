@@ -2,7 +2,7 @@ import http from "../http-common";
 
 const getAll = async () => {
   try {
-    const response = await http.get("/student_entries");
+    const response = await http.get("/mark");
     return response;
   } catch (error) {
     console.error("Error en la petición:", error);
@@ -11,9 +11,8 @@ const getAll = async () => {
 };
 
 const create = async (data) => {
-  console.log(data)
   try {
-    const response = await http.post("/student_entries", { student_entry: data });
+    const response = await http.post("/marks", { mark: data });
     return response;
   } catch (error) {
     console.error("Error en la creación:", error);
@@ -23,7 +22,7 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   try {
-    const response = await http.put(`/student_entries/${id}`, data);
+    const response = await http.put(`/mark/${id}`, { mark: data });
     return response;
   } catch (error) {
     console.error("Error en la actualización:", error);
@@ -33,7 +32,7 @@ const update = async (id, data) => {
 
 const remove = async (id) => {
   try {
-    const response = await http.delete(`/student_entries/${id}`);
+    const response = await http.delete(`/mark/${id}`);
     return response;
   } catch (error) {
     console.error("Error en la eliminación:", error);

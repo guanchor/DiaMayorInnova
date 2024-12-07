@@ -5,17 +5,21 @@ import { useAuth } from "../../context/AuthContext";
 import TaskForm from "./TaskForm.jsx";
 import TaskPreview from "./TaskPreview.jsx";
 import StatementsSelection from "./StatementsSelection.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./TaskPage.css";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { task } = state || {};
   const { user } = useAuth();
-  const [title, setTitle] = useState("");
-  const [openingDate, setOpeningDate] = useState("");
-  const [closingDate, setClosingDate] = useState("");
+  const [title, setTitle] = useState(task?.title || "");
+  const [openingDate, setOpeningDate] = useState(task?.opening_date || "");
+  const [closingDate, setClosingDate] = useState(task?.closing_date || "");
   const [statements, setStatements] = useState([]);
-  const [selectedStatements, setSelectedStatements] = useState([]);
+  const [selectedStatements, setSelectedStatements] = useState(task?.statements?.map(s => s.id) || []);
   const [solutions, setSolutions] = useState({});
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(task ? true : false);
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -65,10 +69,16 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     };
 
     try {
-      const response = await taskService.createTask(taskData);
-      const createdTask = await taskService.getTaskWithStatements(response.data.id);
-      //alert("Tarea creada con éxito");
-      onTaskCreated(createdTask.data); // Notificar al componente padre
+      if (task?.id) {
+        await taskService.updateTask(task.id, taskData);
+        //alert("Tarea actualizada con éxito");
+        navigate("/");
+      } else {
+        const response = await taskService.createTask(taskData);
+        const createdTask = await taskService.getTaskWithStatements(response.data.id);
+        //alert("Tarea creada con éxito");
+        onTaskCreated(createdTask.data);
+      }
     } catch (error) {
       console.error("Error creando la tarea:", error);
     }
@@ -76,6 +86,15 @@ const TaskCreateForm = ({ onTaskCreated }) => {
 
   return (
     <main className="task-page">
+      <header className="task-page__header--header">
+        <button className="back-button" onClick={() => navigate("/home")}>
+          <i className="fi fi-rr-arrow-small-left"></i>
+          Volver
+          </button>
+        <div className="task-title">
+          {editMode ? "Edición de Tarea" : "Creación de Tarea"}
+        </div>
+      </header>
       <TaskForm
         title={title}
         setTitle={setTitle}

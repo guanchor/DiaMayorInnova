@@ -1,7 +1,9 @@
 import React from "react";
+import dateTimeFormat from "../../utils/dateTimeFormat";
 import "./TaskPage.css";
 
 const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit }) => {
+
   return (
     <section className="task-page__form">
       <form className="task-page__form--form">
@@ -31,7 +33,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
             <input
               className="task-page__input"
               type="datetime-local"
-              value={closingDate}
+              value={closingDate ? dateTimeFormat(closingDate) : ""}
               onChange={(e) => setClosingDate(e.target.value)}
             />
           </div>

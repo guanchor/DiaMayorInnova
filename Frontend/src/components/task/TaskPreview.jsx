@@ -2,6 +2,12 @@ import React from "react";
 import "./TaskPage.css";
 
 const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStatements, handleRemoveStatement }) => {
+  
+  const validSelectedStatements = selectedStatements.filter((statementId) =>
+    statements.some((s) => s.id === statementId)
+  );
+
+
   return (
     <section className="task-page__preview">
       <div className="task-page__preview--content">
@@ -16,10 +22,16 @@ const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStat
             {new Date(closingDate).toLocaleString()}
           </p>
         </div>
-        {selectedStatements.length > 0 ? (
+        {validSelectedStatements.length > 0 ? (
           <ul className="task-page__list">
-            {selectedStatements.map((statementId) => {
+            {validSelectedStatements.map((statementId) => {
               const statement = statements.find((s) => s.id === statementId);
+
+              if (!statement) {
+                console.warn(`No se encontró un enunciado con el ID: ${statementId}`);
+                return null; // O muestra un mensaje de advertencia en la interfaz si es necesario
+              }
+
               return (
                 <li className="task-page__list-item" key={statement.id}>
                   <span>{statement.definition}</span>

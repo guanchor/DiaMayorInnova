@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
-import TaskEditForm from "./TaskEditForm";
 import { useAuth } from "../../context/AuthContext";
 import TaskModal from "../modal/TaskModal";
+import TaskDetails from "./TaskDetails";
 import "./TaskPage.css";
 
 const TaskListAndDetails = () => {
@@ -19,7 +19,6 @@ const TaskListAndDetails = () => {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Obtener todas las tareas al cargar el componente
   useEffect(() => {
     if (location.state?.createTask) {
       setIsCreatingTask(true);
@@ -43,7 +42,7 @@ const TaskListAndDetails = () => {
     //console.log("Usuario actual:", user);
     if (user?.id) {
       //console.log("Cargando tareas para el usuario:", user.id);
-      fetchTasks(); // Solo intenta cargar si el usuario está autenticado
+      fetchTasks();
     } else {
       //console.log("Usuario no autenticado o ID faltante.");
       setLoading(false);
@@ -51,7 +50,6 @@ const TaskListAndDetails = () => {
     }
   }, [user, location.state]);
 
-  // Obtener los detalles de la tarea seleccionada
   const fetchTaskDetails = async (taskId) => {
     setLoading(true);
     try {
@@ -66,16 +64,14 @@ const TaskListAndDetails = () => {
     }
   };
 
-  // Función para manejar la creación de una nueva tarea
   const handleTaskCreated = (newTask) => {
     if (newTask?.title) {
       setTasks((prevTasks) => [...prevTasks, newTask]);
     } else {
-      // Si la tarea creada no tiene el título, recargamos la lista completa
       const fetchTasks = async () => {
         try {
           const response = await taskService.getAllTasks();
-          setTasks(response.data); // Recarga la lista
+          setTasks(response.data);
         } catch (err) {
           setError("Error al cargar las tareas.");
           console.error("Error fetching tasks:", err);
@@ -83,20 +79,10 @@ const TaskListAndDetails = () => {
       };
       fetchTasks();
     }
-    setIsCreatingTask(false); // Volver a la vista de lista de tareas
+    setIsCreatingTask(false);
     navigate("/Home");
   };
 
-  // Función para manejar la actualización de la tarea
-  const handleTaskUpdated = (updatedTask) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-    );
-    setSelectedTask(updatedTask); // Actualizar la tarea seleccionada
-    setIsEditingTask(false); // Volver a los detalles
-  };
-
-  // Función para manejar la eliminación de un enunciado
   const handleDeleteStatement = async (taskId, statementId) => {
     try {
       await taskService.deleteStatementFromTask(taskId, statementId);
@@ -121,8 +107,6 @@ const TaskListAndDetails = () => {
     <>
       {isCreatingTask ? (
         <TaskCreateForm onTaskCreated={handleTaskCreated} />
-      ) : isEditingTask ? (
-        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} />
       ) : (
         <>
           <section className="task-list">
@@ -132,7 +116,7 @@ const TaskListAndDetails = () => {
                 <li key={`${task.id}-${task.created_at}`} className="task-list__item">
                   <div className="task-list__item-content">
                     <div className="task-list__square">
-                      <i className="fi fi-rr-pencil pencil"></i> {/* Icono centrado en el cuadrado */}
+                      <i className="fi fi-rr-pencil pencil"></i>
                     </div>
                     <div className="task-list__info">
                       <p className="task-list__item-title">Tarea: {task.title}</p>
@@ -150,53 +134,12 @@ const TaskListAndDetails = () => {
             </ul>
           </section>
 
-          {/* Detalles de la tarea seleccionada */}
           <TaskModal show={modalVisible} onClose={handleCloseModal}>
-            {selectedTask ? (
-              <article className="task-details">
-                <header>
-                  <h3 className="task-details__title">{selectedTask.title}</h3>
-                </header>
-                <section>
-                  <p className="task-details__date">
-                    <strong>Fecha de apertura:{" "}</strong>
-                    {new Date(selectedTask.opening_date).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <strong> Fecha de cierre:{" "}</strong>
-                    {new Date(selectedTask.closing_date).toLocaleString()}
-                  </p>
-                </section>
-                <section>
-                  <h3 className="task-details__statements-title">Enunciados</h3>
-                  {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
-                    <ul className="task-details__statements">
-                      {selectedTask.statements.map((statement) => (
-                        <li key={`${statement.id}-${statement.created_at}`} className="task-details__statement-item">
-                          <strong>Definición:</strong> {statement.definition}
-                          <button
-                            onClick={() =>
-                              handleDeleteStatement(selectedTask.id, statement.id)
-                            }
-                            className="task-details__delete-btn">
-                            Eliminar
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No hay enunciados para esta tarea.</p>
-                  )}
-                </section>
-                <footer>
-                  <button onClick={() => setIsEditingTask(true)} className="task-details__edit-btn">
-                    Editar tarea
-                  </button>
-                </footer>
-              </article>
-            ) : (
-              <p>Cargando detalles...</p>
-            )}
+            <TaskDetails
+              selectedTask={selectedTask}
+              onDeleteStatement={handleDeleteStatement}
+              onEditTask={() => setIsEditingTask(true)}
+            />
           </TaskModal>
         </>
       )}

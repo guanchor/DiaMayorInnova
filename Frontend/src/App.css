@@ -18,7 +18,7 @@
     "head head aside"
     "main main aside"
     "main main aside";
-
+  overflow: hidden;
 }
 
 .top {

@@ -9,8 +9,15 @@ scRoutes.push({
 
 scRoutes.push({
   to: "/tasks",
-  icon: "fi fi-rr-graduation-cap",
-  name: "Crear tarea",
+  icon: "fi fi-rr-edit",
+  name: "Tarea",
+  rol: ["teacher"],
+})
+
+scRoutes.push({
+  to: "/add-statements",
+  icon: "fi fi-rr-pencil",
+  name: "Enunciado",
   rol: ["teacher"],
 })
 

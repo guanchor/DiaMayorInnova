@@ -9,7 +9,8 @@ const StatementsSelection = ({
   handleStatementSelection,
   handleEditSolutions,
   solutions,
-  editMode
+  editMode,
+  showCheckboxes = true,
 }) => {
   const [currentSolutions, setCurrentSolutions] = useState([]);
   const [showSolutions, setShowSolutions] = useState(false);
@@ -49,6 +50,7 @@ const StatementsSelection = ({
   if (!Array.isArray(statements)) {
     return <div>Error: No se recibieron enunciados válidos</div>;
   }
+
   return (
     <section className="task-page__selection">
       <div className="task-page__selection--content">
@@ -59,6 +61,7 @@ const StatementsSelection = ({
               <div className="task-page__statement-container">
                 <span className="task-page__statement">{statement.definition}</span>
                 <div className="task-page__actions">
+                {showCheckboxes && (
                   <label>
                     <input
                       type="checkbox"
@@ -67,6 +70,7 @@ const StatementsSelection = ({
                     />
                     <span className="task-page__button-text">Añadir</span>
                   </label>
+                )}
                   <button className="task-page__button--edit" type="button" onClick={() => viewSolutions(statement.id)}>
                     <i className="fi fi-rr-interrogation interrogation"></i>
                     <span className="task-page__button-text">Ver Soluciones</span>

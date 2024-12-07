@@ -4,12 +4,14 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.75fr 2.25fr;
+  grid-template-rows: 3% 42% 55%;
   grid-template-areas:
+    "task-header task-header"
     "task-form task-preview"
     "statements-selection statements-selection";
   gap: var(--gap-l);
   padding: var(--gap-l);
+  overflow: hidden;
 }
 
 .task-page__form {
@@ -27,7 +29,7 @@
   padding: var(--gap-m);
   border-radius: var(--border-radius);
   border-left: 1px solid var(--Color-grey-200);
-  overflow-y: auto; 
+  overflow-y: auto;
   max-height: 100%;
 }
 
@@ -193,31 +195,47 @@
 }
 
 .task-page__statement-container {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  width: 100%;
+  display: flex;
   gap: var(--gap-s);
+  width: 100%;
+  align-items: center;
 }
 
 .task-page__statement {
-  display: block;
+  flex: 0 1 60%;
+  /* Limita el ancho a un máximo del 50% */
   font-size: var(--text-desktop-small);
-  width: 100%;
+  word-wrap: break-word;
 }
 
 .task-page__actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  align-items: center;
+  /* Centra los elementos verticalmente */
+  gap: var(--gap-xs);
+  /* Espaciado entre los elementos */
+  flex: 1;
+}
+
+.task-page__actions label,
+.task-page__actions button {
+  flex: 1;
+  /* Cada elemento ocupa el mismo espacio (1/3 del 40% disponible) */
+  display: flex;
+  justify-content: center;
+  /* Centra el contenido de cada botón y label */
+  align-items: center;
+  /* Centra verticalmente */
+  background: none;
+  border: none;
+  color: var(--Color-grey-600);
+  font-size: var(--text-desktop-small);
+  cursor: pointer;
   gap: var(--gap-xs);
 }
 
-.task-page__actions label{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gap-xs);
+.task-page__actions label {
   color: var(--Color-grey-600);
-  font-size: var(--text-desktop-small);
 }
 
 .task-page__actions input[type="checkbox"] {
@@ -226,25 +244,16 @@
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+  /* Ocultar el checkbox */
+}
+
+.task-page__actions button:hover,
+.task-page__actions label:hover {
+  color: var(--Color-primary);
 }
 
 .task-page__actions span {
   display: inline-block;
-}
-
-.task-page__actions button {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-xs);
-  background: none;
-  border: none;
-  color: var(--Color-grey-400);
-  font-size: var(--text-desktop-small);
-  cursor: pointer;
-}
-
-.task-page__actions button:hover {
-  color: var(--Color-primary);
 }
 
 .task-page__button-text {
@@ -272,15 +281,21 @@
 
 .task-list {
   padding: 0 var(--gap-l);
+  height: calc(100vh - var(--gap-xl) - var(--gap-m));
+  overflow-y: auto;
 }
 
 .task-list__title {
   font-size: var(--text-desktop-subtitles-1);
   margin: var(--gap-xl) 0 var(--gap-m);
+  /* position: sticky; */
+  top: 0;
+  background-color: var(--Color-Neutral-White);
+  /* z-index: 5; */
 }
 
 .task-list__items {
-  list-style-type: none; 
+  list-style-type: none;
   padding: 0;
   margin: 0;
   display: flex;
@@ -318,7 +333,7 @@
   justify-content: center;
   align-items: center;
   background-color: var(--Color-grey-100);
-  border-radius: var(--r-xs); 
+  border-radius: var(--r-xs);
 }
 
 .task-list__square .fi {
@@ -332,7 +347,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: flex-start;
 }
 
@@ -422,4 +437,42 @@
 
 .task-details__edit-btn:hover {
   background-color: var(--Color-grey-100);
+}
+
+/* Header */
+
+.task-page__header--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--gap-l);
+  grid-area: task-header;
+}
+
+.task-page__header--header .back-button {
+  background: none;
+  border: 1px solid var(--Color-grey-100);
+  border-radius: var(--r-xs);
+  font-size: var(--text-desktop-small);
+  cursor: pointer;
+  color: var(--Color-Neutral-Dark);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  font-family: var(--font-family);
+}
+
+.task-page__header--header .fi{
+  display: flex;
+  gap: var(--gap-xs);
+  justify-content: center;
+  
+}
+
+.task-page__header--header .task-title {
+  font-size: var(--text-desktop-medium);
+  color: var(--Color-Neutral-Dark);
+  font-weight: lighter;
+  text-align: center;
+  flex: 1;
 }

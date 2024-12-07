@@ -158,6 +158,7 @@
   student_entry1 = StudentEntry.create(entry_number: 1, entry_date: Date.new(2024, 11, 25), mark: mark1) 
   student_entry2 = StudentEntry.create(entry_number: 2, entry_date: Date.new(2024, 11, 25), mark: mark2) 
   student_entry3 = StudentEntry.create(entry_number: 3, entry_date: Date.new(2024, 11, 25), mark: mark3) 
+  student_entry3 = StudentEntry.create(entry_number: 2, entry_date: Date.new(2022, 10, 25), mark: mark1) 
 
   student_annotation1 = StudentAnnotation.create(number: 1, account_number: 1234, credit: 100, debit: 0, student_entry: student_entry1, account: account1) 
   student_annotation2 = StudentAnnotation.create(number: 2, account_number: 1334, credit: 0, debit: 1000, student_entry: student_entry2, account: account2) 

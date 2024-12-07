@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :student_entries
   resources :student_annotations
   resources :marks
+  resources :exercises
 
   resources :tasks do
     delete '/statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'

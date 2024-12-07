@@ -62,29 +62,40 @@ const StatementForm = ({ onStatementCreated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Definición:</label>
-        <textarea value={definition} onChange={(e) => setDefinition(e.target.value)} />
-      </div>
-      <div>
-        <label>Explicación:</label>
-        <textarea value={explanation} onChange={(e) => setExplanation(e.target.value)} />
-      </div>
-      <div>
-        <label>
-          Público:
-          <input
-            type="checkbox"
-            checked={isPublic}
-            onChange={(e) => setIsPublic(e.target.checked)}
+    <section className="statement-page__form">
+      <form className="statement-page__form--form" onSubmit={handleSubmit}>
+        <h2 className="task-page__header">Crear Enunciado</h2>
+        <div>
+          <label className="statement-page__label--definition">Definición:</label>
+          <textarea
+            className="statement-page__input"
+            value={definition}
+            onChange={(e) => setDefinition(e.target.value)}
           />
-        </label>
-      </div>
+        </div>
+        <div>
+          <label className="statement-page__label--explanation">Explicación:</label>
+          <textarea
+            className="statement-page__input"
+            value={explanation}
+            onChange={(e) => setExplanation(e.target.value)}
+          />
+        </div>
+        <div className="statement-page__buttons-container">
+          <label statement-page__label--visibility>
+            Público:
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+          </label>
+        <button type="submit" className="statement-page__button--form">Finalizar</button>
+        <button type="button" className="statement-page__button--form">Añadir Solución</button>
+        </div>
 
-      <SolutionList solutions={solutions} setSolutions={setSolutions} />
-      <button type="submit">Crear Enunciado</button>
-    </form>
+      </form>
+    </section>
   );
 };
 

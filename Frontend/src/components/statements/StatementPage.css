@@ -1,0 +1,200 @@
+.statement-page {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3% 42% 55%;
+  grid-template-areas:
+    "statement-header statement-header"
+    "statement-form statements-solutions"
+    "statement-selection statement-selection";
+  gap: var(--gap-l);
+  padding: var(--gap-l);
+  overflow: hidden;
+}
+
+.statement-page__form {
+  grid-area: statement-form;
+  padding: var(--gap-xl);
+  border-radius: var(--border-radius);
+}
+
+.statement-page__form--form {
+  padding: 0 var(--gap-l);
+}
+
+.statement-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--Color-Neutral-White);
+  font-size: var(--text-desktop-subtitles-1);
+  font-weight: bold;
+  margin-bottom: var(--gap-xl);
+}
+
+.statement-page__solutions {
+  grid-area: statements-solutions;
+  padding: var(--gap-m);
+  border-radius: var(--border-radius);
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.statement-page__button {
+  padding: var(--gap-s) var(--gap-m);
+  background-color: var(--Color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  margin-top: var(--gap-m);
+}
+
+.statement-page__button:hover {
+  background-color: var(--Color-primary-dark);
+}
+
+/* Statement List */
+
+.statement-page__selection {
+  grid-area: statement-selection;
+  padding: var(--gap-xl) 40px;
+  border-top: 1px solid var(--Color-grey-200);
+  border-radius: var(--border-radius);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.statement-page__selection--content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--gap-l) var(--gap-xl);
+  overflow: hidden;
+}
+
+.statement-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--Color-Neutral-White);
+  font-size: var(--text-desktop-subtitles-1);
+  font-weight: bold;
+  margin-bottom: var(--gap-xl);
+}
+
+.statement-page__list{
+  overflow-y: auto;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  max-height: 100%;
+  flex: 1;
+}
+
+.statement-page__list-item{
+  padding: var(--gap-s);
+  margin-bottom: var(--gap-s);
+  border-bottom: 1px solid var(--Color-grey-200);
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-s);
+  width: 100%;
+}
+
+.statement-page__statement-container{
+  display: flex;
+  gap: var(--gap-s);
+  width: 100%;
+  align-items: center;
+}
+
+.statement-page__definition{
+  flex: 0 1 60%;
+  /* Limita el ancho a un máximo del 50% */
+  font-size: var(--text-desktop-small);
+  word-wrap: break-word;
+}
+
+.statement-page__actions{
+  display: flex;
+  align-items: center;
+  /* Centra los elementos verticalmente */
+  gap: var(--gap-xs);
+  /* Espaciado entre los elementos */
+  flex: 1;
+}
+
+.statement-page__actions button {
+  flex: 1;
+  /* Cada elemento ocupa el mismo espacio (1/3 del 40% disponible) */
+  display: flex;
+  justify-content: center;
+  /* Centra el contenido de cada botón y label */
+  align-items: center;
+  /* Centra verticalmente */
+  background: none;
+  border: none;
+  color: var(--Color-grey-600);
+  font-size: var(--text-desktop-small);
+  cursor: pointer;
+  gap: var(--gap-xs);
+}
+
+.statement-page__actions button:hover {
+  color: var(--Color-primary);
+}
+
+.statement-page__actions span {
+  display: inline-block;
+}
+
+.statement-page__button-text{
+  display: inline-block;
+  margin: 0;
+}
+
+/* Header */
+
+.statement-page__header--header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--gap-l);
+  grid-area: statement-header;
+}
+
+.statement-page__header--header .back-button {
+  background: none;
+  border: 1px solid var(--Color-grey-100);
+  border-radius: var(--r-xs);
+  font-size: var(--text-desktop-small);
+  cursor: pointer;
+  color: var(--Color-Neutral-Dark);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  font-family: var(--font-family);
+}
+
+.statement-page__header--header .fi{
+  display: flex;
+  gap: var(--gap-xs);
+  justify-content: center;
+  
+}
+
+.statement-page__header--header .statement-title {
+  font-size: var(--text-desktop-medium);
+  color: var(--Color-Neutral-Dark);
+  font-weight: lighter;
+  text-align: center;
+  flex: 1;
+}

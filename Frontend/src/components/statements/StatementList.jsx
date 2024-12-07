@@ -19,14 +19,14 @@ const StatementsList = () => {
         setLoading(true);
         const response = await statementService.getAllStatements();;
         if (Array.isArray(response.data)) {
-        const filteredStatements = response.data.filter(
-          (statement) => statement.is_public || statement.user_id === user?.id
-        );
-        setStatements(filteredStatements);
-      } else {
-        console.log("RESPUESTA DEL SERVER", response.data);
-        console.error("Error: La respuesta no es un arreglo válido.");
-      }
+          const filteredStatements = response.data.filter(
+            (statement) => statement.is_public || statement.user_id === user?.id
+          );
+          setStatements(filteredStatements);
+        } else {
+          console.log("RESPUESTA DEL SERVER", response.data);
+          console.error("Error: La respuesta no es un arreglo válido.");
+        }
       } catch (error) {
         console.error("Error al cargar los enunciados:", error);
       } finally {
@@ -35,6 +35,38 @@ const StatementsList = () => {
     };
     fetchStatements();
   }, [user]);
+
+  const handleDelete = async (id) => {
+    try {
+      await statementService.deleteStatement(id);
+      setStatements((prevStatements) =>
+        prevStatements.filter((statement) => statement.id !== id)
+      );
+    } catch (error) {
+      console.error("Error al eliminar el enunciado:", error);
+    }
+  };
+
+  const toggleVisibility = async (id, currentVisibility) => {
+    try {
+      const updatedVisibility = !currentVisibility;
+      await statementService.updateVisibility(id, updatedVisibility);
+      setStatements((prevStatements) =>
+        prevStatements.map((statement) =>
+          statement.id === id
+            ? { ...statement, is_public: updatedVisibility }
+            : statement
+        )
+      );
+    } catch (error) {
+      console.error("Error al cambiar visibilidad:", error);
+    }
+  };
+
+  const handleEditSolution = (id) => {
+    console.log("Editar solución para el enunciado:", id);
+    // Aquí puedes redirigir al formulario de edición de la solución
+  };
 
   if (authLoading || !user) {
     return <p>Cargando usuario...</p>;
@@ -58,30 +90,43 @@ const StatementsList = () => {
 
   console.log("Lista de enunciados:", statements);
   return (
-    <div>
-      <h3>Enunciados Disponibles</h3>
-      <ul>
+    <div className="statement-page__selection--content">
+      <h3 className="statement-page__header">Enunciados</h3>
+      <ul className="statement-page__list">
         {statements.map((statement) => (
-          <li key={statement.id}>
-            <p>{statement.definition}</p>
-            <p>{statement.explanation}</p>
-            <p>
-              <strong>Propietario:</strong>{" "}
-              {statement.user_id === user.id ? `${user.name}` : `Usuario ${statement.user_id}`}
-            </p>
-            <p>
-              <strong>Visibilidad:</strong> {statement.is_public ? "Público" : "Privado"}
-            </p>
-            <button onClick={() => setSelectedStatementId(statement.id)}>
+          <li className="statement-page__list-item" key={statement.id}>
+            <div className="statement-page__statement-container">
+              <span className="statement-page__definition">{statement.definition}</span>
+              <div className="statement-page__actions">
+                  <button onClick={() => handleDelete(statement.id)}>
+                    <span className="statement-page__button-text">Borrar Enunciado</span>
+                  </button>
+                <button onClick={() => handleEditSolution(statement.id)}>
+                  <span className="statement-page__button-text">Editar Solución</span>
+                </button>
+                <button
+                  onClick={() => toggleVisibility(statement.id, statement.is_public)}
+                  style={{
+                    backgroundColor: statement.is_public ? "#d3d3d3" : "#fff",
+                    color: statement.is_public ? "#000" : "#333",
+                    border: "1px solid #ccc",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span className="statement-page__button-text">{statement.is_public ? "Público" : "Privado"}</span>
+                </button>
+              </div>
+            </div>
+            {/* <button onClick={() => setSelectedStatementId(statement.id)}>
               Ver detalles
-            </button>
+            </button> */}
           </li>
         ))}
       </ul>
-      <button onClick={() => setFormVisible(true)}>Crear Nuevo Enunciado</button>
+      {/*       <button onClick={() => setFormVisible(true)}>Crear Nuevo Enunciado</button>
       {isFormVisible && <StatementForm onStatementCreated={handleStatementCreated} />}
 
-      {selectedStatementId && <StatementDetails statementId={selectedStatementId} />}
+      {selectedStatementId && <StatementDetails statementId={selectedStatementId} />} */}
     </div>
   );
 };

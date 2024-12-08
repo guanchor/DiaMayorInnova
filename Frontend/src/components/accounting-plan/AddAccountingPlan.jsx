@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
+import "./AccountingPlan.css";
 
 const AddAccountingPlan = () => {
   const initialAccountingPlanState = {
@@ -65,7 +66,7 @@ const AddAccountingPlan = () => {
         <div>
           <h4>Se ha enviado correctamente</h4>
           <button onClick={newAccountingPlan}>Añadir otro Plan</button>
-          <Link to={"/accounting-plans"}>Atrás</Link>
+          <button><Link to={"/accounting-plans"}>Atrás</Link></button>
         </div>
       ) : (
         <div>
@@ -73,6 +74,7 @@ const AddAccountingPlan = () => {
           <div>
             <label>Name</label>
             <input
+              className="accountingPlan__input"
               type="text"
               id="name"
               required
@@ -85,6 +87,7 @@ const AddAccountingPlan = () => {
           <div>
             <label>Description</label>
             <input
+              className="accountingPlan__input"
               type="text"
               id="description"
               required
@@ -97,6 +100,7 @@ const AddAccountingPlan = () => {
           <div>
             <label>Acronym</label>
             <input
+              className="accountingPlan__input"
               type="text"
               id="acronym"
               required
@@ -106,7 +110,8 @@ const AddAccountingPlan = () => {
             </input>
           </div>
 
-          <button onClick={saveAccountingPlan}>Submit</button>
+          <button className="accountingPlan__button" onClick={saveAccountingPlan}>Guardar</button>
+          <button><Link to={"/accounting-plans"}>Atrás</Link></button>
           {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
         </div>
       )}

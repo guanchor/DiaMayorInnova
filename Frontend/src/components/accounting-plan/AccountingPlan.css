@@ -1,4 +1,91 @@
-.accountingPlan_list{
+/* .accountingPlan {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3% 42% 55%;
+  grid-template-areas:
+    ""
+    ""
+    "";
+  gap: var(--gap-l);
+  padding: var(--gap-l);
+  overflow: hidden;
+} */
+
+.accountingPlan__header--h4 {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--Color-Neutral-White);
+  font-size: var(--text-desktop-subtitles-2);
+  font-weight: bold;
+  margin-bottom: var(--gap-xl);
+}
+
+.accountingPlan__form {
+  grid-area: pgc-form;
+  padding: var(--gap-xl);
+  border-radius: var(--border-radius);
+}
+
+.accountingPlan__label {
+  display: block;
+  font-size: var(--text-desktop-tiny);
+  margin-bottom: var(--gap-xxxs);
+  font-weight: bold;
+}
+
+.accountingPlan__input {
+  width: 100%;
+  padding: var(--gap-xs);
+  border: 1px solid var(--Color-grey-200);
+  border-radius: var(--r-xs);
+}
+
+.accountingPlan__button--form {
+  padding: var(--gap-xs) var(--gap-s);
+  background-color: var(--Color-Neutral-Dark);
+  font-size: var(--text-desktop-small);
+  color: var(--Color-grey-100);
+  border: none;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  margin-top: var(--gap-m);
+}
+
+.accountingPlan__button:hover {
+  background-color: var(--Color-primary-dark);
+}
+
+.accountingPlan__button--remove {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 4px 8px;
+  color: var(--Color-grey-400);
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-desktop-small);
+  background: none;
+  transition: color 0.3s;
+}
+
+.accountingPlan__button--remove:hover {
+  color: var(--Color-red-400);
+}
+
+.accountingPlan__button--edit {
+  padding: var(--gap-s) var(--gap-m);
+  background-color: transparent;
+  color: var(--Color-grey-400);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+/* .accountingPlan_list{
   font-size: 0.7rem;
   display: flex;
   flex-wrap: wrap;
@@ -66,4 +153,4 @@ input {
 form {
   max-width: 500px; 
   margin: 0 auto;
-}
+} */

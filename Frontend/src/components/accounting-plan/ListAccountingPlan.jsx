@@ -58,6 +58,7 @@ const AccountingPlansList = () => {
 
         <div>
           <input
+            className="accountingPlan__input"
             type="text"
             value={searchAccPlan}
             onChange={handleSearchChange}

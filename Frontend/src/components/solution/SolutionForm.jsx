@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import EntryForm from "../entry/EntryForm.jsx";
 
 const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
@@ -6,6 +6,16 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
     const updatedSolutions = [...solutions];
     updatedSolutions[solutionIndex].description = event.target.value;
     setSolutions(updatedSolutions);
+  };
+
+  const [collapsedEntries, setCollapsedEntries] = useState(
+    solution.entries.map(() => true) // Inicialmente todos los asientos están contraídos
+  );
+
+  const toggleCollapse = (index) => {
+    const updatedCollapse = [...collapsedEntries];
+    updatedCollapse[index] = !updatedCollapse[index];
+    setCollapsedEntries(updatedCollapse);
   };
 
   const addEntry = () => {
@@ -16,36 +26,80 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
       annotations: [{ number: 1, account_number: 0, credit: 0, debit: 0 }],
     });
     setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de agregar asiento:", updatedSolutions);
   };
 
   const removeSolution = () => {
     const updatedSolutions = solutions.filter((_, index) => index !== solutionIndex);
     setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar asiento:", updatedSolutions);
   };
 
+  const calculateTotals = () => {
+    const totals = { debit: 0, credit: 0 };
+    solution.entries.forEach((entry) => {
+      entry.annotations.forEach((annotation) => {
+        totals.debit += parseFloat(annotation.debit || 0);
+        totals.credit += parseFloat(annotation.credit || 0);
+      });
+    });
+    return totals;
+  };
+
+  const totals = calculateTotals();
+
   return (
-    <div>
+    <div className="statement-page__form-modal">
       <div>
-        <label>Solución {solutionIndex + 1}:</label>
+        <h5>Solución {solutionIndex + 1}:</h5>
         <textarea
+          className="statement-page__description"
           value={solution.description}
           onChange={handleSolutionChange}
+          placeholder="Descripción de la solución"
         />
-        <button type="button" onClick={removeSolution}>Eliminar Solución</button>
+        {/* <button type="button" onClick={removeSolution}>Eliminar Solución</button> */}
       </div>
 
       {solution.entries.map((entry, entryIndex) => (
-        <EntryForm
-          key={entryIndex}
-          solutionIndex={solutionIndex}
-          entry={entry}
-          entryIndex={entryIndex}
-          solutions={solutions}
-          setSolutions={setSolutions}
-        />
+        <div key={entryIndex}>
+          <div
+            className="statement-page__entry-collapse"
+            onClick={() => toggleCollapse(entryIndex)}
+          >
+            <span className="statement-page__entry-title">{`Asiento ${entry.entry_number}`}</span>
+            <span className="statement-page__entry-icon">
+              <i className={
+                collapsedEntries[entryIndex]
+                ? "fi fi-rr-angle-small-down"
+                : "fi fi-rr-angle-small-up"
+              }
+              ></i>
+            </span>
+            <span className="statement-page__entry-date">Fecha: {entry.entry_date || "Sin fecha"}</span>
+          </div>
+
+          {!collapsedEntries[entryIndex] && (
+            <EntryForm
+              solutionIndex={solutionIndex}
+              entry={entry}
+              entryIndex={entryIndex}
+              solutions={solutions}
+              setSolutions={setSolutions}
+            />
+          )}
+        </div>
       ))}
 
-      <button type="button" onClick={addEntry}>Agregar Asiento</button>
+      <div className="statement-page__actions">
+        <button type="button" onClick={addEntry} className="statement-page__button">
+          + Asiento
+        </button>
+        <div className="statement-page__totals">
+          <span>Total Debe: {totals.debit.toFixed(2)}</span>
+          <span>Total Haber: {totals.credit.toFixed(2)}</span>
+        </div>
+      </div>
     </div>
   );
 };

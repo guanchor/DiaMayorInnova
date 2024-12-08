@@ -19,33 +19,55 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotation, annotationIndex
   };
 
   return (
-    <div>
-      <label>Apunte {annotationIndex + 1}:</label>
+    <div className="statement-page__annotation-row">
+      {/* <label>Apunte {annotationIndex + 1}:</label> */}
       <input
         type="number"
         name="number"
         value={annotation.number}
         onChange={handleAnnotationChange}
+        className="statement-page__input"
+        placeholder="Apunte"
       />
       <input
         type="number"
         name="account_number"
         value={annotation.account_number || 0}
         onChange={handleAnnotationChange}
+        className="statement-page__input"
+        placeholder="Nº Cuenta"
       />
       <input
-        type="number"
-        name="credit"
-        value={annotation.credit}
-        onChange={handleAnnotationChange}
+        type="text"
+        name="account_name"
+        value={annotation.account_name || ""}
+        // onChange={handleAnnotationChange}
+        className="statement-page__input"
+        placeholder="Nombre Cuenta"
       />
       <input
         type="number"
         name="debit"
         value={annotation.debit}
         onChange={handleAnnotationChange}
+        className="statement-page__input"
+        placeholder="Debe"
       />
-      <button type="button" onClick={removeAnnotation}>Eliminar Apunte</button>
+      <input
+        type="number"
+        name="credit"
+        value={annotation.credit}
+        onChange={handleAnnotationChange}
+        className="statement-page__input"
+        placeholder="Haber"
+      />
+      <button
+        type="button"
+        onClick={removeAnnotation}
+        className="statement-page__button statement-page__button-delete"
+      >
+        <i className="fi fi-rr-trash"></i>
+      </button>
     </div>
   );
 };

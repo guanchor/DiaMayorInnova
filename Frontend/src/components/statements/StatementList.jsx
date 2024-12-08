@@ -17,7 +17,9 @@ const StatementsList = () => {
     const fetchStatements = async () => {
       try {
         setLoading(true);
-        const response = await statementService.getAllStatements();;
+        const response = await statementService.getAllStatements();
+
+        console.log("Datos de enunciados obtenidos:", response.data);
         if (Array.isArray(response.data)) {
           const filteredStatements = response.data.filter(
             (statement) => statement.is_public || statement.user_id === user?.id
@@ -63,9 +65,15 @@ const StatementsList = () => {
     }
   };
 
-  const handleEditSolution = (id) => {
-    console.log("Editar solución para el enunciado:", id);
-    // Aquí puedes redirigir al formulario de edición de la solución
+  const handleEditSolution = (index, field, value) => {
+    setSolutions(prevSolutions => {
+      const newSolutions = [...prevSolutions];
+      newSolutions[index] = {
+        ...newSolutions[index],
+        [field]: value,
+      };
+      return newSolutions;
+    });
   };
 
   if (authLoading || !user) {
@@ -88,7 +96,7 @@ const StatementsList = () => {
     setFormVisible(false);
   };
 
-  console.log("Lista de enunciados:", statements);
+  //console.log("Lista de enunciados:", statements);
   return (
     <div className="statement-page__selection--content">
       <h3 className="statement-page__header">Enunciados</h3>

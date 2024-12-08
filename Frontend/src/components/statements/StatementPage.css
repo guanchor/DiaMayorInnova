@@ -49,7 +49,6 @@
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  margin-top: var(--gap-m);
 }
 
 .statement-page__button:hover {
@@ -111,9 +110,8 @@
 
 .statement-page__statement-container{
   display: flex;
-  gap: var(--gap-s);
-  width: 100%;
-  align-items: center;
+  flex-grow: 1;
+  word-wrap: break-word;
 }
 
 .statement-page__definition{
@@ -121,36 +119,54 @@
   /* Limita el ancho a un máximo del 50% */
   font-size: var(--text-desktop-small);
   word-wrap: break-word;
+  display: flex;
+  align-items: center;
+}
+
+.statement-page__definition-solution{
+  font-size: var(--text-desktop-lead);
+  font-weight: bold;
 }
 
 .statement-page__actions{
   display: flex;
   align-items: center;
-  /* Centra los elementos verticalmente */
   gap: var(--gap-xs);
-  /* Espaciado entre los elementos */
   flex: 1;
+}
+
+.statement-page__actions > button {
+  margin: 0;
+}
+
+.statement-page__button-text--delete {
+  color: var(--Color-red-600);
+}
+
+.statement-page__button-text--delete:hover {
+  color: var(--Color-red-400);
+}
+
+.statement-page__button-text {
+  color: var(--Color-grey-500);
+}
+
+.statement-page__button-text:hover {
+  color: var(--Color-grey-300);
 }
 
 .statement-page__actions button {
   flex: 1;
-  /* Cada elemento ocupa el mismo espacio (1/3 del 40% disponible) */
   display: flex;
   justify-content: center;
-  /* Centra el contenido de cada botón y label */
   align-items: center;
-  /* Centra verticalmente */
   background: none;
   border: none;
-  color: var(--Color-grey-600);
   font-size: var(--text-desktop-small);
   cursor: pointer;
   gap: var(--gap-xs);
 }
 
-.statement-page__actions button:hover {
-  color: var(--Color-primary);
-}
 
 .statement-page__actions span {
   display: inline-block;
@@ -197,4 +213,20 @@
   font-weight: lighter;
   text-align: center;
   flex: 1;
+}
+
+/* Statement Form */
+
+.visibility-button {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  color: #333;
+  margin: 0 5px;
+}
+
+.visibility-button.active {
+  background-color: #333;
+  color: #fff;
 }

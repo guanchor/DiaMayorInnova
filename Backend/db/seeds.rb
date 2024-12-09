@@ -41,6 +41,22 @@
     puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
   end
 
+  teacher_role = Role.find_by(name: 'teacher')
+  if teacher_role && !user.has_role?('teacher')
+    user.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
+  end
+
+  student_rol = Role.find_by(name: 'student')
+  if student_rol && !user.has_role?('student')
+    user.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
+  end
+
   user2 = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
     u.name = "Tiburcio"
     u.first_lastName = "Cruz"
@@ -66,9 +82,9 @@
   end
 
   teacher_role = Role.find_by(name: 'teacher')
-  if teacher_role && !user.has_role?('teacher')
-    user.roles << teacher_role
-    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  if teacher_role && !user3.has_role?('teacher')
+    user3.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user3.email}"
   else
     puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
   end
@@ -82,9 +98,9 @@
   end
 
   student_rol = Role.find_by(name: 'student')
-  if student_rol && !user.has_role?('student')
-    user.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user.email}"
+  if student_rol && !user4.has_role?('student')
+    user4.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user4.email}"
   else
     puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
   end
@@ -98,9 +114,9 @@
   end
 
   student_rol = Role.find_by(name: 'student')
-  if student_rol && !user.has_role?('student')
-    user.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user.email}"
+  if student_rol && !user5.has_role?('student')
+    user5.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user5.email}"
   else
     puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
   end

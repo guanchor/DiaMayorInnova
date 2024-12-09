@@ -2,7 +2,11 @@ class ExercisesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @exercises = Exercise.all
+    if params[:user_id].present?
+      @exercises = Exercise.where(user_id: params[:user_id])
+    else
+      @exercises = Exercise.all
+    end
     render json: @exercises
   end
 
@@ -36,8 +40,9 @@ class ExercisesController < ApplicationController
     render json: @exercises
   end
 
-  private
+=begin   private
     def exercise_params
       params.require(:exercise).permit(:user_id, :task_id)
-    end
+    end 
+=end
 end

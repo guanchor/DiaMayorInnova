@@ -5,10 +5,12 @@ import Shortcut from '../../components/shortcuts/shortcut/Shortcut'
 const Modes = () => {
   const location = useLocation();
 
+
   if (location.pathname === "/modes") {
     return (
       <div className='shortcut__wrapper'>
-        <Shortcut url="práctica" name='práctica' />
+
+        <Shortcut url="pruebas" name='pruebas' />
         <Shortcut url="tarea" name='tarea' />
         <Shortcut url="examen" name='examen' />
       </div>

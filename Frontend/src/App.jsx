@@ -22,6 +22,7 @@ import StatementsList from './components/statements/StatementList';
 import StatementForm from './components/statements/StatementForm';
 import TaskEditForm from './components/task/TaskEditForm';
 import Modes from './pages/modes/Modes';
+import EntriesSection from './components/entries-section/EntriesSection';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
                   <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                   <Route path="/modes" element={<Modes />} >
                     <Route path='tarea' element={<TaskPage />} />
+                    <Route path='pruebas' element={<EntriesSection />} />
                   </Route>
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/tasks" element={<TaskListAndDetails />} />

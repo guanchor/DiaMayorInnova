@@ -71,7 +71,7 @@ const StatementCreateForm = () => {
           <i className="fi fi-rr-arrow-small-left"></i>
           Volver
         </button>
-        <h4>Creación de Enunciado</h4>
+        <h1 className="statement-title">Creación de Enunciado</h1>
       </header>
 
       <section className="statement-page__form">
@@ -79,11 +79,11 @@ const StatementCreateForm = () => {
           onStatementCreated={handleStatementCreated}
           onAddSolution={handleAddSolution}
           solutions={solutions}
+          onSaveSolution={handleSaveSolution}
         />
       </section>
 
       <aside className="statement-page__solutions">
-        <h3>Soluciones del Enunciado</h3>
         <SolutionList
           solutions={solutions}
           onEditSolution={handleEditSolution}

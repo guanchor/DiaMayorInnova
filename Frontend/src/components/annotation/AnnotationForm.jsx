@@ -41,7 +41,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotation, annotationIndex
         type="text"
         name="account_name"
         value={annotation.account_name || ""}
-        // onChange={handleAnnotationChange}
+        readOnly
         className="statement-page__input"
         placeholder="Nombre Cuenta"
       />

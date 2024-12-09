@@ -24,7 +24,21 @@
   padding: 0 var(--gap-l);
 }
 
-.statement-page__header {
+.statement-page__form--header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--Color-Neutral-White);
+  font-size: var(--text-desktop-subtitles-1);
+  font-weight: bold;
+  padding-bottom: var(--gap-l);
+}
+
+.statement-page__form--content {
+  padding-bottom: var(--gap-xxs);
+}
+
+.statement-page__list--header {
   position: sticky;
   top: 0;
   z-index: 10;
@@ -42,17 +56,54 @@
   max-height: 100%;
 }
 
-.statement-page__button {
-  padding: var(--gap-s) var(--gap-m);
-  background-color: var(--Color-primary);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
+.statement-page__solutions-header {
+  font-size: var(--text-desktop-subtitles-2);
 }
 
-.statement-page__button:hover {
-  background-color: var(--Color-primary-dark);
+.statement-page__button--form {
+  display: flex;
+  align-items: center;
+  padding: var(--gap-xxs) var(--gap-xs);
+  background-color: var(--Color-Neutral-Dark);
+  font-size: var(--text-desktop-small);
+  font-weight: lighter;
+  color: var(--Color-Neutral-White);
+  border: none;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  gap: var(--gap-xs);
+}
+
+.statement-page__button--form .fi {
+  font-size: 1rem;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.statement-page__button--form:hover {
+  background-color: var(--Color-Neutral-Dark);
+  opacity: 0.7;
+}
+
+.statement-page__buttons--actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--gap-xl);
+  padding-top: var(--gap-xxs);
+}
+
+.statement-page__visibility--container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-s);
+  width: auto;
+  padding-bottom: var(--gap-xxs);
+}
+
+.statement-page__checkbox--visibility {
+  margin: 0;
+  vertical-align: middle;
 }
 
 /* Statement List */
@@ -75,16 +126,6 @@
   flex: 1;
   padding: var(--gap-l) var(--gap-xl);
   overflow: hidden;
-}
-
-.statement-page__header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: var(--Color-Neutral-White);
-  font-size: var(--text-desktop-subtitles-1);
-  font-weight: bold;
-  margin-bottom: var(--gap-xl);
 }
 
 .statement-page__list{
@@ -217,16 +258,37 @@
 
 /* Statement Form */
 
-.visibility-button {
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background-color: #f8f9fa;
-  color: #333;
-  margin: 0 5px;
+.statement-page__toggle-visibility {
+  display: flex;
+  border: 1px solid var(--Color-grey-300);
+  border-radius: 20px;
+  overflow: hidden;
+  width: fit-content;
 }
 
-.visibility-button.active {
-  background-color: #333;
-  color: #fff;
+.toggle-option {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  background-color: #f9f9f9;
+  color: var(--Color-Neutral-Dark);
+  cursor: pointer;
+  font-size: var(--text-desktop-small);
+  font-weight: lighter;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.toggle-option.active {
+  background-color: var(--Color-grey-100);
+  color: var(--Color-Neutral-Dark);
+  font-weight: bold;
+}
+
+.toggle-option:not(.active):hover {
+  background-color: var(--Color-grey-50);
+}
+
+.toggle-option:first-child {
+  border-right: 1px solid var(--Color-grey-300); /* Línea divisoria */
 }

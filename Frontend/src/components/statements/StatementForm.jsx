@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import statementService from "../../services/statementService";
 
 
-const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolutions }) => {
+const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolutions, onSaveSolution }) => {
   const [solutions, setSolutions] = useState(propSolutions || []);
   const [definition, setDefinition] = useState("");
   const [explanation, setExplanation] = useState("");
@@ -12,6 +12,39 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
     setSolutions(propSolutions);
   }, [propSolutions]);
 
+  const handleAddSolution = () => {
+    const newSolution = {
+      description: "",
+      entries: [
+        {
+          entry_number: 1,
+          entry_date: "",
+          annotations: [
+            {
+              number: 1,
+              account_number: 0,
+              credit: 0,
+              debit: 0
+            }
+          ]
+        }
+      ]
+    };
+    setSolutions((prevSolutions) => [...prevSolutions, newSolution]);
+    if (onAddSolution) {
+      onAddSolution(newSolution); // Llamar al método del padre, si es necesario
+    }
+  };
+
+  const handleSaveSolution = (updatedSolution, index) => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[index] = updatedSolution; // Reemplazamos la solución editada
+    setSolutions(updatedSolutions);
+    if (onSaveSolution) {
+      onSaveSolution(updatedSolution); // Llamar a la función del padre para propagar el cambio
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Datos de soluciones antes de enviar al BACKEND:", solutions);
@@ -19,25 +52,25 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
       console.error("Error: solutions es undefined");
       return;
     }
-    
-    const hasEmptySolutions = solutions.some((solution) => 
-      !solution.description || 
-      solution.entries.some((entry) => 
-        !entry.entry_date || 
-        !entry.entry_number || 
-        entry.annotations.some((annotation) => 
-          annotation.credit === undefined || 
+
+    const hasEmptySolutions = solutions.some((solution) =>
+      !solution.description ||
+      solution.entries.some((entry) =>
+        !entry.entry_date ||
+        !entry.entry_number ||
+        entry.annotations.some((annotation) =>
+          annotation.credit === undefined ||
           annotation.debit === undefined
         )
       )
     );
-  
+
     if (hasEmptySolutions) {
       console.error("Error: Hay campos vacíos en las soluciones.");
       alert("Por favor, complete todos los campos antes de enviar.");
       return;
     }
-    
+
     const statementData = {
       definition,
       explanation,
@@ -82,10 +115,10 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
   };
 
   return (
-    <section className="statement-page__form">
+    <>
+      <h2 className="statement-page__form--header">Crear Enunciado</h2>
       <form className="statement-page__form--form" onSubmit={handleSubmit}>
-        <h2 className="task-page__header">Crear Enunciado</h2>
-        <div>
+        <div className="statement-page__form--content">
           <label className="statement-page__label--definition">Definición:</label>
           <textarea
             className="statement-page__input"
@@ -93,7 +126,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
             onChange={(e) => setDefinition(e.target.value)}
           />
         </div>
-        <div>
+        <div className="statement-page__form--content">
           <label className="statement-page__label--explanation">Explicación:</label>
           <textarea
             className="statement-page__input"
@@ -102,20 +135,28 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
           />
         </div>
         <div className="statement-page__buttons-container">
-          <label statement-page__label--visibility>
-            Público:
+          <div className="statement-page__visibility--container">
+            <label className="statement-page__label--visibility">
+              Público:
+            </label>
             <input
               type="checkbox"
               checked={isPublic}
               onChange={(e) => setIsPublic(e.target.checked)}
+              className="statement-page__checkbox--visibility"
             />
-          </label>
-        <button type="submit" className="statement-page__button--form">Finalizar</button>
-        <button type="button" onClick={onAddSolution} className="statement-page__button--form">Añadir Solución</button>
+          </div>
+          <div className="statement-page__buttons--actions">
+            <button type="submit" className="statement-page__button--form">Finalizar</button>
+            <button type="button" onClick={handleAddSolution} className="statement-page__button--form">
+              <i className="fi fi-rr-plus"></i>
+              Añadir Solución
+            </button>
+          </div>
         </div>
 
       </form>
-    </section>
+    </>
   );
 };
 

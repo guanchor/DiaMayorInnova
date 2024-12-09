@@ -10,8 +10,7 @@ const StatementsList = () => {
   const [statements, setStatements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFormVisible, setFormVisible] = useState(false);
-  const [selectedStatementId, setSelectedStatementId] = useState(null);
-
+  const [selectedStatement, setSelectedStatement] = useState(null);
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -49,14 +48,13 @@ const StatementsList = () => {
     }
   };
 
-  const toggleVisibility = async (id, currentVisibility) => {
+  const toggleVisibility = async (id, newVisibility) => {
     try {
-      const updatedVisibility = !currentVisibility;
-      await statementService.updateVisibility(id, updatedVisibility);
+      await statementService.updateStatement(id, { is_public: newVisibility });
       setStatements((prevStatements) =>
         prevStatements.map((statement) =>
           statement.id === id
-            ? { ...statement, is_public: updatedVisibility }
+            ? { ...statement, is_public: newVisibility }
             : statement
         )
       );
@@ -65,15 +63,9 @@ const StatementsList = () => {
     }
   };
 
-  const handleEditSolution = (index, field, value) => {
-    setSolutions(prevSolutions => {
-      const newSolutions = [...prevSolutions];
-      newSolutions[index] = {
-        ...newSolutions[index],
-        [field]: value,
-      };
-      return newSolutions;
-    });
+  const handleEditSolution = (statement) => {
+    setSelectedStatement(statement);
+    setFormVisible(true); // Mostrar el formulario para editar
   };
 
   if (authLoading || !user) {
@@ -88,7 +80,6 @@ const StatementsList = () => {
     return <p>No hay enunciados disponibles.</p>;
   }
 
-  // Función para manejar la creación de un enunciado
   const handleStatementCreated = (newStatement) => {
     console.log("Nuevo enunciado creado:", newStatement);
     // Aquí agregas el nuevo enunciado al estado de la lista de enunciados
@@ -99,42 +90,38 @@ const StatementsList = () => {
   //console.log("Lista de enunciados:", statements);
   return (
     <div className="statement-page__selection--content">
-      <h3 className="statement-page__header">Enunciados</h3>
+      <h3 className="statement-page__list--header">Enunciados</h3>
       <ul className="statement-page__list">
         {statements.map((statement) => (
           <li className="statement-page__list-item" key={statement.id}>
             <div className="statement-page__statement-container">
               <span className="statement-page__definition">{statement.definition}</span>
               <div className="statement-page__actions">
-                  <button onClick={() => handleDelete(statement.id)}>
-                    <span className="statement-page__button-text">Borrar Enunciado</span>
-                  </button>
-                <button onClick={() => handleEditSolution(statement.id)}>
+                <button onClick={() => handleDelete(statement.id)}>
+                  <span className="statement-page__button-text">Borrar Enunciado</span>
+                </button>
+                <button onClick={() => handleEditSolution(statement)}>
                   <span className="statement-page__button-text">Editar Solución</span>
                 </button>
-                <button
-                  onClick={() => toggleVisibility(statement.id, statement.is_public)}
-                  style={{
-                    backgroundColor: statement.is_public ? "#d3d3d3" : "#fff",
-                    color: statement.is_public ? "#000" : "#333",
-                    border: "1px solid #ccc",
-                    cursor: "pointer",
-                  }}
-                >
-                  <span className="statement-page__button-text">{statement.is_public ? "Público" : "Privado"}</span>
-                </button>
+                <div className="statement-page__toggle-visibility">
+                  <button
+                    onClick={() => toggleVisibility(statement.id, false)} // Cambiar a "Privado"
+                    className={`toggle-option ${!statement.is_public ? "active" : ""}`}
+                  >
+                    Privado
+                  </button>
+                  <button
+                    onClick={() => toggleVisibility(statement.id, true)} // Cambiar a "Público"
+                    className={`toggle-option ${statement.is_public ? "active" : ""}`}
+                  >
+                    Público
+                  </button>
+                </div>
               </div>
             </div>
-            {/* <button onClick={() => setSelectedStatementId(statement.id)}>
-              Ver detalles
-            </button> */}
           </li>
         ))}
       </ul>
-      {/*       <button onClick={() => setFormVisible(true)}>Crear Nuevo Enunciado</button>
-      {isFormVisible && <StatementForm onStatementCreated={handleStatementCreated} />}
-
-      {selectedStatementId && <StatementDetails statementId={selectedStatementId} />} */}
     </div>
   );
 };

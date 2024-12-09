@@ -6,7 +6,7 @@ import "./TaskPage.css"
 
 const TaskPage = () => {
   return (
-    <div className='task_page_container'>
+    <div className='modes_page_container task-color'>
       <p className='head_task'>Modo Tarea</p>
       <EntriesSection />
       <AuxSectionOne />

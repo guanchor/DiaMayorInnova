@@ -1,17 +1,5 @@
-.task_page_container {
+.task-color {
   background-color: var(--Color-blue-100);
-  padding: var(--gap-xl) var(--gap-xl);
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: minmax(500px, 900px) minmax(300px, 1fr);
-  grid-template-rows: 0.05fr repeat(2, 1fr);
-  grid-template-areas:
-    "head head"
-    "entry section1"
-    "entry section2";
-  gap: var(--gap-s);
-
 }
 
 .head_task {

@@ -1,7 +1,7 @@
 import React from 'react'
 import "./EntryHeader.css"
 
-const EntryHeader = () => {
+const EntryHeader = (addAnnotationItem) => {
   return (
     <div className='entry_header'>
       <p>Asientos Contables</p>
@@ -9,7 +9,7 @@ const EntryHeader = () => {
         <select name="entry_selector" id="entry_selector" aria-placeholder='selector'>
           <option value="">Asiento 1</option>
         </select>
-        <button className='btn'><i className='fi fi-rr-plus'></i>Asiento</button>
+        <button className='btn' onClick={addAnnotationItem}><i className='fi fi-rr-plus'></i>Asiento</button>
       </div>
     </div>
   )

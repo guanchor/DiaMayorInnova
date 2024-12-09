@@ -10,7 +10,7 @@ const Modes = () => {
     return (
       <div className='shortcut__wrapper'>
 
-        <Shortcut url="pruebas" name='pruebas' />
+        <Shortcut url="practica" name='practica' />
         <Shortcut url="tarea" name='tarea' />
         <Shortcut url="examen" name='examen' />
       </div>

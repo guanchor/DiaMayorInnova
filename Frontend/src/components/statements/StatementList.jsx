@@ -11,6 +11,7 @@ const StatementsList = () => {
   const [loading, setLoading] = useState(true);
   const [isFormVisible, setFormVisible] = useState(false);
   const [selectedStatement, setSelectedStatement] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -44,7 +45,17 @@ const StatementsList = () => {
         prevStatements.filter((statement) => statement.id !== id)
       );
     } catch (error) {
-      console.error("Error al eliminar el enunciado:", error);
+      if (error.response && error.response.status === 403) {
+        setErrorMessage("No tienes permiso para eliminar este enunciado.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Error al eliminar el enunciado.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      }
     }
   };
 
@@ -91,6 +102,7 @@ const StatementsList = () => {
   return (
     <div className="statement-page__selection--content">
       <h3 className="statement-page__list--header">Enunciados</h3>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <ul className="statement-page__list">
         {statements.map((statement) => (
           <li className="statement-page__list-item" key={statement.id}>

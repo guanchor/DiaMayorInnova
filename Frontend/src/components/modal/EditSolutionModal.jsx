@@ -19,26 +19,28 @@ const EditSolutionModal = ({ solution, solutionIndex, solutions, setSolutions, o
     onClose();
   };
 
-return (
-  <div className="modal-overlay" onClick={onClose}>
-    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      <h4>Editar Solución</h4>
-      <SolutionForm
-        solution={editedSolution}
-        solutionIndex={solutionIndex}
-        solutions={solutions}
-        setSolutions={setSolutions}
-        setEditedSolution={setEditedSolution}
-      />
-      <button className="modal-close" onClick={onClose}>
-        Cerrar
-      </button>
-      <button className="modal-save" onClick={handleSave}>
-          Guardar
-        </button>
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h4>Editar Solución</h4>
+        <SolutionForm
+          solution={editedSolution}
+          solutionIndex={solutionIndex}
+          solutions={solutions}
+          setSolutions={setSolutions}
+          setEditedSolution={setEditedSolution}
+        />
+        <div className="modal-buttons__actions">
+          <button className="modal-close" onClick={onClose}>
+            Cerrar
+          </button>
+          <button className="modal-save" onClick={handleSave}>
+            Guardar
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default EditSolutionModal;

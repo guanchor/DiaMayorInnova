@@ -264,6 +264,8 @@
   border-radius: 20px;
   overflow: hidden;
   width: fit-content;
+  margin: 0;
+  padding: 0;
 }
 
 .toggle-option {
@@ -290,5 +292,15 @@
 }
 
 .toggle-option:first-child {
-  border-right: 1px solid var(--Color-grey-300); /* Línea divisoria */
+  border-right: 2px solid var(--Color-grey-300); /* Línea divisoria */
 }
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+}
+

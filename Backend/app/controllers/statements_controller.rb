@@ -1,6 +1,5 @@
 class StatementsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_statement, only: [:update, :destroy]
   before_action :set_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution] #He añadido esto para QUITARLO SI FALLA
 
   def index
@@ -83,18 +82,19 @@ class StatementsController < ApplicationController
 
   def destroy
     if @statement.user_id == current_user.id
-    @statement.destroy
-      render json: { message: "Enunciado eliminado"}, status: :ok
+      @statement.solutions.destroy_all
+      Rails.logger.debug "Eliminando el enunciado con ID #{@statement.id}."
+      if @statement.destroy
+        render json: { message: "Enunciado eliminado"}, status: :ok
+      else
+        render json: { error: "No se pudo eliminar el enunciado" }, status: :unprocessable_entity
+      end
     else
       render json: { error: "No autorizado" }, status: :forbidden
     end
   end
 
   private
-
-  def find_statement
-    @statement = Statement.find(params[:id])
-  end
 
   def statement_params
     params.require(:statement).permit(

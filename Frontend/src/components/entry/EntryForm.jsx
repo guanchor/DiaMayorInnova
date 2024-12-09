@@ -35,8 +35,8 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
   return (
     <div className="statement-page__entry-expanded">
       {/* Fecha del asiento */}
-      <div>
-        <label>Fecha:</label>
+      <div className="statement-page__entry-expanded--date">
+        <label className="statement-page__date-label">Fecha:</label>
         <input
           type="date"
           name="entry_date"

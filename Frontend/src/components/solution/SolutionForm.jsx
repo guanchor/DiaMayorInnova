@@ -50,7 +50,7 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
 
   return (
     <div className="statement-page__form-modal">
-      <div>
+      <div className="statement-page__form-modal--solution">
         <h5>Solución {solutionIndex + 1}:</h5>
         <textarea
           className="statement-page__description"

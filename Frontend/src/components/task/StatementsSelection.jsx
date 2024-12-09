@@ -77,7 +77,7 @@ const StatementsSelection = ({
                   </button>
                   <button className="task-page__button--edit" type="button" onClick={() => handleEditSolutions(statement.id)}>
                     <i className="fi fi-rr-pencil pencil"></i>
-                    {editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}
+                    <span className="task-page__button-text">{editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}</span>
                   </button>
                 </div>
               </div>

@@ -7,6 +7,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
   const [definition, setDefinition] = useState("");
   const [explanation, setExplanation] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     setSolutions(propSolutions);
@@ -67,7 +68,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
 
     if (hasEmptySolutions) {
       console.error("Error: Hay campos vacíos en las soluciones.");
-      alert("Por favor, complete todos los campos antes de enviar.");
+      setErrorMessage("Por favor, complete todos los campos antes de enviar.");
       return;
     }
 
@@ -110,7 +111,10 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
       }]);
     } catch (error) {
       console.error("Error creando el enunciado:", error.response || error);
-      alert("Hubo un error al crear el enunciado. Por favor, intenta de nuevo.");
+      setErrorMessage("Hubo un error al crear el enunciado. Por favor, inténtelo de nuevo.");
+      setTimeout(() => {
+        setErrorMessage("");  // Limpiar el mensaje después de 5 segundos
+      }, 5000);
     }
   };
 
@@ -134,6 +138,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
             onChange={(e) => setExplanation(e.target.value)}
           />
         </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="statement-page__buttons-container">
           <div className="statement-page__visibility--container">
             <label className="statement-page__label--visibility">

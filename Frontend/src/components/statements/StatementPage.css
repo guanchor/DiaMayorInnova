@@ -128,7 +128,7 @@
   overflow: hidden;
 }
 
-.statement-page__list{
+.statement-page__list {
   overflow-y: auto;
   list-style-type: none;
   margin: 0;
@@ -137,7 +137,7 @@
   flex: 1;
 }
 
-.statement-page__list-item{
+.statement-page__list-item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
   border-bottom: 1px solid var(--Color-grey-200);
@@ -149,13 +149,13 @@
   width: 100%;
 }
 
-.statement-page__statement-container{
+.statement-page__statement-container {
   display: flex;
   flex-grow: 1;
   word-wrap: break-word;
 }
 
-.statement-page__definition{
+.statement-page__definition {
   flex: 0 1 60%;
   /* Limita el ancho a un máximo del 50% */
   font-size: var(--text-desktop-small);
@@ -164,24 +164,25 @@
   align-items: center;
 }
 
-.statement-page__definition-solution{
+.statement-page__definition-solution {
   font-size: var(--text-desktop-lead);
   font-weight: bold;
 }
 
-.statement-page__actions{
+.statement-page__actions {
   display: flex;
   align-items: center;
   gap: var(--gap-xs);
   flex: 1;
 }
 
-.statement-page__actions > button {
+.statement-page__actions>button {
   margin: 0;
 }
 
 .statement-page__button-text--delete {
   color: var(--Color-red-600);
+  font: inherit;
 }
 
 .statement-page__button-text--delete:hover {
@@ -213,7 +214,7 @@
   display: inline-block;
 }
 
-.statement-page__button-text{
+.statement-page__button-text {
   display: inline-block;
   margin: 0;
 }
@@ -222,7 +223,7 @@
 
 /* Header */
 
-.statement-page__header--header{
+.statement-page__header--header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -243,11 +244,11 @@
   font-family: var(--font-family);
 }
 
-.statement-page__header--header .fi{
+.statement-page__header--header .fi {
   display: flex;
   gap: var(--gap-xs);
   justify-content: center;
-  
+
 }
 
 .statement-page__header--header .statement-title {
@@ -295,7 +296,8 @@
 }
 
 .statement-page__toggle-visibility .toggle-option:first-child {
-  border-right: 2px solid var(--Color-grey-300); /* Línea divisoria */
+  border-right: 2px solid var(--Color-grey-300);
+  /* Línea divisoria */
 }
 
 .error-message {
@@ -306,4 +308,3 @@
   border: 1px solid #f5c6cb;
   border-radius: 5px;
 }
-

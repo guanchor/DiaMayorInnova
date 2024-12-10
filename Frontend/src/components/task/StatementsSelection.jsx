@@ -15,13 +15,15 @@ const StatementsSelection = ({
   const [currentSolutions, setCurrentSolutions] = useState([]);
   const [showSolutions, setShowSolutions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);  // Nuevo estado para controlar la modal
+  const [selectedStatementId, setSelectedStatementId] = useState(null);
 
   const viewSolutions = (statementId) => {
     console.log("ID del enunciado:", statementId);
     if (solutions[statementId]) {
       console.log("Soluciones ya cargadas:", solutions[statementId]);
       setCurrentSolutions(solutions[statementId]);
-      setShowSolutions(true);
+      setIsModalOpen(true);
     } else {
       console.log("Soluciones no cargadas. Realizando solicitud...");
       setLoading(true);
@@ -30,7 +32,7 @@ const StatementsSelection = ({
         .then(response => {
           console.log("Soluciones cargadas:", response.data);
           setCurrentSolutions(response.data);  // Asumimos que las soluciones vienen en `response.data`
-          setShowSolutions(true);
+          setIsModalOpen(true);
         })
         .catch(error => {
           console.error("Error al cargar soluciones:", error);
@@ -43,7 +45,7 @@ const StatementsSelection = ({
   };
 
   const hideSolutions = () => {
-    setShowSolutions(false);
+    setIsModalOpen(false);
     setCurrentSolutions([]);
   };
 
@@ -61,16 +63,16 @@ const StatementsSelection = ({
               <div className="task-page__statement-container">
                 <span className="task-page__statement">{statement.definition}</span>
                 <div className="task-page__actions">
-                {showCheckboxes && (
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedStatements.includes(statement.id)}
-                      onChange={() => handleStatementSelection(statement)}
-                    />
-                    <span className="task-page__button-text">Añadir</span>
-                  </label>
-                )}
+                  {showCheckboxes && (
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedStatements.includes(statement.id)}
+                        onChange={() => handleStatementSelection(statement)}
+                      />
+                      <span className="task-page__button-text">Añadir</span>
+                    </label>
+                  )}
                   <button className="task-page__button--edit" type="button" onClick={() => viewSolutions(statement.id)}>
                     <i className="fi fi-rr-interrogation interrogation"></i>
                     <span className="task-page__button-text">Ver Soluciones</span>
@@ -81,27 +83,20 @@ const StatementsSelection = ({
                   </button>
                 </div>
               </div>
-              {solutions[statement.id] && !editMode === statement.id && (
-                <ul>
-                  {solutions[statement.id].map((solution) => (
-                    <li key={solution.id}>{solution.description}</li>
-                  ))}
-                </ul>
-              )}
-              {editMode === statement.id && (
-                <div>
-                  <span className="task-page__button-text">Editar Soluciones</span>
-                  {/* Formulario para editar las soluciones */}
-                  <button type="button">Guardar Cambios</button>
-                </div>
-              )}
             </li>
           ))}
         </ul>
-        {showSolutions && (
-          <div className="task-page__solutions-viewer">
-            <button className="task-page__button" onClick={hideSolutions}>Cerrar Soluciones</button>
-            <SolutionsViewer solutions={currentSolutions} />
+
+        {/* Modal para ver soluciones */}
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <button className="task-page__button--close" onClick={hideSolutions}>X</button>
+              <h3>Enunciado</h3>
+              <p>{statements.find(statement => statement.id === selectedStatementId)?.definition}</p>
+              <h3>Soluciones</h3>
+              <SolutionsViewer solutions={currentSolutions} />
+            </div>
           </div>
         )}
       </div>

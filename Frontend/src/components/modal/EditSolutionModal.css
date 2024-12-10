@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font: inherit;
 }
 
 .modal-content {
@@ -33,7 +34,8 @@ textarea {
 
 .modal-buttons__actions {
   display: flex;
-  justify-content: space-between; /* Esto distribuye los botones a los extremos */
+  justify-content: space-between;
+  /* Esto distribuye los botones a los extremos */
   gap: 20px;
 }
 
@@ -45,6 +47,7 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font: inherit;
 }
 
 .modal-close:hover,
@@ -147,9 +150,10 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 /* Boton + Apunte y + Asiento*/
 .statement-page__button-add,
-.statement-page__button--add-entry { 
+.statement-page__button--add-entry {
   padding: var(--gap-xxs) var(--gap-xs);
   background-color: var(--Color-Neutral-Dark);
   color: var(--Color-Neutral-White);
@@ -157,13 +161,15 @@ textarea {
   border-radius: var(--r-xxs);
   cursor: pointer;
   transition: opacity 0.3s ease;
+  font: inherit;
 }
 
 .statement-page__button-add:hover {
   opacity: 0.8;
 }
 
-.statement-page__button-delete i.fi-rr-trash { /* Boton borrar Apunte*/
+.statement-page__button-delete i.fi-rr-trash {
+  /* Boton borrar Apunte*/
   color: var(--Color-red-700);
   transition: color 0.3s ease;
 }
@@ -178,6 +184,7 @@ textarea {
   gap: var(--gap-xxxs);
   padding: var(--gap-xxs) var(--gap-xs);
   color: var(--Color-red-600);
+  font: inherit;
 }
 
 .statement-page__button--remove-entry i.fi-rr-trash {
@@ -281,4 +288,3 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-

@@ -345,6 +345,7 @@ input::placeholder {
   padding: var(--gap-xl) var(--gap-xl);
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
   display: grid;
   grid-template-columns: minmax(500px, 900px) minmax(300px, 1fr);
   grid-template-rows: 0.05fr repeat(2, 1fr);
@@ -364,5 +365,29 @@ input::placeholder {
     justify-content: center;
     align-items: center;
     overflow: auto;
+  }
+
+  .modes_page_container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 95%;
+    grid-template-areas:
+      "head"
+      "entry"
+      "section1"
+      "section2";
+
+  }
+}
+
+@media (width > 1080px) {
+
+  .modes_page_container {
+    grid-template-columns: minmax(500px, 900px) minmax(300px, 1fr);
+    grid-template-rows: 0.05fr repeat(2, 1fr);
+    grid-template-areas:
+      "head head"
+      "entry section1"
+      "entry section2";
+
   }
 }

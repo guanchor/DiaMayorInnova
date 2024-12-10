@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./EntryForm.css"
 import StudentAnnotationServices from '../../../../services/studentAnnotationServices'
+import { useEntries } from '../../../../context/entries-page/EntriesContext'
 
-const EntryForm = ({ aptNumber }) => {
+const EntryForm = ({ aptNumber, setTotal, total }) => {
   const initialAnnotation = {
     account_id: 1,
     number: aptNumber,
@@ -13,10 +14,14 @@ const EntryForm = ({ aptNumber }) => {
   }
 
   const [currentAnnotation, setCurrentAnnotation] = useState(initialAnnotation);
+  const { deleteAnnotationItem } = useEntries();
+  const calc = (value) => parseFloat(value) || 0;
 
   const deleteEntry = (e) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+    console.log(aptNumber)
+    deleteAnnotationItem(aptNumber);
+  };
 
   /*   const saveEntry = (e) => {
       e.preventDefault();
@@ -34,11 +39,17 @@ const EntryForm = ({ aptNumber }) => {
     }; */
 
 
+  const entryValue = () => calc(currentAnnotation.debit) - calc(currentAnnotation.credit);
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCurrentAnnotation({ ...currentAnnotation, [name]: value });
-    console.log(currentAnnotation)
   };
+
+  useEffect(() => {
+    setTotal(prevTotal => prevTotal + entryValue())
+  }, [currentAnnotation])
 
 
 

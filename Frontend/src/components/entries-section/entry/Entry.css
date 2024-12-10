@@ -7,19 +7,31 @@
   justify-content: start;
   align-items: start;
   gap: var(--gap-xl);
+
+
+}
+
+.date_input {
+  width: 140px;
+  height: 36px;
+  margin: 0px;
 }
 
 .entry_head {
   display: flex;
   width: 100%;
+  height: 36px;
   justify-content: space-between;
+  align-items: center;
 }
 
 .head_tittle {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   color: var(--Color-Principal);
+  width: 65%;
+  cursor: pointer;
 
   >p {
     font-size: var(--text-desktop-lead);
@@ -35,21 +47,31 @@
 }
 
 .head_data {
+  width: 35%;
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   gap: var(--gap-xxxl);
 
+
   >p {
+    width: auto;
     font-size: var(--text-desktop-small);
     color: var(--Color-Principal-claro);
+    cursor: default;
   }
+}
+
+.entry_body {
+  width: 100%;
+  container-type: inline-size;
+  container-name: parent;
 }
 
 .entry_body_tittle {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
   padding-bottom: var(--gap-xs);
   border-bottom: solid 1px var(--Color-grey-50);
@@ -57,14 +79,37 @@
   font-weight: 700;
   color: var(--Color-Principal);
 
-  >p {
-    margin-right: var(--gap-s);
+  @container parent (width < 809px) {
+    flex-direction: column-reverse;
+    align-items: start;
+    gap: var(--gap-s);
   }
 }
 
-.tittles_container {
+.header_container {
   display: flex;
   gap: var(--gap-xxl);
+
+  @container parent (width < 809px) {
+    gap: var(--gap-xxl);
+  }
+
+  @container parent (width < 609px) {
+    gap: var(--gap-m);
+  }
+}
+
+.tittles_wrapper {
+  display: flex;
+  gap: var(--gap-xxl);
+
+  @container parent (width < 809px) {
+    gap: var(--gap-xs);
+  }
+
+  @container parent (width < 609px) {
+    gap: 0;
+  }
 }
 
 .entry_item_container {
@@ -95,25 +140,36 @@
   }
 }
 
-.entry_body {
-  width: 100%;
-
-}
-
-.tittle_apt {
+.apt_number {
   width: 20px;
 }
 
 .tittle_account-number {
   width: 100px;
+
+  @container parent (width < 609px) {
+    width: 98px;
+  }
 }
 
 .tittle_account-name {
   width: 214px;
+
+  @container parent (width < 809px) {
+    width: 158px;
+  }
+
+  @container parent (width < 609px) {
+    width: 158px;
+  }
 }
 
 .tittle_debit {
   width: 98px;
+
+  @container parent (width < 809px) {
+    width: 100px;
+  }
 }
 
 .tittle_credit {

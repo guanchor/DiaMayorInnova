@@ -2,22 +2,15 @@ import React, { useEffect, useState } from 'react'
 import EntryHeader from './entry-header/EntryHeader'
 import Entry from './entry/Entry'
 import "./EntriesSection.css"
-import studentEntriesServices from '../../services/studentEntriesServices'
-import userExercise from '../../services/userExerciseService'
 import { useAuth } from '../../context/AuthContext'
+import { useEntries } from '../../context/entries-page/EntriesContext'
 
 
 const EntriesSection = () => {
-
-  const [entries, setEntries] = useState([]);
+  const { entries } = useEntries();
   const [id, setId] = useState(0);
   const { user } = useAuth();
 
-  const [entry, setEntry] = useState([1]);
-
-  const addAnnotationItem = () => {
-    setEntry([...entry, entry.length + 1])
-  }
   /* 
   useEffect(() => {
 
@@ -38,15 +31,13 @@ const EntriesSection = () => {
 */
 
   return (
-    <div className='entry_container' style={{ width: "100%", height: "100%" }}>
-      <EntryHeader addAnnotationItem />
-      <Entry />
-      {/*       {
+    <div className='entry_container'>
+      <EntryHeader />
+      {
         entries.map((entry) => (
-          <Entry key={entry.id} number={entry.entry_number} />
+          <Entry key={user.name + entry} number={entry} />
         ))
-      } */}
-
+      }
     </div >
   )
 }

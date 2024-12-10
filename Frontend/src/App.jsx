@@ -29,6 +29,7 @@ import TaskListAndDetails from './components/task/taskListAndDetails';
 import StatementsList from './components/statements/StatementList';
 import StatementForm from './components/statements/StatementForm';
 import TaskEditForm from './components/task/TaskEditForm';
+import AccountingPlans from './pages/accounting-plan/AccountingPlans';
 
 function App() {
 
@@ -44,8 +45,8 @@ function App() {
                 <Route path="/sign_in" element={<SignIn />} />
                 <Route path="*" element={<Home />} />
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
-                  <Route path="/accounting-plans" element={<AccountingPlanList />} />
-                  <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
+                  <Route path="/accounting-plans-test" element={<AccountingPlanList />} />
+                  <Route path="/accounting-plans-test/:id" element={<AccountingPlan />} />
                    {/* PRUEBA COMPONENTES ACCOUNTS AND HELP EXAMPLES */}
                   <Route path="/accounts" element={<AccountList />} />
                   <Route path="/accounts/:id" element={<Account />} />
@@ -56,6 +57,8 @@ function App() {
 
                   <Route path="/modes" element={<TaskPage />} />
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                    <Route path="/accounting-plans" element={<AccountingPlans />} />
+                    <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/tasks/:id" element={<TaskEditForm />} />
                     <Route path="/statements" element={<StatementsList />} />

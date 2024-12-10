@@ -96,6 +96,18 @@ const AddHelpExample = () => {
               />
             </div>
 
+            <div>
+              <label>Descripción</label>
+              <input
+                type="text"
+                id='account_id'
+                required
+                value={helpExample.description}
+                onChange={handleInputChange}
+                name='descrpition'
+              />
+            </div>
+
             <button onClick={saveHelpExample}>Crear ejemplo</button>
           </div>
         )}

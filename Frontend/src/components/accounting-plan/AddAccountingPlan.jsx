@@ -3,7 +3,7 @@ import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
 import "./AccountingPlan.css";
 
-const AddAccountingPlan = () => {
+const AddAccountingPlan = ({setNewPGC}) => {
   const initialAccountingPlanState = {
     id: null,
     name: "",
@@ -44,7 +44,7 @@ const AddAccountingPlan = () => {
             description: response.data.description.trim(),
             acronym: response.data.acronym.trim()
           });
-          setSubmitted(true);
+          setNewPGC(true);
           console.log(response.data);
         })
         .catch(e => {

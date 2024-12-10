@@ -76,7 +76,6 @@ const AccountingPlan = (props) => {
 
   return (
     <>
-      <button><Link to={"/accounting-plans/"}>Volver</Link></button>
 
       {currentAccountingPlan ? (
         <div>

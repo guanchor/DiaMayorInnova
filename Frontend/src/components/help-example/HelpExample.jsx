@@ -12,6 +12,7 @@ const HelpExample = (props) => {
     creditMoves: "",
     debitMoves: "",
     account: 0,
+    description: "",
   };
 
   const [currentHelpExample, setCurrentHelpExample] = useState(initialHelpExampleState);
@@ -101,6 +102,18 @@ const HelpExample = (props) => {
                 name="creditMoves"
                 type="text"
                 value={currentHelpExample.creditMoves}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="accountPlan">Descripcion</label>
+              <input 
+                id="description"
+                name="description"
+                type="text"
+                value={currentHelpExample.description}
                 onChange={handleInputChange}
                 required
               />

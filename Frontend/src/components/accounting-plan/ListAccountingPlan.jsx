@@ -3,15 +3,20 @@ import AccountingPlanDataService from "../../services/AccountingPlanService"
 import { Link } from "react-router-dom";
 import "./AccountingPlan.css";
 
-const AccountingPlansList = () => {
+// PGC LIST
+const AccountingPlansList = ({newPGC}) => {
   const [accountingPlans, setAccountingPlans] = useState([]);
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccPlan, setSearchAccPlan] = useState("");
 
+
+
   useEffect(() => {
-    retrieveAccountingPlans();
-  }, []);
+      retrieveAccountingPlans();
+  }
+    
+  , [newPGC]);
 
   const retrieveAccountingPlans = () => {
     AccountingPlanDataService.getAll()
@@ -57,20 +62,6 @@ const AccountingPlansList = () => {
         console.log(e);
       });
   };
-
-  // const deleteAccountingPlan = () => {
-  //   AccountingPlanDataService.remove(currentAccountingPlan.id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       retrieveAccountingPlans(); //Refresh list after remove
-  //       setCurrentAccountingPlan(null); //Clear state
-  //       setCurrentIndex(-1); //Reset index
-  //       navigate("/accounting-plans/");
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
   
 
   const handleSearchChange = (e) => {
@@ -79,11 +70,10 @@ const AccountingPlansList = () => {
 
   return (
     <>
-      <section>
+
+      {/* PGC list */}
+      <section className="accountingPlan__pgcList">
         <h4 className="accountingPlan__header--h4">Planes Generales de Contabilidad</h4>
-        <Link to={"/home"}>
-          Volver al home
-        </Link>
 
         <div>
           <input
@@ -133,43 +123,6 @@ const AccountingPlansList = () => {
         {/* <button onClick={removeAllAccountingPlans}>Borrar todo</button> */}
       </section>
 
-      {/*
-
-      INFO DE LA DERECHA, BORRAR DESPUÉS
-      
-       <section className="accountingPlan_wrapper">
-        {currentAccountingPlan ? (
-          <div className="currentAccountingPlan_detail">
-            <h3>Plan Contable</h3>
-            <div className="detail">
-              <label>
-                <strong>Nombre: </strong>
-              </label>{""}
-              {currentAccountingPlan.name}
-            </div>
-            <div className="detail">
-              <label>
-                <strong>Descripción: </strong>
-              </label>{""}
-              {currentAccountingPlan.description}
-            </div>
-            <div className="detail">
-              <label>
-                <strong>Acrónimo: </strong>
-              </label>{""}
-              {currentAccountingPlan.acronym}
-            </div>
-            <Link to={"/accounting-plans/" + currentAccountingPlan.id}>
-              Editar
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Haga click sobre un plan de cuentas</p>
-          </div>
-        )}
-      </section> */}
     </>
   );
 };

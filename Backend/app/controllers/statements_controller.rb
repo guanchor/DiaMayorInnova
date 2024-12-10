@@ -3,8 +3,18 @@ class StatementsController < ApplicationController
   before_action :set_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution] #He añadido esto para QUITARLO SI FALLA
 
   def index
-    @statements = Statement.where("is_public = ? OR user_id = ?", true, current_user.id)
-    render json: @statements
+    @statements = Statement.includes(solutions: { entries: :annotations }).where("is_public = ? OR user_id = ?", true, current_user.id)
+    render json: @statements.as_json(
+      include: {
+        solutions: {
+          include: {
+            entries: {
+              include: :annotations
+            }
+          }
+        }
+      }
+    )
   end
 
   def show

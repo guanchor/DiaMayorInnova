@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import statementService from "../../services/statementService";
 
 
@@ -9,15 +9,23 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
   const [isPublic, setIsPublic] = useState(statement?.is_public || false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const prevStatementRef = useRef();
+  const prevSolutionsRef = useRef();
+
   useEffect(() => {
-    setSolutions(propSolutions);
-    console.log("Statement prop received:", statement);
-    if (statement) {
-      setDefinition(statement.definition);
-      setExplanation(statement.explanation);
-      setIsPublic(statement.is_public);
-      setSolutions(statement.solutions_attributes || []);
+    const hasStatementChanged = JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement);
+    const hasSolutionsChanged = JSON.stringify(prevSolutionsRef.current) !== JSON.stringify(propSolutions);
+    if (hasStatementChanged || hasSolutionsChanged) {
+      console.log("Statement prop received:", statement);
+      setDefinition(statement?.definition || "");
+      setExplanation(statement?.explanation || "");
+      setIsPublic(statement?.is_public || false);
+      setSolutions(statement?.solutions_attributes || []);
     }
+
+    // Actualizar los refs con los valores actuales
+    prevStatementRef.current = statement;
+    prevSolutionsRef.current = propSolutions;
   }, [propSolutions, statement]);
 
   const handleAddSolution = () => {

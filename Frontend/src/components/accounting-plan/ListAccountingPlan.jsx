@@ -44,6 +44,35 @@ const AccountingPlansList = () => {
     setCurrentIndex(index);
   };
 
+  const deleteAccountingPlan = (id) => {
+    AccountingPlanDataService.remove(id)
+      .then((response) => {
+        console.log(response.data);
+        retrieveAccountingPlans(); //Refresh list after remove
+        setCurrentAccountingPlan(null); //Clear state
+        setCurrentIndex(-1); //Reset index
+        navigate("/accounting-plans/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  // const deleteAccountingPlan = () => {
+  //   AccountingPlanDataService.remove(currentAccountingPlan.id)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       retrieveAccountingPlans(); //Refresh list after remove
+  //       setCurrentAccountingPlan(null); //Clear state
+  //       setCurrentIndex(-1); //Reset index
+  //       navigate("/accounting-plans/");
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
+  
+
   const handleSearchChange = (e) => {
     setSearchAccPlan(e.target.value);
   };
@@ -51,7 +80,7 @@ const AccountingPlansList = () => {
   return (
     <>
       <section>
-        <h2>Planes Generales de Contabilidad</h2>
+        <h4 className="accountingPlan__header--h4">Planes Generales de Contabilidad</h4>
         <Link to={"/home"}>
           Volver al home
         </Link>
@@ -67,19 +96,48 @@ const AccountingPlansList = () => {
           <button onClick={findByName}>Buscar</button>
         </div>
 
-        <ul className="accountingPlan_list">
-          {accountingPlans && accountingPlans.map((accountingPlan, index) => (
-            <li onClick={() => setActiveAccountingPlan(accountingPlan, index)} key={index}>
-              {accountingPlan.name}
-            </li>
-          ))}
-        </ul>
+        <table className="accountingPlan_table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Acrónimo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {accountingPlans && accountingPlans.map((accountingPlan, index) => (
+              <tr key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
+                <td>{accountingPlan.name}</td>
+                <td>{accountingPlan.acronym}</td>
+                <td>{accountingPlan.description}</td>
+                <td>
+                  <button className="accountingPlan__button-edit">
+                    <Link to={"/accounting-plans/" + accountingPlan.id}>
+                      Editar
+                    </Link>
+                  </button>
+                  <button className="accountingPlan__button-remove" 
+                          onClick={(e) => {
+                            e.stopPropagation(); 
+                            deleteAccountingPlan(accountingPlan.id);}}>
+                    Borrar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
 
         <button><Link to={"/add-accounting-plan"}>Añadir nuevo plan</Link></button>
         {/* <button onClick={removeAllAccountingPlans}>Borrar todo</button> */}
       </section>
 
-      <section className="accountingPlan_wrapper">
+      {/*
+
+      INFO DE LA DERECHA, BORRAR DESPUÉS
+      
+       <section className="accountingPlan_wrapper">
         {currentAccountingPlan ? (
           <div className="currentAccountingPlan_detail">
             <h3>Plan Contable</h3>
@@ -111,7 +169,7 @@ const AccountingPlansList = () => {
             <p>Haga click sobre un plan de cuentas</p>
           </div>
         )}
-      </section>
+      </section> */}
     </>
   );
 };

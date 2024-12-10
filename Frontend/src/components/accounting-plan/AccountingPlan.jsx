@@ -76,6 +76,8 @@ const AccountingPlan = (props) => {
 
   return (
     <>
+      <button><Link to={"/accounting-plans/"}>Volver</Link></button>
+
       {currentAccountingPlan ? (
         <div>
           <h4 className="accountingPlan__header--h4">Detalles del PGC </h4>
@@ -117,11 +119,13 @@ const AccountingPlan = (props) => {
               />
             </div>
           </form>
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-          <button className="accountingPlan__button--form" onClick={updateAccountingPlan}>Editar</button>
-          <button className="accountingPlan__button--remove" onClick={deleteAccountingPlan}>Borrar</button>
-          <p>{message}</p>
-          <button><Link to={"/accounting-plans/"}>Volver</Link></button>
+          <div>
+            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+            <button className="accountingPlan__button--form" onClick={updateAccountingPlan}>Editar</button>
+            <button className="accountingPlan__button--remove" onClick={deleteAccountingPlan}>Borrar</button>
+            <p>{message}</p>
+          </div>
+          
         </div>
       ) : (
         <div>

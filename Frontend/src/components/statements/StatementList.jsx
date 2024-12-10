@@ -5,7 +5,7 @@ import statementService from "../../services/statementService";
 import StatementForm from "./StatementForm";
 import StatementDetails from "./StatementDetails";
 
-const StatementsList = () => {
+const StatementsList = ({ onSelectStatement }) => {
   const { user, loading: authLoading } = useAuth();
   const [statements, setStatements] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,9 +74,9 @@ const StatementsList = () => {
     }
   };
 
-  const handleEditSolution = (statement) => {
+  const handleStatementSelection = (statement) => {
     setSelectedStatement(statement);
-    setFormVisible(true); // Mostrar el formulario para editar
+    onSelectStatement(statement);
   };
 
   if (authLoading || !user) {
@@ -110,10 +110,12 @@ const StatementsList = () => {
               <span className="statement-page__definition">{statement.definition}</span>
               <div className="statement-page__actions">
                 <button onClick={() => handleDelete(statement.id)}>
-                  <span className="statement-page__button-text">Borrar Enunciado</span>
+                  <i className="fi-rr-trash"></i>
+                  <span className="statement-page__button-text">Borrar</span>
                 </button>
-                <button onClick={() => handleEditSolution(statement)}>
-                  <span className="statement-page__button-text">Editar Solución</span>
+                <button onClick={() => handleStatementSelection(statement)}>
+                <i className="fi-rr-pencil"></i>
+                  <span className="statement-page__button-text">Editar</span>
                 </button>
                 <div className="statement-page__toggle-visibility">
                   <button

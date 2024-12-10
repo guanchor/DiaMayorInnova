@@ -2,16 +2,23 @@ import React, { useState, useEffect } from "react";
 import statementService from "../../services/statementService";
 
 
-const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolutions, onSaveSolution }) => {
+const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolutions, onSaveSolution, statement }) => {
   const [solutions, setSolutions] = useState(propSolutions || []);
-  const [definition, setDefinition] = useState("");
-  const [explanation, setExplanation] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [definition, setDefinition] = useState(statement?.definition || "");
+  const [explanation, setExplanation] = useState(statement?.explanation || "");
+  const [isPublic, setIsPublic] = useState(statement?.is_public || false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     setSolutions(propSolutions);
-  }, [propSolutions]);
+    console.log("Statement prop received:", statement);
+    if (statement) {
+      setDefinition(statement.definition);
+      setExplanation(statement.explanation);
+      setIsPublic(statement.is_public);
+      setSolutions(statement.solutions_attributes || []);
+    }
+  }, [propSolutions, statement]);
 
   const handleAddSolution = () => {
     const newSolution = {
@@ -93,10 +100,19 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
 
     console.log("Datos COMPLETOS antes de enviar al backend:", statementData);
     try {
-      const response = await statementService.createStatement(statementData);
-      console.log("Respuesta del servidor:", response);
-      if (onStatementCreated) {
-        onStatementCreated(response.data); // Llama a la función del padre
+      if (statement?.id) {
+        // Actualizar enunciado existente
+        const response = await statementService.updateStatement(statement.id, statementData);
+        console.log("Respuesta del servidor (actualización):", response);
+        if (onStatementCreated) {
+          onStatementCreated(response.data); // Llama a la función del padre
+        }
+      } else {
+        const response = await statementService.createStatement(statementData);
+        console.log("Respuesta del servidor:", response);
+        if (onStatementCreated) {
+          onStatementCreated(response.data); // Llama a la función del padre
+        }
       }
       setDefinition("");
       setExplanation("");
@@ -152,7 +168,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
             />
           </div>
           <div className="statement-page__buttons--actions">
-            <button type="submit" className="statement-page__button--form">Finalizar</button>
+            <button type="submit" className="statement-page__button--form">{statement ? "Actualizar" : "Crear"}</button>
             <button type="button" onClick={handleAddSolution} className="statement-page__button--form">
               <i className="fi fi-rr-plus"></i>
               Añadir Solución

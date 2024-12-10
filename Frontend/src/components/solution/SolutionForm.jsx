@@ -71,8 +71,8 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
             <span className="statement-page__entry-icon">
               <i className={
                 collapsedEntries[entryIndex]
-                ? "fi fi-rr-angle-small-down"
-                : "fi fi-rr-angle-small-up"
+                  ? "fi fi-rr-angle-small-down"
+                  : "fi fi-rr-angle-small-up"
               }
               ></i>
             </span>
@@ -91,10 +91,21 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
         </div>
       ))}
 
-      <div className="statement-page__actions">
-        <button type="button" onClick={addEntry} className="statement-page__button">
-          + Asiento
-        </button>
+
+      <div className="statement-page-modal__actions" >
+        <div className="statement-page-modal__actions-buttons" >
+          <button type="button" onClick={addEntry} className="statement-page__button--add-entry">
+            + Asiento
+          </button>
+          <button
+            type="button"
+            className="statement-page__button--remove-entry"
+            onClick={() => removeEntry()}
+          >
+            <i className="fi fi-rr-trash"></i>
+            <span className="statement-page__span--remove-entry">Asiento</span>
+          </button>
+        </div>
         <div className="statement-page__totals">
           <span>Total Debe: {totals.debit.toFixed(2)}</span>
           <span>Total Haber: {totals.credit.toFixed(2)}</span>

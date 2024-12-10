@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StatementForm from "./StatementForm";
 import StatementList from "./StatementList";
@@ -11,21 +11,41 @@ const StatementCreateForm = () => {
   const [solutions, setSolutions] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
+  const [selectedStatement, setSelectedStatement] = useState(null);
+  const [statements, setStatements] = useState([]);
 
-  const handleStatementCreated = (newStatement) => {
-    console.log("Nuevo enunciado creado:", newStatement);
+  const handleSelectStatement = (statement) => {
+    setSelectedStatement(statement);
+    console.log("Enunciado seleccionado:", statement);
+    if (statement && statement.solutions) {
+      setSolutions(statement.solutions);
+      console.log("Soluciones establecidas:", statement.solutions);
+    } else {
+      setSolutions([]); // Si no hay soluciones, aseg├║rate de que el estado est├® vac├¡o
+    }
+  };
+
+  const handleStatementCreated = (updatedStatement) => {
+    console.log("Enunciado actualizado/creado:", updatedStatement);
+  if (updatedStatement.id === selectedStatement?.id) {
+    setSelectedStatement(updatedStatement);
     navigate("/");
+  } else {
+    navigate("/");
+  }
   };
 
   const handleAddSolution = () => {
     const newSolution = {
       description: "",
-      entries: [{ entry_number: 1, entry_date: "", annotations: [{
-        number: 1,
-        credit: 0,
-        debit: 0,
-        account_number: 0, 
-      },] }],
+      entries: [{
+        entry_number: 1, entry_date: "", annotations: [{
+          number: 1,
+          credit: 0,
+          debit: 0,
+          account_number: 0,
+        },]
+      }],
     };
     setSolutions((prevSolutions) => {
       const updatedSolutions = [...prevSolutions, newSolution];
@@ -37,6 +57,11 @@ const StatementCreateForm = () => {
   const handleEditSolution = (index) => {
     setSelectedSolutionIndex(index);
     setModalOpen(true);
+  };
+
+  const handleEditStatement = (statement) => {
+    setSelectedStatement(statement);
+    console.log("Enunciado seleccionado:", statement);
   };
 
   const handleDeleteSolution = (index) => {
@@ -80,6 +105,7 @@ const StatementCreateForm = () => {
           onAddSolution={handleAddSolution}
           solutions={solutions}
           onSaveSolution={handleSaveSolution}
+          statement={selectedStatement}
         />
       </section>
 
@@ -89,7 +115,7 @@ const StatementCreateForm = () => {
           onEditSolution={handleEditSolution}
           onDeleteSolution={handleDeleteSolution}
         />
-        {isModalOpen && (
+        {isModalOpen && selectedSolutionIndex !== null && (
           <EditSolutionModal
             solution={solutions[selectedSolutionIndex]}
             solutionIndex={selectedSolutionIndex}
@@ -102,7 +128,7 @@ const StatementCreateForm = () => {
       </aside>
 
       <section className="statement-page__selection">
-        <StatementList />
+        <StatementList onSelectStatement={handleSelectStatement} />
       </section>
     </main>
   );

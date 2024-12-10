@@ -68,12 +68,21 @@ textarea {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--r-xxs);
 }
 
-.statement-page__actions {
+.statement-page-modal__actions {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: var(--gap-xs);
+  padding-top: var(--gap-m);
+  height: auto;
+}
+
+.statement-page-modal__actions-buttons {
+  display: flex;
+  gap: var(--gap-xs);
   align-items: center;
 }
 
@@ -138,16 +147,9 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-.statement-page__button {
-  padding: 5px 10px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.statement-page__button-add {
+/* Boton + Apunte y + Asiento*/
+.statement-page__button-add,
+.statement-page__button--add-entry { 
   padding: var(--gap-xxs) var(--gap-xs);
   background-color: var(--Color-Neutral-Dark);
   color: var(--Color-Neutral-White);
@@ -158,15 +160,32 @@ textarea {
 }
 
 .statement-page__button-add:hover {
-  opacity: 0.8; /* Cambio de opacidad al pasar el ratón */
+  opacity: 0.8;
 }
 
-.statement-page__button-delete i.fi-rr-trash {
+.statement-page__button-delete i.fi-rr-trash { /* Boton borrar Apunte*/
   color: var(--Color-red-700);
   transition: color 0.3s ease;
 }
 
 .statement-page__button-delete:hover i.fi-rr-trash {
+  color: var(--Color-red-400);
+}
+
+.statement-page__button--remove-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xxxs);
+  padding: var(--gap-xxs) var(--gap-xs);
+  color: var(--Color-red-600);
+}
+
+.statement-page__button--remove-entry i.fi-rr-trash {
+  display: flex;
+  font-size: 1rem;
+}
+
+.statement-page__button--remove-entry:hover {
   color: var(--Color-red-400);
 }
 
@@ -252,11 +271,13 @@ textarea {
 
 .statement-page .statement-page__date-label {
   font-weight: bold;
+  display: inline-block;
+  width: auto;
 }
 
 .statement-page__date-input {
   padding: 5px 10px;
-  width: 150px; /* Ajusta el ancho del campo de entrada */
+  width: 150px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }

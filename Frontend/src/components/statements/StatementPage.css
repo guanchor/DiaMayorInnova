@@ -218,6 +218,8 @@
   margin: 0;
 }
 
+
+
 /* Header */
 
 .statement-page__header--header{
@@ -268,7 +270,7 @@
   padding: 0;
 }
 
-.toggle-option {
+.statement-page__toggle-visibility .toggle-option {
   flex: 1;
   padding: 8px 16px;
   border: none;
@@ -279,19 +281,20 @@
   font-weight: lighter;
   text-align: center;
   transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 0;
 }
 
-.toggle-option.active {
+.statement-page__toggle-visibility .toggle-option.active {
   background-color: var(--Color-grey-100);
   color: var(--Color-Neutral-Dark);
   font-weight: bold;
 }
 
-.toggle-option:not(.active):hover {
+.statement-page__toggle-visibility .toggle-option:not(.active):hover {
   background-color: var(--Color-grey-50);
 }
 
-.toggle-option:first-child {
+.statement-page__toggle-visibility .toggle-option:first-child {
   border-right: 2px solid var(--Color-grey-300); /* Línea divisoria */
 }
 

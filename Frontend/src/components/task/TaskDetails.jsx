@@ -1,14 +1,27 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import taskService from "../../services/taskService";
 import "./TaskPage.css";
 
-const TaskDetails = ({ selectedTask, onDeleteStatement }) => {
+const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseModal }) => {
   const navigate = useNavigate();
 
   if (!selectedTask) return <p>Cargando detalles...</p>;
 
   const handleEditTask = () => {
     navigate("/task-edit", { state: { task: selectedTask } });
+  };
+
+  const handleDeleteTask = async () => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta tarea?")) {
+      try {
+        await taskService.deleteTask(selectedTask.id);
+        onDeleteTask(selectedTask.id); // Notificar al padre que la tarea ha sido eliminada
+        onCloseModal();
+      } catch (err) {
+        console.error("Error al eliminar la tarea:", err);
+      }
+    }
   };
 
   return (
@@ -52,6 +65,9 @@ const TaskDetails = ({ selectedTask, onDeleteStatement }) => {
       <footer>
         <button onClick={handleEditTask} className="task-details__edit-btn">
           Editar tarea
+        </button>
+        <button onClick={handleDeleteTask} className="task-details__delete-btn">
+          Eliminar tarea
         </button>
       </footer>
     </article>

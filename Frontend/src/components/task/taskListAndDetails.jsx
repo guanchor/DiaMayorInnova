@@ -106,6 +106,11 @@ const TaskListAndDetails = () => {
     }
   };
 
+  const handleDeleteTask = (taskId) => {
+    // Eliminamos la tarea de la lista local
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  };
+
   const handleCloseModal = () => {
     setModalVisible(false);
     setSelectedTask(null);
@@ -173,6 +178,8 @@ const TaskListAndDetails = () => {
               selectedTask={selectedTask}
               onDeleteStatement={handleDeleteStatement}
               onEditTask={() => setIsEditingTask(true)}
+              onDeleteTask={handleDeleteTask}
+              onCloseModal={handleCloseModal}
             />
           </TaskModal>
         </>

@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   resources :tasks do
     delete '/statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
+    member do
+      delete :destroy
+    end
   end
   
   resources :statements, only: [:create, :index, :show, :update, :destroy] do

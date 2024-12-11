@@ -62,7 +62,7 @@ class TasksController < ApplicationController
     @tasks = Task.all
     @task = Task.find(params[:id])
     @task.destroy
-    render json: @tasks
+    render json: { message: "Tarea eliminada correctamente." }, status: :ok
   end
 
 

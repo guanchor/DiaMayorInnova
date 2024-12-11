@@ -65,54 +65,62 @@ const AddAccountingPlan = ({setNewPGC}) => {
       {submitted ? (
         <div>
           <h4>Se ha enviado correctamente</h4>
-          <button onClick={newAccountingPlan}>Añadir otro Plan</button>
+          <button className="accountingPlan__button" onClick={newAccountingPlan}>Añadir otro Plan</button>
           <button><Link to={"/accounting-plans"}>Atrás</Link></button>
         </div>
       ) : (
-        <div>
-          <h4>Añadir plan de cuentas</h4>
-          <div>
-            <label>Name</label>
-            <input
-              className="accountingPlan__input"
-              type="text"
-              id="name"
-              required
-              value={accountingPlan.name}
-              onChange={handleInputChange}
-              name="name">
-            </input>
+        <div className="accountingPlan__form">
+          <h4 className="accountingPlan__header--h4">Añadir plan de cuentas</h4>
+          <div className="accountingPlan__form--row">
+            <div className="accountingPlan__form--group">
+              <label>Nombre</label>
+              <input
+                className="accountingPlan__input"
+                type="text"
+                id="name"
+                required
+                value={accountingPlan.name}
+                onChange={handleInputChange}
+                name="name">
+              </input>
+            </div>
+            
+            <div className="accountingPlan__form--group">
+              <label>Acrónimo</label>
+              <input
+                className="accountingPlan__input"
+                type="text"
+                id="acronym"
+                required
+                value={accountingPlan.acronym}
+                onChange={handleInputChange}
+                name="acronym">
+              </input>
+            </div>
+            
           </div>
 
-          <div>
-            <label>Description</label>
-            <input
-              className="accountingPlan__input"
-              type="text"
-              id="description"
-              required
-              value={accountingPlan.description}
-              onChange={handleInputChange}
-              name="description">
-            </input>
+          <div className="accountingPlan__form--row">
+            <div className="accountingPlan__form--group full-width">
+              <label>Descripción</label>
+              <input
+                className="accountingPlan__input"
+                type="text"
+                id="description"
+                required
+                value={accountingPlan.description}
+                onChange={handleInputChange}
+                name="description">
+              </input>
+            </div>
           </div>
 
-          <div>
-            <label>Acronym</label>
-            <input
-              className="accountingPlan__input"
-              type="text"
-              id="acronym"
-              required
-              value={accountingPlan.acronym}
-              onChange={handleInputChange}
-              name="acronym">
-            </input>
+          <div className="accountingPlan__form--actions">
+            <button className="accountingPlan__button" onClick={saveAccountingPlan}>+ Añadir plan</button>
           </div>
-
-          <button className="accountingPlan__button" onClick={saveAccountingPlan}>Guardar</button>
-          <button><Link to={"/accounting-plans"}>Atrás</Link></button>
+          
           {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+
         </div>
       )}
     </>

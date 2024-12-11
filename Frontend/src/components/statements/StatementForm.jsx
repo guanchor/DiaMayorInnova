@@ -13,10 +13,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
   const prevSolutionsRef = useRef();
 
   useEffect(() => {
-    const hasStatementChanged = JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement);
-    const hasSolutionsChanged = JSON.stringify(prevSolutionsRef.current) !== JSON.stringify(propSolutions);
-    if (hasStatementChanged || hasSolutionsChanged) {
-      console.log("Statement prop received:", statement);
+    if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
       setDefinition(statement?.definition || "");
       setExplanation(statement?.explanation || "");
       setIsPublic(statement?.is_public || false);
@@ -82,7 +79,10 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
 
     if (hasEmptySolutions) {
       console.error("Error: Hay campos vacíos en las soluciones.");
-      setErrorMessage("Por favor, complete todos los campos antes de enviar.");
+      setErrorMessage("Hay campos vacíos en las soluciones. Por favor, complete todos los campos antes de enviar.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
       return;
     }
 

@@ -109,9 +109,9 @@ const StatementsList = ({ onSelectStatement }) => {
             <div className="statement-page__statement-container">
               <span className="statement-page__definition">{statement.definition}</span>
               <div className="statement-page__actions">
-                <button onClick={() => handleDelete(statement.id)}>
+                <button onClick={() => handleDelete(statement.id)} className="statement-page__button--delete">
                   <i className="fi-rr-trash"></i>
-                  <span className="statement-page__button-text">Borrar</span>
+                  <span className="statement-page__button-text--delete">Borrar</span>
                 </button>
                 <button onClick={() => handleStatementSelection(statement)}>
                 <i className="fi-rr-pencil"></i>

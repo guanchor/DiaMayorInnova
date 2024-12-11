@@ -157,8 +157,7 @@
 
 .statement-page__definition {
   flex: 0 1 60%;
-  /* Limita el ancho a un máximo del 50% */
-  font-size: var(--text-desktop-small);
+  font-size: var(--text-desktop-body-small);
   word-wrap: break-word;
   display: flex;
   align-items: center;
@@ -178,6 +177,10 @@
 
 .statement-page__actions>button {
   margin: 0;
+}
+
+.statement-page__button--delete {
+  color: var(--Color-red-600);
 }
 
 .statement-page__button-text--delete {

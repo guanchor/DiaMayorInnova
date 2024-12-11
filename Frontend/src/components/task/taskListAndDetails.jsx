@@ -18,6 +18,8 @@ const TaskListAndDetails = () => {
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     if (location.state?.createTask) {
@@ -63,6 +65,16 @@ const TaskListAndDetails = () => {
       setLoading(false);
     }
   };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setIsSearching(value.trim() !== "");
+  };
+
+  const filteredTasks = isSearching
+    ? tasks.filter((task) => task.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    : tasks;
 
   const handleTaskCreated = (newTask) => {
     if (newTask?.title) {
@@ -110,9 +122,31 @@ const TaskListAndDetails = () => {
       ) : (
         <>
           <section className="task-list">
+          <div className="task-list__header">
             <h4 className="task-list__title">Tareas Activa</h4>
+            <button
+                onClick={() => setIsSearching((prev) => !prev)}
+                className="task-list__filter-button"
+              >
+                <i className="fi fi-rr-filter"></i>
+              </button>
+            </div>
+
+            {isSearching && (
+              <div className="task-list__search-container">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Buscar por Título"
+                  className="task-list__search-input"
+                />
+                <i className="fi fi-rr-search task-list__search-icon"></i>
+              </div>
+            )}
+
             <ul className="task-list__items">
-              {tasks.map((task) => (
+              {filteredTasks.map((task) => (
                 <li key={`${task.id}-${task.created_at}`} className="task-list__item">
                   <div className="task-list__item-content">
                     <div className="task-list__square">

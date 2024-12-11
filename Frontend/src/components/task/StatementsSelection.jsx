@@ -23,6 +23,7 @@ const StatementsSelection = ({
     if (solutions[statementId]) {
       console.log("Soluciones ya cargadas:", solutions[statementId]);
       setCurrentSolutions(solutions[statementId]);
+      setSelectedStatementId(statementId);
       setIsModalOpen(true);
     } else {
       console.log("Soluciones no cargadas. Realizando solicitud...");
@@ -32,6 +33,7 @@ const StatementsSelection = ({
         .then(response => {
           console.log("Soluciones cargadas:", response.data);
           setCurrentSolutions(response.data);  // Asumimos que las soluciones vienen en `response.data`
+          setSelectedStatementId(statementId);
           setIsModalOpen(true);
         })
         .catch(error => {
@@ -91,11 +93,16 @@ const StatementsSelection = ({
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
-              <button className="task-page__button--close" onClick={hideSolutions}>X</button>
-              <h3>Enunciado</h3>
-              <p>{statements.find(statement => statement.id === selectedStatementId)?.definition}</p>
-              <h3>Soluciones</h3>
-              <SolutionsViewer solutions={currentSolutions} />
+              <section className="modal-solutionViewer__container">
+                <div className="modal-solutionViewer__statement-content">
+                <h3 className="modal-solutionViewer__statement-title">Enunciado</h3>
+                <span className="modal-solutionViewer__statement-info">{statements.find(statement => statement.id === selectedStatementId)?.definition}</span>
+                </div>
+                <SolutionsViewer solutions={currentSolutions} />
+                <div className="modal-solutionViewer__statement-button">
+                <button className="modal-solutionViewer__statement-info--close" onClick={hideSolutions}>Cerrar</button>
+                </div>
+              </section>
             </div>
           </div>
         )}

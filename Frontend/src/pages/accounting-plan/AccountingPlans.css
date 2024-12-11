@@ -31,6 +31,8 @@
 }
 
 .accountingPlan__page--title {
+  font-size: var(--text-desktop-body-small);
+  font-weight: 500;
   color: var(--Color-Principal);
   width: 100%;
   grid-area: title;

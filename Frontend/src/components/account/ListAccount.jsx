@@ -43,6 +43,11 @@ const AccountsList = () => {
     setCurrentIndex(index);
   }
 
+  const deleteAccount = (id) => {
+    AccountService.remove(id)
+      .then
+  }
+
   const handleSearchChange = (e) => {
     setSearchAccount(e.target.value);
   };

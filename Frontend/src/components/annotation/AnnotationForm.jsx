@@ -1,6 +1,7 @@
 import React from "react";
 
-const AnnotationForm = ({ solutionIndex, entryIndex, annotation, annotationIndex, solutions, setSolutions }) => {
+const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions, setSolutions }) => {
+  const annotation = solutions[solutionIndex].entries[entryIndex].annotations[annotationIndex];
   const handleAnnotationChange = (event) => {
     const updatedSolutions = [...solutions];
     updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex][event.target.name] = event.target.value;
@@ -32,7 +33,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotation, annotationIndex
       <input
         type="number"
         name="account_number"
-        value={annotation.account_number || 0}
+        value={annotation.account_number || ""}
         onChange={handleAnnotationChange}
         className="statement-page__input"
         placeholder="Nº Cuenta"

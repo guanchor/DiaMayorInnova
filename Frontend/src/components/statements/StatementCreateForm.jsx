@@ -8,11 +8,16 @@ import "./StatementPage.css";
 
 const StatementCreateForm = () => {
   const navigate = useNavigate();
-  const [solutions, setSolutions] = useState([]);
+  const [solutions, setPrevSolutions] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [statements, setStatements] = useState([]);
+
+  function setSolutions(a, b, c) {
+    console.log('ZZZZZZZZZZZZ', a, b);
+    setPrevSolutions(a, b, c);
+  }
 
   const handleSelectStatement = (statement) => {
     setSelectedStatement(statement);
@@ -27,12 +32,12 @@ const StatementCreateForm = () => {
 
   const handleStatementCreated = (updatedStatement) => {
     console.log("Enunciado actualizado/creado:", updatedStatement);
-  if (updatedStatement.id === selectedStatement?.id) {
-    setSelectedStatement(updatedStatement);
-    navigate("/");
-  } else {
-    navigate("/");
-  }
+    if (updatedStatement.id === selectedStatement?.id) {
+      setSelectedStatement(updatedStatement);
+      navigate("/");
+    } else {
+      navigate("/");
+    }
   };
 
   const handleAddSolution = () => {
@@ -104,6 +109,7 @@ const StatementCreateForm = () => {
           onStatementCreated={handleStatementCreated}
           onAddSolution={handleAddSolution}
           solutions={solutions}
+          setSolutions={setSolutions}
           onSaveSolution={handleSaveSolution}
           statement={selectedStatement}
         />

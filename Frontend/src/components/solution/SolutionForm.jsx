@@ -3,9 +3,13 @@ import EntryForm from "../entry/EntryForm.jsx";
 
 const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
   const handleSolutionChange = (event) => {
-    const updatedSolutions = [...solutions];
-    updatedSolutions[solutionIndex].description = event.target.value;
-    setSolutions(updatedSolutions);
+    setSolutions((solution) => {
+      const updatedSolutions = [...solutions];
+      updatedSolutions[solutionIndex].description = event.target.value;
+      console.log('AAAAAa', updatedSolutions);
+      return updatedSolutions;
+    });
+
   };
 
   const [collapsedEntries, setCollapsedEntries] = useState(
@@ -53,6 +57,7 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
       <div className="statement-page__form-modal--solution">
         <h5>Solución {solutionIndex + 1}:</h5>
         <textarea
+          name="description"
           className="statement-page__description"
           value={solution.description}
           onChange={handleSolutionChange}

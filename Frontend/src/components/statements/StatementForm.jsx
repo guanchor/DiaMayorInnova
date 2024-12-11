@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import statementService from "../../services/statementService";
 
 
-const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolutions, onSaveSolution, statement }) => {
-  const [solutions, setSolutions] = useState(propSolutions || []);
+const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSolutions, onSaveSolution, statement }) => {
+  //const [solutions, setSolutions] = useState(propSolutions || []);
   const [definition, setDefinition] = useState(statement?.definition || "");
   const [explanation, setExplanation] = useState(statement?.explanation || "");
   const [isPublic, setIsPublic] = useState(statement?.is_public || false);
@@ -12,17 +12,17 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
   const prevStatementRef = useRef();
   const prevSolutionsRef = useRef();
 
-  useEffect(() => {
-    if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
-      setDefinition(statement?.definition || "");
-      setExplanation(statement?.explanation || "");
-      setIsPublic(statement?.is_public || false);
-      setSolutions(statement?.solutions_attributes || []);
-    }
+  // useEffect(() => {
+  //   if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
+  //     setDefinition(statement?.definition || "");
+  //     setExplanation(statement?.explanation || "");
+  //     setIsPublic(statement?.is_public || false);
+  //     setSolutions(statement?.solutions_attributes || []);
+  //   }
 
-    prevStatementRef.current = statement;
-    prevSolutionsRef.current = propSolutions;
-  }, [propSolutions, statement]);
+  //   prevStatementRef.current = statement;
+  //   prevSolutionsRef.current = propSolutions;
+  // }, [propSolutions, statement]);
 
   const handleAddSolution = () => {
     const newSolution = {
@@ -52,6 +52,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
     const updatedSolutions = [...solutions];
     updatedSolutions[index] = updatedSolution;
     setSolutions(updatedSolutions);
+    console.log("Solución actualizada:", updatedSolutions);
     if (onSaveSolution) {
       onSaveSolution(updatedSolution);
     }
@@ -62,6 +63,8 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
     console.log("Datos de soluciones antes de enviar al BACKEND:", solutions);
     if (!solutions) {
       console.error("Error: solutions es undefined");
+      setErrorMessage("Por favor, añada soluciones antes de enviar.");
+      setTimeout(() => setErrorMessage(""), 5000);
       return;
     }
 
@@ -78,7 +81,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
     );
 
     if (hasEmptySolutions) {
-      console.error("Error: Hay campos vacíos en las soluciones.");
+      console.error("Error: Hay campos vacíos en las soluciones.", solutions);
       setErrorMessage("Hay campos vacíos en las soluciones. Por favor, complete todos los campos antes de enviar.");
       setTimeout(() => {
         setErrorMessage("");
@@ -107,19 +110,14 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
 
     console.log("Datos COMPLETOS antes de enviar al backend:", statementData);
     try {
-      if (statement?.id) {
-        // Actualizar enunciado existente
-        const response = await statementService.updateStatement(statement.id, statementData);
-        console.log("Respuesta del servidor (actualización):", response);
-        if (onStatementCreated) {
-          onStatementCreated(response.data); 
-        }
-      } else {
-        const response = await statementService.createStatement(statementData);
-        console.log("Respuesta del servidor:", response);
-        if (onStatementCreated) {
-          onStatementCreated(response.data);
-        }
+      const response = statement?.id
+        ? await statementService.updateStatement(statement.id, statementData)
+        : await statementService.createStatement(statementData);
+
+      console.log("Respuesta del servidor:", response);
+
+      if (onStatementCreated) {
+        onStatementCreated(response.data);
       }
       setDefinition("");
       setExplanation("");

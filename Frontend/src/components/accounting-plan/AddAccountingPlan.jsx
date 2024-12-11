@@ -69,58 +69,63 @@ const AddAccountingPlan = ({setNewPGC}) => {
           <button><Link to={"/accounting-plans"}>Atrás</Link></button>
         </div>
       ) : (
-        <div className="accountingPlan__form">
-          <h4 className="accountingPlan__header--h4">Añadir plan de cuentas</h4>
-          <div className="accountingPlan__form--row">
-            <div className="accountingPlan__form--group">
-              <label>Nombre</label>
-              <input
-                className="accountingPlan__input"
-                type="text"
-                id="name"
-                required
-                value={accountingPlan.name}
-                onChange={handleInputChange}
-                name="name">
-              </input>
+        <div>
+          <div className="accountingPlan__form">
+          <h4 className="accountingPlan__header--h4">Nuevo plan de contabilidad</h4>
+            <div className="accountingPlan__form--row">
+              <div className="accountingPlan__form--group">
+                <label>Nombre</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Nombre PGC"
+                  type="text"
+                  id="name"
+                  required
+                  value={accountingPlan.name}
+                  onChange={handleInputChange}
+                  name="name">
+                </input>
+              </div>
+              
+              <div className="accountingPlan__form--group">
+                <label>Acrónimo</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Acrónimo PGC"
+                  type="text"
+                  id="acronym"
+                  required
+                  value={accountingPlan.acronym}
+                  onChange={handleInputChange}
+                  name="acronym">
+                </input>
+              </div>
+              
+            </div>
+
+            <div className="accountingPlan__form--row">
+              <div className="accountingPlan__form--group full-width">
+                <label>Descripción</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Descripción PGC"
+                  type="text"
+                  id="description"
+                  required
+                  value={accountingPlan.description}
+                  onChange={handleInputChange}
+                  name="description">
+                </input>
+              </div>
+            </div>
+
+            <div className="accountingPlan__form--actions">
+              <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus"/>Añadir plan</button>
             </div>
             
-            <div className="accountingPlan__form--group">
-              <label>Acrónimo</label>
-              <input
-                className="accountingPlan__input"
-                type="text"
-                id="acronym"
-                required
-                value={accountingPlan.acronym}
-                onChange={handleInputChange}
-                name="acronym">
-              </input>
-            </div>
-            
-          </div>
+            {error && <div className="accountingPlan__error" visi>{error}</div>}
 
-          <div className="accountingPlan__form--row">
-            <div className="accountingPlan__form--group full-width">
-              <label>Descripción</label>
-              <input
-                className="accountingPlan__input"
-                type="text"
-                id="description"
-                required
-                value={accountingPlan.description}
-                onChange={handleInputChange}
-                name="description">
-              </input>
-            </div>
           </div>
-
-          <div className="accountingPlan__form--actions">
-            <button className="accountingPlan__button" onClick={saveAccountingPlan}>+ Añadir plan</button>
-          </div>
-          
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-
         </div>
       )}
     </>

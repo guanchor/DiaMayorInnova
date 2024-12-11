@@ -71,7 +71,6 @@ const AccountingPlansList = ({newPGC}) => {
   return (
     <>
 
-      {/* PGC list */}
       <section className="accountingPlan__pgcList">
         <h4 className="accountingPlan__header--h4">Todos los planes</h4>
 
@@ -81,36 +80,37 @@ const AccountingPlansList = ({newPGC}) => {
             type="text"
             value={searchAccPlan}
             onChange={handleSearchChange}
-            placeholder="Nombre PGC"
+            placeholder="Filtrar por nombre"
           />
-          <button onClick={findByName}>Buscar</button>
+          <button className="btn accountingPlan__button" onClick={findByName}>Buscar</button>
         </div>
 
-        <table className="accountingPlan__table">
-          <tbody>
-            {accountingPlans && accountingPlans.map((accountingPlan, index) => (
-              <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
-                <td>{accountingPlan.name}</td>
-                <td>{accountingPlan.acronym}</td>
-                <td>{accountingPlan.description}</td>
-                <td>
-                  <button className="accountingPlan__button--edit">
-                    {/* <i></i> ICONO LÁPIZ */}
-                    <Link to={"/accounting-plans/" + accountingPlan.id}>
-                      Editar
-                    </Link>
-                  </button>
-                  <button className="accountingPlan__button--remove" 
-                          onClick={(e) => {
-                            e.stopPropagation(); 
-                            deleteAccountingPlan(accountingPlan.id);}}>
-                    <i>Eliminar</i>
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="accountingPlan__table"> 
+          <table >
+            <tbody>
+              {accountingPlans && accountingPlans.map((accountingPlan, index) => (
+                <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
+                  <td>{accountingPlan.name}</td>
+                  <td>{accountingPlan.acronym}</td>
+                  <td>{accountingPlan.description}</td>
+                  <td className="accountingPlan__form--actions">
+                    <button className="accountingPlan__button--edit pencil">
+                      <Link to={"/accounting-plans/" + accountingPlan.id}>
+                        <i className="fi-rr-pencil" /> Editar
+                      </Link>
+                    </button>
+                    <button className="accountingPlan__button--remove trash" 
+                            onClick={(e) => {
+                              e.stopPropagation(); 
+                              deleteAccountingPlan(accountingPlan.id);}}>
+                      <i className="fi-rr-trash"/>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
 
         {/* <button><Link to={"/add-accounting-plan"}>Añadir nuevo plan</Link></button> */}

@@ -13,7 +13,14 @@ const AccountingPlans = () => {
     <>
 
       <section className="accountingPlan__page">
-        <button><Link to={"/home"}>Volver</Link></button>
+        
+          <button className="accountingPlan__btnHome">
+            <Link to={"/home"}>
+              <i className="fi-rr-arrow-small-left"/> Volver
+            </Link>
+         </button>
+         <p className="accountingPlan__page--title">Creación PGC</p>
+        
         <section className="accountingPlan__addPGC" >
           <AddAccountingPlan setNewPGC={setNewPGC}/>
         </section>

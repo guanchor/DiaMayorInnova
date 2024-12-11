@@ -1,8 +1,7 @@
 .accountingPlan__pgcList {
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: var(--gap-s);
+  padding-top: var(--gap-s);;
+  border-top: 1px solid var(--Color-grey-200);;
 }
 
 .accountingPlan__pgcList-item {
@@ -26,6 +25,10 @@
   margin-bottom: var(--gap-xl);
 }
 
+.accountingPlan__header--h4.title {
+  padding: var(--gap-s);
+}
+
 .accountingPlan__input {
   width: 50%;
   padding: 0.6rem;
@@ -33,6 +36,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  margin-bottom: 0;
 }
 
 .accountingPlan__input--filter {
@@ -45,16 +49,25 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  overflow-y: scroll;
+  height: calc(100vh - 680px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & table {
+    width: 100%;
+  }
 }
 
 .accountingPlan__button {
   padding: var(--gap-s) var(--gap-m);
-  background-color: var(--Color-primary);
+  background-color: var(--Color-Principal);
   color: white;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  margin-top: var(--gap-m);
 }
 
 .accountingPlan__button--edit {
@@ -64,6 +77,15 @@
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
+}
+
+.accountingPlan__button--edit:hover {
+  color: var(--Color-grey-900);
+}
+
+.accountingPlan__button--remove.pencil {
+  margin-right: 8px;
+  font-size: 1.2rem;
 }
 
 .accountingPlan__button--remove {
@@ -83,27 +105,30 @@
   color: var(--Color-red-400);
 }
 
-/* .accountingPlan__button--remove .trash {
+.accountingPlan__button--remove.trash {
   margin-right: 8px;
   font-size: 1.2rem;
-} */
+}
 
 .accountingPlan__form {
+  position: static;
   padding: var(--gap-xl);
   border-radius: var(--border-radius);
   max-width: 800px;
   margin: 0 auto;
+  height: 275px;
 }
 
 .accountingPlan__form--row {
   display: flex;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .accountingPlan__form--group {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 8px;
 }
 
 .accountingPlan__form--group.full-width {
@@ -113,13 +138,26 @@
 .accountingPlan__form--actions {
   display: flex;
   justify-content: center;
+  & .accountingPlan__button {
+    margin-top: 16px;
+  }
 }
 
-/** AJUSTAR INPUTS DEL FORM (poner placeholder)
-    línea separación form-lista
-    botón volver Home
-    Mensaje de error se muestra en la misma línea que el botón
-    Importar colores para los botones e iconos
+.accountingPlan__form .accountingPlan__input {
+  width: 100%;
+  padding: 8px;
+  margin-top:  5px;
+}
+
+.accountingPlan__error {
+  color: var(--Color-red-400);
+  text-align: center;
+  margin-top: var(--gap-m);
+}
+
+
+/** botón volver Home
+    Limpiar el formulario post add
     Ventana modal para Editar (o ponerlo bonito con redireccionamiento)
     RESPONSIVE
     Mismo estilo en Accounts

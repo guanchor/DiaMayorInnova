@@ -20,6 +20,11 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [selectedStatements, setSelectedStatements] = useState(task?.statements?.map(s => s.id) || []);
   const [solutions, setSolutions] = useState({});
   const [editMode, setEditMode] = useState(task ? true : false);
+  const [errors, setErrors] = useState({
+    title: "",
+    openingDate: "",
+    closingDate: ""
+  });
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -60,6 +65,32 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   };
 
   const handleSubmit = async () => {
+    let valid = true;
+    let errors = {};
+
+    if (!title) {
+      valid = false;
+      errors.title = "El título es obligatorio.";
+    }
+    if (!openingDate) {
+      valid = false;
+      errors.openingDate = "La fecha de apertura es obligatoria.";
+    }
+    if (!closingDate) {
+      valid = false;
+      errors.closingDate = "La fecha de cierre es obligatoria.";
+    }
+
+    setErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      setTimeout(() => {
+        setErrors({});
+      }, 5000);
+    }
+
+    if (!valid) return;
+
     const taskData = {
       title,
       opening_date: openingDate,
@@ -103,6 +134,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         closingDate={closingDate}
         setClosingDate={setClosingDate}
         handleSubmit={handleSubmit}
+        errors={errors}
       />
       <StatementsSelection
         statements={statements}

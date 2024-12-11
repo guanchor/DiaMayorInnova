@@ -2,7 +2,7 @@ import React from "react";
 import dateTimeFormat from "../../utils/dateTimeFormat";
 import "./TaskPage.css";
 
-const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit }) => {
+const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors }) => {
 
   return (
     <section className="task-page__form">
@@ -17,6 +17,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+          {errors.title && <p className="error-message">{errors.title}</p>}
         </div>
         <div className="task-page__dates">
           <div className="task-page__date">
@@ -28,6 +29,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
               onChange={(e) => setOpeningDate(e.target.value)}
             />
           </div>
+          {errors.title && <p className="error-message">{errors.openingDate}</p>}
           <div className="task-page__date">
             <label className="task-page__label">Fecha de cierre:</label>
             <input
@@ -37,6 +39,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
               onChange={(e) => setClosingDate(e.target.value)}
             />
           </div>
+          {errors.title && <p className="error-message">{errors.closingDate}</p>}
         </div>
         <button type="button" className="task-page__button--form" onClick={handleSubmit}>
           Finalizar

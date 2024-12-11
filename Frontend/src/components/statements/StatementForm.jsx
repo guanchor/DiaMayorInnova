@@ -23,7 +23,6 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
       setSolutions(statement?.solutions_attributes || []);
     }
 
-    // Actualizar los refs con los valores actuales
     prevStatementRef.current = statement;
     prevSolutionsRef.current = propSolutions;
   }, [propSolutions, statement]);
@@ -48,16 +47,16 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
     };
     setSolutions((prevSolutions) => [...prevSolutions, newSolution]);
     if (onAddSolution) {
-      onAddSolution(newSolution); // Llamar al método del padre, si es necesario
+      onAddSolution(newSolution);
     }
   };
 
   const handleSaveSolution = (updatedSolution, index) => {
     const updatedSolutions = [...solutions];
-    updatedSolutions[index] = updatedSolution; // Reemplazamos la solución editada
+    updatedSolutions[index] = updatedSolution;
     setSolutions(updatedSolutions);
     if (onSaveSolution) {
-      onSaveSolution(updatedSolution); // Llamar a la función del padre para propagar el cambio
+      onSaveSolution(updatedSolution);
     }
   };
 
@@ -113,13 +112,13 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
         const response = await statementService.updateStatement(statement.id, statementData);
         console.log("Respuesta del servidor (actualización):", response);
         if (onStatementCreated) {
-          onStatementCreated(response.data); // Llama a la función del padre
+          onStatementCreated(response.data); 
         }
       } else {
         const response = await statementService.createStatement(statementData);
         console.log("Respuesta del servidor:", response);
         if (onStatementCreated) {
-          onStatementCreated(response.data); // Llama a la función del padre
+          onStatementCreated(response.data);
         }
       }
       setDefinition("");
@@ -137,7 +136,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions: propSolut
       console.error("Error creando el enunciado:", error.response || error);
       setErrorMessage("Hubo un error al crear el enunciado. Por favor, inténtelo de nuevo.");
       setTimeout(() => {
-        setErrorMessage("");  // Limpiar el mensaje después de 5 segundos
+        setErrorMessage("");
       }, 5000);
     }
   };

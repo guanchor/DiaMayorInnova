@@ -100,7 +100,7 @@ const TaskListAndDetails = () => {
   };
 
   if (!user) return <p>Cargando usuario...</p>;
-  if (loading) return <p>Cargando enunciados... Por favor espera.</p>;
+  if (loading) return <p>Cargando tareas... Por favor espera.</p>;
   if (error) return <p>{error}</p>;
 
   return (

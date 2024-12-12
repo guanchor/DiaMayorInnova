@@ -2,10 +2,16 @@ class MarksController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
-    def index
+  def index
+    if params[:exercise_id].present?
+      @marks = Mark.where(exercise_id: params[:exercise_id])
+    else
       @marks = Mark.all
-      render json: @marks
     end
+  
+    render json: @marks
+  end
+  
   
     def show
       @mark = Mark.find(params[:id])
@@ -38,7 +44,8 @@ class MarksController < ApplicationController
       render json: @marks
     end
 
-    def mark_params
+=begin     def mark_params
       params.require(:mark).permit(:mark , :exercise_id)
-    end
+    end 
+=end
 end

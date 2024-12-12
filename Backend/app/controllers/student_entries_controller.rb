@@ -2,11 +2,17 @@ class StudentEntriesController < ApplicationController
   before_action :authenticate_user!
   before_action :convert_entry_date, only: [:create, :update]
 
-
   def index
-    @studentEnties = StudentEntry.all
-    render json: @studentEnties
+    if params[:mark_id].present?
+      @studentEntries = StudentEntry.where(mark_id: params[:mark_id])
+
+    else
+      @studentEntries  = StudentEntry.all
+    end
+    
+    render json: @studentEntries 
   end
+
 
   def show
     @studentEntry = StudentEntry.find(params[:id])
@@ -38,10 +44,10 @@ class StudentEntriesController < ApplicationController
     render json: @studentEnties
   end
 
-  def student_entry_params 
+=begin   def student_entry_params 
     params.require(:student_entry).permit(:entry_number, :entry_date , :mark_id)
-  end
-
+  end 
+=end
   def convert_entry_date
     params[:student_entry][:entry_date] = params[:student_entry][:entry_date].to_date if params[:student_entry][:entry_date].present?
   end

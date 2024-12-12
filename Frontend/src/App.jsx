@@ -42,9 +42,9 @@ function App() {
                   <Route path="/accounting-plans" element={<AccountingPlanList />} />
                   <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                   <Route path="/modes" element={<Modes />} >
-                    <Route path='tarea' element={<TaskPage />} />
-                    <Route path='practica' element={<PracticePage />} />
-                    <Route path='pruebas' element={<EntriesSection />} />
+                    <Route path='tarea/:id' element={<TaskPage />} />
+                    <Route path='practica/' element={<PracticePage />} />
+                    <Route path='examen/:id' element={<EntriesSection />} />
                   </Route>
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/tasks" element={<TaskListAndDetails />} />

@@ -1,10 +1,16 @@
 class StudentAnnotationsController < ApplicationController
   before_action :authenticate_user!
 
-  
+
     def index
-      @studentAnnotations = StudentAnnotation.all
-      render json: @studentAnnotations
+      if params[:student_entry_id].present?
+        @studentAnnotations = StudentAnnotation.where(student_entry_id: params[:student_entry_id])
+  
+      else
+        @studentAnnotations  = StudentAnnotation.all
+      end
+      
+      render json: @studentAnnotations 
     end
   
     def show

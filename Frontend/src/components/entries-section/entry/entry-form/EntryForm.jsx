@@ -1,57 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import "./EntryForm.css"
-import StudentAnnotationServices from '../../../../services/studentAnnotationServices'
-import { useEntries } from '../../../../context/entries-page/EntriesContext'
 
-const EntryForm = ({ aptNumber, setTotal, total }) => {
-  const initialAnnotation = {
-    account_id: 1,
-    number: aptNumber,
-    account_number: '',
-    debit: '',
-    credit: '',
-    student_entry_id: 1,
-  }
-
-  const [currentAnnotation, setCurrentAnnotation] = useState(initialAnnotation);
-  const { deleteAnnotationItem } = useEntries();
-  const calc = (value) => parseFloat(value) || 0;
-
-  const deleteEntry = (e) => {
-    e.preventDefault();
-    console.log(aptNumber)
-    deleteAnnotationItem(aptNumber);
-  };
-
-  /*   const saveEntry = (e) => {
-      e.preventDefault();
-      StudentAnnotationServices.create(currentAnnotation)
-        .then((response) => {
-          if (response && response.data) {
-            console.log(response.data);
-          } else {
-            console.error('Empty response or data property is null');
-          }
-        })
-        .catch((e) => {
-          console.error('Error:', e);
-        });
-    }; */
-
-
-  const entryValue = () => calc(currentAnnotation.debit) - calc(currentAnnotation.credit);
-
+const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setCurrentAnnotation({ ...currentAnnotation, [name]: value });
+    const updatedAnnotation = { ...annotation, [name]: value };
+    updateAnnotation(updatedAnnotation);
   };
 
-  useEffect(() => {
-    setTotal(prevTotal => prevTotal + entryValue())
-  }, [currentAnnotation])
-
-
+  const handleDelete = (event) => {
+    event.preventDefault();
+    onDelete();
+  }
 
   return (
     <div className='entry_form_wrapper'>
@@ -59,21 +20,20 @@ const EntryForm = ({ aptNumber, setTotal, total }) => {
       <form action="" className='entry_form'>
         <fieldset className='form_inputs_container'>
           <div className="form_group">
-            <input type="number" id='account_number' name='account_number' placeholder='12345' onChange={handleChange} />
+            <input type="number" id='account_number' name='account_number' placeholder='12345' onChange={handleChange} value={annotation.account_number} />
           </div>
           <div className="form_group">
-            <input type="text" id='accountName' placeholder='Cuenta carne' name='accountName' />
+            <input type="text" id='accountName' placeholder='Cuenta carne' name='accountName' value={annotation.account_name} />
           </div>
           <div className="form_group">
-            <input type="number" id='debit' name='debit' placeholder='0' onChange={handleChange} />
+            <input type="number" id='debit' name='debit' placeholder='0' onChange={handleChange} value={annotation.debit} />
           </div>
           <div className="form_group">
-            <input type="number" id='credit' name='credit' placeholder='0' onChange={handleChange} />
+            <input type="number" id='credit' name='credit' placeholder='0' onChange={handleChange} value={annotation.credit} />
           </div>
         </fieldset>
-        <button className='btn-trash' onClick={deleteEntry}><i className='fi fi-rr-trash'></i></button>
-        {/*         <button className='btn-trash' onClick={saveEntry}><i className='fi fi-rr-disk'></i></button>
- */}      </form>
+        <button className='btn-trash' onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
+      </form>
     </div>
   )
 }

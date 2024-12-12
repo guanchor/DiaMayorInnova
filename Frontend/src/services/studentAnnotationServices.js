@@ -1,9 +1,10 @@
 import http from "../http-common";
-import { API_BASE_URL } from "../config";
 
-const getAll = async () => {
+const getAll = (id) => {
   try {
-    const response = await http.get("/student_annotations");
+    console.log(id)
+    const response = http.get(`/student_annotations?student_entry_id=${id}`);
+    console.log(response, "repsuesta annota")
     return response;
   } catch (error) {
     console.error("Error en la petición:", error);
@@ -12,13 +13,7 @@ const getAll = async () => {
 };
 const create = async (data) => {
   try {
-    const response = await http.post(`${API_BASE_URL}/student_annotations`, { student_annotation: data }, {
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "AUTH-TOKEN": localStorage.getItem("site")
-      }
-    });
+    const response = await http.post(`/student_annotations`, { student_annotation: data });
     return response || {};
   } catch (error) {
     console.error("Error en la creación:", error);

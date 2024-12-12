@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :statements
   has_many :tasks, through: :exercises
+  has_many :exercises, dependent: :destroy
   
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable,

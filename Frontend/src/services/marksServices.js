@@ -1,11 +1,14 @@
 import http from "../http-common";
 
-const getAll = async () => {
+
+const getAll = (id) => {
   try {
-    const response = await http.get("/mark");
-    return response;
+    console.log("servicio de mark", id)
+    const marks = http.get(`/marks?exercise_id=${id}`)
+    console.log("marks getall", marks)
+    return marks;
   } catch (error) {
-    console.error("Error en la petición:", error);
+    console.log("Error en la petición getAll: ", error);
     return null;
   }
 };

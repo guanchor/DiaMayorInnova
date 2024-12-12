@@ -304,7 +304,7 @@
   color: var(--Color-grey-600);
 }
 
-.task-list__filter-button .fi{
+.task-list__filter-button .fi {
   display: flex;
 }
 
@@ -339,7 +339,7 @@
 
 .task-list__items {
   list-style-type: none;
-  padding: 0;
+  padding: 0 0 var(--gap-xs);
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -549,7 +549,7 @@
   padding: var(--gap-xl)
 }
 
-.modal-solutionViewer__statement-content{
+.modal-solutionViewer__statement-content {
   padding: var(--gap-xs);
 
 }
@@ -685,8 +685,8 @@
   padding: var(--gap-xxs);
 }
 
-.modal-solutionViewer__solution-item--description strong{
-    margin-right: var(--gap-xxs);
+.modal-solutionViewer__solution-item--description strong {
+  margin-right: var(--gap-xxs);
 }
 
 .modal-solutionViewer__entry-item--info {
@@ -710,45 +710,45 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     grid-template-areas:
-    "task-header"
-    "task-form"
-    "statements-selection";
+      "task-header"
+      "task-form"
+      "statements-selection";
     gap: var(--gap-xs);
     padding: var(--gap-s);
   }
-  
+
   .task-page__form,
   .task-page__selection {
     margin-bottom: var(--gap-xxxs);
   }
-  
+
   .task-page__form {
     grid-area: task-form;
   }
-  
+
   .task-page__selection {
     grid-area: statements-selection;
     height: auto;
   }
-  
+
   .task-page__preview {
     display: none;
   }
-  
+
   .task-page__statement-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--gap-m);
   }
-  
+
   .task-page__actions {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--gap-xs);
   }
-  
+
   .task-page__actions label {
     display: flex;
     justify-content: center;
@@ -756,18 +756,18 @@
     width: 100%;
     text-align: center;
   }
-  
+
   .task-page__actions button {
     display: flex;
     justify-content: flex-start;
     width: auto;
   }
-  
+
   .task-page__list {
     overflow-y: auto;
     max-height: 50vh;
   }
-  
+
   .task-page__selection {
     margin-top: var(--gap-l);
     overflow-y: auto;
@@ -779,9 +779,9 @@
   .task-page__selection {
     position: relative;
     z-index: 1;
-    
+
   }
-  
+
   .navBar_container.nav--active {
     position: fixed;
     top: 0;
@@ -798,29 +798,29 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     grid-template-areas:
-    "task-header"
-    "task-form"
-    "statements-selection";
+      "task-header"
+      "task-form"
+      "statements-selection";
     gap: var(--gap-s);
     padding: var(--gap-s);
   }
-  
+
   .task-page__form {
     padding: var(--gap-xxxs);
   }
-  
+
   .task-page__selection {
     padding: var(--gap-xxxs);
   }
-  
+
   .task-page__selection--content {
     padding: var(--gap-xxxs);
   }
-  
+
   .task-page__preview {
     display: none;
   }
-  
+
   .task-page__header--header {
     padding: var(--gap-xxxs);
     font-size: var(--text-mobile-medium);

@@ -125,9 +125,9 @@ const TaskListAndDetails = () => {
       ) : (
         <>
           <section className="task-list">
-          <div className="task-list__header">
-            <h4 className="task-list__title">Tareas Activa</h4>
-            <button
+            <div className="task-list__header">
+              <h4 className="task-list__title">Tareas Activas</h4>
+              <button
                 onClick={() => setIsSearching((prev) => !prev)}
                 className="task-list__filter-button"
               >
@@ -156,7 +156,7 @@ const TaskListAndDetails = () => {
                       <i className="fi fi-rr-pencil pencil"></i>
                     </div>
                     <div className="task-list__info">
-                      <p className="task-list__item-title">Tarea: {task.title}</p>
+                      <p className="task-list__item-title">{task.title}</p>
                       <p className="task-list__closing-date">
                         <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
                       </p>

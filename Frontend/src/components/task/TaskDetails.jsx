@@ -26,34 +26,35 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
 
   return (
     <article className="task-details">
-      <header>
-        <h3 className="task-details__title">{selectedTask.title}</h3>
+      <header className="task-details__header">
+        <h3 className="task-details__header--title">{selectedTask.title}</h3>
       </header>
-      <section>
-        <p className="task-details__date">
+      <section className="task-details__task-content">
+        <p className="task-details__task-content--date">
           <strong>Fecha de apertura:{" "}</strong>
           {new Date(selectedTask.opening_date).toLocaleDateString()}
         </p>
-        <p>
+        <p className="task-details__task-content--date">
           <strong>Fecha de cierre:{" "}</strong>
           {new Date(selectedTask.closing_date).toLocaleString()}
         </p>
       </section>
-      <section>
+      <section className="task-details__statement-content">
         <h3 className="task-details__statements-title">Enunciados</h3>
         {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
-          <ul className="task-details__statements">
+          <ul className="task-details__statements-items">
             {selectedTask.statements.map((statement) => (
               <li
                 key={`${statement.id}-${statement.created_at}`}
                 className="task-details__statement-item"
               >
-                <strong>Definición:</strong> {statement.definition}
+                <strong>Definición:</strong>
+                <p>{statement.definition}</p>
                 <button
                   onClick={() => onDeleteStatement(selectedTask.id, statement.id)}
-                  className="task-details__delete-btn"
+                  className="task-details__statement-item--delete-btn"
                 >
-                  Eliminar
+                  <i className="fi-rr-trash"></i>
                 </button>
               </li>
             ))}
@@ -62,11 +63,11 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
           <p>No hay enunciados para esta tarea.</p>
         )}
       </section>
-      <footer>
-        <button onClick={handleEditTask} className="task-details__edit-btn">
+      <footer className="task-details__footer">
+        <button onClick={handleEditTask} className="task-details__footer--edit-btn">
           Editar tarea
         </button>
-        <button onClick={handleDeleteTask} className="task-details__delete-btn">
+        <button onClick={handleDeleteTask} className="task-details__footer--delete-btn">
           Eliminar tarea
         </button>
       </footer>

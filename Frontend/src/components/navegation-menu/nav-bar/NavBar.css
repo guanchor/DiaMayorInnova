@@ -1,0 +1,118 @@
+.navBar_container {
+  background-color: var(--Color-Neutral-White);
+  color: var(--Color-Neutral-Black);
+  box-shadow: var(--box-shadow-M3);
+  height: calc(100dvh);
+  width: 100%;
+  position: fixed;
+  left: -100%;
+  padding: var(--gap-xs) var(--gap-xs) 60px var(--gap-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: left 180ms ease-out;
+}
+
+.navBar__list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap: var(--gap-l);
+  padding: 60px var(--gap-xxl);
+}
+
+.navBar__item {
+  list-style: none;
+  color: var(--color);
+  background-color: var(--Color-Neutral-White);
+  width: 180px;
+  height: 56px;
+  display: flex;
+  gap: var(--gap-s, );
+  justify-content: start;
+  align-items: center;
+  border: 5px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background-color 100ms ease-out,
+    color 100ms ease-out,
+    border-radius 200ms ease-out,
+    border 100ms ease-out,
+    box-shadow 200ms ease-in-out ;
+
+  &:hover {
+    background-color: var(--background-color-dark);
+    color: var(--Color-grey-100);
+    box-shadow: var(--box-shadow-M3);
+    border-radius: var(--r-xs);
+  }
+
+  &:scope {
+    background-color: var(--Color-Neutral-Dark, red);
+    color: var(--Color-grey-200, #C6C6C6);
+    box-shadow: none;
+    border-radius: var(--r-xs);
+  }
+}
+
+.close {
+  align-content: center;
+  text-align: center;
+  background-color: transparent;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: var(--gap-l);
+  left: var(--gap-l);
+
+  &:hover {
+    background-color: var(--background-color-dark);
+    color: var(--Color-grey-100);
+    border-radius: 40px;
+  }
+}
+
+.pg--active {
+  border-bottom: solid 5px var(--background-color-dark);
+}
+
+.nav--active {
+  left: 0px
+}
+
+@media (width > 800px) {
+  .navBar_container {
+    height: calc(100dvh - 70px);
+    width: 70px;
+    top: 70px;
+    left: 0px;
+    padding: var(--gap-xs);
+  }
+
+  .navBar__list {
+    padding: var(--gap-xxl);
+  }
+
+  .navBar__item {
+    width: auto;
+    height: 50px;
+    border-radius: 0;
+
+    &:hover {
+      border-radius: 100px;
+    }
+  }
+
+  .close {
+    display: none;
+  }
+
+  .pg--active {
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid var(--Color-Neutral-Dark);
+  }
+
+}

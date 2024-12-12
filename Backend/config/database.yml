@@ -23,6 +23,7 @@ default: &default
 development:
   <<: *default
   database: db_innova_development
+  #database: db_prueba_devolopment
   username: <%= ENV["DATABASE_USERNAME"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
   host: <%= ENV["DATABASE_HOST"] %>

@@ -1,0 +1,42 @@
+.shortcut__container {
+  width: 120px;
+  height: 120px;
+  background-color: var(--Color-Principal);
+  color: var(--Color-letra-claro);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-xxs);
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  box-shadow: var(--box-shadow-btn);
+
+  &:hover {
+    background-color: var(--Color-Principal-claro);
+  }
+
+  &:focus {
+    background-color: var(--Color-Principal-claro);
+    border: 1px solid var(--color-Principal);
+  }
+
+  &:active {
+    background-color: var(--Color-Principal-oscuro);
+    box-shadow: none;
+  }
+}
+
+
+.shortcut__icon {
+  font-size: 30px;
+  display: flex;
+}
+
+.shortcut__text {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 140%;
+  text-transform: capitalize;
+
+}

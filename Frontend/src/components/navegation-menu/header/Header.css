@@ -1,0 +1,153 @@
+  .header {
+    z-index: 2;
+    position: fixed;
+    background: var(--Color-Principal);
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gap-xs) var(--gap-s);
+  }
+
+  .fi-rr-menu-burger {
+    padding: var(--gap-xxs) var(--gap-xxxs);
+    margin-right: var(--gap-s);
+    text-align: center;
+    font-size: x-large;
+    cursor: pointer;
+    display: flex;
+    color: var(--Color-letra-claro);
+  }
+
+  .logo {
+    color: var(--Color-letra-claro);
+    padding: var(--gap-xxxs) 0;
+    font-size: var(--text-mobile-subtitles-1);
+    cursor: pointer;
+    align-content: center;
+  }
+
+  .header_userZone {
+    display: flex;
+    gap: var(--gap-xs);
+    align-items: center;
+  }
+
+  .header_menu {
+    display: flex;
+    gap: var(--gap-xs);
+  }
+
+  .header_item {
+    list-style: none;
+
+    &>a {
+      padding: 4px 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    & :where(:hover, :focus) .fi {
+      color: #fff;
+    }
+  }
+
+  .userZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-xs);
+    border-left: 1px solid #ABABAB;
+    padding: 0 var(--gap-xxxs) 0 var(--gap-s);
+    cursor: pointer;
+  }
+
+  .fi-rr-bell {
+    font-size: large;
+    color: var(--Color-grey-200, #C6C6C6);
+    transition: color 200ms ease-in-out;
+
+    & :where(:hover, :focus) .fi {
+      color: red;
+    }
+  }
+
+
+
+
+  .userZone_menu {
+    display: flex;
+    gap: 16px;
+  }
+
+  .userZone_userFoto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #eee;
+    border: solid 2px var(--Color-letra-claro);
+  }
+
+  .menuInfo {
+    display: none;
+    text-transform: capitalize;
+  }
+
+  .menuInfo_name {
+    color: var(--Color-letra-claro);
+    font-weight: 600;
+  }
+
+  .menuInfo_rol {
+    color: var(--Color-grey-300);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 140%;
+  }
+
+
+  @media (width > 800px) {
+    .fi-rr-menu-burger {
+      display: none;
+    }
+
+    .header {
+      height: 70px;
+      padding: var(--gap-xs) var(--gap-l);
+    }
+
+    .logo {
+      font-size: var(--text-desktop-subtitles-1);
+    }
+
+    .header_userZone {
+      gap: var(--gap-m);
+    }
+
+    .userZone {
+      gap: var(--gap-xl);
+      padding: 0 16px;
+    }
+
+    .userZone_userFoto {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      object-position: 50% 0;
+    }
+
+    .menuInfo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--xxxs, 4px);
+      align-items: flex-start;
+      justify-content: center;
+      font-style: normal;
+      line-height: 140%;
+    }
+  }

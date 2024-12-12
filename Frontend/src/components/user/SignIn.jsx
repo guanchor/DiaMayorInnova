@@ -51,10 +51,6 @@ const SignIn = () => {
     }));
   };
 
-  const handleClick = () => { //preguntar eche
-    navigate("/");
-  }
-
   return (
     <>
       <div className="log__section">

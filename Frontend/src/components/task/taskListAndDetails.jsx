@@ -98,7 +98,6 @@ const TaskListAndDetails = () => {
   const handleDeleteStatement = async (taskId, statementId) => {
     try {
       await taskService.deleteStatementFromTask(taskId, statementId);
-      // Actualizar los enunciados de la tarea después de la eliminación
       const updatedTask = await taskService.getTaskWithStatements(taskId);
       setSelectedTask(updatedTask.data);
     } catch (error) {
@@ -107,7 +106,6 @@ const TaskListAndDetails = () => {
   };
 
   const handleDeleteTask = (taskId) => {
-    // Eliminamos la tarea de la lista local
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 

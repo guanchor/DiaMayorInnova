@@ -43,7 +43,7 @@ const useAuthLogic = (navigate) => {
           const hasAccess = requiredRoles.every((role) => roles.includes(role));
           if (!hasAccess) {
             setError("No tienes permiso para acceder a esta ruta.");
-            navigate("/sign_in"); // Redirige a una página de error o a otra ruta
+            navigate("/sign_in");
           }
         } else {
           setError("Información de usuario incompleta.");
@@ -99,7 +99,6 @@ const useAuthLogic = (navigate) => {
     } catch (err) {
       console.error("Error en login:", err);
       if (err.response) {
-        // Si el error viene de la respuesta del servidor
         console.error("Error en respuesta del servidor:", err.response.data);
         alert(`Error: ${err.response.data.message || 'Problema al autenticar.'}`);
       } else {

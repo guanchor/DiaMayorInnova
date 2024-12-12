@@ -29,7 +29,7 @@ const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStat
 
               if (!statement) {
                 console.warn(`No se encontró un enunciado con el ID: ${statementId}`);
-                return null; // O muestra un mensaje de advertencia en la interfaz si es necesario
+                return null;
               }
 
               return (

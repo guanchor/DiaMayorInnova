@@ -15,7 +15,7 @@ const StatementsSelection = ({
   const [currentSolutions, setCurrentSolutions] = useState([]);
   const [showSolutions, setShowSolutions] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);  // Nuevo estado para controlar la modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatementId, setSelectedStatementId] = useState(null);
 
   const viewSolutions = (statementId) => {
@@ -28,20 +28,19 @@ const StatementsSelection = ({
     } else {
       console.log("Soluciones no cargadas. Realizando solicitud...");
       setLoading(true);
-      // Realizar la solicitud para obtener las soluciones usando la función getSolutions
       statementService.getSolutions(statementId)
         .then(response => {
           console.log("Soluciones cargadas:", response.data);
-          setCurrentSolutions(response.data);  // Asumimos que las soluciones vienen en `response.data`
+          setCurrentSolutions(response.data);
           setSelectedStatementId(statementId);
           setIsModalOpen(true);
         })
         .catch(error => {
           console.error("Error al cargar soluciones:", error);
-          // Puedes mostrar un mensaje de error si lo deseas
+
         })
         .finally(() => {
-          setLoading(false);  // Desactivar el estado de carga cuando termine la solicitud
+          setLoading(false); 
         });
     }
   };

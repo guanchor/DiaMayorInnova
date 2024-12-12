@@ -1,119 +1,168 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AccountDataService from '../../services/AccountService';
 import { Link } from 'react-router-dom';
+import "./Account.css";
+import AccountingPlanService from '../../services/AccountingPlanService';
 
-const AddAccount = () => {
+const AddAccount = ({setNewAcc}) => {
   const initialAccountState = {
     accountNumber: 0,
     description: "",
     accounting_plan_id: 0,
     name: "",
   };
+
   const [account, setAccount] = useState(initialAccountState);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [plans, setPlans] = useState([]);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setAccount({...account, [name]:value});
   };
 
-  const saveAccount = () => {
-    var data = {
-      accountNumber: account.accountNumber,
-      description: account.description,
-      accounting_plan_id: account.accounting_plan_id,
-      name: account.name,
-    };
 
-    AccountDataService.create(data)
-    .then(response => {
-      setAccount({
-        id: response.data.id,
-        accountNumber: response.data.accountNumber,
-        description: response.data.description,
-        accounting_plan_id: response.data.accounting_plan_id,
-        name: response.data.name,
-      });
-      setSubmitted(true);
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-  };
+  const validateForm = () => {
+    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+      setError("Todos los campos son obligatorios y deben tener valores válidos.");
+      return false;
+    };
+    setError("")
+    return true;
+  }
+
+
+  const saveAccount = () => { {/* TEST WITHOUT TRIM*/}
+    if (validateForm()) {
+      let data = {
+        name: account.name.trim(),
+        accountNumber: account.accountNumber.trim(),
+        description: account.description.trim(),
+        accounting_plan_id: account.accounting_plan_id.trim(),
+      };
+
+      AccountDataService.create(data)
+      .then(response => {
+        setAccount({
+          id: parseInt(response.data.id),
+          name: response.data.name.trim(),
+          accountNumber: account.accountNumber.trim(),
+          description: account.description.trim(),
+          accounting_plan_id: account.accounting_plan_id.trim(),
+        })
+        setNewAcc(true);
+        console.log(response.data);
+      })
+        .catch(e => {
+          console.log(e);
+          setError("Hubo un problema al guardar la cuenta")
+        });
+      };
+    };
+  
 
   const newAccount = () => {
     setAccount(initialAccountState);
     setSubmitted(false);
+    setError("");
   };
+
+  useEffect(() => {
+    AccountingPlanService.getAll()
+      .then(({data}) => {
+        setPlans(data);
+        console.log(data);
+      })
+  },[])
 
   return (
     <>
-      <Link to={"/accounts/"}>
-        Atrás
-      </Link>
+      {submitted ? (
+        <div>
+          <h4>Se ha enviado correctamente</h4>
+            <button className="account__button" onClick={newAccount}>Añadir otra cuenta</button>
+            <button><Link to={"/accounts"}>Atrás</Link></button>
+        </div>
+      ) : (
+        <div>   
+          <div className='account__form'>
+          <h4 className='account__header--h4'>Nueva cuenta</h4>
+              <div className='account__form--row'>
+                <div className='account__form--group'>
+                <label>Número de cuenta</label>
+                  <input 
+                    className='account__input'
+                    placeholder='Nº cuenta'
+                    type="text"
+                    id='accountNumber'
+                    required
+                    value={account.accountNumber}
+                    onChange={handleInputChange}
+                    name='accountNumber'
+                  />
+                </div>  
+        
+                <div className='account__form--group'>
+                  <label>Nombre cuenta</label>
+                  <input
+                    className='account__input'
+                    placeholder='Nombre'
+                    type="text"
+                    id='name'
+                    required
+                    value={account.name}
+                    onChange={handleInputChange}
+                    name='name'
+                  />
+                </div>
 
-      <div>
-        {submitted ? (
-          <div>
-            <h4>You submitted succesfully</h4>
-            <button onClick={newAccount}>Añadir cuenta</button>
+                {/* Hacer desplegable con los PGC existentes */}
+                <div className='account__form--group'>
+                  <label>Plan de cuentas</label>
+                  <select
+                    className='account__input'
+                    type="text"
+                    id='accounting_plan_id'
+                    required
+                    onChange={handleInputChange}
+                    name='accounting_plan_id'
+                  >
+                    <option value="pgc">-- PGC --</option>
+                    {plans.map((plan, index) => {
+                      return (
+                        <option key={index} value={plan.id}>{plan.name}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+
+              <div className='account__form--row'>
+                <div className='account__form--group'>
+                  <label>Descripción</label>
+                  <input
+                    className='account__input'
+                    placeholder='Descripción'
+                    type="text"
+                    id='description'
+                    required
+                    value={account.description}
+                    onChange={handleInputChange}
+                    name='description'
+                  />
+                </div> 
+              </div>
+
+              <div className='account__form--actions'>
+                <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus'/>Añadir cuenta</button>
+              </div>
+
+              {error && <div className="account__error">{error}</div>}
+
+            </div>
           </div>
-        ) : (
-          <div>
-            <h4>Nueva cuenta</h4>
-            <div>
-              <label>Número de cuenta</label>
-              <input
-                type="text"
-                id='accountNumber'
-                required
-                value={account.accountNumber}
-                onChange={handleInputChange}
-                name='accountNumber'
-              />
-            </div>
-
-            <div>
-              <label>Nombre de cuenta</label>
-              <input
-                type="text"
-                id='name'
-                required
-                value={account.name}
-                onChange={handleInputChange}
-                name='name'
-              />
-            </div>
-
-            <div>
-              <label>Descripción</label>
-              <input
-                type="text"
-                id='description'
-                required
-                value={account.description}
-                onChange={handleInputChange}
-                name='description'
-              />
-            </div>
-
-            <div>
-              <label>Plan de cuentas</label>
-              <input
-                type="text"
-                id='accounting_plan_id'
-                required
-                value={account.accounting_plan_id}
-                onChange={handleInputChange}
-                name='accounting_plan_id'
-              />
-            </div>
-
-            <button onClick={saveAccount}>Crear cuenta</button>
-          </div>
-        )}
-      </div>
+      )}
     </>
   );
 };

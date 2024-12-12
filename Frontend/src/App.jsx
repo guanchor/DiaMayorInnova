@@ -16,8 +16,8 @@ import NavStateProvider from "./context/nav-menu/NavStateProvider";
 import NavegationMenu from "./components/navegation-menu/NavegationMenu";
 
 import Account from './components/account/Account';
-import AccountList from './components/account/ListAccount';
-import AddAccount from './components/account/AddAccount';
+// import AccountList from './components/account/ListAccount';
+// import AddAccount from './components/account/AddAccount';
 import HelpExample from './components/help-example/HelpExample';
 import HelpExampleList from './components/help-example/ListHelpExample';
 import AddHelpExample from './components/help-example/AddHelpExample';
@@ -30,6 +30,7 @@ import StatementsList from './components/statements/StatementList';
 import StatementForm from './components/statements/StatementForm';
 import TaskEditForm from './components/task/TaskEditForm';
 import AccountingPlans from './pages/accounting-plan/AccountingPlans';
+import Accounts from './pages/account/Accounts';
 
 function App() {
 
@@ -45,12 +46,7 @@ function App() {
                 <Route path="/sign_in" element={<SignIn />} />
                 <Route path="*" element={<Home />} />
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
-                  <Route path="/accounting-plans-test" element={<AccountingPlanList />} />
-                  <Route path="/accounting-plans-test/:id" element={<AccountingPlan />} />
                    {/* PRUEBA COMPONENTES ACCOUNTS AND HELP EXAMPLES */}
-                  <Route path="/accounts" element={<AccountList />} />
-                  <Route path="/accounts/:id" element={<Account />} />
-                  <Route path="/add-account" element={<AddAccount />} />
                   <Route path="/help-examples" element={<HelpExampleList />} />
                   <Route path="/help-examples/:id" element={<HelpExample />} />
                   <Route path="/add-help-example" element={<AddHelpExample />} />
@@ -59,6 +55,8 @@ function App() {
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/accounting-plans" element={<AccountingPlans />} />
                     <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
+                    <Route path="/accounts" element={<Accounts />} />
+                    <Route path="/accounts/:id" element={<Account />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/tasks/:id" element={<TaskEditForm />} />
                     <Route path="/statements" element={<StatementsList />} />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import AccountDataService from '../../services/AccountService';
+import "./Account.css";
 import { Link } from 'react-router-dom';
 
 const Account = (props) => {
@@ -11,13 +12,17 @@ const Account = (props) => {
     id: null,
     accountNumber: 0,
     description: "",
-    accounting_plan: 0,
+    accounting_plan_id: 0,
     name: ""
   };
 
   const [currentAccount, setCurrentAccount] = useState(initialAccountState);
-
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (id) getAccount(id);
+  }, [id]);
 
   const getAccount = (id) => {
     AccountDataService.get(id)
@@ -30,24 +35,32 @@ const Account = (props) => {
     });
   };
 
-  useEffect(() => {
-    if (id) getAccount(id);
-  }, [id]);
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentAccount({ ...currentAccount, [name]: value});
   };
 
+  const validateForm = () => {
+    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+      setError("Todos los campos son obligatorios y deben tener valores válidos.");
+      return false;
+    };
+    setError("")
+    return true;
+  }
+
   const updateAccount = () => {
-    AccountDataService.update(currentAccount.id, currentAccount)
-    .then(response => {
-      console.log(response.data);
-      setMessage("Account updated succesfully");
-    })
-    .catch(e => {
-      console.log(e);
+    if (validateForm()) {
+      AccountDataService.update(currentAccount.id, currentAccount)
+      .then(response => {
+        console.log(response.data);
+        setMessage("Account updated succesfully");
+      })
+      .catch(e => {
+        console.log(e);
+        setError("Hubo un problema al actualizar la cuenta.");
     });
+    }
   };
 
   const deleteAccount = () => {
@@ -63,17 +76,15 @@ const Account = (props) => {
   
   return (
     <>
-      <Link to={"/accounts/"}>
-        Volver
-      </Link>
 
       {currentAccount ? (
         <div>
-          <h4>Accounts</h4>
-          <form>
-            <div>
+          <h4 className='account__header--h4'>Detalles de la cuenta</h4>
+          <form className='account__form'>
+            <div className='account__form--group'>
               <label htmlFor="accountNumber">Número de cuenta</label>
               <input 
+                className='account__input'
                 id="accountNumber"
                 name="accountNumber"
                 type="text"
@@ -83,9 +94,10 @@ const Account = (props) => {
               />
             </div>
 
-            <div>
+            <div className='account__form--group'>
               <label htmlFor="description">Descripción</label>
               <input
+                className='account__input'
                 id="description"
                 name="description"
                 type="text"
@@ -95,9 +107,10 @@ const Account = (props) => {
               </input>
             </div>
 
-            <div>
+            <div className='account__form--group'>
               <label htmlFor="accountPlan">Plan de cuentas</label>
-              <input 
+              <input
+                className='account__input'
                 id="accountPlan"
                 name="accountPlan"
                 type="number"
@@ -107,9 +120,10 @@ const Account = (props) => {
                 </input>
             </div>
 
-            <div>
+            <div className='account__form--group'>
               <label htmlFor="name">Nombre de cuenta</label>
-              <input 
+              <input
+                className='account__input'
                 id="name"
                 name="name"
                 type="text"
@@ -120,9 +134,13 @@ const Account = (props) => {
             </div>
           </form>
 
-          <button onClick={updateAccount}>Editar</button>
+          <div>
+            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+            <button className="accountingPlan__button--form" onClick={updateAccount}>Editar</button>
+            <button className="accountingPlan__button--remove" onClick={deleteAccount}>Borrar</button>
+            <p>{message}</p>
+          </div>
 
-          <button onClick={deleteAccount}>Eliminar</button>
         </div>
       ) : (
         <div>

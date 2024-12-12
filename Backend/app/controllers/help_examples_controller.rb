@@ -14,7 +14,7 @@ class HelpExamplesController < ApplicationController
       creditMoves: params[:creditMoves],
       debitMoves: params[:debitMoves],
       account_id: params[:account_id],
-      description: params[:descripton]
+      description: params[:description],
     )
     render json: @helpExample
   end
@@ -24,8 +24,8 @@ class HelpExamplesController < ApplicationController
     @helpExample.update(
       creditMoves: params[:creditMoves],
       debitMoves: params[:debitMoves],
-      account_id: params[:account_id]
-      description: params[:descripton]
+      account_id: params[:account_id],
+      description: params[:description],
     )
     render json: @helpExample
   end

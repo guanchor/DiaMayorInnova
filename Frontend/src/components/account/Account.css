@@ -1,10 +1,10 @@
-.accountingPlan__pgcList {
+.account__accList {
   margin: var(--gap-s);
   padding-top: var(--gap-s);;
   border-top: 1px solid var(--Color-grey-200);;
 }
 
-.accountingPlan__pgcList-item {
+.account__accLlist-item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
   border-bottom: 1px solid var(--Color-grey-200);
@@ -16,7 +16,7 @@
   width: 100%;
 }
 
-.accountingPlan__header--h4 {
+.account__header--h4 {
   position: sticky;
   top: 0;
   z-index: 10;
@@ -25,11 +25,11 @@
   margin-bottom: var(--gap-xl);
 }
 
-.accountingPlan__header--h4.title {
+.account__header--h4.title {
   padding: var(--gap-s);
 }
 
-.accountingPlan__input {
+.account__input {
   width: 50%;
   padding: 0.6rem;
   margin-right: 1rem;
@@ -39,13 +39,13 @@
   margin-bottom: 0;
 }
 
-.accountingPlan__input--filter {
+.account__input--filter {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.accountingPlan__table {
+.account__table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
@@ -61,7 +61,7 @@
   }
 }
 
-.accountingPlan__button {
+.account__button {
   padding: var(--gap-s) var(--gap-m);
   background-color: var(--Color-Principal);
   color: white;
@@ -70,7 +70,7 @@
   cursor: pointer;
 }
 
-.accountingPlan__button--edit {
+.account__button--edit {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
   color: var(--Color-grey-400);
@@ -79,16 +79,16 @@
   cursor: pointer;
 }
 
-.accountingPlan__button--edit:hover {
+.account__button--edit:hover {
   color: var(--Color-grey-900);
 }
 
-.accountingPlan__button--remove.pencil {
+.account__button--remove.pencil {
   margin-right: 8px;
   font-size: 1.2rem;
 }
 
-.accountingPlan__button--remove {
+.account__button--remove {
   display: flex;
   align-items: center;
   margin-left: 8px;
@@ -101,16 +101,16 @@
   transition: color 0.3s;
 }
 
-.accountingPlan__button--remove:hover {
+.account__button--remove:hover {
   color: var(--Color-red-400);
 }
 
-.accountingPlan__button--remove.trash {
+.account__button--remove.trash {
   margin-right: 8px;
   font-size: 1.2rem;
 }
 
-.accountingPlan__form {
+.account__form {
   position: static;
   padding: var(--gap-xl);
   border-radius: var(--border-radius);
@@ -119,37 +119,37 @@
   height: 275px;
 }
 
-.accountingPlan__form--row {
+.account__form--row {
   display: flex;
   gap: 12px;
 }
 
-.accountingPlan__form--group {
+.account__form--group {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 8px;
 }
 
-.accountingPlan__form--group.full-width {
+.account__form--group.full-width {
   flex: 100%;
 }
 
-.accountingPlan__form--actions {
+.account__form--actions {
   display: flex;
   justify-content: center;
-  & .accountingPlan__button {
+  & .account__button {
     margin-top: 16px;
   }
 }
 
-.accountingPlan__form .accountingPlan__input {
+.account__form .account__input {
   width: 100%;
   padding: 8px;
   margin-top:  5px;
 }
 
-.accountingPlan__error {
+.account__error {
   color: var(--Color-red-400);
   text-align: center;
   margin-top: var(--gap-m);

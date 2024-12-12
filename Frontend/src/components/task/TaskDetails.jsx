@@ -16,7 +16,7 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
     if (window.confirm("¿Estás seguro de que deseas eliminar esta tarea?")) {
       try {
         await taskService.deleteTask(selectedTask.id);
-        onDeleteTask(selectedTask.id); // Notificar al padre que la tarea ha sido eliminada
+        onDeleteTask(selectedTask.id);
         onCloseModal();
       } catch (err) {
         console.error("Error al eliminar la tarea:", err);

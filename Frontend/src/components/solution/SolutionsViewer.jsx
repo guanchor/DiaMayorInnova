@@ -34,8 +34,8 @@ const SolutionsViewer = ({ solutions }) => {
                       <li key={annotation.id} className="modal-solutionViewer__annotation-item">
                         <span className="annotation-item--item">{annotation.number}</span> 
                         <span className="annotation-item--item">{annotation.account_number}</span> 
-                        <span className="annotation-item--item">{annotation.credit}</span> 
                         <span className="annotation-item--item">{annotation.debit}</span>
+                        <span className="annotation-item--item">{annotation.credit}</span> 
                       </li>
                     ))}
                   </ul>

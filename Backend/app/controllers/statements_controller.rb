@@ -55,13 +55,11 @@ class StatementsController < ApplicationController
     )
   end
 
-  # Nuevo método para agregar una solución a un enunciado
   def add_solution
     @solution = @statement.solutions.create(solution_params)
-    process_account_ids_in_solution(@solution)
+    process_account_ids_in_solution(@solution) #comprobar 
 
     if @solution.save
-      # Crear las entradas y anotaciones asociadas
       if params[:entries]
         params[:entries].each do |entry_params|
           entry = @solution.entries.create(entry_params)
@@ -79,10 +77,18 @@ class StatementsController < ApplicationController
   end
 
   def update
+    Rails.logger.debug "Actualizando el enunciado con los parámetros: #{params.inspect}"
+    
     if @statement.user_id == current_user.id
-      if @statement.update(statement_params)
+      process_account_ids(@statement)
+      Rails.logger.debug "Errores después de procesar cuentas: #{@statement.errors.full_messages}"
+    
+      if @statement.errors.any?
+        render json: @statement.errors, status: :unprocessable_entity
+      elsif @statement.update(statement_params)
         render json: @statement
       else
+        Rails.logger.debug "Errores al actualizar el enunciado: #{@statement.errors.full_messages}"
         render json: @statement.errors, status: :unprocessable_entity
       end
     else
@@ -112,11 +118,14 @@ class StatementsController < ApplicationController
     :explanation, 
     :is_public,
     solutions_attributes: [
+      :id,
       :description,
       entries_attributes: [
+        :id,
         :entry_number,
         :entry_date,
         annotations_attributes: [
+          :id,
           :number,
           :credit,
           :debit,
@@ -142,10 +151,16 @@ class StatementsController < ApplicationController
       solution.entries.each do |entry|
         entry.annotations.each do |annotation|
           Rails.logger.debug "Account number: #{annotation.account_number}"
+          
           if annotation.account_number.present?
             account = Account.find_by(account_number: annotation.account_number)
+            
             if account
-              annotation.account_id = account.id
+              annotation.account_id = account.id if annotation.account_id.nil? || annotation.account_id != account.id
+              Rails.logger.debug "Assigned account_id: #{annotation.account_id}"
+              unless annotation.save
+                Rails.logger.debug "Error al guardar la anotación: #{annotation.errors.full_messages}"
+              end
             else
               annotation.errors.add(:account_number, "no válido o no encontrado")
             end

@@ -306,8 +306,7 @@
 .error-message {
   background-color: #f8d7da;
   color: #721c24;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: var(--gap-xxxs);
   border: 1px solid #f5c6cb;
-  border-radius: 5px;
+  border-radius: var(--r-xxs);
 }

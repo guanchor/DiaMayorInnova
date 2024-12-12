@@ -2,10 +2,8 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   
   def index
-    # Filtramos las tareas por el usuario actual
     @tasks = Task.where(created_by: current_user.id)
-  
-    # Si el parámetro 'title' está presente, aplicamos el filtro de búsqueda por título
+
     if params[:title].present?
       @tasks = @tasks.where("title LIKE ?", "%#{params[:title]}%")
     end

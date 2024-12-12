@@ -10,19 +10,18 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
   const [errorMessage, setErrorMessage] = useState("");
 
   const prevStatementRef = useRef();
-  const prevSolutionsRef = useRef();
 
-  // useEffect(() => {
-  //   if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
-  //     setDefinition(statement?.definition || "");
-  //     setExplanation(statement?.explanation || "");
-  //     setIsPublic(statement?.is_public || false);
-  //     setSolutions(statement?.solutions_attributes || []);
-  //   }
+   useEffect(() => {
+     if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
+       setDefinition(statement?.definition || "");
+       setExplanation(statement?.explanation || "");
+       setIsPublic(statement?.is_public || false);
+       setSolutions(statement?.solutions || []);
+     }
 
-  //   prevStatementRef.current = statement;
-  //   prevSolutionsRef.current = propSolutions;
-  // }, [propSolutions, statement]);
+     prevStatementRef.current = statement;
+
+   }, [statement]);
 
   const handleAddSolution = () => {
     const newSolution = {
@@ -43,9 +42,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       ]
     };
     setSolutions((prevSolutions) => [...prevSolutions, newSolution]);
-    if (onAddSolution) {
-      onAddSolution(newSolution);
-    }
+    // Lo que añadía la segunda solución era el if(onAddSolution)
   };
 
   const handleSaveSolution = (updatedSolution, index) => {
@@ -94,11 +91,14 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       explanation,
       is_public: isPublic,
       solutions_attributes: solutions.map((solution) => ({
+        ...(solution.id && { id: solution.id }),
         description: solution.description,
         entries_attributes: solution.entries.map((entry) => ({
+          ...(entry.id && { id: entry.id }),
           entry_number: entry.entry_number,
           entry_date: entry.entry_date,
           annotations_attributes: entry.annotations.map((annotation) => ({
+            ...(annotation.id && { id: annotation.id }),
             number: annotation.number,
             account_number: annotation.account_number,
             credit: parseFloat(annotation.credit),
@@ -159,7 +159,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             onChange={(e) => setExplanation(e.target.value)}
           />
         </div>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        
         <div className="statement-page__buttons-container">
           <div className="statement-page__visibility--container">
             <label className="statement-page__label--visibility">
@@ -178,6 +178,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
               <i className="fi fi-rr-plus"></i>
               Añadir Solución
             </button>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
           </div>
         </div>
 

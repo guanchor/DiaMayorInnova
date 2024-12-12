@@ -38,4 +38,14 @@ class AccountsController < ApplicationController
     @account.destroy
     render json: @accounts
   end
+
+  def find_by_account_number
+    @account = Account.find_by(account_number: params[:account_number])
+    if @account
+      render json: { account_id: @account.id }
+    else
+      render json: { error: "Cuenta no encontrada" }, status: :not_found
+    end
+  end
+  
 end

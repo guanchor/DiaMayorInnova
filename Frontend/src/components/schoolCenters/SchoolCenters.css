@@ -3,6 +3,10 @@
     color: black;
 } */
 
+.school_center_page {
+    padding-top: 400px;
+}
+
 .center_list {
     font-size: 0.7rem;
     display: flex;

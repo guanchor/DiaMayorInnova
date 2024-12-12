@@ -159,9 +159,9 @@
   annotation3 = Annotation.create(entry: entry2, account: account3, number: 1, debit: 0 , credit: 300)
   annotation4 = Annotation.create(entry: entry2, account: account2, number: 2, debit: 300 , credit: 0)
 
-  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1)
-  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2)
-  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3)
+  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1, description: "Descripcion ejemplo 1")
+  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2, description: "Descripcion ejemplo 2")
+  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3, description: "Descripcion ejemplo 3")
 
   exercise1 = Exercise.create(user: user, task: task1) 
   exercise2 = Exercise.create(user: user2, task: task1) 
@@ -179,3 +179,4 @@
   student_annotation1 = StudentAnnotation.create(number: 1, account_number: 1234, credit: 100, debit: 0, student_entry: student_entry1, account: account1) 
   student_annotation2 = StudentAnnotation.create(number: 2, account_number: 1334, credit: 0, debit: 1000, student_entry: student_entry2, account: account2) 
   student_annotation3 = StudentAnnotation.create(number: 3, account_number: 2234, credit: 100, debit: 0, student_entry: student_entry3, account: account3)
+  

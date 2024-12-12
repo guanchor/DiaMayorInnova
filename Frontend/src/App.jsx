@@ -14,7 +14,12 @@ import SignUp from "./components/user/SignUp";
 import TaskPage from "./pages/task-page/TaskPage"
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
 import NavegationMenu from "./components/navegation-menu/NavegationMenu";
-
+import Account from './components/account/Account';
+import AccountList from './components/account/ListAccount';
+import AddAccount from './components/account/AddAccount';
+import HelpExample from './components/help-example/HelpExample';
+import HelpExampleList from './components/help-example/ListHelpExample';
+import AddHelpExample from './components/help-example/AddHelpExample';
 import './App.css';
 import './assets/Styles/Global.css';
 import TaskListAndDetails from './components/task/taskListAndDetails';
@@ -24,6 +29,8 @@ import TaskEditForm from './components/task/TaskEditForm';
 import Modes from './pages/modes/Modes';
 import EntriesSection from './components/entries-section/EntriesSection';
 import PracticePage from './pages/practice-page/PracticePage';
+import AccountingPlans from './pages/accounting-plan/AccountingPlans';
+import ExamPage from './pages/exam-page/ExamPage';
 
 function App() {
 
@@ -39,14 +46,25 @@ function App() {
                 <Route path="*" element={<Home />} />
                 <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
                   <Route path="/home" element={<Home />} />
-                  <Route path="/accounting-plans" element={<AccountingPlanList />} />
-                  <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
+                  <Route path="/accounting-plans-test" element={<AccountingPlanList />} />
+                  <Route path="/accounting-plans-test/:id" element={<AccountingPlan />} />
+                  {/* PRUEBA COMPONENTES ACCOUNTS AND HELP EXAMPLES */}
                   <Route path="/modes" element={<Modes />} >
-                    <Route path='tarea/:id' element={<TaskPage />} />
+                    <Route path='tarea/' element={<TaskPage />} />
                     <Route path='practica/' element={<PracticePage />} />
-                    <Route path='examen/:id' element={<EntriesSection />} />
+                    <Route path='examen/' element={<ExamPage />} />
                   </Route>
+                  <Route path="/accounts" element={<AccountList />} />
+                  <Route path="/accounts/:id" element={<Account />} />
+                  <Route path="/add-account" element={<AddAccount />} />
+                  <Route path="/help-examples" element={<HelpExampleList />} />
+                  <Route path="/help-examples/:id" element={<HelpExample />} />
+                  <Route path="/add-help-example" element={<AddHelpExample />} />
+
+                  <Route path="/modes" element={<TaskPage />} />
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                    <Route path="/accounting-plans" element={<AccountingPlans />} />
+                    <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/tasks/:id" element={<TaskEditForm />} />
                     <Route path="/statements" element={<StatementsList />} />
@@ -71,3 +89,5 @@ function App() {
 }
 
 export default App;
+
+// # A

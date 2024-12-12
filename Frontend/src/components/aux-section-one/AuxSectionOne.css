@@ -1,10 +1,64 @@
-.aux-section_one__container {
+.help_secction__container {
   grid-area: section1;
   background-color: var(--Color-White);
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
+  padding: var(--gap-m);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--gap-xs);
+  height: 100%;
+  overflow: hidden;
+
+  & h2 {
+    font-size: var(--text-desktop-body-large);
+    color: var(--Color-Principal);
+  }
+
+  & h3 {
+    font-size: var(--text-desktop-small);
+    font-weight: 600;
+    color: var(--Color-Principal);
+  }
+
+  & input {
+    margin: 0;
+    height: 28px;
+    width: 294px;
+    align-self: center;
+  }
+
+  & p {
+    color: var(--Color-Principal-claro);
+    font-size: var(--text-desktop-tiny);
+  }
 }
 
-h3 {
-  font-size: var(--text-);
+.account_info {
+  padding: 0 var(--gap-s);
+
+  & p {
+    margin: var(--gap-xxxs) 0 0 var(--gap-l);
+    font-weight: 400;
+  }
+
+  & :nth-child(3) {
+    margin-top: var(--gap-xs);
+  }
+}
+
+.moves_info {
+  overflow-y: scroll;
+  padding: 0 var(--gap-s);
+
+
+  & p {
+    margin: var(--gap-xxxs) 0 0 var(--gap-l);
+    font-weight: 400;
+  }
+
+  & :nth-child(3) {
+    margin-top: var(--gap-xs);
+  }
 }

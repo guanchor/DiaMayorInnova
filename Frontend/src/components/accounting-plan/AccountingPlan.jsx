@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
+import "./AccountingPlan.css";
 
 const AccountingPlan = (props) => {
   const { id } = useParams();
@@ -75,13 +76,15 @@ const AccountingPlan = (props) => {
 
   return (
     <>
+
       {currentAccountingPlan ? (
         <div>
-          <h4>Accounting Plan</h4>
-          <form>
+          <h4 className="accountingPlan__header--h4">Detalles del PGC </h4>
+          <form className="accountingPlan__form">
             <div>
-              <label htmlFor="name">Nombre</label>
+              <label className="accountingPlan__label" htmlFor="name">Nombre</label>
               <input
+                className="accountingPlan__input"
                 id="name"
                 name="name"
                 type="text"
@@ -91,8 +94,9 @@ const AccountingPlan = (props) => {
               />
             </div>
             <div>
-              <label htmlFor="description">Descripción</label>
+              <label className="accountingPlan__label" htmlFor="description">Descripción</label>
               <input
+                className="accountingPlan__input"
                 id="description"
                 name="description"
                 type="text"
@@ -102,8 +106,9 @@ const AccountingPlan = (props) => {
               />
             </div>
             <div>
-              <label htmlFor="acronym">Acrónimo</label>
+              <label className="accountingPlan__label" htmlFor="acronym">Acrónimo</label>
               <input
+                className="accountingPlan__input"
                 id="acronym"
                 name="acronym"
                 type="text"
@@ -113,11 +118,13 @@ const AccountingPlan = (props) => {
               />
             </div>
           </form>
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-          <button onClick={updateAccountingPlan}>Editar</button>
-          <button onClick={deleteAccountingPlan}>Borrar</button>
-          <p>{message}</p>
-          <Link to={"/accounting-plans/"}>Volver</Link>
+          <div>
+            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+            <button className="accountingPlan__button--form" onClick={updateAccountingPlan}>Editar</button>
+            <button className="accountingPlan__button--remove" onClick={deleteAccountingPlan}>Borrar</button>
+            <p>{message}</p>
+          </div>
+          
         </div>
       ) : (
         <div>

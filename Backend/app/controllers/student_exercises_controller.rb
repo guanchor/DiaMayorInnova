@@ -1,5 +1,61 @@
 class StudentExercisesController < ApplicationController
-  def show
+  before_action :authenticate_user!
+
+  def index
+    @exercises = Exercise.includes(marks: {student_entries: :student_annotations}).where("user_id = ?", current_user.id)
+    render json: @exercises.as_json(
+      include: {
+        solutions: {
+          include: {
+            entries: {
+              include: :annotations
+            }
+          }
+        }
+      } 
+    )
+  end
+
+  def show 
+    @exercise = Exercise.include(marks: {student_entries: :student_annotations}).find(params[:id])
+    render json: @exercise.as_json(
+      include: {
+        solutions: {
+          include: {
+            entries: {
+              include: :annotations
+            }
+          }
+        }
+      } 
+    )
+  end
+
+  def create  
+    @exercise = current_user.exercise.build(mark_params)
+
+    process_account_ids(@exercise)
+
+    if @exercise.save 
+      render json: @exercise, status: :created
+    else  
+      render json: @exercise.errors, status: :unprocessable_entity
+    end
+  end
+
+  
+
+
+end
+
+=begin
+def index
+  @exercises = Exercise.where("user_id = ?", current_user.id)
+
+  render json: @exercises
+end
+
+def show
     user = User.find(params[:user_id])
     
     # Encuentra el ejercicio del usuario
@@ -57,5 +113,4 @@ class StudentExercisesController < ApplicationController
       render json: { error: exercise.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
-end
+=end

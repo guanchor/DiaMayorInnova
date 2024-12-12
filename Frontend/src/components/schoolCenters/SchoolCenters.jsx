@@ -102,7 +102,7 @@ const SchoolCenters = () => {
 
 
     return (
-        <>
+        <div className="school_center_page">
             <h1>Centros Educativos</h1>
             <section>
                 <Link to={"/home"}>
@@ -171,7 +171,7 @@ const SchoolCenters = () => {
                 </div>
             </section>
 
-        </>
+        </div>
     )
 };
 export default SchoolCenters;

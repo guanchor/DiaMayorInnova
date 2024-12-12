@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
+import "./AccountingPlan.css";
 
-const AddAccountingPlan = () => {
+const AddAccountingPlan = ({setNewPGC}) => {
   const initialAccountingPlanState = {
     id: null,
     name: "",
@@ -43,7 +44,7 @@ const AddAccountingPlan = () => {
             description: response.data.description.trim(),
             acronym: response.data.acronym.trim()
           });
-          setSubmitted(true);
+          setNewPGC(true);
           console.log(response.data);
         })
         .catch(e => {
@@ -64,50 +65,67 @@ const AddAccountingPlan = () => {
       {submitted ? (
         <div>
           <h4>Se ha enviado correctamente</h4>
-          <button onClick={newAccountingPlan}>Añadir otro Plan</button>
-          <Link to={"/accounting-plans"}>Atrás</Link>
+          <button className="accountingPlan__button" onClick={newAccountingPlan}>Añadir otro Plan</button>
+          <button><Link to={"/accounting-plans"}>Atrás</Link></button>
         </div>
       ) : (
         <div>
-          <h4>Añadir plan de cuentas</h4>
-          <div>
-            <label>Name</label>
-            <input
-              type="text"
-              id="name"
-              required
-              value={accountingPlan.name}
-              onChange={handleInputChange}
-              name="name">
-            </input>
-          </div>
+          <div className="accountingPlan__form">
+          <h4 className="accountingPlan__header--h4">Nuevo plan de contabilidad</h4>
+            <div className="accountingPlan__form--row">
+              <div className="accountingPlan__form--group">
+                <label>Nombre</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Nombre PGC"
+                  type="text"
+                  id="name"
+                  required
+                  value={accountingPlan.name}
+                  onChange={handleInputChange}
+                  name="name">
+                </input>
+              </div>
+              
+              <div className="accountingPlan__form--group">
+                <label>Acrónimo</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Acrónimo PGC"
+                  type="text"
+                  id="acronym"
+                  required
+                  value={accountingPlan.acronym}
+                  onChange={handleInputChange}
+                  name="acronym">
+                </input>
+              </div>
+              
+            </div>
 
-          <div>
-            <label>Description</label>
-            <input
-              type="text"
-              id="description"
-              required
-              value={accountingPlan.description}
-              onChange={handleInputChange}
-              name="description">
-            </input>
-          </div>
+            <div className="accountingPlan__form--row">
+              <div className="accountingPlan__form--group full-width">
+                <label>Descripción</label>
+                <input
+                  className="accountingPlan__input"
+                  placeholder="Descripción PGC"
+                  type="text"
+                  id="description"
+                  required
+                  value={accountingPlan.description}
+                  onChange={handleInputChange}
+                  name="description">
+                </input>
+              </div>
+            </div>
 
-          <div>
-            <label>Acronym</label>
-            <input
-              type="text"
-              id="acronym"
-              required
-              value={accountingPlan.acronym}
-              onChange={handleInputChange}
-              name="acronym">
-            </input>
-          </div>
+            <div className="accountingPlan__form--actions">
+              <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus"/>Añadir plan</button>
+            </div>
+            
+            {error && <div className="accountingPlan__error" visi>{error}</div>}
 
-          <button onClick={saveAccountingPlan}>Submit</button>
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          </div>
         </div>
       )}
     </>

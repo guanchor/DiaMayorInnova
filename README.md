@@ -50,8 +50,9 @@ This architecture is commonly referred to as client-server architecture, and whe
 * The frontend makes an HTTP request to the backend API.
 * The backend processes the request, performs database operations if needed, and returns the response to the frontend.
 * The frontend receives the response and updates the user interface as necessary.
+
 <div align="center">
-  <img src="Docs/Screenshots/Monolithic.png" alt="Monolithic application scheme" width="60%"/>
+  <img src="Docs/Screenshots/Decoupled.png" alt="Decoupled application scheme" width="80%"/>
 </div>
 
 ### Non-Separated Frontend and Backend (Monolithic)
@@ -66,8 +67,9 @@ The frontend and backend are integrated into a single application.
 * The server receives an HTTP request from the client.
 * The server processes the request, handles business logic, and responds with the rendered HTML page along with the data.
 * There is no clear separation between the frontend and backend; both are handled within the same execution flow.
+
 <div align="center">
-  <img src="Docs/Screenshots/Decoupled.png" alt="Decoupled application scheme" width="80%"/>
+  <img src="Docs/Screenshots/Monolithic.png" alt="Monolithic application scheme" width="60%"/>
 </div>
 
 ### Comparison: Ruby on Rails + ReactJS vs. Ruby on Rails Only

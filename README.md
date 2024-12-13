@@ -36,6 +36,7 @@ The PGC tab will be used to access the General Accounting Plan, particularly the
 This set of features forms an integrated application designed to facilitate learning in accounting with support for task creation, automatic grading, and result management.
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Approaches to Web Architecture Design: Monolithic vs. Decoupled 🔄
 
 ### Separate Frontend and Backend (Decoupled)
@@ -122,6 +123,7 @@ Laravel is a PHP framework that facilitates the development of monolithic web ap
 Django is a high-level web framework for Python, which promotes a monolithic approach similar to Rails. It handles both the backend and HTML views in the same place.
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Directory Structure 📂
 
 The directory structure in a project is crucial because it organizes the code in a clear and modular way, facilitating its maintenance and scalability. A good structure allows developers to quickly find and modify the necessary files, reduces the risk of errors, and improves team collaboration. Additionally, it promotes the adoption of good development practices, such as the separation of concerns and code reuse, making the project easier to understand, debug, and expand as it grows.
@@ -240,6 +242,7 @@ Instead of storing images in a file system or in the cloud, they are stored dire
 | **Maintenance**                | Requires good file storage management (e.g., disk space or cloud storage fees). | Requires proper maintenance to avoid overloading the database with large binary data. |
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Authentication and Authorization 🔐
 
 Authentication is the process of verifying a user's identity. Essentially, it ensures that the user is who they say they are. This typically involves checking credentials (such as a username and password) or using other verification methods, like access tokens or two-factor authentication.
@@ -282,6 +285,7 @@ Thanks to the class diagram, we can start identifying the different entities tha
 Once we have a first idea of the application, we can start to create the prototype, to create it we have used Figma, here is the prototype. [Figma Prototype](https://www.figma.com/design/umvmGhnsnixHyXQL10bJx4/Dia-mayor?node-id=0-1&t=BXY9WzeRwVCoMg57-1)
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Getting Started 🚀
 
 See Installation for instructions on how to deploy the project.
@@ -430,6 +434,7 @@ rails s
 ```
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Running Tests ⚙️
 
 **¡¡In progress!!**
@@ -478,6 +483,7 @@ rails s
 * [Ivan Morguillo](https://www.ivanmorgillo.com/2024/06/20/get-started-with-ruby-on-rails-on-wsl2-ubuntu/)
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
+
 ## Licencia 📄
 
 This project is licensed under the (Your License) - see the [LICENSE.md](LICENSE.md) file for details.

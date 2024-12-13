@@ -26,10 +26,10 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             <input type="text" id='accountName' placeholder='Cuenta carne' name='accountName' value={annotation.account_name} />
           </div>
           <div className="form_group">
-            <input type="number" id='debit' name='debit' placeholder='0' onChange={handleChange} value={annotation.debit} />
+            <input type="number" id='debit' name='debit' placeholder='1000' onChange={handleChange} value={annotation.debit} />
           </div>
           <div className="form_group">
-            <input type="number" id='credit' name='credit' placeholder='0' onChange={handleChange} value={annotation.credit} />
+            <input type="number" id='credit' name='credit' placeholder='1000' onChange={handleChange} value={annotation.credit} />
           </div>
         </fieldset>
         <button className='btn-trash' onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>

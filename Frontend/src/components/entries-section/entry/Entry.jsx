@@ -17,7 +17,7 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
 
   const handleDelete = (e) => {
     e.preventDefault();
-    deleteEntry;
+    deleteEntry();
   }
 
   return (
@@ -64,7 +64,7 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
               ))
               }
             </div>
-            {entryStatus ? <button className='btn entry_add_annotation' onClick={addAnnotation}><i className='fi fi-rr-plus'></i> Apunte</button> : null}
+            {entryStatus ? <button className='btn entry_add_annotation' onClick={() => addAnnotation(number)}><i className='fi fi-rr-plus'></i> Apunte</button> : null}
           </div>
         )
       }

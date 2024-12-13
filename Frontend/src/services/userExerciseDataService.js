@@ -6,13 +6,13 @@ const getAll = async (id) => {
   return response;
 };
 
-const create = async (data) => {
-  console.log(data)
+const create = async (exerciseData) => {
+  console.log(exerciseData)
   try {
-    const response = await http.post("/student_entries", { student_entry: data });
+    const response = await http.post("/student_exercises", exerciseData);
     return response;
   } catch (error) {
-    console.error("Error en la creación:", error);
+    console.error("Error en la creación de la tarea del usuario:", error);
     return null;
   }
 };

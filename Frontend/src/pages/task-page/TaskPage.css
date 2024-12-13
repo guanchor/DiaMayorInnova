@@ -1,8 +1,0 @@
-.task-color {
-  background-color: var(--Color-blue-100);
-}
-
-.head_task {
-  grid-area: head;
-  text-align: center;
-}

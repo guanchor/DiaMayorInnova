@@ -5,7 +5,7 @@
 }
 
 .asidelSection__img {
-  background-image: url("../../../public/images/aside__img.png");
+  background-image: url("/images/aside__img.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 15rem;

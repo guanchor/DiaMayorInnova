@@ -4,3 +4,11 @@
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
 }
+
+.section-two_loader {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}

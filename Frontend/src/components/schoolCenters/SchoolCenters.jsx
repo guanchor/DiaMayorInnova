@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
 import { Link } from "react-router-dom";
 import "./SchoolCenters.css";
+import ListSchoolCenter from "./ListSchoolCenter.jsx";
 
 const SchoolCenters = () => {
     const initialSchoolState = {
@@ -13,7 +14,6 @@ const SchoolCenters = () => {
         province: ""
     }
 
-    const [schools, setSchools] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [formData, setFormData] = useState(initialSchoolState);
     const [updateState, setUpdateState] = useState(false);
@@ -22,13 +22,7 @@ const SchoolCenters = () => {
 
 
 
-    const allSchools = () => {
-        SchoolServices.getAll()
-            .then(response => {
-                setSchools(response.data);
-                console.log(response.data);
-            })
-    }
+
 
     const findByName = (e) => {
         e.preventDefault();
@@ -104,24 +98,7 @@ const SchoolCenters = () => {
     return (
         <div className="school_center_page">
             <h1>Centros Educativos</h1>
-            <section>
-                <Link to={"/home"}>
-                    Volver al home
-                </Link>
-                <h2>Listado de centros</h2>
-                {schools.map((school, index) => (
-                    <ul className="center_list" key={index}>
-                        <li id={`name${index}`}>{school.school_name}</li>
-                        <li id={`address${index}`}>{school.address}</li>
-                        <li id={`phone${index}`}>{school.phone}</li>
-                        <li id={`email${index}`}>{school.email}</li>
-                        <li id={`website${index}`}>{school.website}</li>
-                        <li id={`province${index}`}>{school.province}</li>
-                        <li><button onClick={() => deleteSchool(school.id)}>Eliminar</button></li>
-                        <li><button onClick={() => updateForm(school)}>editar</button></li>
-                    </ul>
-                ))}
-            </section>
+            <ListSchoolCenter />
 
             <section className="createSchools_wrapper">
                 <h2>Crear centros</h2>

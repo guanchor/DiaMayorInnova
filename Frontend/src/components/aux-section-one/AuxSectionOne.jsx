@@ -2,33 +2,71 @@ import React, { useEffect, useState } from 'react'
 import HelpExampleService from '../../services/HelpExampleService'
 import AccountService from '../../services/AccountService';
 import "./AuxSectionOne.css"
-
-
+import Spinner from '../spinners/Spinner';
 
 const AuxSectionOne = () => {
   const [example, setExample] = useState({});
   const [account, setAccount] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchNumber, setSearchNumber] = useState("");
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
-    AccountService.get(1)
-      .then(({ data }) => {
-        setAccount(data)
-        HelpExampleService.get(1)
-          .then(({ data }) => {
-            setExample(data)
-            console.log(data)
-          })
-        console.log(data)
-      })
+    if (searchNumber.length >= 4) {
+      setIsLoading(true);
+      AccountService.findByNumber(1234)
+        .then((response) => {
+          setAccount(response);
+          HelpExampleService.findByAccount(1)
+            .then(({ data }) => {
+              setExample(data);
+              setIsLoading(false);
+            })
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setIsError(true);
+          console.error("Error fetching data:", error);
+        });
+    }
+  }, [searchNumber]);
 
-  }, [])
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchNumber(value);
+  }
+
+  if (isLoading) {
+    return (
+      <section className="section-one_loader">
+        <Spinner />
+      </section>
+    )
+  }
+
+  if (isError) {
+    return (
+      <section className="help_secction__container error-feedback">
+        <p className='text-error-feedback'>Error en la busqueda de la cuenta</p>
+        <button className='btn' onClick={() => setIsError(false)}><i className='fi fi-rr-arrow-small-left'></i> Volver a la ayuda</button>
+      </section>
+    )
+  }
 
   return (
     <section className='help_secction__container'>
       <h2 className='help_secction_tittle'>Ayuda</h2>
-      <input type="search" placeholder='cuenta numero 1234' />
+      <div className="search-bar">
+        <input
+          className='search-bar_search'
+          type="search" placeholder='cuenta numero 1234'
+          value={searchNumber}
+          onChange={handleSearch}
+        />
+        <i className='fi fi-rr-search'></i>
+      </div>
       <div className="account_info">
-        <h3 >Cuenta : {account.name}</h3>
+        <h3 >Cuenta : {account.accountNumber}</h3>
         <p>{account.description}</p>
         <h3>Descripción</h3>
         <p>{example.description}</p>

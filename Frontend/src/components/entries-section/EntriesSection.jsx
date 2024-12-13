@@ -5,53 +5,42 @@ import "./EntriesSection.css"
 import { useAuth } from '../../context/AuthContext'
 import userExerciseDataService from '../../services/userExerciseDataService'
 
-const EntriesSection = () => {
+const EntriesSection = ({ taskSubmit }) => {
   const { user } = useAuth();
   const [entries, setEntries] = useState([]);
-  const [mark, setMark] = useState(null);
   const [annotations, setAnnotations] = useState([]);
-
-  console.log("entrieeeees ", entries)
-
-  useEffect(() => {
-    userExerciseDataService.getAll(user.id)
-      .then(({ data }) => {
-        setMark(data.marks)
-        addEntry()
-      })
-
-  }, [])
+  const mark = 0;
 
   const addEntry = () => {
     const defaultEntry = {
       entry_number: entries.length + 1,
       entry_date: "2024-10-10",
-      mark_id: mark[0].id,
     }
     setEntries([...entries, defaultEntry])
   }
 
-  console.log("entrieeeees ", entries)
-
   const removeEntry = (entryNumber) => {
     const updatedEntries = entries.filter(entry => entry.entry_number !== entryNumber);
     setEntries(updatedEntries);
-
     setAnnotations(annotations.filter(annotation => annotation.student_entry_id !== entryNumber));
   };
 
 
   const addAnnotation = (entryId) => {
+
+    const entryAnnotations = annotations.filter(annotation => annotation.student_entry_id === entryId);
+    const nextAnnotationNumber = entryAnnotations.length + 1;
+
     const initialAnnotation = {
+      student_entry_id: entryId,
       account_id: 1,
-      number: annotations.length + 1,
+      number: nextAnnotationNumber,
       account_number: 0,
       debit: 0,
       credit: 0,
-      student_entry_id: entryId,
     };
 
-    setAnnotations([...annotations, initialAnnotation]);
+    setAnnotations(prevAnnotations => [...prevAnnotations, initialAnnotation]);
   };
 
 
@@ -64,14 +53,48 @@ const EntriesSection = () => {
     setAnnotations(annotations.filter((_, i) => i !== index));
   };
 
+  const prepareExerciseData = () => {
+    return {
+      exercise: {
+        task_id: 2, // Cambia esto por el valor correspondiente
+        marks_attributes: entries.map(entry => ({
+          mark: mark ? mark : 5,
+          student_entries_attributes: entries.map(entry => ({
+            entry_number: entry.entry_number,
+            entry_date: entry.entry_date,
+            student_annotations_attributes: annotations
+              .filter(annotation => annotation.student_entry_id === entry.entry_number)
+              .map(annotation => ({
+                account_id: annotation.account_id,
+                number: annotation.number,
+                account_number: annotation.account_number,
+                credit: annotation.credit,
+                debit: annotation.debit,
+              }))
+          }))
+        }))
+      }
+    };
+  };
+
+  useEffect(() => {
+    if (taskSubmit) {
+      const exerciseData = prepareExerciseData();
+      userExerciseDataService.create(exerciseData)
+        .then((response) => {
+          console.log("guardadoooooooooooo", response)
+        })
+    }
+  }, [taskSubmit])
+
   return (
     <div className='entry_container'>
       <EntryHeader addEntry={addEntry} />
       {
-        entries && entries.map((entry, index) => {
+        entries.map((entry, index) => {
           return (
             <Entry
-              key={user.name + index}
+              key={entry.entry_number}
               number={index + 1}
               date={entry.entry_date}
               markId={entry.mark_id}

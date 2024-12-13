@@ -34,42 +34,38 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   try {
-      const response = await http.put(`/accounts/${id}`, data);
-      return response;
+    const response = await http.put(`/accounts/${id}`, data);
+    return response;
   } catch (error) {
-      console.error("Error en la actualización:", error);
-      return null;
+    console.error("Error en la actualización:", error);
+    return null;
   }
 };
 
 const remove = async (id) => {
   try {
-      const response = await http.delete(`/accounts/${id}`)
-      return response;
+    const response = await http.delete(`/accounts/${id}`)
+    return response;
   } catch (error) {
-      console.error("Error en la eliminación:", error);
-      return null;
+    console.error("Error en la eliminación:", error);
+    return null;
   }
 };
 
 const removeAll = async () => {
   try {
-      const response = await http.delete("/accounts");
-      return response;
+    const response = await http.delete("/accounts");
+    return response;
   } catch (error) {
-      console.error("Error en la eliminación de todos:", error);
-      return null;
+    console.error("Error en la eliminación de todos:", error);
+    return null;
   }
 };
 
-const findByName = async (name) => {
-  try {
-      const response = await http.get(`/accounts?name=${name}`);
-      return response;
-  } catch (error) {
-      console.error("Error en la búsqueda por módulo:", error);
-      return null;
-  }
+const findByNumber = async (number) => {
+  const response = await http.get(`/accounts?accountNumber=${number}`);
+  return response;
+
 };
 
 const AccountService = {
@@ -79,7 +75,7 @@ const AccountService = {
   update,
   remove,
   removeAll,
-  findByName
+  findByNumber
 };
 
 export default AccountService;

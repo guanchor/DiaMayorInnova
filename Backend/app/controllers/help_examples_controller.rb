@@ -1,6 +1,10 @@
 class HelpExamplesController < ApplicationController
   def index
-    @helpExamples = HelpExample.all
+    if params[:account_id].present?
+      @helpExamples = HelpExample.where("account_id LIKE ?", "#{params[:account_id]}")
+    else
+      @helpExamples = HelpExample.all
+    end 
     render json: @helpExamples
   end
 

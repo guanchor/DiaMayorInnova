@@ -9,7 +9,6 @@ const Modes = () => {
   if (location.pathname === "/modes") {
     return (
       <div className='shortcut__wrapper'>
-
         <Shortcut url="practica" name='practica' />
         <Shortcut url="tarea" name='tarea' />
         <Shortcut url="examen" name='examen' />

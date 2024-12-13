@@ -11,7 +11,6 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
 import SignUp from "./components/user/SignUp";
-import TaskPage from "./pages/task-page/TaskPage"
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
 import NavegationMenu from "./components/navegation-menu/NavegationMenu";
 import Account from './components/account/Account';
@@ -28,9 +27,11 @@ import StatementForm from './components/statements/StatementForm';
 import TaskEditForm from './components/task/TaskEditForm';
 import Modes from './pages/modes/Modes';
 import EntriesSection from './components/entries-section/EntriesSection';
-import PracticePage from './pages/practice-page/PracticePage';
 import AccountingPlans from './pages/accounting-plan/AccountingPlans';
-import ExamPage from './pages/exam-page/ExamPage';
+import TaskPage from './pages/modes/task-page/TaskPage';
+import PracticePage from './pages/modes/practice-page/PracticePage';
+import ExamPage from './pages/modes/exam-page/ExamPage';
+import 'react-tooltip/dist/react-tooltip.css'
 
 function App() {
 

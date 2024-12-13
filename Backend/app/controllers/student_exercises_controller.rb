@@ -2,51 +2,77 @@ class StudentExercisesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @exercises = Exercise.includes(marks: {student_entries: :student_annotations}).where("user_id = ?", current_user.id)
+    @exercises = Exercise.includes(marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
     render json: @exercises.as_json(
       include: {
-        solutions: {
+        marks: {
           include: {
-            entries: {
-              include: :annotations
+            student_entries: {
+              include: :student_annotations
             }
           }
         }
-      } 
+      }
     )
   end
 
-  def show 
-    @exercise = Exercise.include(marks: {student_entries: :student_annotations}).find(params[:id])
+  def show
+    @exercise = Exercise.includes(marks: { student_entries: :student_annotations }).find(params[:id])
     render json: @exercise.as_json(
       include: {
-        solutions: {
+        marks: {
           include: {
-            entries: {
-              include: :annotations
+            student_entries: {
+              include: :student_annotations
             }
           }
         }
-      } 
+      }
     )
   end
 
-  def create  
-    @exercise = current_user.exercise.build(mark_params)
+  def create
+    # Aquí asumo que 'exercise' es el objeto principal que se crea.
+    @exercise = current_user.exercises.build(exercise_params)
 
-    process_account_ids(@exercise)
+    # Si necesitas hacer algo adicional con @exercise, como procesar account_ids, agrega la lógica aquí
+    #process_account_ids(@exercise)
 
-    if @exercise.save 
+    if @exercise.save
       render json: @exercise, status: :created
-    else  
+    else
       render json: @exercise.errors, status: :unprocessable_entity
     end
   end
 
-  
+  private
 
-
+  # Permite los parámetros necesarios para 'exercise' y sus atributos anidados
+  def exercise_params
+    params.require(:exercise).permit(
+      :task_id,
+      marks_attributes: [
+        :id,
+        :mark,
+        student_entries_attributes: [
+          :id,
+          :entry_number,
+          :entry_date,
+          student_annotations_attributes: [
+            :id,
+            :account_id,
+            :number,
+            :account_number,
+            :credit,
+            :debit
+          ]
+        ]
+      ]
+    )
+  end
 end
+
+
 
 =begin
 def index

@@ -1,12 +1,11 @@
 # DíaMayor Innova
 
-<!-- ![Logo](images/Logo.svg) 
-<img src="public/images/Logo.svg" alt="DíaMayor Innova Logo" width="200px" height="75px"/>-->
-
-**DíaMayor Innova**
-
+<div align="center">
+  <h2 align="center">DíaMayor</h2>
+  <img src="Frontend/public/innova.svg" alt="DíaMayor Innova Logo" width="500px" height="150px"/>
+</div>
+<br />
 The project involves the development, by the students of IES El Rincón, of a cross-platform application that will assist students in the Professional Family of Administration and Management with the modules TEB, TUM, EPE, PNG, and COB in carrying out accounting entries. The application will allow the implementation of aids related to accounting accounts, as well as practical examples based on the proposed activities, which will serve as a guide and support in the learning process. The starting point is the spreadsheet created by the project coordinator. The project aims to create an application that will replace this spreadsheet, enabling its functionality on any mobile device, tablet, or PC.
-
 
 ## About The Project 📖
 
@@ -36,7 +35,7 @@ The PGC tab will be used to access the General Accounting Plan, particularly the
 
 This set of features forms an integrated application designed to facilitate learning in accounting with support for task creation, automatic grading, and result management.
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Approaches to Web Architecture Design: Monolithic vs. Decoupled 🔄
 
 ### Separate Frontend and Backend (Decoupled)
@@ -51,8 +50,9 @@ This architecture is commonly referred to as client-server architecture, and whe
 * The frontend makes an HTTP request to the backend API.
 * The backend processes the request, performs database operations if needed, and returns the response to the frontend.
 * The frontend receives the response and updates the user interface as necessary.
-
-<img src="Docs/Screenshots/Monolithic.png" alt="Monolithic application scheme" width="100%" height="100%"/>
+<div align="center">
+  <img src="Docs/Screenshots/Monolithic.png" alt="Monolithic application scheme" width="60%"/>
+</div>
 
 ### Non-Separated Frontend and Backend (Monolithic)
 
@@ -66,8 +66,9 @@ The frontend and backend are integrated into a single application.
 * The server receives an HTTP request from the client.
 * The server processes the request, handles business logic, and responds with the rendered HTML page along with the data.
 * There is no clear separation between the frontend and backend; both are handled within the same execution flow.
-
-<img src="Docs/Screenshots/Decoupled.png" alt="Decoupled application scheme" width="100%" height="100%"/>
+<div align="center">
+  <img src="Docs/Screenshots/Decoupled.png" alt="Decoupled application scheme" width="80%"/>
+</div>
 
 ### Comparison: Ruby on Rails + ReactJS vs. Ruby on Rails Only
 
@@ -118,7 +119,7 @@ Laravel is a PHP framework that facilitates the development of monolithic web ap
 
 Django is a high-level web framework for Python, which promotes a monolithic approach similar to Rails. It handles both the backend and HTML views in the same place.
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Directory Structure 📂
 
 The directory structure in a project is crucial because it organizes the code in a clear and modular way, facilitating its maintenance and scalability. A good structure allows developers to quickly find and modify the necessary files, reduces the risk of errors, and improves team collaboration. Additionally, it promotes the adoption of good development practices, such as the separation of concerns and code reuse, making the project easier to understand, debug, and expand as it grows.
@@ -236,7 +237,7 @@ Instead of storing images in a file system or in the cloud, they are stored dire
 | **Backup and recovery**        | Simple backup of files outside the database.                | Database backup includes all files (which can be advantageous or not depending on the file size). |
 | **Maintenance**                | Requires good file storage management (e.g., disk space or cloud storage fees). | Requires proper maintenance to avoid overloading the database with large binary data. |
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Authentication and Authorization 🔐
 
 Authentication is the process of verifying a user's identity. Essentially, it ensures that the user is who they say they are. This typically involves checking credentials (such as a username and password) or using other verification methods, like access tokens or two-factor authentication.
@@ -274,12 +275,11 @@ As explained in the previous section, we visually illustrate in the following di
 
 Thanks to the class diagram, we can start identifying the different entities that need to be created to create the database.
 
-
 ## Figma Prototype 🎨
 
 Once we have a first idea of the application, we can start to create the prototype, to create it we have used Figma, here is the prototype. [Figma Prototype](https://www.figma.com/design/umvmGhnsnixHyXQL10bJx4/Dia-mayor?node-id=0-1&t=BXY9WzeRwVCoMg57-1)
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Getting Started 🚀
 
 See Installation for instructions on how to deploy the project.
@@ -369,7 +369,7 @@ This command will insert some records into our Database.
 rails s
 ```
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Running Tests ⚙️
 
 **¡¡In progress!!**
@@ -395,7 +395,6 @@ rails s
     - Modify the fields as desired and click "Editar Obra".
     - If there are no errors, you will be redirected to the list of Paintings. -->
 
-
 ## Built With 🛠️
 
 * [ReactJS] - ReactJS is an open-source JavaScript library used for building user interfaces, particularly single-page applications. It was developed by Facebook and focuses on creating reusable components that manage their own state and update efficiently. Its main feature is the use of a Virtual DOM (Document Object Model), which optimizes UI updates without needing to reload the entire page.
@@ -410,10 +409,10 @@ rails s
 * **Echedey Henríquez Hernández** - *Initial Work* - [EchedeyHenr](https://github.com/EchedeyHenr)
 * **Andrés Villanueva** - *ReadMe* - [Villanuevand](https://github.com/Villanuevand)
 
-
+<p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Licencia 📄
 
 This project is licensed under the (Your License) - see the [LICENSE.md](LICENSE.md) file for details.
 
 ---
-⌨️ with ❤️ by [AlbertoGG20](https://github.com/AlbertoGG20), [jcbo2425](https://github.com/jcbo2425), [EchedeyHenr](https://github.com/EchedeyHenr) 😊
+⌨️ with ❤️ by [AlbertoGG20](https://github.com/AlbertoGG20), [jcbo2425](https://github.com/jcbo2425), [EchedeyHenr](https://github.com/EchedeyHenr) <img src="Frontend/public/innova_small.svg" alt="DíaMayor Innova Small Logo" width="3%" height="3%" align="middle"/>

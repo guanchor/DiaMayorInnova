@@ -300,6 +300,64 @@ See Installation for instructions on how to deploy the project.
 wsl --install
 ```
 
+* Open a WSL2 Ubuntu-24.04 console from VSCode and update the packages.
+
+```
+sudo apt update
+sudo apt upgrade
+```
+
+* We will remove any previous PostgreSQL installations (not necessary, but recommended).
+
+```
+sudo apt remove postgresql
+```
+
+* Proceed to install PostgreSQL with the required packages.
+
+```
+sudo apt install postgresql postgresql-contrib libpq-dev
+```
+
+* To start the service, use the following command.
+
+```
+sudo service postgresql start
+```
+
+* Create our user that we will use later.
+
+```
+sudo -u postgres createuser -s username -P
+```
+
+* In the same WSL2 Ubuntu-24.04 console, proceed to install Ruby with all the necessary packages [Acknowledgements](#acknowledgements).
+
+```
+sudo apt-get install autoconf patch build-essential rustc libssl-dev libyaml-dev libreadline6-dev zlib1gdev libgmp-dev libncurses5-dev libffidev libgdbm6 libgdbm-dev libdb-dev uuid-dev libffi-dev sqlite3
+```
+
+* Install the latest version of rbenv (a Ruby environment manager).
+
+```
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+```
+
+**Important** - Once installed, you will need to close and reopen the terminal (or VSCode).
+
+* Install Ruby version 3.3.5 and then activate the environment.
+
+```
+rbenv install 3.3.5
+rbenv global 3.3.5
+```
+
+* Proceed with installing Rails.
+
+```
+gem install rails
+```
+
 * We will continue cloning the repository on our local machine.
 
 ```
@@ -403,11 +461,19 @@ rails s
 * [PostgreSQL] - PostgreSQL is an open-source, powerful relational database management system. It is known for its high compliance with SQL standards and for offering advanced features such as ACID transactions, complex queries, support for geospatial data (through extensions like PostGIS), and the ability to handle large volumes of data. PostgreSQL is ideal for applications that require high performance and reliability, and is used in both small-scale applications and large enterprise environments.
 
 
-## Autores ✒️
+## Authors ✒️
 * **Alberto Guerrero Gutiérrez** - *Initial Work* - [AlbertoGG20](https://github.com/AlbertoGG20)
 * **Juan Carlos Bolaños Ojeda** - *Initial Work* - [jcbo2425](https://github.com/jcbo2425)
 * **Echedey Henríquez Hernández** - *Initial Work* - [EchedeyHenr](https://github.com/EchedeyHenr)
 * **Andrés Villanueva** - *ReadMe* - [Villanuevand](https://github.com/Villanuevand)
+
+## Acknowledgements
+* [Miguel Ángel Figueroa](https://github.com/mianfiga)
+* Mirian de la Peña Cabrera
+* Nira Ruiz
+* [Tiburcio Cruz](https://github.com/tcrurav)
+* [emoji-cheat-sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#smileys--emotion)
+* [Ivan Morguillo](https://www.ivanmorgillo.com/2024/06/20/get-started-with-ruby-on-rails-on-wsl2-ubuntu/)
 
 <p align="right">(<a href="#díamayor-innova">back to top</a>)</p>
 ## Licencia 📄

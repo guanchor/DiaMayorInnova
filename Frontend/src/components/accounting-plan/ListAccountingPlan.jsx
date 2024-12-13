@@ -80,12 +80,16 @@ const AccountingPlansList = ({newPGC}) => {
             type="text"
             value={searchAccPlan}
             onChange={handleSearchChange}
+            onKeyDown={(e) => e.key === 'Enter' && findByName()} //Usability upgrade #1 -> Search pressing "Enter" key
             placeholder="Filtrar por nombre"
           />
           <button className="btn accountingPlan__button" onClick={findByName}>Buscar</button>
         </div>
 
-        <div className="accountingPlan__table"> 
+        <div className="accountingPlan__table">
+          {accountingPlans.length === 0 ? ( // Usability upgrade #3 -> Show message if there is no data
+            <p>No hay PGCs disponibles</p>
+          ) : (
           <table >
             <tbody>
               {accountingPlans && accountingPlans.map((accountingPlan, index) => (
@@ -101,8 +105,11 @@ const AccountingPlansList = ({newPGC}) => {
                     </button>
                     <button className="accountingPlan__button--remove trash" 
                             onClick={(e) => {
-                              e.stopPropagation(); 
-                              deleteAccountingPlan(accountingPlan.id);}}>
+                              e.stopPropagation();
+                              if (window.confirm("¿Está seguro de que quiere eliminar este PGC?")) { //Usability upgrade #2 -> Confirm before PGC remove
+                                deleteAccountingPlan(accountingPlan.id);
+                              }
+                            }}>
                       <i className="fi-rr-trash"/>
                     </button>
                   </td>
@@ -110,6 +117,7 @@ const AccountingPlansList = ({newPGC}) => {
               ))}
             </tbody>
           </table>
+          )}
         </div>
 
 

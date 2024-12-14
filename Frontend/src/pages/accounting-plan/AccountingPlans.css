@@ -49,3 +49,17 @@
 .accountingPlan__listPGC {
  grid-area: list; 
 }
+
+
+/* media queries */
+@media (max-width: 768px) {
+  .accountingPlan__page {
+    padding: var(--gap-m);
+  }
+}
+
+@media (max-width: 360px) {
+  .accountingPlan__page {
+    padding: var(--gap-xs);
+  }
+}

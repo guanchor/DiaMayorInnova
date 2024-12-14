@@ -98,7 +98,12 @@ const AccountingPlansList = ({newPGC}) => {
                   <td>{accountingPlan.acronym}</td>
                   <td>{accountingPlan.description}</td>
                   <td className="accountingPlan__form--actions">
-                    <button className="accountingPlan__button--edit pencil">
+                    <button className="accountingPlan__button--link eye">
+                      <Link to={"/accounts"}>
+                        <i className="fi-rr-eye"/> Ver cuentas
+                      </Link>
+                    </button>
+                    <button className="accountingPlan__button--link pencil">
                       <Link to={"/accounting-plans/" + accountingPlan.id}>
                         <i className="fi-rr-pencil" /> Editar
                       </Link>

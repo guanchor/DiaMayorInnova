@@ -29,14 +29,28 @@
   padding: var(--gap-s);
 }
 
+.accountingPlan__header--h4.details {
+  text-align: center;
+}
+
 .accountingPlan__input {
-  width: 50%;
+  width: auto;
   padding: 0.6rem;
   margin-right: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
   margin-bottom: 0;
+}
+
+.accountingPlan__input.descrip{
+  height: 150px;
+}
+
+.accountingPlan__form .accountingPlan__input {
+  width: 100%;
+  padding: 8px;
+  margin-top:  5px;
 }
 
 .accountingPlan__input--filter {
@@ -51,7 +65,6 @@
   margin-top: 1rem;
   overflow-y: scroll;
   height: calc(100vh - 680px);
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,7 +83,7 @@
   cursor: pointer;
 }
 
-.accountingPlan__button--edit {
+.accountingPlan__button--link {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
   color: var(--Color-grey-400);
@@ -79,11 +92,11 @@
   cursor: pointer;
 }
 
-.accountingPlan__button--edit:hover {
+.accountingPlan__button--link:hover {
   color: var(--Color-grey-900);
 }
 
-.accountingPlan__button--remove.pencil {
+.accountingPlan__button--link.pencil , .accountingPlan__button--link.eye, .accountingPlan__button--remove.trash{
   margin-right: 8px;
   font-size: 1.2rem;
 }
@@ -92,7 +105,7 @@
   display: flex;
   align-items: center;
   margin-left: 8px;
-  padding: 4px 8px;
+  padding: var(--gap-s) var(--gap-m);
   color: var(--Color-grey-400);
   border: none;
   cursor: pointer;
@@ -105,9 +118,13 @@
   color: var(--Color-red-400);
 }
 
-.accountingPlan__button--remove.trash {
-  margin-right: 8px;
-  font-size: 1.2rem;
+.accountingPlan__button--edit {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-desktop-small);
+  transition: color 0.3s;
+  background-color: var(--Color-Principal);
+  color: white;
 }
 
 .accountingPlan__form {
@@ -116,7 +133,6 @@
   border-radius: var(--border-radius);
   max-width: 800px;
   margin: 0 auto;
-  height: 275px;
 }
 
 .accountingPlan__form--row {
@@ -138,15 +154,25 @@
 .accountingPlan__form--actions {
   display: flex;
   justify-content: center;
-  & .accountingPlan__button {
+  & .accountingPlan__button { /* Añadir plan*/
     margin-top: 16px;
   }
 }
 
-.accountingPlan__form .accountingPlan__input {
-  width: 100%;
-  padding: 8px;
-  margin-top:  5px;
+.accountingPlan__form--actions.details {
+  gap: 12px;
+}
+
+.btn.accountingPlan__button--back {
+  background-color: #fff;
+  color: var(--Color-Principal);
+  border: var(--Color-grey-200) 1px solid;
+}
+
+.btn.accountingPlan__button--back:hover {
+  color: var(--Color-Principal-claro);
+  background-color: #fff;
+  border: var(--Color-Principal-claro) 1px solid;
 }
 
 .accountingPlan__error {
@@ -155,9 +181,59 @@
   margin-top: var(--gap-m);
 }
 
+/* Media Queries */
 
-/** 
-    Limpiar el formulario post add
-    Ventana modal para Editar (o ponerlo bonito con redireccionamiento)
-    RESPONSIVE
-**/
+/* SOS a Mayer: 
+  - No cambia la fuente de los actions del listado
+  - Se clipea el "Nuevo Plan de contabilidad" con el header
+  - El height auto de la lista en tablet si lo quito clipea el primer registro (pierdo el static, se ve todo el listado )
+  - El calc de altura de la lista --> BOOOOMMMM
+*/
+
+/* Para tablets (hasta 768px) */
+@media (max-width: 768px) {
+  * {
+    font-size: inherit;
+  }
+
+  .accountingPlan__header--h4 {
+    margin-bottom: var(--gap-m);
+  }
+
+  .accountingPlan__pgcList-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .accountingPlan__table {
+    margin-top: 16px;
+    height: auto;  /* Me clipea el primer registro si lo quito */
+  }
+}
+
+/* Para móviles (hasta 360px) */
+@media (max-width: 360px) {
+  * {
+    font-size: inherit;
+  }
+
+  .accountingPlan__header--h4 {
+    margin-bottom: var(--gap-s);
+  }
+
+  .accountingPlan__form {
+    padding: var(--gap-xs);
+    width: 100%;
+  }
+
+  .accountingPlan__input--filter {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .accountingPlan__button {
+    padding: var(--gap-xs);
+  }
+}
+
+

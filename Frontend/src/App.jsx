@@ -77,6 +77,11 @@ function App() {
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin']} />}>
                       <Route path="/sign_up" element={<SignUp />} />
+                      <Route path="/home" element={<Home />} >
+                        <Route path='escuelas/' element={<SchoolsCenters />} />
+                        <Route path='usuarios/' element={<SignUp />} />
+                      </Route >
+
                     </Route>
                   </Route>
                 </Route>

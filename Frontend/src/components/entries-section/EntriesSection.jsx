@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import EntryHeader from './entry-header/EntryHeader'
 import Entry from './entry/Entry'
 import "./EntriesSection.css"
-import { useAuth } from '../../context/AuthContext'
 import userExerciseDataService from '../../services/userExerciseDataService'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const EntriesSection = ({ taskSubmit }) => {
-  const { user } = useAuth();
   const [entries, setEntries] = useState([]);
   const [annotations, setAnnotations] = useState([]);
   const mark = 0;
+  const navigate = useNavigate();
 
   const addEntry = () => {
     const defaultEntry = {
@@ -83,6 +83,7 @@ const EntriesSection = ({ taskSubmit }) => {
       userExerciseDataService.create(exerciseData)
         .then((response) => {
           console.log("guardadoooooooooooo", response)
+          navigate("/home")
         })
     }
   }, [taskSubmit])

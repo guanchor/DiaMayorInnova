@@ -123,7 +123,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
           Volver
           </button>
         <div className="task-title">
-          {editMode ? "Edición de Tarea" : "Creación de Tarea"}
+          <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
         </div>
       </header>
       <TaskForm

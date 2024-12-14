@@ -35,6 +35,12 @@
   box-shadow: var(--box-shadow-btn);
 }
 
+.task-details__footer--edit-btn:hover,
+.task-modal__button--close:hover {
+  background-color: var(--Color-Neutral-Dark);
+  opacity: 0.8;
+}
+
 .task-details {
   background-color: var(--Color-principal-50);
   border-radius: var(--r-xs);
@@ -117,6 +123,11 @@
 .task-details__footer--delete-btn {
   background-color: var(--Color-red-600);
   color: var(--Color-Neutral-White);
+}
+
+.task-details__footer--delete-btn:hover {
+  background-color: var(--Color-red-600);
+  opacity: 0.8;
 }
 
 .task-details__footer--edit-btn {

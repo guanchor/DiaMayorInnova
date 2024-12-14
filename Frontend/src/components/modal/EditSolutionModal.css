@@ -45,9 +45,10 @@ textarea {
   background-color: var(--Color-Neutral-Dark);
   color: var(--Color-Neutral-White);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--r-xs);
   cursor: pointer;
   font: inherit;
+  box-shadow: var(--box-shadow-btn);
 }
 
 .modal-close:hover,
@@ -158,10 +159,11 @@ textarea {
   background-color: var(--Color-Neutral-Dark);
   color: var(--Color-Neutral-White);
   border: none;
-  border-radius: var(--r-xxs);
+  border-radius: var(--r-xs);
   cursor: pointer;
   transition: opacity 0.3s ease;
   font: inherit;
+  box-shadow: var(--box-shadow-btn);
 }
 
 .statement-page__button-add:hover {

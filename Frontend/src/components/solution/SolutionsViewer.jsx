@@ -8,13 +8,13 @@ const SolutionsViewer = ({ solutions }) => {
 
   return (
     <div className="modal-solutionViewer__solution-content">
-      <h3 className="modal-solutionViewer__solution-title">Soluciones</h3>
+      {/* <h3 className="modal-solutionViewer__solution-title">Soluciones</h3> */}
       <ul className="modal-solutionViewer__solution-items">
         {solutions.map((solution, index) => (
           <li key={solution.id} className="modal-solutionViewer__solution-item">
             <h4 className="modal-solutionViewer__solution--subtitle">Solución {index + 1}:</h4>
             <span className="modal-solutionViewer__solution-item--description"><strong>Descripción:</strong> {solution.description}</span>
-            <h4 className="modal-solutionViewer__entry--subtitle">Entradas:</h4>
+            {/* <h4 className="modal-solutionViewer__entry--subtitle">Entradas:</h4> */}
             <ul className="modal-solutionViewer__entry-items">
               {solution.entries.map((entry) => (
                 <li key={entry.id} className="modal-solutionViewer__entry-item">
@@ -22,7 +22,7 @@ const SolutionsViewer = ({ solutions }) => {
                     <span><strong>Asiento:</strong> {entry.entry_number}</span>
                     <span><strong>Fecha:</strong> {entry.entry_date}</span>
                   </div>
-                  <h5 className="modal-solutionViewer__annotation--subtitle">Anotaciones:</h5>
+                  {/* <h5 className="modal-solutionViewer__annotation--subtitle">Anotaciones:</h5> */}
                   <ul className="modal-solutionViewer__annotation-items">
                     <div className="modal-solutionViewer__annotation-items-title">
                     <span className="annotation-items--header"><strong>Apunte</strong></span>

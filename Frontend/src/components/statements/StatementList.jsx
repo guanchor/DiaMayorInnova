@@ -70,6 +70,17 @@ const StatementsList = ({ onSelectStatement }) => {
         )
       );
     } catch (error) {
+      if (error.response && error.response.status === 403) {
+        setErrorMessage("No puedes cambiar la visibilidad de enunciados ajenos.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Error al cambiar visibilidad.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      }
       console.error("Error al cambiar visibilidad:", error);
     }
   };

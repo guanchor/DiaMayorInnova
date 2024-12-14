@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EntryForm from "../entry/EntryForm.jsx";
 
 const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
+  
   const handleSolutionChange = (event) => {
     setSolutions((solution) => {
       const updatedSolutions = [...solutions];
@@ -31,6 +32,23 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
     });
     setSolutions(updatedSolutions);
     console.log("Soluciones actualizadas después de agregar asiento:", updatedSolutions);
+  };
+
+/* En caso de querer un botón "Eliminar Asiento", por asiento  
+ const removeEntry = (entryIndex) => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[solutionIndex].entries = updatedSolutions[solutionIndex].entries.filter(
+      (_, i) => i !== entryIndex
+    );
+    setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar asiento:", updatedSolutions);
+  }; */
+
+  const removeLastEntry = () => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[solutionIndex].entries.pop();
+    setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar el último asiento:", updatedSolutions);
   };
 
   const removeSolution = () => {
@@ -93,6 +111,15 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
               setSolutions={setSolutions}
             />
           )}
+          {/* En caso de querer un botón "Eliminar Asiento", por Asiento.
+          <button
+            type="button"
+            className="statement-page__button--remove-entry"
+            onClick={() => removeEntry(entryIndex)}
+          >
+            <i className="fi fi-rr-trash"></i>
+            <span className="statement-page__span--remove-entry">Asiento</span>
+          </button> */}
         </div>
       ))}
 
@@ -105,7 +132,7 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
           <button
             type="button"
             className="statement-page__button--remove-entry"
-            onClick={() => removeEntry()}
+            onClick={removeLastEntry}
           >
             <i className="fi fi-rr-trash"></i>
             <span className="statement-page__span--remove-entry">Asiento</span>

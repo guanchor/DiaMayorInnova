@@ -29,7 +29,6 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
               onChange={(e) => setOpeningDate(e.target.value)}
             />
           </div>
-          {errors.title && <p className="error-message">{errors.openingDate}</p>}
           <div className="task-page__date">
             <label className="task-page__label">Fecha de cierre:</label>
             <input
@@ -39,6 +38,9 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
               onChange={(e) => setClosingDate(e.target.value)}
             />
           </div>
+        </div>
+        <div className="task-page__dates--errors">
+          {errors.title && <p className="error-message">{errors.openingDate}</p>}
           {errors.title && <p className="error-message">{errors.closingDate}</p>}
         </div>
         <button type="button" className="task-page__button--form" onClick={handleSubmit}>

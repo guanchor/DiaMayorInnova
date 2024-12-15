@@ -60,10 +60,9 @@ const removeAll = async () => {
   }
 };
 
-const findByNumber = async (number) => {
-  const response = await http.get(`/accounts?accountNumber=${number}`);
+const findByNumber = (account_number) => {
+  const response = http.get(`/accounts/find_by_account_number?account_number=${account_number}`);
   return response;
-
 };
 
 const AccountService = {

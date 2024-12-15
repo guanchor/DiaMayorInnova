@@ -10,7 +10,7 @@ const Account = (props) => {
 
   const initialAccountState = {
     id: null,
-    accountNumber: 0,
+    account_number: 0,
     description: "",
     accounting_plan_id: 0,
     name: ""
@@ -40,7 +40,7 @@ const Account = (props) => {
   };
 
   const validateForm = () => {
-    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+    if (!account.name || !account.account_number || !account.description || !account.accounting_plan_id) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     };
@@ -79,13 +79,13 @@ const Account = (props) => {
           <h4 className='account__header--h4'>Detalles de la cuenta</h4>
           <form className='account__form'>
             <div className='account__form--group'>
-              <label htmlFor="accountNumber">Número de cuenta</label>
+              <label htmlFor="account_number">Número de cuenta</label>
               <input
                 className='account__input'
-                id="accountNumber"
-                name="accountNumber"
+                id="account_number"
+                name="account_number"
                 type="text"
-                value={currentAccount.accountNumber}
+                value={currentAccount.account_number}
                 onChange={handleInputChange}
                 required
               />

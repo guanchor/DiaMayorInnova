@@ -3,8 +3,8 @@ class AccountsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if params[:accountNumber].present?
-      @accounts = Account.where("accountNumber LIKE ?", "%#{params[:accountNumber]}%")
+    if params[:account_number].present?
+      @accounts = Account.where(account_number: params[:account_number])
     else
       @accounts = Account.all
     end 
@@ -18,7 +18,7 @@ class AccountsController < ApplicationController
 
   def create
     @account = Account.create(
-      accountNumber: params[:accountNumber],
+      account_number: params[:account_number],
       description: params[:description],
       name: params[:name],
       accounting_plan_id: params[:accounting_plan_id], #accounting plan id
@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
   def update
     @account = Account.find(params[:id])
     @account.update(
-      accountNumber: params[:accountNumber],
+      account_number: params[:account_number],
       description: params[:description],
       name: params[:name],
       accounting_plan_id: params[:accounting_plan_id], #accounting plan id
@@ -49,7 +49,7 @@ class AccountsController < ApplicationController
   def find_by_account_number
     @account = Account.find_by(account_number: params[:account_number])
     if @account
-      render json: { account_id: @account.id }
+      render json: @account
     else
       render json: { error: "Cuenta no encontrada" }, status: :not_found
     end

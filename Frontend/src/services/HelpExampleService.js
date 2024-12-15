@@ -62,7 +62,7 @@ const removeAll = async () => {
 
 const findByAccount = async (account) => {
   try {
-    const response = await http.get(`/help_examples?account_id=${account}`);
+    const response = await http.get(`/help_examples/find_by_account_id?account_id=${account}`);
     return response;
   } catch (error) {
     console.error("Error en la búsqueda por cuenta", error);

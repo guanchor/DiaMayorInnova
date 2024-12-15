@@ -6,7 +6,7 @@ import AccountingPlanService from '../../services/AccountingPlanService';
 
 const AddAccount = ({ setNewAcc }) => {
   const initialAccountState = {
-    accountNumber: 0,
+    account_number: 0,
     description: "",
     accounting_plan_id: 0,
     name: "",
@@ -24,7 +24,7 @@ const AddAccount = ({ setNewAcc }) => {
 
 
   const validateForm = () => {
-    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+    if (!account.name || !account.account_number || !account.description || !account.accounting_plan_id) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     };
@@ -38,7 +38,7 @@ const AddAccount = ({ setNewAcc }) => {
     if (validateForm()) {
       let data = {
         name: account.name.trim(),
-        accountNumber: account.accountNumber.trim(),
+        account_number: account.account_number.trim(),
         description: account.description.trim(),
         accounting_plan_id: account.accounting_plan_id.trim(),
       };
@@ -48,7 +48,7 @@ const AddAccount = ({ setNewAcc }) => {
           setAccount({
             id: parseInt(response.data.id),
             name: response.data.name.trim(),
-            accountNumber: account.accountNumber.trim(),
+            account_number: account.account_number.trim(),
             description: account.description.trim(),
             accounting_plan_id: account.accounting_plan_id.trim(),
           })
@@ -94,11 +94,11 @@ const AddAccount = ({ setNewAcc }) => {
                   className='account__input'
                   placeholder='Nº cuenta'
                   type="text"
-                  id='accountNumber'
+                  id='account_number'
                   required
-                  value={account.accountNumber}
+                  value={account.account_number}
                   onChange={handleInputChange}
-                  name='accountNumber'
+                  name='account_number'
                 />
               </div>
 

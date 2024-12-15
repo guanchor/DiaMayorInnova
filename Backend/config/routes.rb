@@ -3,11 +3,14 @@ Rails.application.routes.draw do
   resources :class_groups
   resources :accounting_plans
   resources :school_centers
-  resources :accounts #do
-    #get 'accounts/find_by_account_number/:account_number', to: 'accounts#find_by_account_number'
-  #end
+  resources :accounts do
+    get 'find_by_account_number', on: :collection
+  end
 
-  resources :help_examples
+  resources :help_examples do
+    get 'find_by_account_id', on: :collection
+  end
+  
   resources :annotations
   resources :entries
   resources :solutions

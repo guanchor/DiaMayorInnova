@@ -4,7 +4,7 @@ class HelpExamplesController < ApplicationController
 
   def index
     if params[:account_id].present?
-      @helpExamples = HelpExample.where("account_id LIKE ?", "#{params[:account_id]}")
+      @helpExamples = HelpExample.where(account_id: params[:account_id])
     else
       @helpExamples = HelpExample.all
     end 
@@ -42,5 +42,14 @@ class HelpExamplesController < ApplicationController
     @helpExample = HelpExample.find(params[:id])
     @helpExample.destroy
     render json: @helpExamples
+  end
+
+  def find_by_account_id
+    @helpExample = HelpExample.find_by(account_id: params[:account_id])
+    if @helpExample
+      render json: @helpExample
+    else
+      render json: { error: "Cuenta no encontrada" }, status: :not_found
+    end
   end
 end

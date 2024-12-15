@@ -14,11 +14,13 @@ const AuxSectionOne = () => {
   useEffect(() => {
     if (searchNumber.length >= 4) {
       setIsLoading(true);
-      AccountService.findByNumber(1234)
-        .then((response) => {
-          setAccount(response);
-          HelpExampleService.findByAccount(1)
+      AccountService.findByNumber(searchNumber)
+        .then(({ data }) => {
+          setAccount(data);
+          console.log(data);
+          HelpExampleService.findByAccount(account.id)
             .then(({ data }) => {
+              console.log(data)
               setExample(data);
               setIsLoading(false);
             })
@@ -65,19 +67,27 @@ const AuxSectionOne = () => {
         />
         <i className='fi fi-rr-search'></i>
       </div>
-      <div className="account_info">
-        <h3 >Cuenta : {account.accountNumber}</h3>
-        <p>{account.description}</p>
-        <h3>Descripción</h3>
-        <p>{example.description}</p>
-      </div>
-      <h2>Movimientos</h2>
-      <div className="moves_info">
-        <h3>Debe</h3>
-        <p>{example.debitMoves}</p>
-        <h3>Haber</h3>
-        <p>{example.creditMoves}</p>
-      </div>
+      {account && example ? (
+        <>
+          <div className="account_info">
+            <h3>Cuenta : {account.account_number}</h3>
+            <p>{account.description}</p>
+            <h3>Descripción</h3>
+            <p>{example.description}</p>
+          </div>
+          <h2>Movimientos</h2>
+          <div className="moves_info">
+            <h3>Debe</h3>
+            <p>{example.debitMoves}</p>
+            <h3>Haber</h3>
+            <p>{example.creditMoves}</p>
+          </div>
+        </>
+      ) : <section className="section-one_loader">
+        <Spinner />
+      </section>}
+
+
     </section>
   )
 }

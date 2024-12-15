@@ -23,6 +23,16 @@ class AccountsController < ApplicationController
     render json: @account
   end
 
+   # Método de Strong Parameters
+   def account_params
+    params.require(:account).permit(
+      :accountNumber, 
+      :description, 
+      :name, 
+      :accounting_plan_id
+    )
+  end
+
   def update
     @account = Account.find(params[:id])
     @account.update(

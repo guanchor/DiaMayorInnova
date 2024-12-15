@@ -68,7 +68,7 @@ const HelpExamplesList = () => {
         <ul className='helpExample_list'>
           {helpExamples && helpExamples.map((helpExample, index) => (
             <li onClick={() => setActiveHelpExample(helpExample, index)} key={index}>
-              Ayuda{helpExample.account}
+              {helpExample.description}{helpExample.account}
             </li>
           ))}
         </ul>

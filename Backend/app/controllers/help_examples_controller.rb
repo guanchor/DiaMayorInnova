@@ -22,6 +22,16 @@ class HelpExamplesController < ApplicationController
     render json: @helpExample
   end
 
+  # Strong params
+  def help_example_params
+    params.require(:help_example).permit(
+      :creditMoves,
+      :debitMoves,
+      :account_id,
+      :description
+    )
+  end
+
   def update
     @helpExample = HelpExample.find(params[:id])
     @helpExample.update(

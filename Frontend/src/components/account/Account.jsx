@@ -41,7 +41,7 @@ const Account = (props) => {
   };
 
   const validateForm = () => {
-    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+    if (!currentAccount.name || !currentAccount.accountNumber || !currentAccount.description || !currentAccount.accounting_plan_id) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     };
@@ -63,26 +63,26 @@ const Account = (props) => {
     }
   };
 
-  const deleteAccount = () => {
-    AccountDataService.remove(currentAccount.id)
-    .then((response) => {
-      console.log(response.data);
-      navigate("/accounts/");
-    })
-    .catch((e) => {
-      console.log(e)
-    });
-  };
+  // const deleteAccount = () => {
+  //   AccountDataService.remove(currentAccount.id)
+  //   .then((response) => {
+  //     console.log(response.data);
+  //     navigate("/accounts/");
+  //   })
+  //   .catch((e) => {
+  //     console.log(e)
+  //   });
+  // };
   
   return (
     <>
 
       {currentAccount ? (
         <div>
-          <h4 className='account__header--h4'>Detalles de la cuenta</h4>
+          <h4 className='account__header--h4 details'>Detalles de la cuenta</h4>
           <form className='account__form'>
             <div className='account__form--group'>
-              <label htmlFor="accountNumber">Número de cuenta</label>
+              <label className="account__label" htmlFor="accountNumber">Número de cuenta</label>
               <input 
                 className='account__input'
                 id="accountNumber"
@@ -92,32 +92,6 @@ const Account = (props) => {
                 onChange={handleInputChange}
                 required
               />
-            </div>
-
-            <div className='account__form--group'>
-              <label htmlFor="description">Descripción</label>
-              <input
-                className='account__input'
-                id="description"
-                name="description"
-                type="text"
-                value={currentAccount.description}
-                onChange={handleInputChange}
-                required>
-              </input>
-            </div>
-
-            <div className='account__form--group'>
-              <label htmlFor="accountPlan">Plan de cuentas</label>
-              <input
-                className='account__input'
-                id="accountPlan"
-                name="accountPlan"
-                type="number"
-                value={currentAccount.accounting_plan}
-                onChange={handleInputChange}
-                required>
-                </input>
             </div>
 
             <div className='account__form--group'>
@@ -132,12 +106,25 @@ const Account = (props) => {
                 required>
               </input>
             </div>
+
+            <div className='account__form--group'>
+              <label htmlFor="description">Descripción</label>
+              <textarea
+                className='account__input descrip'
+                id="description"
+                name="description"
+                type="text"
+                value={currentAccount.description}
+                onChange={handleInputChange}
+                required />
+            </div>
+            
           </form>
 
-          <div>
+          <div className='account__form--actions details'>
             {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-            <button className="accountingPlan__button--form" onClick={updateAccount}>Editar</button>
-            <button className="accountingPlan__button--remove" onClick={deleteAccount}>Borrar</button>
+            <button className="btn accountingPlan__button--form" onClick={updateAccount}>Editar</button>
+            <button className="btn accountingPlan__button--back"> <Link to={"/accounts/"}>Atrás</Link></button>
             <p>{message}</p>
           </div>
 

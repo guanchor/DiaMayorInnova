@@ -63,16 +63,16 @@ const AccountingPlan = (props) => {
   }
 };
 
-  const deleteAccountingPlan = () => {
-    AccountingPlanDataService.remove(currentAccountingPlan.id)
-      .then((response) => {
-        console.log(response.data);
-        navigate("/accounting-plans/");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  // const deleteAccountingPlan = () => {
+  //   AccountingPlanDataService.remove(currentAccountingPlan.id)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       navigate("/accounting-plans/");
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
 
   return (
     <>

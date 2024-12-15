@@ -6,6 +6,7 @@ import AccountingPlanService from '../../services/AccountingPlanService';
 
 const AddAccount = ({setNewAcc}) => {
   const initialAccountState = {
+    id: null,
     accountNumber: 0,
     description: "",
     accounting_plan_id: 0,
@@ -19,7 +20,8 @@ const AddAccount = ({setNewAcc}) => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setAccount({...account, [name]:value});
+    // setAccount({...account, [name]:value});
+    setAccount({ ...account, [name]: name === "accountNumber" || name === "accounting_plan_id" ? parseInt(value) : value });
   };
 
 
@@ -33,13 +35,13 @@ const AddAccount = ({setNewAcc}) => {
   }
 
 
-  const saveAccount = () => { {/* TEST WITHOUT TRIM*/}
+  const saveAccount = () => {
     if (validateForm()) {
       let data = {
         name: account.name.trim(),
-        accountNumber: account.accountNumber.trim(),
+        accountNumber: account.accountNumber,
         description: account.description.trim(),
-        accounting_plan_id: account.accounting_plan_id.trim(),
+        accounting_plan_id: account.accounting_plan_id,
       };
 
       AccountDataService.create(data)
@@ -47,12 +49,12 @@ const AddAccount = ({setNewAcc}) => {
         setAccount({
           id: parseInt(response.data.id),
           name: response.data.name.trim(),
-          accountNumber: account.accountNumber.trim(),
-          description: account.description.trim(),
-          accounting_plan_id: account.accounting_plan_id.trim(),
+          accountNumber: parseInt(response.data.accountNumber),
+          description: response.data.description.trim(),
+          accounting_plan_id: parseInt(response.data.accounting_plan_id),
         })
+        console.log("nuevvooooooo", response.data);
         setNewAcc(true);
-        console.log(response.data);
       })
         .catch(e => {
           console.log(e);
@@ -117,7 +119,6 @@ const AddAccount = ({setNewAcc}) => {
                   />
                 </div>
 
-                {/* Hacer desplegable con los PGC existentes */}
                 <div className='account__form--group'>
                   <label>Plan de cuentas</label>
                   <select
@@ -125,10 +126,11 @@ const AddAccount = ({setNewAcc}) => {
                     type="text"
                     id='accounting_plan_id'
                     required
+                    value={account.accounting_plan_id}
                     onChange={handleInputChange}
                     name='accounting_plan_id'
                   >
-                    <option value="pgc">-- PGC --</option>
+                    <option value={0}>-- PGC --</option>
                     {plans.map((plan, index) => {
                       return (
                         <option key={index} value={plan.id}>{plan.name}</option>

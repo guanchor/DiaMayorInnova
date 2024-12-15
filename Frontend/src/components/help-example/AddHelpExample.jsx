@@ -1,49 +1,78 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HelpExampleDataService from '../../services/HelpExampleService';
 import { Link } from 'react-router-dom';
+import AccountService from '../../services/AccountService';
 
-const AddHelpExample = () => {
+const AddHelpExample = ({setNewHE}) => {
   const initialHelpExampleState = {
     id: null,
     creditMoves: "",
     debitMoves: "",
     account_id: 0,
+    description: ""
   };
+
   const [helpExample, setHelpExample] = useState(initialHelpExampleState);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [accounts, setAccounts] = useState([]);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setHelpExample({...helpExample, [name]:value});
+    // setHelpExample({...helpExample, [name]:value});
+    setHelpExample({...helpExample, [name]: name === "account_id" ? parseInt(value) : value});
   };
 
-  const saveHelpExample = () => {
-    var data = {
-      creditMoves: helpExample.creditMoves,
-      debitMoves: helpExample.debitMoves,
-      account_id: helpExample.account_id,
+  const validateForm = () => {
+    if (!helpExample.creditMoves || !helpExample.debitMoves || !helpExample.account_id || !helpExample.description) {
+      setError("Todos los campos son obligatorios y deben tener valores válidos.");
+      return false;
     };
+    setError("")
+    return true;
+  }
 
-    HelpExampleDataService.create(data)
-    .then(response => {
-      setHelpExample({
-        id: response.data.id,
-        creditMoves: response.data.creditMoves,
-        debitMoves: response.data.debitMoves,
-        account_id: response.data.account_id,
+  const saveHelpExample = () => {
+    if (validateForm()) {
+      let data = {
+        creditMoves: helpExample.creditMoves.trim(),
+        debitMoves: helpExample.debitMoves.trim(),
+        account_id: helpExample.account_id,
+        description: helpExample.description.trim(),
+      };
+
+      HelpExampleDataService.create(data)
+      .then(response => {
+        setHelpExample({
+          id: parseInt(response.data.id),
+          creditMoves: response.data.creditMoves.trim(),
+          debitMoves: response.data.debitMoves.trim(),
+          account_id: parseInt(response.data.account_id),
+          description: response.data.description.trim(),
+        });
+        console.log("no llega",response.data);
+        setNewHE(true);
+      })
+      .catch(e => {
+        console.log(e);
+        setError("Problema al crear");
       });
-      setSubmitted(true);
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
+    }
   };
 
   const newHelpExample = () => {
     setHelpExample(initialHelpExampleState);
     setSubmitted(false);
+    setError("");
   };
+
+  useEffect(() => {
+    AccountService.getAll()
+      .then(({data}) => {
+        setAccounts(data);
+        console.log(data);
+      })
+  },[])
 
   return (
     <>
@@ -86,30 +115,40 @@ const AddHelpExample = () => {
 
             <div>
               <label>Cuenta</label>
-              <input
+              <select 
                 type="text"
                 id='account_id'
                 required
                 value={helpExample.account_id}
                 onChange={handleInputChange}
                 name='account_id'
-              />
+              >
+              <option value={0}>-- Cuenta --</option>
+                    {accounts.map((account, index) => {
+                      return (
+                        <option key={index} value={account.id}>{account.name}</option>
+                      );
+                    })}
+                  </select>
             </div>
 
             <div>
               <label>Descripción</label>
               <input
                 type="text"
-                id='account_id'
+                id='description'
                 required
                 value={helpExample.description}
                 onChange={handleInputChange}
-                name='descrpition'
+                name='description'
               />
             </div>
 
             <button onClick={saveHelpExample}>Crear ejemplo</button>
+
+            {error && <div className="helpExample__error">{error}</div>}
           </div>
+
         )}
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { navContext } from '../context/nav-menu/navMenuContext';
 import Shortcuts from "../components/shortcuts/Shortcuts";

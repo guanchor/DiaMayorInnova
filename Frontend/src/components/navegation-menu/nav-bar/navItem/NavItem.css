@@ -19,7 +19,7 @@
   font-size: var(--text-desktop-tiny);
 }
 
-@media (width > 800px) {
+@media (width > 1024px) {
   .navBar__text {
     display: none;
   }

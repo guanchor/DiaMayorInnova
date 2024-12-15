@@ -9,7 +9,7 @@ const AccountingPlan = (props) => {
   let navigate = useNavigate();
 
   const initialAccountingPlanState = {
-    id:null,
+    id: null,
     name: "",
     description: "",
     acronym: ""
@@ -27,7 +27,6 @@ const AccountingPlan = (props) => {
     AccountingPlanDataService.get(id)
       .then((response) => {
         setCurrentAccountingPlan(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -51,22 +50,20 @@ const AccountingPlan = (props) => {
 
   const updateAccountingPlan = () => {
     if (validateForm()) {
-    AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
-      .then(response => {
-        console.log(response.data);
-        setMessage("El plan de cuentas fue actualizado correctamente.");
-      })
-      .catch(e => {
-        console.log(e);
-        setError("Hubo un problema al actualizar el plan de cuentas.");
-      });
-  }
-};
+      AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
+        .then(response => {
+          setMessage("El plan de cuentas fue actualizado correctamente.");
+        })
+        .catch(e => {
+          console.log(e);
+          setError("Hubo un problema al actualizar el plan de cuentas.");
+        });
+    }
+  };
 
   const deleteAccountingPlan = () => {
     AccountingPlanDataService.remove(currentAccountingPlan.id)
       .then((response) => {
-        console.log(response.data);
         navigate("/accounting-plans/");
       })
       .catch((e) => {
@@ -124,7 +121,7 @@ const AccountingPlan = (props) => {
             <button className="btn accountingPlan__button--back"><Link to={"/accounting-plans/"}>Atrás</Link></button>
             <p>{message}</p>
           </div>
-          
+
         </div>
       ) : (
         <div>

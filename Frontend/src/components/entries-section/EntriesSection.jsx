@@ -82,7 +82,6 @@ const EntriesSection = ({ taskSubmit }) => {
       const exerciseData = prepareExerciseData();
       userExerciseDataService.create(exerciseData)
         .then((response) => {
-          console.log("guardadoooooooooooo", response)
           navigate("/home")
         })
     }

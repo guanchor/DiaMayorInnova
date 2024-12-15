@@ -14,7 +14,7 @@ const AddHelpExample = () => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setHelpExample({...helpExample, [name]:value});
+    setHelpExample({ ...helpExample, [name]: value });
   };
 
   const saveHelpExample = () => {
@@ -25,19 +25,18 @@ const AddHelpExample = () => {
     };
 
     HelpExampleDataService.create(data)
-    .then(response => {
-      setHelpExample({
-        id: response.data.id,
-        creditMoves: response.data.creditMoves,
-        debitMoves: response.data.debitMoves,
-        account_id: response.data.account_id,
+      .then(response => {
+        setHelpExample({
+          id: response.data.id,
+          creditMoves: response.data.creditMoves,
+          debitMoves: response.data.debitMoves,
+          account_id: response.data.account_id,
+        });
+        setSubmitted(true);
+      })
+      .catch(e => {
+        console.log(e);
       });
-      setSubmitted(true);
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
   };
 
   const newHelpExample = () => {

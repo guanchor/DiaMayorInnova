@@ -16,7 +16,6 @@ const HelpExamplesList = () => {
     HelpExampleService.getAll()
       .then(response => {
         setHelpExamples(response.data);
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -26,13 +25,12 @@ const HelpExamplesList = () => {
   const findByAccount = () => {
     if (searchHelpExample) {
       HelpExampleService.findByAccount(searchHelpExample)
-      .then(response => {
-        setHelpExamples(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .then(response => {
+          setHelpExamples(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     } else {
       retrieveHelpExamples();
     }
@@ -56,8 +54,8 @@ const HelpExamplesList = () => {
         </Link>
 
         <div>
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={searchHelpExample}
             onChange={handleSearchChange}
             placeholder="Número de cuenta"
@@ -87,7 +85,7 @@ const HelpExamplesList = () => {
             </div>
             <div className='detail'>
               <label>{""}
-              {currentHelpExample.debitMoves}
+                {currentHelpExample.debitMoves}
               </label>
             </div>
             <div className='detail'>

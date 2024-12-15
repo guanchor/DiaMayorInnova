@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AccountService from '../../services/AccountService';
 import "./Account.css";
 
-const AccountsList = ({newAcc}) => {
+const AccountsList = ({ newAcc }) => {
   const [accounts, setAccounts] = useState([]);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -17,7 +17,6 @@ const AccountsList = ({newAcc}) => {
     AccountService.getAll()
       .then(response => {
         setAccounts(response.data);
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -27,13 +26,12 @@ const AccountsList = ({newAcc}) => {
   const findByName = () => {
     if (searchAccount) {
       AccountService.findByName(searchAccount)
-      .then(response => {
-        setAccounts(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .then(response => {
+          setAccounts(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     } else {
       retrieveAccounts();
     }
@@ -47,7 +45,6 @@ const AccountsList = ({newAcc}) => {
   const deleteAccount = (id) => {
     AccountService.remove(id)
       .then((response) => {
-        console.log(response.data);
         retrieveAccounts();
         setCurrentAccount(null);
         setCurrentIndex(-1);
@@ -61,7 +58,7 @@ const AccountsList = ({newAcc}) => {
   const handleSearchChange = (e) => {
     setSearchAccount(e.target.value);
   };
-  
+
 
   return (
     <>
@@ -92,14 +89,15 @@ const AccountsList = ({newAcc}) => {
                   <td className='account__accList--actions'>
                     <button className='account__button--edit pencil'>
                       <Link to={"/accounts/" + account.id}>
-                        <i className='fi-rr-pencil'/> Editar
+                        <i className='fi-rr-pencil' /> Editar
                       </Link>
                     </button>
                     <button className='account__button--remove trash'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteAccount(account.id);}}>
-                      <i className='fi-rr-trash'/>
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteAccount(account.id);
+                      }}>
+                      <i className='fi-rr-trash' />
                     </button>
                   </td>
                 </tr>

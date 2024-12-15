@@ -20,10 +20,8 @@ const SchoolCenters = () => {
 
     const addSchool = (e) => {
         e.preventDefault();
-        console.log(formData)
         SchoolServices.create(formData)
             .then(response => {
-                console.log(response.data);
                 allSchools();
             }).catch(e => {
                 console.log(e);
@@ -33,7 +31,6 @@ const SchoolCenters = () => {
     const deleteSchool = (id) => {
         SchoolServices.remove(id)
             .then(response => {
-                console.log(response.data);
                 allSchools();
             }).catch(e => {
                 console.log(e);
@@ -52,7 +49,6 @@ const SchoolCenters = () => {
         e.preventDefault();
         SchoolServices.update(formData.id, formData)
             .then(response => {
-                console.log(response.data);
                 allSchools();
             }).catch(e => {
                 console.log(e);

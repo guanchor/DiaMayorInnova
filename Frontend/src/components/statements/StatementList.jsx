@@ -19,14 +19,13 @@ const StatementsList = () => {
         setLoading(true);
         const response = await statementService.getAllStatements();;
         if (Array.isArray(response.data)) {
-        const filteredStatements = response.data.filter(
-          (statement) => statement.is_public || statement.user_id === user?.id
-        );
-        setStatements(filteredStatements);
-      } else {
-        console.log("RESPUESTA DEL SERVER", response.data);
-        console.error("Error: La respuesta no es un arreglo válido.");
-      }
+          const filteredStatements = response.data.filter(
+            (statement) => statement.is_public || statement.user_id === user?.id
+          );
+          setStatements(filteredStatements);
+        } else {
+          console.error("Error: La respuesta no es un arreglo válido.");
+        }
       } catch (error) {
         console.error("Error al cargar los enunciados:", error);
       } finally {

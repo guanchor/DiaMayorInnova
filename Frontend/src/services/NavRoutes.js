@@ -37,9 +37,9 @@ routes.push({
 })
 
 routes.push({
-  to: "/class-list",
-  icon: "fi fi-rr-book",
-  name: "gestión clases",
+  to: "/accounts",
+  icon: "fi fi-rr-credit-card",
+  name: "gestión cuentas",
   student: false,
   rol: ["teacher", "admin"],
 })

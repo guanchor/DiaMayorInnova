@@ -21,10 +21,8 @@ const get = async (id) => {
 };
 
 const create = async (data) => {
-  console.log("hola", data)
   try {
     const response = await http.post("/accounts", data);
-    console.log("adios", response);
     return response;
   } catch (error) {
     console.error("Error en la creación:", error);

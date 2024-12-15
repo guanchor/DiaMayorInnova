@@ -22,7 +22,6 @@ const AccountingPlansList = ({ newPGC }) => {
     AccountingPlanDataService.getAll()
       .then(response => {
         setAccountingPlans(response.data);
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -34,7 +33,6 @@ const AccountingPlansList = ({ newPGC }) => {
       AccountingPlanDataService.findByName(searchAccPlan)
         .then(response => {
           setAccountingPlans(response.data);
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -52,7 +50,6 @@ const AccountingPlansList = ({ newPGC }) => {
   const deleteAccountingPlan = (id) => {
     AccountingPlanDataService.remove(id)
       .then((response) => {
-        console.log(response.data);
         retrieveAccountingPlans(); //Refresh list after remove
         setCurrentAccountingPlan(null); //Clear state
         setCurrentIndex(-1); //Reset index

@@ -26,18 +26,17 @@ const Account = (props) => {
 
   const getAccount = (id) => {
     AccountDataService.get(id)
-    .then((response) => {
-      setCurrentAccount(response.data);
-      console.log(response.data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .then((response) => {
+        setCurrentAccount(response.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentAccount({ ...currentAccount, [name]: value});
+    setCurrentAccount({ ...currentAccount, [name]: value });
   };
 
   const validateForm = () => {
@@ -52,28 +51,26 @@ const Account = (props) => {
   const updateAccount = () => {
     if (validateForm()) {
       AccountDataService.update(currentAccount.id, currentAccount)
-      .then(response => {
-        console.log(response.data);
-        setMessage("Account updated succesfully");
-      })
-      .catch(e => {
-        console.log(e);
-        setError("Hubo un problema al actualizar la cuenta.");
-    });
+        .then(response => {
+          setMessage("Account updated succesfully");
+        })
+        .catch(e => {
+          console.error(e);
+          setError("Hubo un problema al actualizar la cuenta.");
+        });
     }
   };
 
   const deleteAccount = () => {
     AccountDataService.remove(currentAccount.id)
-    .then((response) => {
-      console.log(response.data);
-      navigate("/accounts/");
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+      .then((response) => {
+        navigate("/accounts/");
+      })
+      .catch((e) => {
+        console.error(e)
+      });
   };
-  
+
   return (
     <>
 
@@ -83,7 +80,7 @@ const Account = (props) => {
           <form className='account__form'>
             <div className='account__form--group'>
               <label htmlFor="accountNumber">Número de cuenta</label>
-              <input 
+              <input
                 className='account__input'
                 id="accountNumber"
                 name="accountNumber"
@@ -117,7 +114,7 @@ const Account = (props) => {
                 value={currentAccount.accounting_plan}
                 onChange={handleInputChange}
                 required>
-                </input>
+              </input>
             </div>
 
             <div className='account__form--group'>

@@ -416,7 +416,7 @@
     padding: var(--gap-m);
   }
 
-  .statement-page__form--header {
+  .statement-page__form .statement-page__form--header {
     font-size: var(--text-mobile-subtitles-1);
     padding-bottom: var(--gap-s);
   }
@@ -425,6 +425,10 @@
     padding: var(--gap-s);
     max-height: 60vh;
     overflow-y: auto;
+  }
+
+  .statement-page__solutions .statement-page__solutions-header {
+    font-size: var(--text-mobile-subtitles-2);
   }
 
   .statement-page__selection {
@@ -438,6 +442,7 @@
 
   .statement-page__list--header {
     z-index: 0;
+    font-size: var(--text-mobile-subtitles-2);
   }
 
   .statement-page__list-item {
@@ -448,6 +453,10 @@
   .statement-page__definition {
     font-size: var(--text-mobile-body-small);
     word-wrap: break-word;
+  }
+
+  .statement-page__definition-solution {
+    font-size: var(--text-mobile-lead);
   }
 
   .statement-page__actions {
@@ -488,14 +497,15 @@
     font-size: var(--text-mobile-small);
   }
 
-  .statement-page__error-message {
+  .statement-page__selection--content .error-message {
+    padding: var(--gap-xxxs);
     font-size: var(--text-mobile-small);
   }
 
   /* Ajustes en botones */
   .statement-page__button--form {
     font-size: var(--text-mobile-small);
-    padding: var(--gap-xs);
+    padding: var(--gap-xxs);
   }
 
   .statement-page__button--form .fi {

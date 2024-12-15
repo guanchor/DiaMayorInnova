@@ -23,6 +23,7 @@
 
 .task-page__input.error {
   border: 1px solid var(--Color-red-600);
+  font-family: var(--font-family)
   /* Rojo para indicar error */
 }
 
@@ -133,6 +134,7 @@
   border: 1px solid var(--Color-grey-200);
   border-radius: var(--r-xs);
   font-size: var(--text-desktop-small);
+  font-family: var(--font-family)
 }
 
 .task-page__input[type="date"],
@@ -906,6 +908,10 @@
     padding: var(--gap-xxxs);
   }
 
+  .task-page__form--form {
+    padding: var(--gap-xxxs);
+  }
+
   .task-page__selection {
     padding: var(--gap-xxxs);
     margin-top: 0;
@@ -921,8 +927,11 @@
   }
 
   .task-page__header--header {
-    padding: var(--gap-xxxs);
     font-size: var(--text-mobile-medium);
+    flex-direction: column;
+    align-items: center;
+    padding: var(--gap-s);
+    gap: var(--gap-s);
   }
 
   .task-list__title,
@@ -957,6 +966,11 @@
 
   .task-page__date .task-page__input {
     min-width: 220px;
+    margin-bottom: var(--gap-xxxs);
+  }
+
+  .error-message {
+    font-size: var(--text-mobile-body-small);
   }
 
 }

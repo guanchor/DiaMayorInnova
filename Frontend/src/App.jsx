@@ -21,14 +21,14 @@ import HelpExampleList from './components/help-example/ListHelpExample';
 import AddHelpExample from './components/help-example/AddHelpExample';
 import TaskListAndDetails from './components/task/taskListAndDetails';
 import StatementsList from './components/statements/StatementList';
-import StatementForm from './components/statements/StatementForm';
-import TaskEditForm from './components/task/TaskEditForm';
 import Modes from './pages/modes/Modes';
 import AccountingPlans from './pages/accounting-plan/AccountingPlans';
 import TaskPage from './pages/modes/task-page/TaskPage';
 import PracticePage from './pages/modes/practice-page/PracticePage';
 import ExamPage from './pages/modes/exam-page/ExamPage';
 import Accounts from './pages/account/Accounts';
+import TaskCreateForm from './components/task/TaskCreateForm';
+import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
 import './App.css';
 import './assets/Styles/Global.css';
@@ -63,9 +63,9 @@ function App() {
                     <Route path="/accounts" element={<Accounts />} />
                     <Route path="/accounts/:id" element={<Account />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
-                    <Route path="/tasks/:id" element={<TaskEditForm />} />
+                    <Route path="/task-edit" element={<TaskCreateForm />} />
                     <Route path="/statements" element={<StatementsList />} />
-                    <Route path="/add-statements" element={<StatementForm />} />
+                    <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                     <Route path="/schools" element={<SchoolsCenters />} />
                     <Route path="/class-list" element={<ClassGroupsList />} />

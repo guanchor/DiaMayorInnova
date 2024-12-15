@@ -3,6 +3,12 @@ class TasksController < ApplicationController
   
   def index
     @tasks = Task.where(created_by: current_user.id)
+
+    if params[:title].present?
+      @tasks = @tasks.where("title LIKE ?", "%#{params[:title]}%")
+    end
+  
+    # Renderizamos las tareas filtradas
     render json: @tasks
   end
 
@@ -54,7 +60,7 @@ class TasksController < ApplicationController
     @tasks = Task.all
     @task = Task.find(params[:id])
     @task.destroy
-    render json: @tasks
+    render json: { message: "Tarea eliminada correctamente." }, status: :ok
   end
 
 

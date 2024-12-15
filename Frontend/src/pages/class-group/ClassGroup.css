@@ -43,15 +43,11 @@
   gap: 1rem;
 }
 
-label {
-  display: inline-block;
-  width: 100%;
-  align-items: end;
-
-  &>.schoolCenter_item {
-    width: 500px;
-  }
+.class-group__form {
+  max-width: 500px;
+  margin: 0 auto;
 }
+
 
 input {
   -webkit-box-sizing: border-box;

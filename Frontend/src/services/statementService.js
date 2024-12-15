@@ -7,6 +7,7 @@ const createStatement = (statementData) => http.post("/statements", { statement:
 const updateStatement = (id, data) => http.put(`/statements/${id}`, data); // Modifica enunciado
 const deleteStatement = (id) => http.delete(`/statements/${id}`);  // Borra enunciado
 const getSolutions = (statementId) => http.get(`/statements/${statementId}/solutions`); // Obtiene las soluciones para un enunciado
+//const getAccountIdFromNumber = (accountNumber) => http.get(`/accounts/find_by_account_number/${accountNumber}`);
 
 export default {
   getAllStatements,
@@ -16,4 +17,5 @@ export default {
   deleteStatement,
   getStatement,
   getSolutions,
+  //getAccountIdFromNumber,
 };

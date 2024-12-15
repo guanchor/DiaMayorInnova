@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
   end
 
   create_table "accounts", force: :cascade do |t|
-    t.integer "accountNumber"
+    t.integer "account_number"
     t.string "description"
     t.string "name"
     t.bigint "accounting_plan_id", null: false
@@ -68,6 +68,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id", null: false
+    t.integer "account_number"
     t.index ["account_id"], name: "index_annotations_on_account_id"
     t.index ["entry_id"], name: "index_annotations_on_entry_id"
   end

@@ -11,17 +11,17 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
 
   const prevStatementRef = useRef();
 
-   useEffect(() => {
-     if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
-       setDefinition(statement?.definition || "");
-       setExplanation(statement?.explanation || "");
-       setIsPublic(statement?.is_public || false);
-       setSolutions(statement?.solutions || []);
-     }
+  useEffect(() => {
+    if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
+      setDefinition(statement?.definition || "");
+      setExplanation(statement?.explanation || "");
+      setIsPublic(statement?.is_public || false);
+      setSolutions(statement?.solutions || []);
+    }
 
-     prevStatementRef.current = statement;
+    prevStatementRef.current = statement;
 
-   }, [statement]);
+  }, [statement]);
 
   const handleAddSolution = () => {
     const newSolution = {
@@ -131,12 +131,26 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
         }],
       }]);
     } catch (error) {
-      console.error("Error creando el enunciado:", error.response || error);
-      setErrorMessage("Hubo un error al crear el enunciado. Por favor, inténtelo de nuevo.");
+      if (error.response) {
+        if (error.response.status === 403) {
+          console.error("Error 403 - Acceso denegado:", error.response.data || error.response.statusText);
+          setErrorMessage("No tienes permisos para modificar enunciados ajenos.");
+        } else {
+          console.error("Error en la solicitud:", error.response || error);
+          setErrorMessage("Hubo un error al crear el enunciado. Por favor, inténtelo de nuevo.");
+        }
+      } else {
+        console.error("Error desconocido:", error);
+        setErrorMessage("Hubo un problema al contactar con el servidor. Intenta nuevamente.");
+      }
       setTimeout(() => {
         setErrorMessage("");
       }, 5000);
     }
+  };
+
+  const handleCancel = () => {
+    window.location.reload();
   };
 
   return (
@@ -159,7 +173,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             onChange={(e) => setExplanation(e.target.value)}
           />
         </div>
-        
+
         <div className="statement-page__buttons-container">
           <div className="statement-page__visibility--container">
             <label className="statement-page__label--visibility">
@@ -174,6 +188,11 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
           </div>
           <div className="statement-page__buttons--actions">
             <button type="submit" className="statement-page__button--form">{statement ? "Actualizar" : "Crear"}</button>
+            {statement && (
+              <button type="button" onClick={handleCancel} className="statement-page__button--form">
+                Cancelar
+              </button>
+            )}
             <button type="button" onClick={handleAddSolution} className="statement-page__button--form">
               <i className="fi fi-rr-plus"></i>
               Añadir Solución

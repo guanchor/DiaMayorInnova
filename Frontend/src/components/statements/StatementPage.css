@@ -311,6 +311,10 @@
   border-radius: var(--r-xxs);
 }
 
+.hidden {
+  display: none;
+}
+
 /* MEDIA QUERIES */
 
 @media (max-width: 1024px) {

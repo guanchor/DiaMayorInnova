@@ -1,4 +1,7 @@
 class HelpExamplesController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
+
   def index
     if params[:account_id].present?
       @helpExamples = HelpExample.where("account_id LIKE ?", "#{params[:account_id]}")

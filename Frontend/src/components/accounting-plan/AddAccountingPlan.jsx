@@ -49,7 +49,7 @@ const AddAccountingPlan = ({setNewPGC}) => {
         })
         .catch(e => {
           console.log(e);
-          setError("Hubo un problema al guardar el plan de cuentas.");
+          setError("Hubo un problema al guardar el PGC.");
         });
     };
   };
@@ -123,7 +123,7 @@ const AddAccountingPlan = ({setNewPGC}) => {
               <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus"/>Añadir plan</button>
             </div>
             
-            {error && <div className="accountingPlan__error" visi>{error}</div>}
+            {error && <div className="accountingPlan__error">{error}</div>}
 
           </div>
         </div>

@@ -1,4 +1,7 @@
 class AccountsController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
+
   def index
     if params[:accountNumber].present?
       @accounts = Account.where("accountNumber LIKE ?", "%#{params[:accountNumber]}%")

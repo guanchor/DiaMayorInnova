@@ -79,9 +79,9 @@ const AccountingPlan = (props) => {
 
       {currentAccountingPlan ? (
         <div>
-          <h4 className="accountingPlan__header--h4">Detalles del PGC </h4>
+          <h4 className="accountingPlan__header--h4 details">Detalles del PGC </h4>
           <form className="accountingPlan__form">
-            <div>
+            <div className="accountingPlan__form--group">
               <label className="accountingPlan__label" htmlFor="name">Nombre</label>
               <input
                 className="accountingPlan__input"
@@ -93,10 +93,10 @@ const AccountingPlan = (props) => {
                 required
               />
             </div>
-            <div>
+            <div className="accountingPlan__form--group">
               <label className="accountingPlan__label" htmlFor="description">Descripción</label>
-              <input
-                className="accountingPlan__input"
+              <textarea
+                className="accountingPlan__input descrip"
                 id="description"
                 name="description"
                 type="text"
@@ -105,7 +105,7 @@ const AccountingPlan = (props) => {
                 required
               />
             </div>
-            <div>
+            <div className="accountingPlan__form--group">
               <label className="accountingPlan__label" htmlFor="acronym">Acrónimo</label>
               <input
                 className="accountingPlan__input"
@@ -118,10 +118,10 @@ const AccountingPlan = (props) => {
               />
             </div>
           </form>
-          <div>
+          <div className="accountingPlan__form--actions details">
             {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-            <button className="accountingPlan__button--form" onClick={updateAccountingPlan}>Editar</button>
-            <button className="accountingPlan__button--remove" onClick={deleteAccountingPlan}>Borrar</button>
+            <button className="btn accountingPlan__button--edit" onClick={updateAccountingPlan}>Editar</button>
+            <button className="btn accountingPlan__button--back"><Link to={"/accounting-plans/"}>Atrás</Link></button>
             <p>{message}</p>
           </div>
           

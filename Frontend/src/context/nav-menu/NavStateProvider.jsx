@@ -21,6 +21,7 @@ const NavStateProvider = ({ children }) => {
   }
 
   const isAdmin = [...roles].includes("admin") ? true : false;
+  const isTeacher = [...roles].includes("teacher") ? true : false;
 
   const setAdminRol = () => {
     setRol("admin")
@@ -38,9 +39,6 @@ const NavStateProvider = ({ children }) => {
     setRol(roles[0]);
   }, [roles])
 
-
-
-
   return (
     <navContext.Provider value={
       {
@@ -49,6 +47,7 @@ const NavStateProvider = ({ children }) => {
         userAvatarUrl,
         dropdownState,
         isAdmin,
+        isTeacher,
         rol,
         changeMenu,
         setdropdownState,

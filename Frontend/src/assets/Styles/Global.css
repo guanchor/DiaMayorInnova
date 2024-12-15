@@ -336,7 +336,7 @@ a {
   }
 }
 
-@media (width > 800px) {
+@media (min-width: 1024px) {
   .app-main {
     height: 100dvh;
     padding: 70px 0 0 70px;
@@ -345,4 +345,14 @@ a {
     align-items: center;
     overflow: auto;
   }
+
+}
+
+@media (max-width: 1024px) {
+  .app-main {
+    height: auto;
+    padding: 60px 0 0 0; 
+    display: block; 
+  }
+
 }

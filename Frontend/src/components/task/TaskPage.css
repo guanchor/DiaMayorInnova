@@ -788,6 +788,18 @@
     display: none;
   }
 
+  .task-page__dates {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: var(--gap-s);
+  }
+  
+  .task-page__date {
+    flex: 1 1 48%;
+    max-width: 48%;
+    min-width: 220px;
+  }
+
   /* --- Statemens-Selection-Tablet --- */
 
   .task-page__list {
@@ -930,7 +942,21 @@
     font-size: var(--text-mobile-body-small);
   }
 
+  .task-page__actions {
+    padding: 0 var(--gap-s) 0 var(--gap-s);
+  }
+
   .task-page__actions span {
     display: none;
   }
+
+  .task-page__date {
+    flex: 1 1 100%;
+    width: 50%;
+  }
+
+  .task-page__date .task-page__input {
+    min-width: 220px;
+  }
+
 }

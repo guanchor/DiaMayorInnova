@@ -12,23 +12,23 @@ const AccountingPlans = () => {
   return (
     <>
 
-      <section className="accountingPlan__page">
-        
-          <button className="accountingPlan__btnHome">
-            <Link to={"/home"}>
-              <i className="fi-rr-arrow-small-left"/> Volver
-            </Link>
-         </button>
-         <h1 className="accountingPlan__page--title">Creación PGC</h1>
-        
+      <main className="accountingPlan__page">
+
+        <button className="accountingPlan__btnHome">
+          <Link to={"/home"}>
+            <i className="fi-rr-arrow-small-left" /> Volver
+          </Link>
+        </button>
+        <h1 className="accountingPlan__page--title">Creación PGC</h1>
+
         <section className="accountingPlan__addPGC" >
-          <AddAccountingPlan setNewPGC={setNewPGC}/>
+          <AddAccountingPlan setNewPGC={setNewPGC} />
         </section>
         <section className="accountingPlan__listPGC" >
-          <AccountingPlansList newPGC={newPGC}/>
+          <AccountingPlansList newPGC={newPGC} />
         </section>
-      </section>
-      
+      </main>
+
     </>
   )
 }

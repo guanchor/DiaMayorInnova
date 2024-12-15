@@ -1,7 +1,10 @@
 .accountingPlan__pgcList {
-  margin: var(--gap-s);
-  padding-top: var(--gap-s);;
-  border-top: 1px solid var(--Color-grey-200);;
+  padding: var(--gap-s) var(--gap-s) 0 var(--gap-s);
+  height: 100%;
+  border-top: 1px solid var(--Color-grey-200);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .accountingPlan__pgcList-item {
@@ -17,15 +20,12 @@
 }
 
 .accountingPlan__header--h4 {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   font-size: var(--text-desktop-subtitles-2);
   font-weight: bold;
-  margin-bottom: var(--gap-xl);
+  margin-bottom: var(--gap-m);
 }
 
-.accountingPlan__header--h4.title {
+.accountingPlan__header--h4 .title {
   padding: var(--gap-s);
 }
 
@@ -43,31 +43,33 @@
   margin-bottom: 0;
 }
 
-.accountingPlan__input.descrip{
+.accountingPlan__input.descrip {
   height: 150px;
 }
 
 .accountingPlan__form .accountingPlan__input {
   width: 100%;
   padding: 8px;
-  margin-top:  5px;
+  margin-top: 5px;
 }
 
 .accountingPlan__input--filter {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: var(--gap-s);
+  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .accountingPlan__table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: var(--gap-xs);
   overflow-y: scroll;
-  height: calc(100vh - 680px);
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 
   & table {
     width: 100%;
@@ -96,7 +98,9 @@
   color: var(--Color-grey-900);
 }
 
-.accountingPlan__button--link.pencil , .accountingPlan__button--link.eye, .accountingPlan__button--remove.trash{
+.accountingPlan__button--link.pencil,
+.accountingPlan__button--link.eye,
+.accountingPlan__button--remove.trash {
   margin-right: 8px;
   font-size: 1.2rem;
 }
@@ -144,7 +148,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding-bottom: 8px;
 }
 
 .accountingPlan__form--group.full-width {
@@ -153,8 +157,12 @@
 
 .accountingPlan__form--actions {
   display: flex;
+  font-family: inherit;
+
   justify-content: center;
-  & .accountingPlan__button { /* Añadir plan*/
+
+  & .accountingPlan__button {
+    /* Añadir plan*/
     margin-top: 16px;
   }
 }
@@ -181,23 +189,37 @@
   margin-top: var(--gap-m);
 }
 
+.accountingPlan_tbody {
+  height: 100%;
+
+  & tbody {
+    height: 100%;
+  }
+}
+
+.accountingPlan__table::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.accountingPlan__table::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
 /* Media Queries */
 
 /* SOS a Mayer: 
-  - No cambia la fuente de los actions del listado
-  - Se clipea el "Nuevo Plan de contabilidad" con el header
-  - El height auto de la lista en tablet si lo quito clipea el primer registro (pierdo el static, se ve todo el listado )
-  - El calc de altura de la lista --> BOOOOMMMM
+  x No cambia la fuente de los actions del listado
+  x Se clipea el "Nuevo Plan de contabilidad" con el header
+  x El height auto de la lista en tablet si lo quito clipea el primer registro (pierdo el static, se ve todo el listado )
+  x El calc de altura de la lista --> BOOOOMMMM
 */
 
 /* Para tablets (hasta 768px) */
 @media (max-width: 768px) {
-  * {
-    font-size: inherit;
-  }
-
   .accountingPlan__header--h4 {
     margin-bottom: var(--gap-m);
+    font-size: var(--text-mobile-lead);
   }
 
   .accountingPlan__pgcList-item {
@@ -207,23 +229,52 @@
 
   .accountingPlan__table {
     margin-top: 16px;
-    height: auto;  /* Me clipea el primer registro si lo quito */
+  }
+
+  .accountingPlan__button {
+    padding: var(--gap-xs);
+  }
+
+  .accountingPlan_tbody {
+    font-size: var(--text-mobile-body-small);
+  }
+
+  .accountingPlan__button--link.eye {
+    font-size: var(--text-mobile-body-small);
+  }
+
+  .accountingPlan__button--link.pencil {
+    font-size: var(--text-mobile-body-small);
+  }
+
+  .accountingPlan__button--remove.trash {
+    font-size: var(--text-mobile-body-small);
   }
 }
 
 /* Para móviles (hasta 360px) */
 @media (max-width: 360px) {
-  * {
-    font-size: inherit;
-  }
-
   .accountingPlan__header--h4 {
     margin-bottom: var(--gap-s);
+    font-size: var(--text-mobile-lead);
+  }
+
+  .accountingPlan__button--link.eye {
+    font-size: var(--text-mobile-body-small);
+  }
+
+  .accountingPlan__button--link.pencil {
+    font-size: var(--text-mobile-body-small);
+  }
+
+  .accountingPlan__button--remove.trash {
+    font-size: var(--text-mobile-body-small);
   }
 
   .accountingPlan__form {
     padding: var(--gap-xs);
     width: 100%;
+    font-size: var(--text-mobile-body-small);
   }
 
   .accountingPlan__input--filter {
@@ -231,9 +282,7 @@
     width: 100%;
   }
 
-  .accountingPlan__button {
-    padding: var(--gap-xs);
+  .accountingPlan_tbody {
+    font-size: var(--text-mobile-small);
   }
 }
-
-

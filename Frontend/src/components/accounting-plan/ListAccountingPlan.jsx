@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./AccountingPlan.css";
 
 // PGC LIST
-const AccountingPlansList = ({newPGC}) => {
+const AccountingPlansList = ({ newPGC }) => {
   const [accountingPlans, setAccountingPlans] = useState([]);
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -13,10 +13,10 @@ const AccountingPlansList = ({newPGC}) => {
 
 
   useEffect(() => {
-      retrieveAccountingPlans();
+    retrieveAccountingPlans();
   }
-    
-  , [newPGC]);
+
+    , [newPGC]);
 
   const retrieveAccountingPlans = () => {
     AccountingPlanDataService.getAll()
@@ -62,7 +62,7 @@ const AccountingPlansList = ({newPGC}) => {
         console.log(e);
       });
   };
-  
+
 
   const handleSearchChange = (e) => {
     setSearchAccPlan(e.target.value);
@@ -90,38 +90,38 @@ const AccountingPlansList = ({newPGC}) => {
           {accountingPlans.length === 0 ? ( // Usability upgrade #3 -> Show message if there is no data
             <p>No hay PGCs disponibles</p>
           ) : (
-          <table >
-            <tbody>
-              {accountingPlans && accountingPlans.map((accountingPlan, index) => (
-                <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
-                  <td>{accountingPlan.name}</td>
-                  <td>{accountingPlan.acronym}</td>
-                  <td>{accountingPlan.description}</td>
-                  <td className="accountingPlan__form--actions">
-                    <button className="accountingPlan__button--link eye">
-                      <Link to={"/accounts"}>
-                        <i className="fi-rr-eye"/> Ver cuentas
-                      </Link>
-                    </button>
-                    <button className="accountingPlan__button--link pencil">
-                      <Link to={"/accounting-plans/" + accountingPlan.id}>
-                        <i className="fi-rr-pencil" /> Editar
-                      </Link>
-                    </button>
-                    <button className="accountingPlan__button--remove trash" 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (window.confirm("¿Está seguro de que quiere eliminar este PGC?")) { //Usability upgrade #2 -> Confirm before PGC remove
-                                deleteAccountingPlan(accountingPlan.id);
-                              }
-                            }}>
-                      <i className="fi-rr-trash"/>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <table className="accountingPlan_tbody">
+              <tbody>
+                {accountingPlans && accountingPlans.map((accountingPlan, index) => (
+                  <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
+                    <td>{accountingPlan.name}</td>
+                    <td>{accountingPlan.acronym}</td>
+                    <td>{accountingPlan.description}</td>
+                    <td className="accountingPlan__form--actions">
+                      <button className="accountingPlan__button--link eye">
+                        <Link to={"/accounts"}>
+                          <i className="fi-rr-eye" /> Ver cuentas
+                        </Link>
+                      </button>
+                      <button className="accountingPlan__button--link pencil">
+                        <Link to={"/accounting-plans/" + accountingPlan.id}>
+                          <i className="fi-rr-pencil" /> Editar
+                        </Link>
+                      </button>
+                      <button className="accountingPlan__button--remove trash"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm("¿Está seguro de que quiere eliminar este PGC?")) { //Usability upgrade #2 -> Confirm before PGC remove
+                            deleteAccountingPlan(accountingPlan.id);
+                          }
+                        }}>
+                        <i className="fi-rr-trash" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
 

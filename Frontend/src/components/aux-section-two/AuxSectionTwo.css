@@ -3,6 +3,7 @@
   background-color: var(--Color-White);
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
+  width: 100%;
 }
 
 .section-two_loader {

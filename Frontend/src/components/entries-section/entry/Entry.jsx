@@ -52,7 +52,7 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
 
             </div>
 
-            <div className="entry_item_container">
+            <div className="entry_item_container scroll-style">
               {annotations && annotations.map((annotation, index) => (
                 <EntryForm
                   key={number + "annotation" + index}

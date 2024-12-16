@@ -25,9 +25,7 @@ const EntriesSection = ({ taskSubmit }) => {
     setAnnotations(annotations.filter(annotation => annotation.student_entry_id !== entryNumber));
   };
 
-
   const addAnnotation = (entryId) => {
-
     const entryAnnotations = annotations.filter(annotation => annotation.student_entry_id === entryId);
     const nextAnnotationNumber = entryAnnotations.length + 1;
 
@@ -39,10 +37,8 @@ const EntriesSection = ({ taskSubmit }) => {
       debit: 0,
       credit: 0,
     };
-
     setAnnotations(prevAnnotations => [...prevAnnotations, initialAnnotation]);
   };
-
 
   const updateAnnotation = (index, updatedAnnotation) => {
     const newAnnotations = annotations.map((annotation, i) => i === index ? updatedAnnotation : annotation);
@@ -90,23 +86,25 @@ const EntriesSection = ({ taskSubmit }) => {
   return (
     <div className='entry_container'>
       <EntryHeader addEntry={addEntry} />
-      {
-        entries.map((entry, index) => {
-          return (
-            <Entry
-              key={entry.entry_number}
-              number={index + 1}
-              date={entry.entry_date}
-              markId={entry.mark_id}
-              annotations={annotations.filter(annotation => annotation.student_entry_id === entry.entry_number)}
-              updateAnnotation={updateAnnotation}
-              deleteAnnotation={deleteAnnotation}
-              addAnnotation={() => addAnnotation(entry.entry_number)}
-              deleteEntry={() => removeEntry(entry.entry_number)}
-            />
-          )
-        })
-      }
+      <section className='modes-entries-containner scroll-style'>
+        {
+          entries.map((entry, index) => {
+            return (
+              <Entry
+                key={entry.entry_number}
+                number={index + 1}
+                date={entry.entry_date}
+                markId={entry.mark_id}
+                annotations={annotations.filter(annotation => annotation.student_entry_id === entry.entry_number)}
+                updateAnnotation={updateAnnotation}
+                deleteAnnotation={deleteAnnotation}
+                addAnnotation={() => addAnnotation(entry.entry_number)}
+                deleteEntry={() => removeEntry(entry.entry_number)}
+              />
+            )
+          })
+        }
+      </section>
     </div >
   )
 }

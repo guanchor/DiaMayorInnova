@@ -1,5 +1,5 @@
 .entry_container {
-  padding: var(--gap-m);
+  padding: var(--gap-xxl) var(--gap-xxxs);
   background-color: var(--Color-White);
   border-radius: var(--r-xs);
   grid-area: entry;
@@ -8,8 +8,17 @@
   gap: var(--r-s);
   overflow-y: scroll;
   box-shadow: var(--box-shadow-M3);
+  width: 100%;
 }
 
 .entry_container::-webkit-scrollbar {
   display: none;
+}
+
+.modes-entries-containner {
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-s);
 }

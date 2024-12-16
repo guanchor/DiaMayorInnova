@@ -18,11 +18,11 @@ const AuxSectionOne = () => {
         .then(({ data }) => {
           setAccount(data);
           console.log(data);
+          setIsLoading(false);
           HelpExampleService.findByAccount(account.id)
             .then(({ data }) => {
               console.log(data)
               setExample(data);
-              setIsLoading(false);
             })
         })
         .catch((error) => {
@@ -73,10 +73,10 @@ const AuxSectionOne = () => {
             <h3>Cuenta : {account.account_number}</h3>
             <p>{account.description}</p>
             <h3>Descripción</h3>
-            <p>{example.description}</p>
+            <p>{example ? example.description : "ejemplo de la descripcion"}</p>
           </div>
           <h2>Movimientos</h2>
-          <div className="moves_info">
+          <div className="moves_info scroll-style">
             <h3>Debe</h3>
             <p>{example.debitMoves}</p>
             <h3>Haber</h3>

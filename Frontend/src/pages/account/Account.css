@@ -45,8 +45,8 @@
 }
 
 .account__listAcc {
-  grid-area: list; 
-  overflow-y: hidden;
+  grid-area: list;
+  /* overflow-y: hidden; */
 }
 
 

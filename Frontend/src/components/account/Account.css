@@ -198,7 +198,7 @@
   height: 0px;
 }
 
-.accounting__accList::-webkit-scrollbar-thumb {
+.account__accList::-webkit-scrollbar-thumb {
   background: transparent;
 }
 
@@ -212,7 +212,7 @@
     font-size: var(--text-mobile-lead);
   }
 
-  .account__accLlist-item {
+  .account__accList--item {
     flex-direction: column;
     text-align: center;
   }
@@ -225,6 +225,8 @@
     padding: var(--gap-xs);
   }
 
+  .account__button--link.inter,
+  .account__button--link.pencil,
   .account__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }
@@ -238,6 +240,8 @@
     font-size: var(--text-mobile-lead);
   }
 
+  .account__button--link.inter,
+  .account__button--link.pencil,
   .account__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }
@@ -251,5 +255,9 @@
   .account__input--filter {
     flex-direction: row;
     width: 100%
+  }
+
+  .account__tbody {
+    font-size: var(--text-mobile-small);
   }
 }

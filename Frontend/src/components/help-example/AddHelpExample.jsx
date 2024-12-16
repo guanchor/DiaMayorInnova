@@ -3,7 +3,7 @@ import HelpExampleDataService from '../../services/HelpExampleService';
 import { Link } from 'react-router-dom';
 import AccountService from '../../services/AccountService';
 
-const AddHelpExample = ({setNewHE}) => {
+const AddHelpExample = ({}) => {
   const initialHelpExampleState = {
     id: null,
     creditMoves: "",
@@ -51,7 +51,7 @@ const AddHelpExample = ({setNewHE}) => {
           description: response.data.description.trim(),
         });
         console.log("no llega",response.data);
-        setNewHE(true);
+        setSubmitted(true);
       })
       .catch(e => {
         console.log(e);

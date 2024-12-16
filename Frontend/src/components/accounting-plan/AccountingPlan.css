@@ -230,14 +230,8 @@
     font-size: var(--text-mobile-body-small);
   }
 
-  .accountingPlan__button--link.eye {
-    font-size: var(--text-mobile-body-small);
-  }
-
-  .accountingPlan__button--link.pencil {
-    font-size: var(--text-mobile-body-small);
-  }
-
+  .accountingPlan__button--link.eye,
+  .accountingPlan__button--link.pencil,
   .accountingPlan__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }
@@ -250,14 +244,8 @@
     font-size: var(--text-mobile-lead);
   }
 
-  .accountingPlan__button--link.eye {
-    font-size: var(--text-mobile-body-small);
-  }
-
-  .accountingPlan__button--link.pencil {
-    font-size: var(--text-mobile-body-small);
-  }
-
+  .accountingPlan__button--link.eye,
+  .accountingPlan__button--link.pencil,
   .accountingPlan__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }

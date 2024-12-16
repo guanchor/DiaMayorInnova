@@ -81,6 +81,16 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       errors.closingDate = "La fecha de cierre es obligatoria.";
     }
 
+    if (openingDate && closingDate) {
+      const opening = new Date(openingDate);
+      const closing = new Date(closingDate);
+  
+      if (opening >= closing) {
+        valid = false;
+        errors.title = "La fecha de apertura debe ser anterior a la fecha de cierre.";
+      }
+    }
+
     setErrors(errors);
 
     if (Object.keys(errors).length > 0) {

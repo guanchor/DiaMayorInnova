@@ -40,8 +40,8 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
           </div>
         </div>
         <div className="task-page__dates--errors">
-          {errors.title && <p className="error-message">{errors.openingDate}</p>}
-          {errors.title && <p className="error-message">{errors.closingDate}</p>}
+          {errors.openingDate && <p className="error-message">{errors.openingDate}</p>}
+          {errors.closingDate && <p className="error-message">{errors.closingDate}</p>}
         </div>
         <button type="button" className="task-page__button--form" onClick={handleSubmit}>
           Finalizar

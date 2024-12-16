@@ -134,7 +134,7 @@ end
     @statement = Statement.find(params[:id])
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
-    elsif current_user.admin? || (current_user.has_role?(:teacher) && @statement.user_id == current_user.id)
+    elsif current_user.admin? || (current_user.has_role?(:teacher) && (@statement.user_id == current_user.id || @statement.is_public))
       return true
     else
       render json: { error: "No autorizado" }, status: :forbidden

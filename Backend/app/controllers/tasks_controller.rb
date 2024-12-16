@@ -34,6 +34,10 @@ class TasksController < ApplicationController
         closing_date: params[:closing_date],
         created_by: current_user.id
       )
+      if task.opening_date >= task.closing_date
+        render json: { error: "La fecha de apertura debe ser anterior a la fecha de cierre." }, status: :unprocessable_entity
+        return
+      end
       if task.save
         if params[:statement_ids].present?
           statements = Statement.where(id: params[:statement_ids])

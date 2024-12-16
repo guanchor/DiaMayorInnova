@@ -119,9 +119,9 @@
   entry1= Entry.create(solution:solution1, entry_number: 1, entry_date: Date.new(2024,11,25))
   entry2= Entry.create(solution:solution2, entry_number: 2, entry_date: Date.new(2024,11,26))
 
-  account1 = Account.create(accountNumber: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlan1, name: "Cuenta 1")
-  account2 = Account.create(accountNumber: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
-  account3 = Account.create(accountNumber: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
+  account1 = Account.create(account_number: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlan1, name: "Cuenta 1")
+  account2 = Account.create(account_number: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
+  account3 = Account.create(account_number: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
 
   annotation1 = Annotation.create(entry: entry1, account: account1, number: 1, debit: 0 , credit: 100)
   annotation2 = Annotation.create(entry: entry1, account: account2, number: 2, debit: 100 , credit: 0)

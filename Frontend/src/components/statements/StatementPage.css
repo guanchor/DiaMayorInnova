@@ -1,3 +1,7 @@
+* {
+  font-family: var(--font-family);
+}
+
 .statement-page {
   padding: 0;
   width: 100%;
@@ -180,13 +184,9 @@
   margin: 0;
 }
 
+.statement-page__button-text--delete,
 .statement-page__button--delete {
-  color: var(--Color-red-600);
-}
-
-.statement-page__button-text--delete {
-  color: var(--Color-red-600);
-  font: inherit;
+  color: var(--Color-red-700);
 }
 
 .statement-page__button-text--delete:hover {
@@ -314,8 +314,6 @@
 .hidden {
   display: none;
 }
-
-/* MEDIA QUERIES */
 
 @media (max-width: 1024px) {
 

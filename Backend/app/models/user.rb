@@ -12,6 +12,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :name, :first_lastName, :second_lastName, presence: true
+  validate :correct_image_type
 
   # Verificación de roles
   def admin?
@@ -33,5 +34,15 @@ class User < ApplicationRecord
   def generate_new_authentication_token
     token = User.generate_unique_secure_token
     update(authentication_token: token)
-  end 
+  end
+
+  private
+
+  def correct_image_type
+    return unless featured_image.attached?
+
+    unless featured_image.content_type.in?(%w[image/jpeg image/png image/gif])
+      errors.add(:featured_image, 'must be a JPEG, PNG, or GIF')
+    end
+  end
 end

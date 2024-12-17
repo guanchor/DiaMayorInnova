@@ -1,13 +1,18 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { navContext } from "../../../context/nav-menu/navMenuContext";
 import NavItem from "./navItem/NavItem";
 import { routes } from "../../../services/NavRoutes";
 import "./NavBar.css";
 import { useLocation } from "react-router-dom";
+import SettingsModal from "../settings-modal/SettingsModal";
 
 const NavBar = () => {
   const { menuState, changeMenu, rol } = useContext(navContext);
   const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   if (location.pathname === "/sign_in") {
     console.log("dentro del location");
@@ -27,11 +32,9 @@ const NavBar = () => {
               } else return null;
             })
           }
-
-
-
         </ul>
-        <div className="navBar__item"><NavItem icon="fi fi-rr-settings-sliders" name="ajustes" url="/settings" /></div>
+        <button className="navBar__item " id="btn--settings" onClick={openModal}><i className="fi fi-rr-settings-sliders"></i></button>
+        <SettingsModal isOpen={isModalOpen} onClose={closeModal} />
       </nav>
     </>
   )

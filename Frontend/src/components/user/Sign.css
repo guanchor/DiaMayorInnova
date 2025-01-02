@@ -4,7 +4,7 @@
 
 .log__section {
     max-width: 280px;
-    height: calc(100dvh - 70px);
+    height: 100%;
     margin: 0 auto;
     border-radius: var(--r-s);
     display: flex;

@@ -34,7 +34,7 @@ const NavBar = () => {
           }
         </ul>
         <button className="navBar__item " id="btn--settings" onClick={openModal}><i className="fi fi-rr-settings-sliders"></i></button>
-        <SettingsModal isOpen={isModalOpen} onClose={closeModal} />
+        {isModalOpen && <SettingsModal onClose={closeModal} />}
       </nav>
     </>
   )

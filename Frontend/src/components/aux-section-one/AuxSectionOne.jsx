@@ -1,42 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import HelpExampleService from '../../services/HelpExampleService'
-import AccountService from '../../services/AccountService';
-import "./AuxSectionOne.css"
+import { useState } from 'react'
 import Spinner from '../spinners/Spinner';
+import useSearchAccountNum from '../../hooks/useSearchAccountNum';
+import "./AuxSectionOne.css"
 
 const AuxSectionOne = () => {
-  const [example, setExample] = useState({});
-  const [account, setAccount] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [searchNumber, setSearchNumber] = useState("");
-  const [isError, setIsError] = useState(false)
-
-  useEffect(() => {
-    if (searchNumber.length >= 4) {
-      setIsLoading(true);
-      AccountService.findByNumber(searchNumber)
-        .then(({ data }) => {
-          setAccount(data);
-          console.log(data);
-          setIsLoading(false);
-          HelpExampleService.findByAccount(account.id)
-            .then(({ data }) => {
-              console.log(data)
-              setExample(data);
-            })
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          setIsError(true);
-          console.error("Error fetching data:", error);
-        });
-    }
-  }, [searchNumber]);
+  const { example, isLoading, isError, account, setIsError } = useSearchAccountNum(searchNumber);
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchNumber(value);
   }
+
+
 
   if (isLoading) {
     return (
@@ -49,8 +25,8 @@ const AuxSectionOne = () => {
   if (isError) {
     return (
       <section className="help_secction__container error-feedback">
-        <p className='text-error-feedback'>Error en la busqueda de la cuenta</p>
-        <button className='btn' onClick={() => setIsError(false)}><i className='fi fi-rr-arrow-small-left'></i> Volver a la ayuda</button>
+        <p className='text-error-feedback'>Cuenta no encontrada intente otro numero</p>
+        <button className='btn' onClick={() => setIsError(false)}><i className='fi fi-rr-arrow-small-left'></i> Buscar de nuevo</button>
       </section>
     )
   }
@@ -58,7 +34,7 @@ const AuxSectionOne = () => {
   return (
     <section className='help_secction__container'>
       <h2 className='help_secction_tittle'>Ayuda</h2>
-      <div className="search-bar">
+      <search className="search-bar">
         <input
           className='search-bar_search'
           type="search" placeholder='cuenta numero 1234'
@@ -66,7 +42,8 @@ const AuxSectionOne = () => {
           onChange={handleSearch}
         />
         <i className='fi fi-rr-search'></i>
-      </div>
+      </search>
+
       {account && example ? (
         <>
           <div className="account_info">
@@ -83,10 +60,10 @@ const AuxSectionOne = () => {
             <p>{example.creditMoves}</p>
           </div>
         </>
-      ) : <section className="section-one_loader">
-        <Spinner />
-      </section>}
-
+      ) :
+        <section className="section-one_loader">
+          <Spinner />
+        </section>}
 
     </section>
   )

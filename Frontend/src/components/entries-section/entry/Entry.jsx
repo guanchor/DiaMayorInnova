@@ -15,11 +15,6 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
     setDate(e.target.value)
   }
 
-  const handleDelete = (e) => {
-    e.preventDefault();
-    deleteEntry();
-  }
-
   return (
     <div className='entry_wrapper'>
       <header className="entry_head" >
@@ -39,8 +34,8 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
       {
         entryStatus && (
           <div className="entry_body">
-            <div className="entry_body_tittle">
-              <div className="header_container">
+            <section className="entry_body_tittle">
+              <header className="header_container">
                 <p className='apt_number'>Apt</p>
                 <div className="tittles_wrapper">
                   <p className='tittle_account-number'>Nº Cuenta</p>
@@ -48,9 +43,9 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
                   <p className='tittle_debit'>Debe</p>
                   <p className='tittle_credit'>Haber</p>
                 </div>
-              </div>
+              </header>
 
-            </div>
+            </section>
 
             <div className="entry_item_container scroll-style">
               {annotations && annotations.map((annotation, index) => (
@@ -64,7 +59,15 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
               ))
               }
             </div>
-            {entryStatus ? <button className='btn entry_add_annotation' onClick={() => addAnnotation(number)}><i className='fi fi-rr-plus'></i> Apunte</button> : null}
+            {
+              entryStatus &&
+              <button
+                className='btn entry_add_annotation'
+                onClick={() => addAnnotation(number)}>
+                <i className='fi fi-rr-plus'></i>
+                Apunte
+              </button>
+            }
           </div>
         )
       }

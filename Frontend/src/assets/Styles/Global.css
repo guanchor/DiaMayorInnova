@@ -233,6 +233,11 @@ a {
 
 .app-main {
   padding: 60px 0 0 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
 }
 
 .btn {

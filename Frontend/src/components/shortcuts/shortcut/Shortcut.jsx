@@ -1,4 +1,3 @@
-import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './Shortcut.css';
 
@@ -10,8 +9,8 @@ const Shortcut = ({
 }) => {
   const handleClick = (e) => {
     if (onClick) {
-      e.preventDefault(); // Prevenir la navegación estándar
-      onClick(); // Ejecutar la acción personalizada
+      e.preventDefault();
+      onClick();
     }
   };
 

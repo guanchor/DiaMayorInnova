@@ -3,7 +3,7 @@ import EntryHeader from './entry-header/EntryHeader'
 import Entry from './entry/Entry'
 import "./EntriesSection.css"
 import userExerciseDataService from '../../services/userExerciseDataService'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const EntriesSection = ({ taskSubmit }) => {
   const [entries, setEntries] = useState([]);
@@ -52,7 +52,7 @@ const EntriesSection = ({ taskSubmit }) => {
   const prepareExerciseData = () => {
     return {
       exercise: {
-        task_id: 2, // Cambia esto por el valor correspondiente
+        task_id: 2,
         marks_attributes: entries.map(entry => ({
           mark: mark ? mark : 5,
           student_entries_attributes: entries.map(entry => ({
@@ -77,7 +77,7 @@ const EntriesSection = ({ taskSubmit }) => {
     if (taskSubmit) {
       const exerciseData = prepareExerciseData();
       userExerciseDataService.create(exerciseData)
-        .then((response) => {
+        .then(() => {
           navigate("/home")
         })
     }

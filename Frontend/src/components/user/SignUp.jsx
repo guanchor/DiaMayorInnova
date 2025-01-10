@@ -22,7 +22,6 @@ const SignUp = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    // Usamos el servicio para obtener roles
     roleService.getRoles()
       .then((roles) => {
         console.log("Roles obtenidos:", roles);

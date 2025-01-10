@@ -5,28 +5,30 @@ import statementService from "../../services/statementService";
 import StatementForm from "./StatementForm";
 import StatementDetails from "./StatementDetails";
 
-const StatementsList = () => {
+const StatementsList = ({ onSelectStatement }) => {
   const { user, loading: authLoading } = useAuth();
   const [statements, setStatements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFormVisible, setFormVisible] = useState(false);
-  const [selectedStatementId, setSelectedStatementId] = useState(null);
-
+  const [selectedStatement, setSelectedStatement] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchStatements = async () => {
       try {
         setLoading(true);
-        const response = await statementService.getAllStatements();;
+        const response = await statementService.getAllStatements();
+
+        console.log("Datos de enunciados obtenidos:", response.data);
         if (Array.isArray(response.data)) {
-        const filteredStatements = response.data.filter(
-          (statement) => statement.is_public || statement.user_id === user?.id
-        );
-        setStatements(filteredStatements);
-      } else {
-        console.log("RESPUESTA DEL SERVER", response.data);
-        console.error("Error: La respuesta no es un arreglo válido.");
-      }
+          const filteredStatements = response.data.filter(
+            (statement) => statement.is_public || statement.user_id === user?.id
+          );
+          setStatements(filteredStatements);
+        } else {
+          console.log("RESPUESTA DEL SERVER", response.data);
+          console.error("Error: La respuesta no es un arreglo válido.");
+        }
       } catch (error) {
         console.error("Error al cargar los enunciados:", error);
       } finally {
@@ -35,6 +37,58 @@ const StatementsList = () => {
     };
     fetchStatements();
   }, [user]);
+
+  const handleDelete = async (id) => {
+    try {
+      await statementService.deleteStatement(id);
+      setStatements((prevStatements) =>
+        prevStatements.filter((statement) => statement.id !== id)
+      );
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        setErrorMessage("No tienes permiso para eliminar este enunciado.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Error al eliminar el enunciado.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      }
+    }
+  };
+
+  const toggleVisibility = async (id, newVisibility) => {
+    try {
+      await statementService.updateStatement(id, { is_public: newVisibility });
+      setStatements((prevStatements) =>
+        prevStatements.map((statement) =>
+          statement.id === id
+            ? { ...statement, is_public: newVisibility }
+            : statement
+        )
+      );
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        setErrorMessage("No puedes cambiar la visibilidad de enunciados ajenos.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Error al cambiar visibilidad.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      }
+      console.error("Error al cambiar visibilidad:", error);
+    }
+  };
+
+  const handleStatementSelection = (statement) => {
+    setSelectedStatement(statement);
+    onSelectStatement(statement);
+  };
 
   if (authLoading || !user) {
     return <p>Cargando usuario...</p>;
@@ -48,7 +102,6 @@ const StatementsList = () => {
     return <p>No hay enunciados disponibles.</p>;
   }
 
-  // Función para manejar la creación de un enunciado
   const handleStatementCreated = (newStatement) => {
     console.log("Nuevo enunciado creado:", newStatement);
     // Aquí agregas el nuevo enunciado al estado de la lista de enunciados
@@ -56,32 +109,44 @@ const StatementsList = () => {
     setFormVisible(false);
   };
 
-  console.log("Lista de enunciados:", statements);
+  //console.log("Lista de enunciados:", statements);
   return (
-    <div>
-      <h3>Enunciados Disponibles</h3>
-      <ul>
+    <div className="statement-page__selection--content">
+      <h3 className="statement-page__list--header">Enunciados</h3>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <ul className="statement-page__list">
         {statements.map((statement) => (
-          <li key={statement.id}>
-            <p>{statement.definition}</p>
-            <p>{statement.explanation}</p>
-            <p>
-              <strong>Propietario:</strong>{" "}
-              {statement.user_id === user.id ? `${user.name}` : `Usuario ${statement.user_id}`}
-            </p>
-            <p>
-              <strong>Visibilidad:</strong> {statement.is_public ? "Público" : "Privado"}
-            </p>
-            <button onClick={() => setSelectedStatementId(statement.id)}>
-              Ver detalles
-            </button>
+          <li className="statement-page__list-item" key={statement.id}>
+            <div className="statement-page__statement-container">
+              <span className="statement-page__definition">{statement.definition}</span>
+              <div className="statement-page__actions">
+                <button onClick={() => handleDelete(statement.id)} className="statement-page__button--delete">
+                  <i className="fi-rr-trash"></i>
+                  <span className="statement-page__button-text--delete">Borrar</span>
+                </button>
+                <button onClick={() => handleStatementSelection(statement)}>
+                <i className="fi-rr-pencil"></i>
+                  <span className="statement-page__button-text">Editar</span>
+                </button>
+                <div className="statement-page__toggle-visibility">
+                  <button
+                    onClick={() => toggleVisibility(statement.id, false)} // Cambiar a "Privado"
+                    className={`toggle-option ${!statement.is_public ? "active" : ""}`}
+                  >
+                    Privado
+                  </button>
+                  <button
+                    onClick={() => toggleVisibility(statement.id, true)} // Cambiar a "Público"
+                    className={`toggle-option ${statement.is_public ? "active" : ""}`}
+                  >
+                    Público
+                  </button>
+                </div>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
-      <button onClick={() => setFormVisible(true)}>Crear Nuevo Enunciado</button>
-      {isFormVisible && <StatementForm onStatementCreated={handleStatementCreated} />}
-
-      {selectedStatementId && <StatementDetails statementId={selectedStatementId} />}
     </div>
   );
 };

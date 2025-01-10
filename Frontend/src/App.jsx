@@ -19,8 +19,9 @@ import './App.css';
 import './assets/Styles/Global.css';
 import TaskListAndDetails from './components/task/taskListAndDetails';
 import StatementsList from './components/statements/StatementList';
-import StatementForm from './components/statements/StatementForm';
-import TaskEditForm from './components/task/TaskEditForm';
+import TaskCreateForm from './components/task/TaskCreateForm';
+import StatementCreateForm from './components/statements/StatementCreateForm';
+
 
 function App() {
 
@@ -41,9 +42,9 @@ function App() {
                   <Route path="/modes" element={<TaskPage />} />
                   <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
                     <Route path="/tasks" element={<TaskListAndDetails />} />
-                    <Route path="/tasks/:id" element={<TaskEditForm />} />
+                    <Route path="/task-edit" element={<TaskCreateForm />} />
                     <Route path="/statements" element={<StatementsList />} />
-                    <Route path="/add-statements" element={<StatementForm />} />
+                    <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                     <Route path="/schools" element={<SchoolsCenters />} />
                     <Route path="/class-list" element={<ClassGroupsList />} />

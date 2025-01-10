@@ -111,7 +111,7 @@
   }
 
 
-  @media (width > 800px) {
+  @media (width > 1024px) {
     .fi-rr-menu-burger {
       display: none;
     }

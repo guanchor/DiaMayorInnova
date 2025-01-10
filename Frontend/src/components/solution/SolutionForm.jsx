@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import EntryForm from "../entry/EntryForm.jsx";
 
 const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
+  
   const handleSolutionChange = (event) => {
-    const updatedSolutions = [...solutions];
-    updatedSolutions[solutionIndex].description = event.target.value;
-    setSolutions(updatedSolutions);
+    setSolutions((solution) => {
+      const updatedSolutions = [...solutions];
+      updatedSolutions[solutionIndex].description = event.target.value;
+      console.log('AAAAAa', updatedSolutions);
+      return updatedSolutions;
+    });
+
+  };
+
+  const [collapsedEntries, setCollapsedEntries] = useState(
+    solution.entries.map(() => true) // Inicialmente todos los asientos están contraídos
+  );
+
+  const toggleCollapse = (index) => {
+    const updatedCollapse = [...collapsedEntries];
+    updatedCollapse[index] = !updatedCollapse[index];
+    setCollapsedEntries(updatedCollapse);
   };
 
   const addEntry = () => {
@@ -13,39 +28,121 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
     updatedSolutions[solutionIndex].entries.push({
       entry_number: updatedSolutions[solutionIndex].entries.length + 1,
       entry_date: "",
-      annotations: [{ number: 1, credit: 0, debit: 0 }],
+      annotations: [{ number: 1, account_number: 0, credit: 0, debit: 0 }],
     });
     setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de agregar asiento:", updatedSolutions);
+  };
+
+/* En caso de querer un botón "Eliminar Asiento", por asiento  
+ const removeEntry = (entryIndex) => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[solutionIndex].entries = updatedSolutions[solutionIndex].entries.filter(
+      (_, i) => i !== entryIndex
+    );
+    setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar asiento:", updatedSolutions);
+  }; */
+
+  const removeLastEntry = () => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[solutionIndex].entries.pop();
+    setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar el último asiento:", updatedSolutions);
   };
 
   const removeSolution = () => {
     const updatedSolutions = solutions.filter((_, index) => index !== solutionIndex);
     setSolutions(updatedSolutions);
+    console.log("Soluciones actualizadas después de eliminar asiento:", updatedSolutions);
   };
 
+  const calculateTotals = () => {
+    const totals = { debit: 0, credit: 0 };
+    solution.entries.forEach((entry) => {
+      entry.annotations.forEach((annotation) => {
+        totals.debit += parseFloat(annotation.debit || 0);
+        totals.credit += parseFloat(annotation.credit || 0);
+      });
+    });
+    return totals;
+  };
+
+  const totals = calculateTotals();
+
   return (
-    <div>
-      <div>
-        <label>Solución {solutionIndex + 1}:</label>
+    <div className="statement-page__form-modal">
+      <div className="statement-page__form-modal--solution">
+        <h5>Solución {solutionIndex + 1}:</h5>
         <textarea
+          name="description"
+          className="statement-page__description"
           value={solution.description}
           onChange={handleSolutionChange}
+          placeholder="Descripción de la solución"
         />
-        <button type="button" onClick={removeSolution}>Eliminar Solución</button>
+        {/* <button type="button" onClick={removeSolution}>Eliminar Solución</button> */}
       </div>
 
       {solution.entries.map((entry, entryIndex) => (
-        <EntryForm
-          key={entryIndex}
-          solutionIndex={solutionIndex}
-          entry={entry}
-          entryIndex={entryIndex}
-          solutions={solutions}
-          setSolutions={setSolutions}
-        />
+        <div key={entryIndex}>
+          <div
+            className="statement-page__entry-collapse"
+            onClick={() => toggleCollapse(entryIndex)}
+          >
+            <span className="statement-page__entry-title">{`Asiento ${entry.entry_number}`}</span>
+            <span className="statement-page__entry-icon">
+              <i className={
+                collapsedEntries[entryIndex]
+                  ? "fi fi-rr-angle-small-down"
+                  : "fi fi-rr-angle-small-up"
+              }
+              ></i>
+            </span>
+            <span className="statement-page__entry-date">Fecha: {entry.entry_date || "Sin fecha"}</span>
+          </div>
+
+          {!collapsedEntries[entryIndex] && (
+            <EntryForm
+              solutionIndex={solutionIndex}
+              entry={entry}
+              entryIndex={entryIndex}
+              solutions={solutions}
+              setSolutions={setSolutions}
+            />
+          )}
+          {/* En caso de querer un botón "Eliminar Asiento", por Asiento.
+          <button
+            type="button"
+            className="statement-page__button--remove-entry"
+            onClick={() => removeEntry(entryIndex)}
+          >
+            <i className="fi fi-rr-trash"></i>
+            <span className="statement-page__span--remove-entry">Asiento</span>
+          </button> */}
+        </div>
       ))}
 
-      <button type="button" onClick={addEntry}>Agregar Entrada</button>
+
+      <div className="statement-page-modal__actions" >
+        <div className="statement-page-modal__actions-buttons" >
+          <button type="button" onClick={addEntry} className="statement-page__button--add-entry">
+            + Asiento
+          </button>
+          <button
+            type="button"
+            className="statement-page__button--remove-entry"
+            onClick={removeLastEntry}
+          >
+            <i className="fi fi-rr-trash"></i>
+            <span className="statement-page__span--remove-entry">Asiento</span>
+          </button>
+        </div>
+        <div className="statement-page__totals">
+          <span>Total Debe: {totals.debit.toFixed(2)}</span>
+          <span>Total Haber: {totals.credit.toFixed(2)}</span>
+        </div>
+      </div>
     </div>
   );
 };

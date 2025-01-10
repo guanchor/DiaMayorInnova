@@ -1,4 +1,3 @@
-import React from 'react'
 import "./EntryForm.css"
 
 const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {

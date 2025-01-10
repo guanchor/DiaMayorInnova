@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import useScreenSize from '../../../hooks/useScreenSize';
+import innovaLogoSmall from '/innova_small.svg';
+import innovaLogo from '/innova.svg';
 import Dropdown from './dropdown/Dropdown';
+import { useState, useEffect, useContext } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { navContext } from "../../../context/nav-menu/navMenuContext";
 import './Header.css';
-import { NavLink, useLocation } from 'react-router-dom';
-import innovaLogo from '/innova.svg';
-import innovaLogoSmall from '/innova_small.svg';
-import useScreenSize from '../../../hooks/useScreenSize';
 
 const Header = () => {
   const { changeMenu } = useContext(navContext);

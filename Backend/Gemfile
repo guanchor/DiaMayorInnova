@@ -29,6 +29,17 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
+# Devise
+gem 'devise', '~> 4.2'
+
+# Simple token authentication
+gem 'simple_token_authentication','~> 1.0'
+
+gem 'active_model_serializers'
+
+# An authorization library for Ruby which restricts what resources a given user is allowed to access.
+gem 'cancancan'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -39,16 +50,4 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  # Devise
-  gem 'devise', '~> 4.2'
-
-  # Simple token authentication
-  gem 'simple_token_authentication','~> 1.0'
-
-  gem 'active_model_serializers'
-
-  # An authorization library for Ruby which restricts what resources a given user is allowed to access.
-  gem 'cancancan'
 end
-
-

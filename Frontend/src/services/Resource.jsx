@@ -15,6 +15,7 @@ const DEFAULT_EMPTY_RESOURCE = {
 
 function resourceReducer(state, action) {
   console.log(action.type, action);
+
   switch (action.type) {
     case "USING_RESOURCE":
       return {

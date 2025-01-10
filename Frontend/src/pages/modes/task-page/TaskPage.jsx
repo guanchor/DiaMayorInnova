@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import EntriesSection from '../../../components/entries-section/EntriesSection'
-import AuxSectionOne from '../../../components/aux-section-one/AuxSectionOne'
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo'
 import "./TaskPage.css"
+import HelpSection from '../../../components/aux-section-one/HelpSection'
 
 const TaskPage = () => {
   const [submitTask, setSubmitTask] = useState(false);
@@ -14,7 +14,7 @@ const TaskPage = () => {
         <button className='btn head_button' onClick={() => setSubmitTask(true)}>Entregar Tarea</button>
       </div>
       <EntriesSection taskSubmit={submitTask} />
-      <AuxSectionOne />
+      <HelpSection />
       <AuxSectionTwo />
     </main>
   )

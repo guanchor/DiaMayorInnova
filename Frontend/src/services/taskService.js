@@ -8,6 +8,8 @@ const createTask = (taskData) => http.post("/tasks", taskData);
 
 const deleteStatementFromTask = (taskId, statementId) => http.delete(`/tasks/${taskId}/statements/${statementId}`);
 
+const deleteTask = (taskId) => http.delete(`/tasks/${taskId}`);
+
 const updateTask = (taskId, updatedTaskData) => http.put(`/tasks/${taskId}`, updatedTaskData);
 
 export default {
@@ -15,5 +17,6 @@ export default {
   getTaskWithStatements,
   createTask,
   deleteStatementFromTask,
+  deleteTask,
   updateTask,
 };

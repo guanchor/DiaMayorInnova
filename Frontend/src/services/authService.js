@@ -7,7 +7,6 @@ const authService = {
     http.post(`${API_BASE_URL}/validate_token`, {}, {
       headers: { "AUTH-TOKEN": token },
     }).then((response) => {
-      console.log("Respuesta de validación de token:", response);
       return response;
     })
       .catch((error) => {

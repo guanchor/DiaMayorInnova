@@ -34,7 +34,6 @@ const ClassGroup = () => {
     ClassGroupDataService.get(id)
       .then(response => {
         setCurrentClassGroup(response.data);
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -69,7 +68,6 @@ const ClassGroup = () => {
     if (validateForm()) {
       ClassGroupDataService.update(currentClassGroup.id, currentClassGroup)
         .then(response => {
-          console.log(response.data);
           setMessage("El grupo de clase fue actualizado correctamente.");
         })
         .catch(e => {
@@ -82,7 +80,6 @@ const ClassGroup = () => {
   const deleteClassGroup = () => {
     ClassGroupDataService.remove(currentClassGroup.id)
       .then(response => {
-        console.log(response.data);
         navigate("/class-list");
       }).catch(e => {
         console.log(e);

@@ -83,7 +83,7 @@
   left: 0px
 }
 
-@media (width > 800px) {
+@media (width > 1024px) {
   .navBar_container {
     height: calc(100dvh - 70px);
     width: 70px;

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
+import "./AccountingPlan.css";
 
 const AccountingPlan = (props) => {
   const { id } = useParams();
   let navigate = useNavigate();
 
   const initialAccountingPlanState = {
-    id:null,
+    id: null,
     name: "",
     description: "",
     acronym: ""
@@ -26,7 +27,6 @@ const AccountingPlan = (props) => {
     AccountingPlanDataService.get(id)
       .then((response) => {
         setCurrentAccountingPlan(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -50,22 +50,20 @@ const AccountingPlan = (props) => {
 
   const updateAccountingPlan = () => {
     if (validateForm()) {
-    AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
-      .then(response => {
-        console.log(response.data);
-        setMessage("El plan de cuentas fue actualizado correctamente.");
-      })
-      .catch(e => {
-        console.log(e);
-        setError("Hubo un problema al actualizar el plan de cuentas.");
-      });
-  }
-};
+      AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
+        .then(response => {
+          setMessage("El plan de cuentas fue actualizado correctamente.");
+        })
+        .catch(e => {
+          console.log(e);
+          setError("Hubo un problema al actualizar el plan de cuentas.");
+        });
+    }
+  };
 
   const deleteAccountingPlan = () => {
     AccountingPlanDataService.remove(currentAccountingPlan.id)
       .then((response) => {
-        console.log(response.data);
         navigate("/accounting-plans/");
       })
       .catch((e) => {
@@ -75,13 +73,15 @@ const AccountingPlan = (props) => {
 
   return (
     <>
+
       {currentAccountingPlan ? (
         <div>
-          <h4>Accounting Plan</h4>
-          <form>
-            <div>
-              <label htmlFor="name">Nombre</label>
+          <h4 className="accountingPlan__header--h4 details">Detalles del PGC </h4>
+          <form className="accountingPlan__form">
+            <div className="accountingPlan__form--group">
+              <label className="accountingPlan__label" htmlFor="name">Nombre</label>
               <input
+                className="accountingPlan__input"
                 id="name"
                 name="name"
                 type="text"
@@ -90,9 +90,10 @@ const AccountingPlan = (props) => {
                 required
               />
             </div>
-            <div>
-              <label htmlFor="description">Descripción</label>
-              <input
+            <div className="accountingPlan__form--group">
+              <label className="accountingPlan__label" htmlFor="description">Descripción</label>
+              <textarea
+                className="accountingPlan__input descrip"
                 id="description"
                 name="description"
                 type="text"
@@ -101,9 +102,10 @@ const AccountingPlan = (props) => {
                 required
               />
             </div>
-            <div>
-              <label htmlFor="acronym">Acrónimo</label>
+            <div className="accountingPlan__form--group">
+              <label className="accountingPlan__label" htmlFor="acronym">Acrónimo</label>
               <input
+                className="accountingPlan__input"
                 id="acronym"
                 name="acronym"
                 type="text"
@@ -113,11 +115,13 @@ const AccountingPlan = (props) => {
               />
             </div>
           </form>
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-          <button onClick={updateAccountingPlan}>Editar</button>
-          <button onClick={deleteAccountingPlan}>Borrar</button>
-          <p>{message}</p>
-          <Link to={"/accounting-plans/"}>Volver</Link>
+          <div className="accountingPlan__form--actions details">
+            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+            <button className="btn accountingPlan__button--edit" onClick={updateAccountingPlan}>Editar</button>
+            <button className="btn accountingPlan__button--back"><Link to={"/accounting-plans/"}>Atrás</Link></button>
+            <p>{message}</p>
+          </div>
+
         </div>
       ) : (
         <div>

@@ -26,7 +26,6 @@ const StatementsList = ({ onSelectStatement }) => {
           );
           setStatements(filteredStatements);
         } else {
-          console.log("RESPUESTA DEL SERVER", response.data);
           console.error("Error: La respuesta no es un arreglo válido.");
         }
       } catch (error) {
@@ -125,7 +124,7 @@ const StatementsList = ({ onSelectStatement }) => {
                   <span className="statement-page__button-text--delete">Borrar</span>
                 </button>
                 <button onClick={() => handleStatementSelection(statement)}>
-                <i className="fi-rr-pencil"></i>
+                  <i className="fi-rr-pencil"></i>
                   <span className="statement-page__button-text">Editar</span>
                 </button>
                 <div className="statement-page__toggle-visibility">

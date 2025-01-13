@@ -16,6 +16,10 @@ const Shortcuts = () => {
       <div className="shortcut__wrapper">
         {scRoutes.map((route) => {
           if (route.rol.includes(rol)) {
+            /* return <Shortcut key={route.to} icon={route.icon} name={route.name} url={route.to} />
+          } else return null;
+        }
+        )} */
             const onClick =
               route.to === "/tasks"
                 ? () => navigate("/tasks", { state: { createTask: true } })

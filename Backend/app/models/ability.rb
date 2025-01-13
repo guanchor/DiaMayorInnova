@@ -7,18 +7,17 @@ class Ability
     user ||= User.new # Crea un usuario invitado si no está logueado.
 
     if user.admin?
-      # Los admin pueden gestionar todo
       can :manage, :all
     elsif user.teacher?
-      # Los teachers pueden gestionar todos los class_groups
       can :manage, ClassGroup
       can :manage, AccountingPlan
       can :manage, SchoolCenter 
       can :manage, Task
       can :manage, Statement
       can :manage, Solution
+      # Asume que los maestros también pueden gestionar anotaciones
+      can :manage, StudentAnnotation
     elsif user.student?
-      # Los estudiantes solo pueden leer (ver) los class_groups
       cannot :manage, SchoolCenter
       cannot :manage, ClassGroup
       cannot :manage, Task
@@ -30,11 +29,17 @@ class Ability
       cannot :manage, Annotation
       can :index, AccountingPlan
       can :show, AccountingPlan
+      # Asume que los estudiantes pueden gestionar sus propias anotaciones
+      can :manage, StudentAnnotation, user_id: user.id
     else
       # Usuarios invitados no pueden hacer nada con los class_groups
-      cannot :manage, :akk
+      cannot :manage, :all
+      cannot :manage, SchoolCenter
+      cannot :manage, ClassGroup
+      cannot :manage, AccountingPlan
     end
 
     can :manage, Task, created_by: user.id
   end
 end
+

@@ -1,7 +1,20 @@
-/* body{
-    background-color: #adadad;
-    color: black;
-} */
+.school-center_page {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 0.48fr 1fr;
+    grid-template-areas:
+        "form find"
+        "form list"
+    ;
+    overflow: hidden;
+    height: 100%;
+
+    & h2 {
+        font-size: var(--text-desktop-subtitles-1);
+    }
+
+}
+
 
 .school-center__page {
     padding-top: 400px;

@@ -41,6 +41,22 @@
     puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
   end
 
+  teacher_role = Role.find_by(name: 'teacher')
+  if teacher_role && !user.has_role?('teacher')
+    user.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
+  end
+
+  student_rol = Role.find_by(name: 'student')
+  if student_rol && !user.has_role?('student')
+    user.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user.email}"
+  else
+    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
+  end
+
   user2 = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
     u.name = "Tiburcio"
     u.first_lastName = "Cruz"
@@ -57,7 +73,7 @@
     puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
   end
 
-  user = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
+  user3 = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
     u.name = "Miguel"
     u.first_lastName = "Figueroa"
     u.second_lastName = "García"
@@ -66,14 +82,14 @@
   end
 
   teacher_role = Role.find_by(name: 'teacher')
-  if teacher_role && !user.has_role?('teacher')
-    user.roles << teacher_role
-    puts "Rol 'teacher' asignado al usuario #{user.email}"
+  if teacher_role && !user3.has_role?('teacher')
+    user3.roles << teacher_role
+    puts "Rol 'teacher' asignado al usuario #{user3.email}"
   else
     puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
   end
 
-  user = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
+  user4 = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
     u.name = "Echedey"
     u.first_lastName = "Henríquez"
     u.second_lastName = "Hernández"
@@ -82,9 +98,25 @@
   end
 
   student_rol = Role.find_by(name: 'student')
-  if student_rol && !user.has_role?('student')
-    user.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user.email}"
+  if student_rol && !user4.has_role?('student')
+    user4.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user4.email}"
+  else
+    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
+  end
+
+  user5 = User.find_or_create_by(email: 'mayer@ieselrincon.es') do |u|
+    u.name = "Mayer Alberto"
+    u.first_lastName = "Guerrero"
+    u.second_lastName = "Gutierrez"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+  end
+
+  student_rol = Role.find_by(name: 'student')
+  if student_rol && !user5.has_role?('student')
+    user5.roles << student_rol
+    puts "Rol 'student' asignado al usuario #{user5.email}"
   else
     puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
   end
@@ -108,7 +140,6 @@
   task2.statements << statement6
   task2.statements << statement2
 
-
   solution1= Solution.create(description: "Descripcion solución 1 de prueba", statement: statement1)
   solution2= Solution.create(description: "Descripcion solución 2 de prueba", statement: statement2)
   solution3= Solution.create(description: "Descripcion solución 3 de prueba", statement: statement3)
@@ -128,6 +159,24 @@
   annotation3 = Annotation.create(entry: entry2, account: account3, number: 1, debit: 0 , credit: 300)
   annotation4 = Annotation.create(entry: entry2, account: account2, number: 2, debit: 300 , credit: 0)
 
-  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1)
-  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2)
-  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3)
+  helpExample1 = HelpExample.create(creditMoves: "1 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "1 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account1, description: "Descripcion ejemplo 1")
+  helpExample2 = HelpExample.create(creditMoves: "2 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "2 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account2, description: "Descripcion ejemplo 2")
+  helpExample3 = HelpExample.create(creditMoves: "3 Movimientos Haber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", debitMoves: "3 Movimientos Deber - Texto de ejemplo para probar el seed de Ayudas para las diferentes cuentas", account: account3, description: "Descripcion ejemplo 3")
+
+  exercise1 = Exercise.create(user: user, task: task1) 
+  exercise2 = Exercise.create(user: user2, task: task1) 
+  exercise3 = Exercise.create(user: user5, task: task2) 
+  
+  mark1 = Mark.create(mark: 5.5, exercise: exercise1) 
+  mark2 = Mark.create(mark: 9, exercise: exercise2) 
+  mark3 = Mark.create(mark: 7.5, exercise: exercise3) 
+
+  student_entry1 = StudentEntry.create(entry_number: 1, entry_date: Date.new(2024, 11, 25), mark: mark1) 
+  student_entry2 = StudentEntry.create(entry_number: 2, entry_date: Date.new(2024, 11, 25), mark: mark2) 
+  student_entry3 = StudentEntry.create(entry_number: 3, entry_date: Date.new(2024, 11, 25), mark: mark3) 
+  student_entry3 = StudentEntry.create(entry_number: 2, entry_date: Date.new(2022, 10, 25), mark: mark1) 
+
+  student_annotation1 = StudentAnnotation.create(number: 1, account_number: 1234, credit: 100, debit: 0, student_entry: student_entry1, account: account1) 
+  student_annotation2 = StudentAnnotation.create(number: 2, account_number: 1334, credit: 0, debit: 1000, student_entry: student_entry2, account: account2) 
+  student_annotation3 = StudentAnnotation.create(number: 3, account_number: 2234, credit: 100, debit: 0, student_entry: student_entry3, account: account3)
+  

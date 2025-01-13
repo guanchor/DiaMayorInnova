@@ -24,7 +24,6 @@ const SignUp = () => {
   useEffect(() => {
     roleService.getRoles()
       .then((roles) => {
-        console.log("Roles obtenidos:", roles);
         setAvailableRoles(roles || [])
       })
       .catch((err) => {
@@ -45,7 +44,6 @@ const SignUp = () => {
       setError("Las contraseñas no coinciden.");
       return;
     }
-    console.log("Imagen a enviar linea 33 SignUp:", input.featured_image);
 
     const formData = new FormData();
     formData.append("email", input.email);
@@ -58,7 +56,6 @@ const SignUp = () => {
     }
     formData.append("roles", JSON.stringify(input.roles));//json to string -> roles to string.
 
-    console.log("Enviando solicitud de registro con:", input);
     auth.signUpAction(formData).then((response) => {
       console.log("Usuario registrado", response);
     }).catch((error) => {

@@ -1,0 +1,25 @@
+.task-color {
+  background-color: var(--Color-blue-100);
+}
+
+.task-page_header {
+  grid-area: head;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "head-l head-c head-r";
+}
+
+
+.head-task_tittle {
+  font-size: var(--text-desktop-small);
+  font-weight: 400;
+  grid-area: head-c;
+  text-align: center;
+  align-content: center;
+}
+
+.head_button {
+  justify-self: end;
+  grid-area: head-r;
+}

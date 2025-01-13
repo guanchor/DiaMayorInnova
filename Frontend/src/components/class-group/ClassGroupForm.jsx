@@ -12,7 +12,7 @@ const ClassGroupForm = ({ classGroup, onChange, onSubmit, submitText }) => {
   };
 
   return (
-    <form className="class-group__form" onSubmit={handleSubmit}>
+    <form className="class-group_form" onSubmit={handleSubmit}>
       <div>
         <label htmlFor="course">Curso</label>
         <input

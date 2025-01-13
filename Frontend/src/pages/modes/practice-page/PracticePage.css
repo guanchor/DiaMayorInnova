@@ -1,0 +1,10 @@
+.practice_color {
+  background-color: var(--Color-yellow-200);
+}
+
+.head_task {
+  grid-area: head;
+  text-align: center;
+  font-size: var(--text-desktop-tiny);
+  font-weight: 400;
+}

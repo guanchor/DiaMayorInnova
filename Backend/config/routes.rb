@@ -3,14 +3,22 @@ Rails.application.routes.draw do
   resources :class_groups
   resources :accounting_plans
   resources :school_centers
-  resources :accounts #do
-    #get 'accounts/find_by_account_number/:account_number', to: 'accounts#find_by_account_number'
-  #end
+  resources :accounts do
+    get 'find_by_account_number', on: :collection
+  end
 
-  resources :help_examples
+  resources :help_examples do
+    get 'find_by_account_id', on: :collection
+  end
+  
   resources :annotations
   resources :entries
   resources :solutions
+  resources :student_entries
+  resources :student_annotations
+  resources :marks
+  resources :exercises
+  resources :student_exercises
 
   resources :tasks, param: :id do
     delete 'statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'

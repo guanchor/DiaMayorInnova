@@ -1,0 +1,82 @@
+.entry_form_wrapper {
+  width: 100%;
+  padding: 0 var(--gap-xxs);
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: var(--gap-xxxl);
+
+  @container parent (width < 609px) {
+    gap: var(--gap-m);
+  }
+}
+
+.entry_form {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: var(--gap-xl);
+  max-width: none;
+
+  @container parent (width < 609px) {
+    gap: 0;
+  }
+}
+
+.form_inputs_container {
+  width: 100%;
+  gap: var(--gap-xl);
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+
+  @container parent (width < 609px) {
+    gap: var(--gap-s);
+  }
+}
+
+.entry_apt {
+  width: 8px;
+}
+
+.btn-trash {
+  height: 34px;
+  width: 34px;
+  padding: var(--gap-xxxs);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: var(--Color-red-700);
+  font-size: larger;
+
+  >.fi {
+    display: flex;
+  }
+}
+
+.form_group {
+  font-size: var(--text-desktop-small);
+
+  >input {
+    width: 100px;
+    margin: 0;
+
+    @container parent (width < 809px) {
+      width: 84px;
+    }
+
+  }
+}
+
+.form_group:nth-child(2) {
+
+  >input {
+    width: 220px;
+
+    @container parent (width < 809px) {
+      width: 144px;
+    }
+  }
+}

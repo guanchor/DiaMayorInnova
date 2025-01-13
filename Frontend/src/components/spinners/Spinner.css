@@ -1,0 +1,52 @@
+.loader {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1.1s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+.loader::before {
+  width: 100%;
+  height: 100%;
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+.loader::after {
+  width: 70%;
+  height: 70%;
+  background-color: var(--Color-White);
+  border-radius: 0;
+  top: 40%;
+  left: 40%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.danger::before {
+  border: 8px solid var(--Color-orange-500);
+}
+
+.success {
+  border: 8px solid var(--Color-green-500);
+}
+
+.error {
+  border: 8px solid var(--Color-red-500);
+}
+
+.neutral {
+  border: 8px solid var(--Color-grey-200);
+}

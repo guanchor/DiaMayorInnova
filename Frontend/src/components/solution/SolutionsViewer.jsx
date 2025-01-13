@@ -1,7 +1,6 @@
 import React from "react";
 
 const SolutionsViewer = ({ solutions }) => {
-  console.log("Soluciones recibidas en SolutionsViewer:", solutions);
   if (!solutions || solutions.length === 0) {
     return <p>No hay soluciones disponibles.</p>;
   }

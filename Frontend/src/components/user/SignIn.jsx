@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 import "./Sign.css";
 
 const SignIn = () => {
@@ -28,7 +29,7 @@ const SignIn = () => {
             auth.setRoles(roles);  // Guardamos los roles en el contexto
           }
           if (user && user.featured_image) {
-            const avatarUrl = `http://localhost:3000${user.featured_image}`;
+            const avatarUrl = `${API_BASE_URL}/${user.featured_image}`;
             auth.setUserAvatarUrl(avatarUrl);
           } else {
             console.log("Response is missing user or featured_image");

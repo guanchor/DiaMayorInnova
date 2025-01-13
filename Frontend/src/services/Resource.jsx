@@ -1,5 +1,6 @@
 import * as React from "react";
 import UrlPattern from "url-pattern";
+import { API_BASE_URL } from "../config";
 
 const ResourceContext = React.createContext();
 
@@ -98,7 +99,7 @@ const useResource = (resource) => {
     updateStateWithFetchedData = true
   ) => {
     console.log("ROUTES", routes);
-    const url = "http://localhost:3000/school_centers"
+    const url = `${API_BASE_URL}/school_centers`
     /*       const url = new UrlPattern(
               routes[resource]?.[action]?.url || routes[resource].url
           ); */

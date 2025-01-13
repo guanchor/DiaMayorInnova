@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
-const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry }) => {
+const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex }) => {
   const [entryStatus, setEntryStatus] = useState(false);
   const [entrydate, setDate] = useState(date);
   const formattedDate = new Date(`${entrydate}T00:00:00`).toLocaleDateString("es-ES");
+  const [total, setTotal] = useState(0);
 
   const changeStatus = () => {
     setEntryStatus(!entryStatus)
@@ -14,6 +15,21 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
   const handleChangeDate = (e) => {
     setDate(e.target.value)
   }
+
+  const calculateTotal = () => {
+    let total = 0;
+    annotations.map((annotation) => {
+      total += annotation.debit;
+      total -= annotation.credit;
+    })
+    return total;
+  }
+
+  useEffect(() => {
+    setTotal(calculateTotal())
+
+  }, [annotations])
+
 
   return (
     <div className='entry_wrapper'>
@@ -27,10 +43,10 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
             <input type='date' className='date_input' value={entrydate} onChange={handleChangeDate}></input>
             : <p>Fecha: <span>{formattedDate}</span></p>
           }
-          <p>Total: <span>0000</span></p>
+          <p>Total: <span>{total}</span></p>
         </div>
-        <button className='btn-trash' onClick={deleteEntry}><i className='fi fi-rr-trash'></i></button>
-      </header>
+        <button className='btn-trash' onClick={() => deleteEntry(entryIndex)}><i className='fi fi-rr-trash'></i></button>
+      </header >
       {
         entryStatus && (
           <div className="entry_body">
@@ -50,11 +66,11 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
             <div className="entry_item_container scroll-style">
               {annotations && annotations.map((annotation, index) => (
                 <EntryForm
-                  key={number + "annotation" + index}
+                  key={annotation.uid}
                   aptNumber={index + 1}
                   annotation={annotation}
-                  onDelete={() => deleteAnnotation(index)}
-                  updateAnnotation={(updatedAnnotation) => updateAnnotation(index, updatedAnnotation)}
+                  onDelete={() => deleteAnnotation(annotation.uid)}
+                  updateAnnotation={(updatedAnnotation) => updateAnnotation(annotation.uid, updatedAnnotation)}
                 />
               ))
               }
@@ -63,7 +79,7 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
               entryStatus &&
               <button
                 className='btn entry_add_annotation'
-                onClick={() => addAnnotation(number)}>
+                onClick={() => addAnnotation(entryIndex)}>
                 <i className='fi fi-rr-plus'></i>
                 Apunte
               </button>

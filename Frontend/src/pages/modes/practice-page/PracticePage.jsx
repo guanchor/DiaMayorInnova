@@ -4,7 +4,7 @@ import EntriesSection from '../../../components/entries-section/EntriesSection'
 import "./PracticePage.css"
 import useScreenSize from '../../../hooks/useScreenSize'
 import EntryMobile from '../../../components/entries-section/entry-mobile/EntryMobile'
-import HelpSection from '../../../components/aux-section-one/HelpSection'
+import HelpSection from '../../../components/help-section/HelpSection'
 
 const PracticePage = () => {
 

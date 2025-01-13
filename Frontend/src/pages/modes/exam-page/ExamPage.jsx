@@ -2,7 +2,7 @@ import React from 'react'
 import EntriesSection from '../../../components/entries-section/EntriesSection'
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo'
 import "./ExamPage.css"
-import HelpSection from '../../../components/aux-section-one/HelpSection'
+import HelpSection from '../../../components/help-section/HelpSection'
 
 const ExamPage = () => {
   return (

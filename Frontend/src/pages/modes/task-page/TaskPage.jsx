@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import EntriesSection from '../../../components/entries-section/EntriesSection'
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo'
 import "./TaskPage.css"
-import HelpSection from '../../../components/aux-section-one/HelpSection'
+import HelpSection from '../../../components/help-section/HelpSection'
 
 const TaskPage = () => {
   const [submitTask, setSubmitTask] = useState(false);

@@ -7,7 +7,7 @@ import AccountingPlanService from '../../services/AccountingPlanService';
 const AddAccount = ({setNewAcc}) => {
   const initialAccountState = {
     id: null,
-    accountNumber: 0,
+    account_number: 0,
     description: "",
     accounting_plan_id: 0,
     name: "",
@@ -20,13 +20,12 @@ const AddAccount = ({setNewAcc}) => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    // setAccount({...account, [name]:value});
-    setAccount({ ...account, [name]: name === "accountNumber" || name === "accounting_plan_id" ? parseInt(value) : value });
+    setAccount({...account, [name]:value});
   };
 
 
   const validateForm = () => {
-    if (!account.name || !account.accountNumber || !account.description || !account.accounting_plan_id) {
+    if (!account.name || !account.account_number || !account.description || !account.accounting_plan_id) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     };
@@ -36,12 +35,13 @@ const AddAccount = ({setNewAcc}) => {
 
 
   const saveAccount = () => {
+    setNewAcc(false);
     if (validateForm()) {
       let data = {
-        name: account.name.trim(),
-        accountNumber: account.accountNumber,
-        description: account.description.trim(),
-        accounting_plan_id: account.accounting_plan_id,
+          name: account.name.trim(),
+          account_number: account.account_number,
+          description: account.description.trim(),
+          accounting_plan_id: account.accounting_plan_id,
       };
 
       AccountDataService.create(data)
@@ -49,7 +49,7 @@ const AddAccount = ({setNewAcc}) => {
         setAccount({
           id: parseInt(response.data.id),
           name: response.data.name.trim(),
-          accountNumber: parseInt(response.data.accountNumber),
+          account_number: parseInt(response.data.account_number),
           description: response.data.description.trim(),
           accounting_plan_id: parseInt(response.data.accounting_plan_id),
         })
@@ -96,12 +96,12 @@ const AddAccount = ({setNewAcc}) => {
                   <input 
                     className='account__input'
                     placeholder='Nº cuenta'
-                    type="text"
-                    id='accountNumber'
+                    type="number"
+                    id='account_number'
                     required
-                    value={account.accountNumber}
+                    value={account.account_number}
                     onChange={handleInputChange}
-                    name='accountNumber'
+                    name='account_number'
                   />
                 </div>  
         

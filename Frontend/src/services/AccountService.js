@@ -24,6 +24,7 @@ const create = async (data) => {
   try {
     const response = await http.post("/accounts", data);
     return response;
+    
   } catch (error) {
     console.error("Error en la creación:", error);
     return null;
@@ -65,6 +66,17 @@ const findByNumber = (account_number) => {
   return response;
 };
 
+const  findByName =  async (name) => {
+  try {
+    const response = await http.get(`/accounts?name=${name}`);
+    return response;
+  }
+  catch (error) {
+    console.log("Error en la búsqueda por módulo", error);
+    return null;
+  }
+};
+
 const AccountService = {
   getAll,
   get,
@@ -72,8 +84,8 @@ const AccountService = {
   update,
   remove,
   removeAll,
-  findByNumber
+  findByNumber,
+  findByName,
 };
 
 export default AccountService;
-// # A

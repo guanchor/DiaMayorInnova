@@ -24,6 +24,7 @@ const create = async (data) => {
   try {
     const response = await http.post("/help_examples", data);
     return response;
+    
   } catch (error) {
     console.error("Error en la creación", error);
     return null;

@@ -1,7 +1,6 @@
 .accountingPlan__pgcList {
   padding: var(--gap-s) var(--gap-s) 0 var(--gap-s);
   height: 100%;
-  border-top: 1px solid var(--Color-grey-200);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -158,7 +157,6 @@
 .accountingPlan__form--actions {
   display: flex;
   font-family: inherit;
-
   justify-content: center;
 
   & .accountingPlan__button {
@@ -213,13 +211,6 @@
 
 /* Media Queries */
 
-/* SOS a Mayer: 
-  x No cambia la fuente de los actions del listado
-  x Se clipea el "Nuevo Plan de contabilidad" con el header
-  x El height auto de la lista en tablet si lo quito clipea el primer registro (pierdo el static, se ve todo el listado )
-  x El calc de altura de la lista --> BOOOOMMMM
-*/
-
 /* Para tablets (hasta 768px) */
 @media (max-width: 768px) {
   .accountingPlan__header--h4 {
@@ -244,14 +235,8 @@
     font-size: var(--text-mobile-body-small);
   }
 
-  .accountingPlan__button--link.eye {
-    font-size: var(--text-mobile-body-small);
-  }
-
-  .accountingPlan__button--link.pencil {
-    font-size: var(--text-mobile-body-small);
-  }
-
+  .accountingPlan__button--link.eye,
+  .accountingPlan__button--link.pencil,
   .accountingPlan__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }
@@ -264,14 +249,8 @@
     font-size: var(--text-mobile-lead);
   }
 
-  .accountingPlan__button--link.eye {
-    font-size: var(--text-mobile-body-small);
-  }
-
-  .accountingPlan__button--link.pencil {
-    font-size: var(--text-mobile-body-small);
-  }
-
+  .accountingPlan__button--link.eye,
+  .accountingPlan__button--link.pencil,
   .accountingPlan__button--remove.trash {
     font-size: var(--text-mobile-body-small);
   }

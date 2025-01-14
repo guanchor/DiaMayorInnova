@@ -60,10 +60,6 @@
     overflow-y: scroll;
   }
 
-  .accountingPlan__addPGC {
-    height: 360px;
-  }
-
   .accountingPlan__btnHome {
     padding: var(--gap-xxs);
     margin-left: var(--gap-s);
@@ -71,13 +67,6 @@
     font-size: var(--text-mobile-body-small);
   }
 
-  .accountingPlan__page--title {
-    font-size: var(--text-mobile-body-small);
-  }
-
-  .accountingPlan__listPGC {
-    font-size: var(--text-mobile-body-small);
-  }
 }
 
 @media (max-width: 360px) {
@@ -92,10 +81,6 @@
 
   .accountingPlan__page--title {
     font-size: var(--text-mobile-small);
-  }
-
-  .accountingPlan__listPGC {
-    font-size: var(--text-mobile-body-small);
   }
 
   .accountingPlan__addPGC {

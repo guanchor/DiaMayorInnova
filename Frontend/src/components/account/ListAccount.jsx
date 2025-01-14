@@ -28,6 +28,7 @@ const AccountsList = ({ newAcc }) => {
       AccountService.findByName(searchAccount)
         .then(response => {
           setAccounts(response.data);
+          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -57,6 +58,7 @@ const AccountsList = ({ newAcc }) => {
 
   const handleSearchChange = (e) => {
     setSearchAccount(e.target.value);
+    console.log(searchAccount)
   };
 
 
@@ -78,16 +80,21 @@ const AccountsList = ({ newAcc }) => {
         </div>
 
         <div className='account__table'>
-          <table>
+          <table className='account__tbody'>
             <tbody>
               {accounts && accounts.map((account, index) => (
                 <tr className='account__accList--item' key={index} onClick={() => setActiveAccount(account, index)}>
                   <td>{account.name}</td>
-                  <td>{account.accountNumber}</td>
+                  <td>{account.account_number}</td>
                   <td>{account.description}</td>
                   <td>{account.accounting_plan_id}</td>
-                  <td className='account__accList--actions'>
-                    <button className='account__button--edit pencil'>
+                  <td className='account__form--actions'>
+                    <button className='account__button--link inter'>
+                      <Link to={"/help-examples"}>
+                        <i className='fi-rr-interrogation'/>
+                      </Link>
+                    </button>
+                    <button className='account__button--link pencil'>
                       <Link to={"/accounts/" + account.id}>
                         <i className='fi-rr-pencil' /> Editar
                       </Link>
@@ -107,68 +114,6 @@ const AccountsList = ({ newAcc }) => {
         </div>
 
       </section>
-      {/* <section>
-        <h2>Cuentas</h2>
-        <Link to={"/home"}>
-          Volver al Home
-        </Link>
-
-        <div>
-          <input 
-            type="text" 
-            value={searchAccount}
-            onChange={handleSearchChange}
-            placeholder="Filtrar cuenta"
-          />
-          <button onClick={findByName}>Buscar</button>
-        </div>
-
-        <ul className='account_list'>
-          {accounts && accounts.map((account, index) => (
-            <li onClick={() => setActiveAccount(account, index)} key={index}>
-              {account.name}
-            </li>
-          ))}
-        </ul>
-
-        <button><Link to={"/add-account"}>Añadir nueva cuenta</Link></button>
-      </section>
-
-      <section className='account_wrapper'>
-        {currentAccount ? (
-          <div className='currentAccount_detail'>
-            <h3>Cuenta</h3>
-            <div className='detail'>
-              <label>{""}
-                {currentAccount.name}
-              </label>
-            </div>
-            <div className='detail'>
-              <label>{""}
-                {currentAccount.accountNumber}
-              </label>
-            </div>
-            <div className='detail'>
-              <label>{""}
-                {currentAccount.description}
-              </label>
-            </div>
-            <div className='detail'>
-              <label>{""}
-                {currentAccount.accounting_plan_plan}
-              </label>
-            </div>
-            <Link to={"/accounts/" + currentAccount.id}>
-              Editar
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Haga click sobre una cuenta</p>
-          </div>
-        )}
-      </section> */}
     </>
   );
 };

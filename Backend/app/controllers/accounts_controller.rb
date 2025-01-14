@@ -3,8 +3,8 @@ class AccountsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if params[:account_number].present?
-      @accounts = Account.where(account_number: params[:account_number])
+    if params[:name].present?
+      @accounts = Account.where("name LIKE ?", "%#{params[:name]}%")
     else
       @accounts = Account.all
     end 
@@ -25,6 +25,16 @@ class AccountsController < ApplicationController
       
     )
     render json: @account
+  end
+
+   # Método de Strong Parameters
+   def account_params
+    params.require(:account).permit(
+      :accountNumber, 
+      :description, 
+      :name, 
+      :accounting_plan_id
+    )
   end
 
   def update

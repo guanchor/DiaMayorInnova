@@ -16,7 +16,7 @@ const StudentMark = () => {
 
   return (
     <section className={marks ? "mark__section " : "mark__section principalSection__img"}>
-      <p className='mark_tittle'>Califiaciones</p>
+      <p className='mark__tittle'>Calificaciones</p>
       <div className="marks__wrapper">
         {
           marks && marks.map((mark, index) => (

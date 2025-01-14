@@ -21,13 +21,12 @@ const HelpExample = (props) => {
 
   const getHelpExample = (id) => {
     HelpExampleDataService.get(id)
-    .then((response) => {
-      setCurrentHelpExample(response.data);
-      console.log(response.data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .then((response) => {
+        setCurrentHelpExample(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
@@ -36,31 +35,29 @@ const HelpExample = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentHelpExample({ ...currentHelpExample, [name]: value});
+    setCurrentHelpExample({ ...currentHelpExample, [name]: value });
   };
 
   const updateHelpExample = () => {
     HelpExampleDataService.update(currentHelpExample.id, currentHelpExample)
-    .then(response => {
-      console.log(response.data);
-      setMessage("Help example updated succesfully");
-    })
-    .catch(e => {
-      console.log(e);
-    });
+      .then(response => {
+        setMessage("Help example updated succesfully");
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   const deleteHelpExample = () => {
     HelpExampleDataService.remove(currentHelpExample.id)
-    .then((response) => {
-      console.log(response.data);
-      navigate("/help-examples/");
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+      .then((response) => {
+        navigate("/help-examples/");
+      })
+      .catch((e) => {
+        console.log(e)
+      });
   };
-  
+
   return (
     <>
       <Link to={"/help-examples/"}>
@@ -73,7 +70,7 @@ const HelpExample = (props) => {
           <form>
             <div>
               <label htmlFor="account">Cuenta</label>
-              <input 
+              <input
                 id="account"
                 name="account"
                 type="text"
@@ -85,7 +82,7 @@ const HelpExample = (props) => {
 
             <div>
               <label htmlFor="description">Movimientos Debe</label>
-              <input 
+              <input
                 id="debitMoves"
                 name="debitMoves"
                 type="text"
@@ -97,7 +94,7 @@ const HelpExample = (props) => {
 
             <div>
               <label htmlFor="accountPlan">Movimientos Haber</label>
-              <input 
+              <input
                 id="creditMoves"
                 name="creditMoves"
                 type="text"
@@ -109,7 +106,7 @@ const HelpExample = (props) => {
 
             <div>
               <label htmlFor="accountPlan">Descripcion</label>
-              <input 
+              <input
                 id="description"
                 name="description"
                 type="text"

@@ -10,7 +10,7 @@ const Account = (props) => {
 
   const initialAccountState = {
     id: null,
-    accountNumber: 0,
+    account_number: 0,
     description: "",
     accounting_plan_id: 0,
     name: ""
@@ -26,22 +26,21 @@ const Account = (props) => {
 
   const getAccount = (id) => {
     AccountDataService.get(id)
-    .then((response) => {
-      setCurrentAccount(response.data);
-      console.log(response.data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .then((response) => {
+        setCurrentAccount(response.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentAccount({ ...currentAccount, [name]: value});
+    setCurrentAccount({ ...currentAccount, [name]: value });
   };
 
   const validateForm = () => {
-    if (!currentAccount.name || !currentAccount.accountNumber || !currentAccount.description || !currentAccount.accounting_plan_id) {
+    if (!currentAccount.name || !currentAccount.account_number || !currentAccount.description || !currentAccount.accounting_plan_id) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
     };
@@ -52,14 +51,13 @@ const Account = (props) => {
   const updateAccount = () => {
     if (validateForm()) {
       AccountDataService.update(currentAccount.id, currentAccount)
-      .then(response => {
-        console.log(response.data);
-        setMessage("Account updated succesfully");
-      })
-      .catch(e => {
-        console.log(e);
-        setError("Hubo un problema al actualizar la cuenta.");
-    });
+        .then(response => {
+          setMessage("Account updated succesfully");
+        })
+        .catch(e => {
+          console.error(e);
+          setError("Hubo un problema al actualizar la cuenta.");
+        });
     }
   };
 
@@ -82,13 +80,13 @@ const Account = (props) => {
           <h4 className='account__header--h4 details'>Detalles de la cuenta</h4>
           <form className='account__form'>
             <div className='account__form--group'>
-              <label className="account__label" htmlFor="accountNumber">Número de cuenta</label>
-              <input 
+              <label htmlFor="account_number">Número de cuenta</label>
+              <input
                 className='account__input'
-                id="accountNumber"
-                name="accountNumber"
+                id="account_number"
+                name="account_number"
                 type="text"
-                value={currentAccount.accountNumber}
+                value={currentAccount.account_number}
                 onChange={handleInputChange}
                 required
               />

@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import "./Sign.css";
 
 const SignIn = () => {
-
-
-
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
   const auth = useAuth();
 
   const handleSubmitEvent = (e) => {
     e.preventDefault();
-    //console.log("EMAILLLLLLLLLLLLLL", input.email);
-    //console.log("PASSWORDDDDDDDDDD", input.password);
     if (input.email !== "" && input.password !== "") {
       auth.signInAction(input.email.toLowerCase(), input.password)
         .then((response) => {
@@ -50,10 +43,6 @@ const SignIn = () => {
       [name]: value,
     }));
   };
-
-  const handleClick = () => { //preguntar eche
-    navigate("/");
-  }
 
   return (
     <>

@@ -18,20 +18,12 @@ const useAuthLogic = (navigate) => {
     }
 
     try {
-      console.log("Token a validar:", token);
       const response = await authService.validateToken(token);
-      //console.log("Respuesta del servidor:", response);
 
       if (response.data.is_success) {
         const userData = response.data.data.user;
         const roles = response.data.data.roles;
         const newToken = response.data.data.user.authentication_token;
-        //console.log("USER:", userData);
-        //console.log("ROLES:", roles);
-        //console.log("TOKEN:", newToken);
-        console.log("Token en useAuthLogic antes de validación:", newToken);
-        console.log("User en useAuthLogic antes de validación:", user);
-        console.log("UserDataaaaaaa en useAuthLogic antes de validación:", userData);
         if (userData && roles) {
           setUser(userData);
           setRoles(roles);
@@ -43,7 +35,7 @@ const useAuthLogic = (navigate) => {
           const hasAccess = requiredRoles.every((role) => roles.includes(role));
           if (!hasAccess) {
             setError("No tienes permiso para acceder a esta ruta.");
-            navigate("/sign_in"); // Redirige a una página de error o a otra ruta
+            navigate("/sign_in");
           }
         } else {
           setError("Información de usuario incompleta.");
@@ -79,11 +71,7 @@ const useAuthLogic = (navigate) => {
   const signInAction = async (email, password) => {
     try {
       const credentials = btoa(`${email}:${password}`);
-      //console.log("CODIFICAAAADAAAAAASSSS:", credentials);
-
       const response = await authService.signIn(credentials);
-      //console.log("RESPUESTA DEL SERVIDOR COMPLETA EN AUTHLOGIC:", response);
-
       if (response.data.is_success) {
         const { user, token, roles } = response.data.data;
         setUser(user);
@@ -99,7 +87,6 @@ const useAuthLogic = (navigate) => {
     } catch (err) {
       console.error("Error en login:", err);
       if (err.response) {
-        // Si el error viene de la respuesta del servidor
         console.error("Error en respuesta del servidor:", err.response.data);
         alert(`Error: ${err.response.data.message || 'Problema al autenticar.'}`);
       } else {

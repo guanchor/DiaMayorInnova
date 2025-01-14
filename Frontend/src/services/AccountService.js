@@ -33,41 +33,47 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   try {
-      const response = await http.put(`/accounts/${id}`, data);
-      return response;
+    const response = await http.put(`/accounts/${id}`, data);
+    return response;
   } catch (error) {
-      console.error("Error en la actualización:", error);
-      return null;
+    console.error("Error en la actualización:", error);
+    return null;
   }
 };
 
 const remove = async (id) => {
   try {
-      const response = await http.delete(`/accounts/${id}`)
-      return response;
+    const response = await http.delete(`/accounts/${id}`)
+    return response;
   } catch (error) {
-      console.error("Error en la eliminación:", error);
-      return null;
+    console.error("Error en la eliminación:", error);
+    return null;
   }
 };
 
 const removeAll = async () => {
   try {
-      const response = await http.delete("/accounts");
-      return response;
+    const response = await http.delete("/accounts");
+    return response;
   } catch (error) {
-      console.error("Error en la eliminación de todos:", error);
-      return null;
+    console.error("Error en la eliminación de todos:", error);
+    return null;
   }
 };
 
-const findByName = async (name) => {
+const findByNumber = (account_number) => {
+  const response = http.get(`/accounts/find_by_account_number?account_number=${account_number}`);
+  return response;
+};
+
+const  findByName =  async (name) => {
   try {
-      const response = await http.get(`/accounts?name=${name}`);
-      return response;
-  } catch (error) {
-      console.error("Error en la búsqueda por módulo:", error);
-      return null;
+    const response = await http.get(`/accounts?name=${name}`);
+    return response;
+  }
+  catch (error) {
+    console.log("Error en la búsqueda por módulo", error);
+    return null;
   }
 };
 
@@ -78,7 +84,8 @@ const AccountService = {
   update,
   remove,
   removeAll,
-  findByName
+  findByNumber,
+  findByName,
 };
 
 export default AccountService;

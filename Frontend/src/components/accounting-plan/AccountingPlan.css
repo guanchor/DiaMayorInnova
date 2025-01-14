@@ -204,6 +204,11 @@
   background: transparent;
 }
 
+.accounting-plan__form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 /* Media Queries */
 
 /* Para tablets (hasta 768px) */

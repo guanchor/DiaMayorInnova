@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import "./Account.css";
 import AccountingPlanService from '../../services/AccountingPlanService';
 
-const AddAccount = ({setNewAcc}) => {
+const AddAccount = ({ setNewAcc }) => {
   const initialAccountState = {
     id: null,
     account_number: 0,
@@ -20,7 +20,7 @@ const AddAccount = ({setNewAcc}) => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setAccount({...account, [name]:value});
+    setAccount({ ...account, [name]: value });
   };
 
 
@@ -57,12 +57,12 @@ const AddAccount = ({setNewAcc}) => {
         setNewAcc(true);
       })
         .catch(e => {
-          console.log(e);
+          console.error(e);
           setError("Hubo un problema al guardar la cuenta")
         });
-      };
     };
-  
+  };
+
 
   const newAccount = () => {
     setAccount(initialAccountState);
@@ -72,26 +72,25 @@ const AddAccount = ({setNewAcc}) => {
 
   useEffect(() => {
     AccountingPlanService.getAll()
-      .then(({data}) => {
+      .then(({ data }) => {
         setPlans(data);
-        console.log(data);
       })
-  },[])
+  }, [])
 
   return (
     <>
       {submitted ? (
         <div>
           <h4>Se ha enviado correctamente</h4>
-            <button className="account__button" onClick={newAccount}>Añadir otra cuenta</button>
-            <button><Link to={"/accounts"}>Atrás</Link></button>
+          <button className="account__button" onClick={newAccount}>Añadir otra cuenta</button>
+          <button><Link to={"/accounts"}>Atrás</Link></button>
         </div>
       ) : (
-        <div>   
+        <div>
           <div className='account__form'>
-          <h4 className='account__header--h4'>Nueva cuenta</h4>
-              <div className='account__form--row'>
-                <div className='account__form--group'>
+            <h4 className='account__header--h4'>Nueva cuenta</h4>
+            <div className='account__form--row'>
+              <div className='account__form--group'>
                 <label>Número de cuenta</label>
                   <input 
                     className='account__input'
@@ -140,30 +139,30 @@ const AddAccount = ({setNewAcc}) => {
                 </div>
               </div>
 
-              <div className='account__form--row'>
-                <div className='account__form--group'>
-                  <label>Descripción</label>
-                  <input
-                    className='account__input'
-                    placeholder='Descripción'
-                    type="text"
-                    id='description'
-                    required
-                    value={account.description}
-                    onChange={handleInputChange}
-                    name='description'
-                  />
-                </div> 
+            <div className='account__form--row'>
+              <div className='account__form--group'>
+                <label>Descripción</label>
+                <input
+                  className='account__input'
+                  placeholder='Descripción'
+                  type="text"
+                  id='description'
+                  required
+                  value={account.description}
+                  onChange={handleInputChange}
+                  name='description'
+                />
               </div>
-
-              <div className='account__form--actions'>
-                <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus'/>Añadir cuenta</button>
-              </div>
-
-              {error && <div className="account__error">{error}</div>}
-
             </div>
+
+            <div className='account__form--actions'>
+              <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus' />Añadir cuenta</button>
+            </div>
+
+            {error && <div className="account__error">{error}</div>}
+
           </div>
+        </div>
       )}
     </>
   );

@@ -1,34 +1,19 @@
 import DropdownContent from "./DropdownContent";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { navContext } from "../../../../context/nav-menu/navMenuContext";
 import './Dropdown.css';
+import useOnClickOutside from "../../../../hooks/useOnClickOutside";
 
 const Dropdown = () => {
-  //console.log("DESDE DROPDOWN", useAuth());
-  const { dropdownState, setdropdownState, changeDropmenu, userName, userAvatarUrl, rol } = useContext(navContext);
-
-
-  /* sugerencia de mi pana , pero ns si se hace asi, no he buscado info , es para cuando se picha fuera del menu se cierre*/
+  const { dropdownState = false, setdropdownState, changeDropmenu, userName, userAvatarUrl, rol } = useContext(navContext);
+  const avatarUrl = userAvatarUrl;
   const dropdownRef = useRef(null);
-  const handleClickOutside = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setdropdownState(false);
-    }
-  };
+
+  useOnClickOutside(dropdownRef, () => setdropdownState(false), setdropdownState);
 
   useEffect(() => {
-    // Agregar un listener para detectar clics en el documento
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Limpiar el listener al desmontar el componente
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  /* hasta aqui la sugerencia */
-
-
-  const avatarUrl = userAvatarUrl;
+    setdropdownState(false);
+  }, [])
 
   return (
     <div ref={dropdownRef} className="dropdown-container">

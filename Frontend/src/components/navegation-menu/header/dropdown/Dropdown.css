@@ -11,6 +11,7 @@
   gap: var(--M, 20px);
   color: var(--Color-grey-200);
   border-radius: var(--xxs, 8px);
+  box-shadow: var(--box-shadow-btn);
 }
 
 .userMenu_item {
@@ -44,13 +45,14 @@
   }
 }
 
-.avatar-image{
+.avatar-image {
   width: 40px;
   height: 40px;
   object-fit: contain;
 }
 
-.userZone_userFoto > .fi, .text__user{
+.userZone_userFoto>.fi,
+.text__user {
   background-color: var(--background-color);
   color: var(--Color-letra-claro);
   width: 50px;
@@ -63,7 +65,7 @@
   align-items: center;
 }
 
-.fi-rr-angle-small-down{
+.fi-rr-angle-small-down {
   color: var(--Color-letra-claro);
   font-size: x-large;
 }

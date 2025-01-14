@@ -31,11 +31,11 @@ const StatementDetails = ({ statementId }) => {
 
   return (
     <div>
-      <h3>{statement.definition}</h3>
+      <h5>{statement.definition}</h5>
       <p>{statement.explanation}</p>
       <p><strong>Visibilidad:</strong> {statement.is_public ? "Público" : "Privado"}</p>
 
-      <h4>Soluciones:</h4>
+      <h5>Soluciones:</h5>
       {statement.solutions && statement.solutions.length > 0 ? (
         statement.solutions.map((solution) => (
           <div key={solution.id} style={{ marginBottom: "1.5rem" }}>
@@ -51,7 +51,7 @@ const StatementDetails = ({ statementId }) => {
                     {entry.annotations && entry.annotations.length > 0 ? (
                       entry.annotations.map((annotation) => (
                         <li key={annotation.id}>
-                          Número: {annotation.number}, Crédito: {annotation.credit}, Débito: {annotation.debit}
+                          Número: {annotation.number}, Número de cuenta: {annotation.account_number}, Crédito: {annotation.credit}, Débito: {annotation.debit}
                         </li>
                       ))
                     ) : (

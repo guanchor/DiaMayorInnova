@@ -3,7 +3,7 @@ import AccountingPlanDataService from "../../services/AccountingPlanService";
 import { Link } from "react-router-dom";
 import "./AccountingPlan.css";
 
-const AddAccountingPlan = ({setNewPGC}) => {
+const AddAccountingPlan = ({ setNewPGC }) => {
   const initialAccountingPlanState = {
     id: null,
     name: "",
@@ -45,7 +45,6 @@ const AddAccountingPlan = ({setNewPGC}) => {
             acronym: response.data.acronym.trim()
           });
           setNewPGC(true);
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -71,7 +70,7 @@ const AddAccountingPlan = ({setNewPGC}) => {
       ) : (
         <div>
           <div className="accountingPlan__form">
-          <h4 className="accountingPlan__header--h4">Nuevo plan de contabilidad</h4>
+            <h4 className="accountingPlan__header--h4">Nuevo plan de contabilidad</h4>
             <div className="accountingPlan__form--row">
               <div className="accountingPlan__form--group">
                 <label>Nombre</label>
@@ -86,7 +85,7 @@ const AddAccountingPlan = ({setNewPGC}) => {
                   name="name">
                 </input>
               </div>
-              
+
               <div className="accountingPlan__form--group">
                 <label>Acrónimo</label>
                 <input
@@ -100,7 +99,7 @@ const AddAccountingPlan = ({setNewPGC}) => {
                   name="acronym">
                 </input>
               </div>
-              
+
             </div>
 
             <div className="accountingPlan__form--row">
@@ -120,9 +119,9 @@ const AddAccountingPlan = ({setNewPGC}) => {
             </div>
 
             <div className="accountingPlan__form--actions">
-              <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus"/>Añadir plan</button>
+              <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus" />Añadir plan</button>
             </div>
-            
+
             {error && <div className="accountingPlan__error">{error}</div>}
 
           </div>

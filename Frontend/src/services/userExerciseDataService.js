@@ -1,7 +1,7 @@
 import http from "../http-common";
 
-const getAll = async (id) => {
-  const response = await http.get(`/student_exercises/show_user_data?user_id=${id}`);
+const getAll = async () => {
+  const response = await http.get(`/student_exercises`);
   console.log("all exercise info of user ", response)
   return response;
 };

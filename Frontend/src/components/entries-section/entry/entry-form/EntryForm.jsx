@@ -1,4 +1,3 @@
-import React from 'react'
 import "./EntryForm.css"
 
 const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
@@ -6,6 +5,13 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     const updatedAnnotation = { ...annotation, [name]: value };
+
+    if (name === 'debit' && value) {
+      updatedAnnotation.credit = '';
+    } else if (name === 'credit' && value) {
+      updatedAnnotation.debit = '';
+    }
+
     updateAnnotation(updatedAnnotation);
   };
 
@@ -26,10 +32,10 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             <input type="text" id='accountName' placeholder='Cuenta carne' name='accountName' value={annotation.account_name} />
           </div>
           <div className="form_group">
-            <input type="number" id='debit' name='debit' placeholder='1000' onChange={handleChange} value={annotation.debit} />
+            <input type="number" id='debit' name='debit' placeholder='1000' onChange={handleChange} value={annotation.debit} disabled={annotation.credit} />
           </div>
           <div className="form_group">
-            <input type="number" id='credit' name='credit' placeholder='1000' onChange={handleChange} value={annotation.credit} />
+            <input type="number" id='credit' name='credit' placeholder='1000' onChange={handleChange} value={annotation.credit} disabled={annotation.debit} />
           </div>
         </fieldset>
         <button className='btn-trash' onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>

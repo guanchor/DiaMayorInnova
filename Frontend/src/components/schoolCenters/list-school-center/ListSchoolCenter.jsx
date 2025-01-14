@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import SchoolsServices from '../../../services/SchoolsServices';
 import "./ListSchoolCenter.css"
 
@@ -23,7 +22,7 @@ const ListSchoolCenter = ({ newSchool }) => {
 
   return (
     <>
-      <section className='school-center-list__container'>
+      <section className='school-center-list__container scroll-style'>
         {schools.map((school, index) => (
           <ul className="school-center_list" key={index}>
             <li className='school-list_item'>

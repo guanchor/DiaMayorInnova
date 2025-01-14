@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
-import { Link } from "react-router-dom";
 import "./SchoolCenters.css";
 import ListSchoolCenter from "./list-school-center/ListSchoolCenter.jsx";
 import AddSchoolCenter from "./add-school-center/AddSchoolCenter.jsx";

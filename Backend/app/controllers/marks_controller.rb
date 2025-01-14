@@ -12,40 +12,41 @@ class MarksController < ApplicationController
     render json: @marks
   end
   
+  def show
+    @mark = Mark.find(params[:id])
+    render json: @mark
+  end
   
-    def show
-      @mark = Mark.find(params[:id])
+  def create
+    @mark = Mark.new(mark_params)
+  
+    if @mark.save
+      render json: @mark, status: :created
+    else
+      render json: @mark.errors, status: :unprocessable_entity
+    end
+  end
+  
+  def update
+    @mark = Mark.find(params[:id])
+    if @mark.update(mark_params)
       render json: @mark
+    else
+      render json: @mark.errors, status: :unprocessable_entity
     end
+  end
   
-    def create
-      @mark = Mark.new(mark_params)
-  
-      if @mark.save
-        render json: @mark, status: :created
-      else
-        render json: @mark.errors, status: :unprocessable_entity
-      end
-    end
-  
-    def update
-      @mark = Mark.find(params[:id])
-      if @mark.update(mark_params)
-        render json: @mark
-      else
-        render json: @mark.errors, status: :unprocessable_entity
-      end
-    end
-  
-    def destroy
-      @marks = Mark.all
-      @mark = Mark.find(params[:id])
-      @mark.destroy
-      render json: @marks
+  def destroy
+    @marks = Mark.all
+    @mark = Mark.find(params[:id])
+    @mark.destroy
+    render json: @marks
+  end
+
+  private
+
+    def mark_params
+      params.require(:mark).permit(:mark, :exercise_id)
     end
 
-=begin     def mark_params
-      params.require(:mark).permit(:mark , :exercise_id)
-    end 
-=end
 end

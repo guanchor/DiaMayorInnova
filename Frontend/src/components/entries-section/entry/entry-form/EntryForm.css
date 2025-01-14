@@ -78,5 +78,25 @@
     @container parent (width < 809px) {
       width: 144px;
     }
+
+    @container parent (width < 600px) {
+      width: 100px;
+    }
+  }
+}
+
+
+@media (width < 640px) {
+  .entry_wrapper {
+    padding: var(--gap-s) var(--gap-xxs);
+  }
+
+  .entry_item_container {
+    padding: var(--gap-xxs) 0;
+    margin-bottom: var(--gap-xxs);
+  }
+
+  .entry_form_wrapper {
+    width: 100%;
   }
 }

@@ -32,11 +32,7 @@ class StudentExercisesController < ApplicationController
   end
 
   def create
-    # Aquí asumo que 'exercise' es el objeto principal que se crea.
     @exercise = current_user.exercises.build(exercise_params)
-
-    # Si necesitas hacer algo adicional con @exercise, como procesar account_ids, agrega la lógica aquí
-    #process_account_ids(@exercise)
 
     if @exercise.save
       render json: @exercise, status: :created
@@ -47,7 +43,6 @@ class StudentExercisesController < ApplicationController
 
   private
 
-  # Permite los parámetros necesarios para 'exercise' y sus atributos anidados
   def exercise_params
     params.require(:exercise).permit(
       :task_id,

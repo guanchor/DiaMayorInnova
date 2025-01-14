@@ -3,12 +3,68 @@
   background-color: var(--Color-White);
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
+  width: 100%;
+  padding: var(--gap-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
 }
 
 .section-two_loader {
-  display: flex;
   width: 100%;
-  height: 100%;
-  justify-content: center;
+  display: flex;
+  justify-content: start;
   align-items: center;
+  gap: var(--gap-m);
+  margin-bottom: var(--gap-xs);
+
+  & label {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: var(--gap-xxxs);
+  }
+
+  & input {
+    margin: 0;
+  }
+
+
+}
+
+.ledger_labels {
+  width: 40%;
+}
+
+.ledger_labels--small {
+  width: 25%;
+}
+
+.help_secction_tittle {
+  font-size: var(--text-mobile-subtitles-2);
+}
+
+.ledger {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: solid 1px var(--Color-grey-200);
+  padding-bottom: var(--gap-xs);
+  text-transform: capitalize;
+}
+
+.ledger_container {
+  height: 140px;
+}
+
+.label_result {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: var(--gap-xs);
+
+  & input {
+    width: 100px;
+    height: 40px;
+    margin: 0;
+  }
 }

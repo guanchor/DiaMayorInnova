@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import "./Sign.css";
 
 const SignIn = () => {
-
-
-
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
   const auth = useAuth();
 
   const handleSubmitEvent = (e) => {

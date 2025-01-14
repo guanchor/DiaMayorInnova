@@ -5,18 +5,15 @@ class StudentEntriesController < ApplicationController
   def index
     if params[:mark_id].present?
       @studentEntries = StudentEntry.where(mark_id: params[:mark_id])
-
     else
-      @studentEntries  = StudentEntry.all
+      @studentEntries = StudentEntry.all
     end
-    
-    render json: @studentEntries 
+    render json: @studentEntries
   end
-
 
   def show
     @studentEntry = StudentEntry.find(params[:id])
-    render @studentEntry
+    render json: @studentEntry
   end
 
   def create
@@ -38,16 +35,16 @@ class StudentEntriesController < ApplicationController
   end
 
   def destroy
-    @studentEnties = StudentEntry.all
+    @studentEntries = StudentEntry.all
     @studentEntry = StudentEntry.find(params[:id])
     @studentEntry.destroy
-    render json: @studentEnties
+    render json: @studentEntries
   end
 
-=begin   def student_entry_params 
-    params.require(:student_entry).permit(:entry_number, :entry_date , :mark_id)
-  end 
-=end
+  def student_entry_params 
+    params.require(:student_entry).permit(:entry_number, :entry_date, :mark_id)
+  end
+
   def convert_entry_date
     params[:student_entry][:entry_date] = params[:student_entry][:entry_date].to_date if params[:student_entry][:entry_date].present?
   end

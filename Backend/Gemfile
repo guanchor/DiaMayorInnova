@@ -50,4 +50,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # Capistrano is a framework for building automated deployment scripts.
+  gem 'capistrano', '>= 3.6.1'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano-yarn'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-rails', '~> 1.0'
 end

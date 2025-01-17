@@ -40,7 +40,7 @@ const StatementsSelection = ({
 
         })
         .finally(() => {
-          setLoading(false); 
+          setLoading(false);
         });
     }
   };
@@ -57,7 +57,7 @@ const StatementsSelection = ({
   return (
     <section className="task-page__selection">
       <div className="task-page__selection--content">
-        <h3 className="task-page__header">Enunciados</h3>
+        <h2 className="task-page__header">Enunciados</h2>
         <ul className="task-page__list">
           {statements.map((statement) => (
             <li className="task-page__list-item" key={statement.id}>
@@ -94,12 +94,12 @@ const StatementsSelection = ({
             <div className="modal">
               <section className="modal-solutionViewer__container">
                 <div className="modal-solutionViewer__statement-content">
-                <h3 className="modal-solutionViewer__statement-title">Enunciado</h3>
-                <span className="modal-solutionViewer__statement-info">{statements.find(statement => statement.id === selectedStatementId)?.definition}</span>
+                  <h3 className="modal-solutionViewer__statement-title">Enunciado</h3>
+                  <span className="modal-solutionViewer__statement-info">{statements.find(statement => statement.id === selectedStatementId)?.definition}</span>
                 </div>
                 <SolutionsViewer solutions={currentSolutions} />
                 <div className="modal-solutionViewer__statement-button">
-                <button className="modal-solutionViewer__statement-info--close" onClick={hideSolutions}>Cerrar</button>
+                  <button className="modal-solutionViewer__statement-info--close" onClick={hideSolutions}>Cerrar</button>
                 </div>
               </section>
             </div>

@@ -126,10 +126,11 @@ const TaskListAndDetails = () => {
         <>
           <section className="task-list">
             <div className="task-list__header">
-              <h4 className="task-list__title">Tareas Activas</h4>
+              <h2 className="task-list__title">Tareas Activas</h2>
               <button
                 onClick={() => setIsSearching((prev) => !prev)}
                 className="task-list__filter-button"
+                aria-label="Filtrar por nombre de tarea"
               >
                 <i className="fi fi-rr-filter"></i>
               </button>

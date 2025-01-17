@@ -33,7 +33,7 @@ const NavBar = () => {
             })
           }
         </ul>
-        <button className="navBar__item " id="btn--settings" onClick={openModal}><i className="fi fi-rr-settings-sliders"></i></button>
+        <button className="navBar__item " id="btn--settings" onClick={openModal} aria-label="Preferencias del usuario"><i className="fi fi-rr-settings-sliders"></i></button>
         {isModalOpen && <SettingsModal onClose={closeModal} />}
       </nav>
     </>

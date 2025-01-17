@@ -3,15 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { scRoutes } from "../../services/ShortcutRoutes";
 import Shortcut from "../../components/shortcuts/shortcut/Shortcut"
 import { navContext } from '../../context/nav-menu/navMenuContext';
+import { useAuth } from '../../context/AuthContext';
 
 
 const Shortcuts = () => {
   const { rol } = useContext(navContext);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   return (
     <section className="top">
-      <p className="shortcut__tittle">Accesos Rápidos</p>
+      <h1 className="shortcut__title">Bienvenido {auth.user.name}</h1>
+      <h2 className="shortcut__subtitle">Accesos Rápidos</h2>
       <div className="shortcut__wrapper ">
         {scRoutes.map((route) => {
           if (route.rol.includes(rol)) {

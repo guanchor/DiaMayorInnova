@@ -17,7 +17,16 @@ const Dropdown = () => {
 
   return (
     <div ref={dropdownRef} className="dropdown-container">
-      <a className="userZone" tabIndex={0} onClick={changeDropmenu} >
+      <a 
+        className="userZone" 
+        tabIndex={0} 
+        onClick={changeDropmenu} 
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+          changeDropmenu();
+          }
+        }}
+      >
         <div className="userZone_menu">
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="userZone_userFoto" />

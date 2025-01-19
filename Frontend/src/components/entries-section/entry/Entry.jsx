@@ -33,19 +33,19 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
 
   return (
     <div className='entry_wrapper'>
-      <header className="entry_head" >
+      <header className="entry_head" tabIndex={0} onKeyDown={changeStatus}>
         <div className="head_tittle" onClick={changeStatus} >
           <p>Asiento {number}</p>
           <i className={entryStatus ? 'fi fi-rr-angle-small-up' : 'fi fi-rr-angle-small-down'}></i>
         </div>
         <div className="head_data">
           {entryStatus ?
-            <input type='date' className='date_input' value={entrydate} onChange={handleChangeDate}></input>
-            : <p>Fecha: <span>{formattedDate}</span></p>
+            <input aria-label='Fecha del asiento' type='date' className='date_input' value={entrydate} onChange={handleChangeDate}></input>
+            : <p >Fecha: <span>{formattedDate}</span></p>
           }
-          <p>Total: <span>{total}</span></p>
+          <p className='entry_total'>Total: <span>{total}</span></p>
         </div>
-        <button className='btn-trash' onClick={() => deleteEntry(entryIndex)}><i className='fi fi-rr-trash'></i></button>
+        <button className='btn-trash' aria-label='Eliminar asiento' onClick={() => deleteEntry(entryIndex)}><i className='fi fi-rr-trash'></i></button>
       </header >
       {
         entryStatus && (
@@ -54,10 +54,10 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
               <header className="header_container">
                 <p className='apt_number'>Apt</p>
                 <div className="tittles_wrapper">
-                  <p className='tittle_account-number'>Nº Cuenta</p>
-                  <p className='tittle_account-name'>Nombre Cuenta</p>
-                  <p className='tittle_debit'>Debe</p>
-                  <p className='tittle_credit'>Haber</p>
+                  <p className='tittle_account-number' id='tittle_account-number'>Nº Cuenta</p>
+                  <p className='tittle_account-name' id='tittle_account-name'>Nombre Cuenta</p>
+                  <p className='tittle_debit' id='tittle_debit'>Debe</p>
+                  <p className='tittle_credit' id='tittle_credit'>Haber</p>
                 </div>
               </header>
 

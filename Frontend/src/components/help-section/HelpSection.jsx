@@ -23,9 +23,11 @@ const HelpSection = () => {
       <form className="search-bar" onSubmit={handleSubmit}>
         <input
           className='search-bar_search'
-          type="search" placeholder='cuenta numero 1234'
+          type="search" placeholder='Buscar cuenta'
           value={searchNumber}
           onChange={handleSearch}
+          id='search-bar_search'
+          aria-label='Buscador de las ayudas de la cuenta'
         />
         <i className='fi fi-rr-search'></i>
       </form>
@@ -44,16 +46,17 @@ const HelpSection = () => {
         (
           <>
             <div className="account_info">
-              <h3>Cuenta : {account.account_number}</h3>
+              <h3 className='help_section__subtittle'>Cuenta </h3>
+              <h4 className='help_section__lead'>{account.account_number}</h4>
               <p>{account.description}</p>
-              <h3>Descripción</h3>
+              <h3 className='help_section__subtittle'>Descripción</h3>
               <p>{example ? example.description : "ejemplo de la descripcion"}</p>
             </div>
-            <h2>Movimientos</h2>
+            <h3 className='help_section__subtittle' >Movimientos</h3>
             <div className="moves_info scroll-style">
-              <h3>Debe</h3>
+              <h4 className='help_section__lead'>Debe</h4>
               <p>{example.debitMoves}</p>
-              <h3>Haber</h3>
+              <h4 className='help_section__lead'>Haber</h4>
               <p>{example.creditMoves}</p>
             </div>
           </>

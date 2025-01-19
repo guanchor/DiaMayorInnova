@@ -13,6 +13,7 @@ const NavItem = ({ icon, name, url = "/home" }) => {
   return (<>
     <li className={`navBar__item ${isActive ? 'pg--active' : ''}`} onClick={changeMenu}>
       <NavLink
+        aria-label={name}
         className="nav_link" to={url}
         data-tooltip-id="my-tooltip"
         data-tooltip-content={name}

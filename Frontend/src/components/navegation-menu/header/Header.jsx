@@ -38,7 +38,7 @@ const Header = () => {
       <NavLink to={"/home"}><img src={logo} className="logo" alt="Innova logo" /></NavLink>
       <div className="header_userZone">
         <ul className='header_menu'>
-          <li className='header_item'><NavLink to="/home" tabIndex={0}><i className='fi fi-rr-bell'></i></NavLink></li>
+          <li className='header_item' tabIndex={0}><i className='fi fi-rr-bell'></i></li>
         </ul>
         <Dropdown />
       </div>

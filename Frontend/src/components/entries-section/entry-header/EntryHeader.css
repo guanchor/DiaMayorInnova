@@ -25,3 +25,11 @@
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+.entry_selector__label {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: var(--gap-xs);
+}

@@ -53,10 +53,10 @@
   gap: var(--gap-xxxl);
 
 
-  >p {
+  >.entry_total {
     width: auto;
     font-size: var(--text-desktop-small);
-    color: var(--Color-Principal-claro);
+    color: var(--Color-Principal);
     cursor: default;
   }
 }

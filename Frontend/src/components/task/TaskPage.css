@@ -24,7 +24,7 @@
 .task-page__input.error {
   border: 1px solid var(--Color-red-600);
   font-family: var(--font-family)
-  /* Rojo para indicar error */
+    /* Rojo para indicar error */
 }
 
 /* Estilo para el mensaje de error genérico */
@@ -82,7 +82,6 @@
 
 .task-page__header {
   top: 0;
-  z-index: 10;
   background-color: var(--Color-Neutral-White);
   font-size: var(--text-desktop-subtitles-1);
   font-weight: bold;
@@ -279,6 +278,7 @@
 }
 
 .task-page__button-text {
+  color: var(--Color-grey-800);
   display: inline-block;
   margin: 0;
 }
@@ -425,8 +425,8 @@
 
 .task-list__closing-date {
   /* Yo subiría el tamaño para desktop*/
-  font-size: var(--text-desktop-tiny);
-  color: var(--Color-grey-500);
+  font-size: var(--text-desktop-small);
+  color: var(--Color-grey-700);
   margin-bottom: var(--gap-xxxs);
 }
 
@@ -792,10 +792,10 @@
 
   .task-page__dates {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: var(--gap-s);
   }
-  
+
   .task-page__date {
     flex: 1 1 48%;
     max-width: 48%;
@@ -826,7 +826,7 @@
     gap: var(--gap-xs);
     flex-grow: 0;
     white-space: nowrap;
-    
+
   }
 
   .task-page__actions label {

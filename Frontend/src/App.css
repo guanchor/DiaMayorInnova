@@ -33,9 +33,13 @@
   gap: var(--gap-xxl);
 }
 
-.shortcut__tittle {
-  font-size: 28px;
-  font-weight: 700;
+.shortcut__title {
+  font-size: var(--text-desktop-h4);
+  padding-bottom: 1em;
+}
+
+.shortcut__subtitle {
+  font-size: var(--text-desktop-subtitles-1);
 }
 
 .principal {
@@ -82,7 +86,9 @@
     padding: var(--gap-xxs);
   }
 
-  .top, .aside, .principal {
+  .top,
+  .aside,
+  .principal {
     padding: var(--gap-m);
   }
 
@@ -92,7 +98,7 @@
     gap: var(--gap-m);
   }
 
-  .shortcut__container{
+  .shortcut__container {
     display: flex;
     flex-direction: row;
     justify-content: center;

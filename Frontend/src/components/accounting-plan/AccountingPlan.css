@@ -11,14 +11,13 @@
   margin-bottom: var(--gap-s);
   border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
-  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
 }
 
-.accountingPlan__header--h4 {
+.accountingPlan__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
   font-weight: bold;
   margin-bottom: var(--gap-m);
@@ -75,6 +74,14 @@
   }
 }
 
+th {
+  text-align: center;
+}
+
+thead {
+  width: 100%;
+}
+
 .accountingPlan__button {
   padding: var(--gap-s) var(--gap-m);
   background-color: var(--Color-Principal);
@@ -87,7 +94,7 @@
 .accountingPlan__button--link {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
-  color: var(--Color-grey-400);
+  color: var(--Color-grey-800);
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -213,7 +220,7 @@
 
 /* Para tablets (hasta 768px) */
 @media (max-width: 768px) {
-  .accountingPlan__header--h4 {
+  .accountingPlan__header--h2 {
     margin-bottom: var(--gap-m);
     font-size: var(--text-mobile-lead);
   }
@@ -244,7 +251,7 @@
 
 /* Para móviles (hasta 360px) */
 @media (max-width: 360px) {
-  .accountingPlan__header--h4 {
+  .accountingPlan__header--h2 {
     margin-bottom: var(--gap-s);
     font-size: var(--text-mobile-lead);
   }

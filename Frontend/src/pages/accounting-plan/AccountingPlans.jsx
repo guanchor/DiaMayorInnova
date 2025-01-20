@@ -1,23 +1,22 @@
 import AddAccountingPlan from "../../components/accounting-plan/AddAccountingPlan";
 import AccountingPlansList from "../../components/accounting-plan/ListAccountingPlan";
 import "./AccountingPlans.css"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import React, { useState } from 'react'
 
 const AccountingPlans = () => {
 
   const [newPGC, setNewPGC] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
 
       <main className="accountingPlan__page">
 
-        <button className="accountingPlan__btnHome">
-          <Link to={"/home"}>
+        <button className="accountingPlan__btnHome" onClick={()=>navigate("/home")}>
             <i className="fi-rr-arrow-small-left" /> Volver
-          </Link>
         </button>
         <h1 className="accountingPlan__page--title">Creación PGC</h1>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
 
 // PGC LIST
@@ -9,6 +9,7 @@ const AccountingPlansList = ({ newPGC }) => {
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccPlan, setSearchAccPlan] = useState("");
+  const navigate = useNavigate();
 
 
 
@@ -69,10 +70,11 @@ const AccountingPlansList = ({ newPGC }) => {
     <>
 
       <section className="accountingPlan__pgcList">
-        <h4 className="accountingPlan__header--h4">Todos los planes</h4>
+        <h2 className="accountingPlan__header--h2">Todos los planes</h2>
 
         <div className="accountingPlan__input--filter">
           <input
+            aria-label="Filtrar por nombre"
             className="accountingPlan__input"
             type="text"
             value={searchAccPlan}
@@ -88,6 +90,14 @@ const AccountingPlansList = ({ newPGC }) => {
             <p>No hay PGCs disponibles</p>
           ) : (
             <table className="accountingPlan_tbody">
+              <thead>
+                <tr>
+                  <th>Nombre PGC</th>
+                  <th>Acrónimo</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
               <tbody>
                 {accountingPlans && accountingPlans.map((accountingPlan, index) => (
                   <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
@@ -95,17 +105,13 @@ const AccountingPlansList = ({ newPGC }) => {
                     <td>{accountingPlan.acronym}</td>
                     <td>{accountingPlan.description}</td>
                     <td className="accountingPlan__form--actions">
-                      <button className="accountingPlan__button--link eye">
-                        <Link to={"/accounts"}>
+                      <button className="accountingPlan__button--link eye" onClick={()=>navigate("/accounts")}>
                           <i className="fi-rr-eye" /> Ver cuentas
-                        </Link>
                       </button>
-                      <button className="accountingPlan__button--link pencil">
-                        <Link to={"/accounting-plans/" + accountingPlan.id}>
+                      <button className="accountingPlan__button--link pencil" onClick={()=>navigate("/accounting-plans/" + accountingPlan.id)}>
                           <i className="fi-rr-pencil" /> Editar
-                        </Link>
                       </button>
-                      <button className="accountingPlan__button--remove trash"
+                      <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {
                           e.stopPropagation();
                           if (window.confirm("¿Está seguro de que quiere eliminar este PGC?")) { //Usability upgrade #2 -> Confirm before PGC remove
@@ -122,9 +128,6 @@ const AccountingPlansList = ({ newPGC }) => {
           )}
         </div>
 
-
-        {/* <button><Link to={"/add-accounting-plan"}>Añadir nuevo plan</Link></button> */}
-        {/* <button onClick={removeAllAccountingPlans}>Borrar todo</button> */}
       </section>
 
     </>

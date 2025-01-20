@@ -70,10 +70,10 @@ const AddAccountingPlan = ({ setNewPGC }) => {
       ) : (
         <div>
           <div className="accountingPlan__form">
-            <h4 className="accountingPlan__header--h4">Nuevo plan de contabilidad</h4>
+            <h2 className="accountingPlan__header--h2">Nuevo plan de contabilidad</h2>
             <div className="accountingPlan__form--row">
               <div className="accountingPlan__form--group">
-                <label>Nombre</label>
+                <label>Nombre
                 <input
                   className="accountingPlan__input"
                   placeholder="Nombre PGC"
@@ -83,11 +83,11 @@ const AddAccountingPlan = ({ setNewPGC }) => {
                   value={accountingPlan.name}
                   onChange={handleInputChange}
                   name="name">
-                </input>
+                </input></label>
               </div>
 
               <div className="accountingPlan__form--group">
-                <label>Acrónimo</label>
+                <label>Acrónimo
                 <input
                   className="accountingPlan__input"
                   placeholder="Acrónimo PGC"
@@ -97,14 +97,14 @@ const AddAccountingPlan = ({ setNewPGC }) => {
                   value={accountingPlan.acronym}
                   onChange={handleInputChange}
                   name="acronym">
-                </input>
+                </input></label>
               </div>
 
             </div>
 
             <div className="accountingPlan__form--row">
               <div className="accountingPlan__form--group full-width">
-                <label>Descripción</label>
+                <label>Descripción
                 <input
                   className="accountingPlan__input"
                   placeholder="Descripción PGC"
@@ -114,7 +114,7 @@ const AddAccountingPlan = ({ setNewPGC }) => {
                   value={accountingPlan.description}
                   onChange={handleInputChange}
                   name="description">
-                </input>
+                </input></label>
               </div>
             </div>
 

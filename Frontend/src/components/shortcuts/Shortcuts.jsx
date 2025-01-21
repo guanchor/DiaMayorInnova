@@ -13,7 +13,7 @@ const Shortcuts = () => {
 
   return (
     <section className="top">
-      <h1 className="shortcut__title">Bienvenido {auth.user.name}</h1>
+      <h1 className="shortcut__title">Bienvenido, {auth.user.name}</h1>
       <h2 className="shortcut__subtitle">Accesos Rápidos</h2>
       <div className="shortcut__wrapper ">
         {scRoutes.map((route) => {

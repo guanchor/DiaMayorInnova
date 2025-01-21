@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { navContext } from './navMenuContext'
 import { useAuth } from '../../context/AuthContext';
 
 const NavStateProvider = ({ children }) => {
   const { user, roles, userAvatarUrl } = useAuth();
-
-
   const [menuState, setMenuState] = useState(false);
   const [rol, setRol] = useState(roles[0]);
   const [dropdownState, setdropdownState] = useState(false);
@@ -21,6 +19,7 @@ const NavStateProvider = ({ children }) => {
   }
 
   const isAdmin = [...roles].includes("admin") ? true : false;
+  const isTeacher = [...roles].includes("teacher") ? true : false;
 
   const setAdminRol = () => {
     setRol("admin")
@@ -38,9 +37,6 @@ const NavStateProvider = ({ children }) => {
     setRol(roles[0]);
   }, [roles])
 
-
-
-
   return (
     <navContext.Provider value={
       {
@@ -49,6 +45,7 @@ const NavStateProvider = ({ children }) => {
         userAvatarUrl,
         dropdownState,
         isAdmin,
+        isTeacher,
         rol,
         changeMenu,
         setdropdownState,

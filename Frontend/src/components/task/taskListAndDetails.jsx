@@ -1,54 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
-import TaskEditForm from "./TaskEditForm"; // Importamos TaskEditForm
 import { useAuth } from "../../context/AuthContext";
+import TaskModal from "../modal/TaskModal";
+import TaskDetails from "./TaskDetails";
+import "./TaskPage.css";
 
 const TaskListAndDetails = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const [tasks, setTasks] = useState([]); // Lista de tareas
-  const [selectedTask, setSelectedTask] = useState(null); // Tarea seleccionada
-  const [loading, setLoading] = useState(false); // Indicador de carga
-  const [error, setError] = useState(null); // Manejo de errores
+  const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
-  const [isEditingTask, setIsEditingTask] = useState(false); // Controlador para cambiar a modo de edición
+  const [isEditingTask, setIsEditingTask] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
-  // Obtener todas las tareas al cargar el componente
   useEffect(() => {
+    if (location.state?.createTask) {
+      setIsCreatingTask(true);
+    }
     const fetchTasks = async () => {
       setLoading(true);
       try {
-        console.log("Solicitando tareas al servicio...");
+        //console.log("Solicitando tareas al servicio...");
         const response = await taskService.getAllTasks();
-        console.log("Tareas recibidas:", response.data);
+        //console.log("Tareas recibidas:", response.data);
         const filteredTasks = response.data.filter((task) => task.created_by === user.id);
         setTasks(filteredTasks);
       } catch (err) {
         setError("Error al cargar las tareas.");
         console.error("Error fetching tasks:", err);
       } finally {
-        console.log("Finalizando la carga de tareas.");
+        //console.log("Finalizando la carga de tareas.");
         setLoading(false);
       }
     };
-    console.log("Usuario actual:", user);
-    if (user?.id){
-      console.log("Cargando tareas para el usuario:", user.id);
-      fetchTasks(); // Solo intenta cargar si el usuario está autenticado
-    }else {
-      console.log("Usuario no autenticado o ID faltante.");
+    //console.log("Usuario actual:", user);
+    if (user?.id) {
+      //console.log("Cargando tareas para el usuario:", user.id);
+      fetchTasks();
+    } else {
+      //console.log("Usuario no autenticado o ID faltante.");
       setLoading(false);
       setTasks([]);
     }
-  }, [user]);
+  }, [user, location.state]);
 
-  // Obtener los detalles de la tarea seleccionada
   const fetchTaskDetails = async (taskId) => {
     setLoading(true);
     try {
       const response = await taskService.getTaskWithStatements(taskId);
       setSelectedTask(response.data);
+      setModalVisible(true);
     } catch (err) {
       setError("Error al cargar los detalles de la tarea.");
       console.error(err);
@@ -57,40 +66,38 @@ const TaskListAndDetails = () => {
     }
   };
 
-  // Función para manejar la creación de una nueva tarea
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setIsSearching(value.trim() !== "");
+  };
+
+  const filteredTasks = isSearching
+    ? tasks.filter((task) => task.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    : tasks;
+
   const handleTaskCreated = (newTask) => {
     if (newTask?.title) {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+      setTasks((prevTasks) => [...prevTasks, newTask]);
     } else {
-      // Si la tarea creada no tiene el título, recargamos la lista completa
-    const fetchTasks = async () => {
-      try {
-        const response = await taskService.getAllTasks();
-        setTasks(response.data); // Recarga la lista
-      } catch (err) {
-        setError("Error al cargar las tareas.");
-        console.error("Error fetching tasks:", err);
-      }
-    };
-    fetchTasks();
-  }
-    setIsCreatingTask(false); // Volver a la vista de lista de tareas
+      const fetchTasks = async () => {
+        try {
+          const response = await taskService.getAllTasks();
+          setTasks(response.data);
+        } catch (err) {
+          setError("Error al cargar las tareas.");
+          console.error("Error fetching tasks:", err);
+        }
+      };
+      fetchTasks();
+    }
+    setIsCreatingTask(false);
+    navigate("/Home");
   };
 
-  // Función para manejar la actualización de la tarea
-  const handleTaskUpdated = (updatedTask) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-    );
-    setSelectedTask(updatedTask); // Actualizar la tarea seleccionada
-    setIsEditingTask(false); // Volver a los detalles
-  };
-
-  // Función para manejar la eliminación de un enunciado
   const handleDeleteStatement = async (taskId, statementId) => {
     try {
       await taskService.deleteStatementFromTask(taskId, statementId);
-      // Actualizar los enunciados de la tarea después de la eliminación
       const updatedTask = await taskService.getTaskWithStatements(taskId);
       setSelectedTask(updatedTask.data);
     } catch (error) {
@@ -98,81 +105,85 @@ const TaskListAndDetails = () => {
     }
   };
 
+  const handleDeleteTask = (taskId) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedTask(null);
+  };
+
   if (!user) return <p>Cargando usuario...</p>;
   if (loading) return <p>Cargando tareas... Por favor espera.</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <>
       {isCreatingTask ? (
         <TaskCreateForm onTaskCreated={handleTaskCreated} />
-      ) : isEditingTask ? (
-        <TaskEditForm selectedTask={selectedTask} onTaskUpdated={handleTaskUpdated} />
       ) : (
-        <div style={{ display: "flex", gap: "20px" }}>
-          {/* Lista de tareas */}
-          <div>
-            <h2>Lista de Tareas</h2>
-            <ul>
-              {tasks.map((task) => (
-                <li key={`${task.id}-${task.created_at}`}>
-                  <button onClick={() => fetchTaskDetails(task.id)}>
-                    {task.title}
-                  </button>
+        <>
+          <section className="task-list">
+            <div className="task-list__header">
+              <h2 className="task-list__title">Tareas Activas</h2>
+              <button
+                onClick={() => setIsSearching((prev) => !prev)}
+                className="task-list__filter-button"
+                aria-label="Filtrar por nombre de tarea"
+              >
+                <i className="fi fi-rr-filter"></i>
+              </button>
+            </div>
+
+            {isSearching && (
+              <div className="task-list__search-container">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Buscar por Título"
+                  className="task-list__search-input"
+                />
+                <i className="fi fi-rr-search task-list__search-icon"></i>
+              </div>
+            )}
+
+            <ul className="task-list__items">
+              {filteredTasks.map((task) => (
+                <li key={`${task.id}-${task.created_at}`} className="task-list__item">
+                  <div className="task-list__item-content">
+                    <div className="task-list__square">
+                      <i className="fi fi-rr-pencil pencil"></i>
+                    </div>
+                    <div className="task-list__info">
+                      <p className="task-list__item-title">{task.title}</p>
+                      <p className="task-list__closing-date">
+                        <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
+                      </p>
+                      <button onClick={() => fetchTaskDetails(task.id)}
+                        className="task-list__button">
+                        Ver Información
+                      </button>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
-            <button onClick={() => setIsCreatingTask(true)}>Crear Nueva Tarea</button>
-          </div>
+          </section>
 
-          {/* Detalles de la tarea seleccionada */}
-          <div>
-            {selectedTask ? (
-              <>
-                <h2>Detalles de la Tarea</h2>
-                <h3>{selectedTask.title}</h3>
-                <p>
-                  Fecha de apertura:{" "}
-                  {new Date(selectedTask.opening_date).toLocaleDateString()}
-                </p>
-                <p>
-                  Fecha de cierre:{" "}
-                  {new Date(selectedTask.closing_date).toLocaleString()}
-                </p>
-
-                <h3>Enunciados</h3>
-                {Array.isArray(selectedTask.statements) && selectedTask.statements.length > 0 ? (
-                  <ul>
-                    {selectedTask.statements.map((statement) => (
-                      <li key={`${statement.id}-${statement.created_at}`}>
-                        <strong>Definición:</strong> {statement.definition}
-                        <br />
-                        <strong>Explicación:</strong> {statement.explanation}
-                        <button
-                          onClick={() =>
-                            handleDeleteStatement(selectedTask.id, statement.id)
-                          }
-                        >
-                          Eliminar
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No hay enunciados para esta tarea.</p>
-                )}
-
-                <button onClick={() => setIsEditingTask(true)}>
-                  Editar tarea
-                </button>
-              </>
-            ) : (
-              <p>Selecciona una tarea para ver los detalles.</p>
-            )}
-          </div>
-        </div>
+          <TaskModal show={modalVisible} onClose={handleCloseModal}>
+            <TaskDetails
+              selectedTask={selectedTask}
+              onDeleteStatement={handleDeleteStatement}
+              onEditTask={() => setIsEditingTask(true)}
+              onDeleteTask={handleDeleteTask}
+              onCloseModal={handleCloseModal}
+            />
+          </TaskModal>
+        </>
       )}
-    </div>
+    </>
   );
 };
 

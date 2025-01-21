@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { navContext } from '../../../../context/nav-menu/navMenuContext';
 
 const RolMenu = () => {

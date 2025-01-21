@@ -8,6 +8,12 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--gap-xs) var(--gap-s);
+
+    >a {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   .fi-rr-menu-burger {
@@ -20,12 +26,18 @@
     color: var(--Color-letra-claro);
   }
 
+  .menu-burger {
+    order: 0;
+  }
+
   .logo {
     color: var(--Color-letra-claro);
     padding: var(--gap-xxxs) 0;
     font-size: var(--text-mobile-subtitles-1);
     cursor: pointer;
-    align-content: center;
+    order: 1;
+    justify-self: center;
+
   }
 
   .header_userZone {
@@ -104,14 +116,14 @@
   }
 
   .menuInfo_rol {
-    color: var(--Color-grey-300);
+    color: var(--Color-grey-200);
     font-size: 12px;
     font-weight: 700;
     line-height: 140%;
   }
 
 
-  @media (width > 800px) {
+  @media (width > 1024px) {
     .fi-rr-menu-burger {
       display: none;
     }
@@ -119,6 +131,10 @@
     .header {
       height: 70px;
       padding: var(--gap-xs) var(--gap-l);
+
+      >a {
+        width: auto;
+      }
     }
 
     .logo {

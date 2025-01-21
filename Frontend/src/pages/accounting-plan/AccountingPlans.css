@@ -1,0 +1,89 @@
+.accountingPlan__page {
+  padding: 24px;
+  width: 100%;
+  height: 91vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 0.1fr repeat(2, 1fr);
+  grid-template-areas:
+    "btn title yo"
+    "form form form"
+    "list list list";
+}
+
+.accountingPlan__btnHome {
+  padding: var(--gap-xs);
+  margin-left: var(--gap-s);
+  width: 120px;
+  background-color: #fff;
+  color: var(--Color-Principal);
+  border: var(--Color-grey-200) 1px solid;
+  border-radius: 6px;
+  align-self: start;
+}
+
+.accountingPlan__btnHome:hover {
+  color: var(--Color-Principal-claro);
+  border: var(--Color-Principal-claro) 1px solid;
+  grid-area: btn;
+}
+
+.accountingPlan__page--title {
+  font-size: var(--text-desktop-body-small);
+  font-weight: 500;
+  color: var(--Color-Principal);
+  width: 100%;
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accountingPlan__addPGC {
+  grid-area: form;
+  padding-bottom: 24px;
+  height: 340px;
+}
+
+.accountingPlan__listPGC {
+  grid-area: list;
+  overflow-y: hidden;
+}
+
+
+/* media queries */
+
+@media (max-width: 768px) {
+  .accountingPlan__page {
+    padding: var(--gap-m);
+    grid-template-rows: 0.1fr 0.4fr 1fr;
+    overflow-y: scroll;
+  }
+
+  .accountingPlan__btnHome {
+    padding: var(--gap-xxs);
+    margin-left: var(--gap-s);
+    width: 84px;
+    font-size: var(--text-mobile-body-small);
+  }
+
+}
+
+@media (max-width: 360px) {
+  .accountingPlan__page {
+    padding: var(--gap-xs);
+  }
+
+  .accountingPlan__input {
+    font-size: var(--text-mobile-small);
+    width: 100%;
+  }
+
+  .accountingPlan__page--title {
+    font-size: var(--text-mobile-small);
+  }
+
+  .accountingPlan__addPGC {
+    height: 310px;
+  }
+}

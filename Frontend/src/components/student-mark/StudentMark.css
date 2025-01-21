@@ -4,7 +4,7 @@
   padding: var(--gap-l) var(--gap-xl);
 }
 
-.mark__tittle {
+.mark_tittle {
   font-size: var(--text-desktop-subtitles-1);
   font-weight: 700;
 }
@@ -16,4 +16,46 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 25rem;
+}
+
+.mark_mark {
+  border: solid 4px var(--Color-green-300);
+  border-radius: var(--gap-xs);
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  align-content: center;
+  font-size: var(--text-desktop-subtitles-2);
+  color: var(--Color-green-700);
+  font-weight: 600;
+}
+
+.marks__wrapper {
+  padding: var(--gap-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+}
+
+.mark_container {
+  padding: var(--gap-s) var(--gap-xl);
+  height: 80px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: var(--gap-l);
+  border-bottom: solid 1px var(--Color-grey-200);
+}
+
+.mark-text_tittle {
+  font-weight: 700;
+  font-size: var(--text-desktop-body-large);
+  color: var(--Color-Principal);
+  margin-bottom: var(--gap-xxxs);
+
+}
+
+.mark_info {
+  color: var(--Color-Principal-claro);
+  font-size: var(--text-desktop-small);
 }

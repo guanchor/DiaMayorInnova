@@ -1,0 +1,41 @@
+.school-center-list__container {
+  grid-area: list;
+  height: 100%;
+  overflow-y: scroll;
+  padding: var(--gap-s);
+  border-left: solid 1px var(--Color-grey-200);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxs);
+
+}
+
+
+.school-center_list {
+  background-color: var(--Color-White);
+  border-radius: var(--r-xxs);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxs);
+  padding: var(--gap-s);
+  font-size: var(--text-desktop-tiny);
+}
+
+.school-list_item {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxs);
+}
+
+.schools-centers_list {
+  display: flex;
+  gap: var(--gap-s);
+}
+
+.school-list_section {
+  display: flex;
+  justify-content: space-between;
+}

@@ -56,7 +56,6 @@
   justify-content: center;
   align-items: center;
   padding-bottom: var(--gap-s);
-  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .accountingPlan__table {
@@ -76,10 +75,9 @@
 
 th {
   text-align: center;
-}
-
-thead {
-  width: 100%;
+  border-bottom: solid 1px var(--Color-grey-200);
+  padding: var(--gap-xs);
+  margin: var(--gap-xs);
 }
 
 .accountingPlan__button {
@@ -94,7 +92,6 @@ thead {
 .accountingPlan__button--link {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
-  color: var(--Color-grey-800);
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -108,7 +105,8 @@ thead {
 .accountingPlan__button--link.eye,
 .accountingPlan__button--remove.trash {
   margin-right: 8px;
-  font-size: 1.2rem;
+  color: var(--Color-grey-800);
+  font-size: var(--text-desktop-body-small);
 }
 
 .accountingPlan__button--remove {

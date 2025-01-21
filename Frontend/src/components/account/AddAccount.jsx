@@ -88,70 +88,74 @@ const AddAccount = ({ setNewAcc }) => {
       ) : (
         <div>
           <div className='account__form'>
-            <h4 className='account__header--h4'>Nueva cuenta</h4>
+            <h2 className='account__header--h2'>Nueva cuenta</h2>
             <div className='account__form--row'>
               <div className='account__form--group'>
-                <label>Número de cuenta</label>
-                  <input 
-                    className='account__input'
-                    placeholder='Nº cuenta'
-                    type="number"
-                    id='account_number'
-                    required
-                    value={account.account_number}
-                    onChange={handleInputChange}
-                    name='account_number'
-                  />
+                <label>Número de cuenta
+                    <input 
+                      className='account__input'
+                      placeholder='Nº cuenta'
+                      type="number"
+                      id='account_number'
+                      required
+                      value={account.account_number}
+                      onChange={handleInputChange}
+                      name='account_number'
+                    />
+                  </label>
                 </div>  
         
                 <div className='account__form--group'>
-                  <label>Nombre cuenta</label>
-                  <input
-                    className='account__input'
-                    placeholder='Nombre'
-                    type="text"
-                    id='name'
-                    required
-                    value={account.name}
-                    onChange={handleInputChange}
-                    name='name'
-                  />
+                  <label>Nombre cuenta
+                    <input
+                      className='account__input'
+                      placeholder='Nombre'
+                      type="text"
+                      id='name'
+                      required
+                      value={account.name}
+                      onChange={handleInputChange}
+                      name='name'
+                    />
+                  </label>
                 </div>
 
                 <div className='account__form--group'>
-                  <label>Plan de cuentas</label>
-                  <select
-                    className='account__input'
-                    type="text"
-                    id='accounting_plan_id'
-                    required
-                    value={account.accounting_plan_id}
-                    onChange={handleInputChange}
-                    name='accounting_plan_id'
-                  >
-                    <option value={0}>-- PGC --</option>
-                    {plans.map((plan, index) => {
-                      return (
-                        <option key={index} value={plan.id}>{plan.name}</option>
-                      );
-                    })}
-                  </select>
+                  <label>Plan de cuentas
+                    <select
+                      className='account__input'
+                      type="text"
+                      id='accounting_plan_id'
+                      required
+                      value={account.accounting_plan_id}
+                      onChange={handleInputChange}
+                      name='accounting_plan_id'
+                    >
+                      <option value={0}>-- PGC --</option>
+                      {plans.map((plan, index) => {
+                        return (
+                          <option key={index} value={plan.id}>{plan.name}</option>
+                        );
+                      })}
+                    </select>
+                  </label>
                 </div>
               </div>
 
             <div className='account__form--row'>
               <div className='account__form--group'>
-                <label>Descripción</label>
-                <input
-                  className='account__input'
-                  placeholder='Descripción'
-                  type="text"
-                  id='description'
-                  required
-                  value={account.description}
-                  onChange={handleInputChange}
-                  name='description'
-                />
+                <label>Descripción
+                  <input
+                    className='account__input'
+                    placeholder='Descripción'
+                    type="text"
+                    id='description'
+                    required
+                    value={account.description}
+                    onChange={handleInputChange}
+                    name='description'
+                  />
+                </label>
               </div>
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
 
 // PGC LIST

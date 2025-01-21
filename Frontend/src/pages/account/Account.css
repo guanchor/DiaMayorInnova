@@ -42,9 +42,11 @@
 .account__addAcc {
   grid-area: form;
   padding-bottom: 24px;
+  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .account__listAcc {
+  padding-top: var(--gap-xl);
   grid-area: list;
   /* overflow-y: hidden; */
 }

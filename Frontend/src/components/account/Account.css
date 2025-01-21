@@ -9,16 +9,14 @@
 .account__accList--item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
-  border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
-  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
 }
 
-.account__header--h4 {
+.account__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
   font-weight: bold;
   margin-bottom: var(--gap-m);
@@ -57,7 +55,6 @@
   justify-content: center;
   align-items: center;
   padding-bottom: var(--gap-s);
-  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .account__table {
@@ -102,7 +99,8 @@
 .account__button--remove.trash
 {
   margin-right: 8px;
-  font-size: 1.2rem;
+  color: var(--Color-grey-800);
+  font-size: var(--text-desktop-body-small);
 }
 
 .account__button--remove {

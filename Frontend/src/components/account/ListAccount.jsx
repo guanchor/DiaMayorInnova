@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AccountService from '../../services/AccountService';
 import "./Account.css";
 
@@ -8,6 +8,7 @@ const AccountsList = ({ newAcc }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccount, setSearchAccount] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     retrieveAccounts();
@@ -66,10 +67,11 @@ const AccountsList = ({ newAcc }) => {
     <>
 
       <section className='account_accList'>
-        <h4 className='account__header--h4'>Todas las cuentas</h4>
+        <h2 className='account__header--h2'>Todas las cuentas</h2>
 
         <div className='account__input--filter'>
           <input
+            aria-label='Filtrar por nombre de cuenta'
             className='account__input'
             type='text'
             value={searchAccount}
@@ -81,6 +83,14 @@ const AccountsList = ({ newAcc }) => {
 
         <div className='account__table'>
           <table className='account__tbody'>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Nº Cuenta</th>
+                <th>Descripción</th>
+                <th>PGC</th>
+              </tr>
+            </thead>
             <tbody>
               {accounts && accounts.map((account, index) => (
                 <tr className='account__accList--item' key={index} onClick={() => setActiveAccount(account, index)}>
@@ -89,17 +99,13 @@ const AccountsList = ({ newAcc }) => {
                   <td>{account.description}</td>
                   <td>{account.accounting_plan_id}</td>
                   <td className='account__form--actions'>
-                    <button className='account__button--link inter'>
-                      <Link to={"/help-examples"}>
-                        <i className='fi-rr-interrogation'/>
-                      </Link>
+                    <button className='account__button--link inter' onClick={() => navigate("/help-examples")}>
+                      <i className='fi-rr-interrogation'/> Ayuda
                     </button>
-                    <button className='account__button--link pencil'>
-                      <Link to={"/accounts/" + account.id}>
-                        <i className='fi-rr-pencil' /> Editar
-                      </Link>
+                    <button className='account__button--link pencil' onClick={() => navigate("/accounts/" + account.id)}>
+                      <i className='fi-rr-pencil' /> Editar
                     </button>
-                    <button className='account__button--remove trash'
+                    <button aria-label="Eliminar cuenta" className='account__button--remove trash'
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAccount(account.id);

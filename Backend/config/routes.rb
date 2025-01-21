@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     #get 'sign_up', to: 'registrations#new'
     delete 'log_out', to: 'sessions#destroy'
     post 'validate_token', to: 'sessions#valid_token'
+    resources :registrations
   end
 
   #resources :users, only: [:index, :show, :create, :update, :destroy]

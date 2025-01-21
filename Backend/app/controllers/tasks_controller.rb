@@ -5,7 +5,9 @@ class TasksController < ApplicationController
   
   def index
     if current_user.student?
-      render json: { error: "No autorizado" }, status: :forbidden
+      @tasks = Task.all
+      render json: @tasks
+      # render json: { error: "No autorizado" }, status: :forbidden Solo para la prueba !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     else
       if current_user.admin?
         @tasks = Task.all

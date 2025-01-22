@@ -14,9 +14,9 @@ class RegistrationsController < Devise::RegistrationsController
     email = params[:email]
     password = params[:password]
     featured_image = params[:featured_image]
-    roles = JSON.parse(params[:roles]) rescue []
+    role = params[:role]
     
-    user = User.new(email: email, password: password)
+    user = User.new(email: email, password: password, role: role)
 
     if featured_image.present?
       user.featured_image = featured_image
@@ -27,11 +27,6 @@ class RegistrationsController < Devise::RegistrationsController
     user.second_lastName = params[:second_lastName]
 
     if user.save
-      roles.each do |role_name|
-        role = Role.find_by(name: role_name)
-        user.roles << role if role
-      end
-
       user_data = user.as_json
       if user.featured_image.attached?
         user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
@@ -49,7 +44,14 @@ class RegistrationsController < Devise::RegistrationsController
   def ensure_admin_user
     token = request.headers['AUTH-TOKEN']
     current_user = User.find_by(authentication_token: token)
-    unless current_user&.has_role?(:admin)
+
+    if current_user.respond_to?(:admin?)
+      puts "Método admin? disponible"
+    else
+      puts "Método admin? NO disponible"
+    end
+
+    unless current_user&.admin?
       json_response "Unauthorized", false, {}, :unauthorized
     end
   end
@@ -61,6 +63,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :name, :first_lastName, :second_lastName, :featured_image, roles: [])
+    params.require(:user).permit(:email, :password, :password_confirmation, :name, :first_lastName, :second_lastName, :featured_image, :role)
   end
 end 

@@ -21,7 +21,7 @@ class SessionsController < Devise::SessionsController
   def valid_token
     @user = User.find_by authentication_token: request.headers["AUTH-TOKEN"]
     if @user
-      json_response("Token validado exitosamente", true, { user: @user, roles: @user.roles.pluck(:name), user: user_with_image(@user) }, :ok)
+      json_response("Token validado exitosamente", true, { user: @user, role: @user.role, user: user_with_image(@user) }, :ok)
     else
       json_response "Invalid Token", false, {}, :not_found
     end
@@ -42,7 +42,7 @@ class SessionsController < Devise::SessionsController
 
       if user && user.valid_password?(password)
         sign_in(user)
-        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, roles: user.roles.pluck(:name) }, :ok)
+        json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, role: user.role }, :ok)
       else
         json_response("Invalid credentials", false, {}, :unauthorized)
       end
@@ -56,7 +56,7 @@ class SessionsController < Devise::SessionsController
 
     if user
       sign_in(user)
-      json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, roles: user.roles.pluck(:name) }, :ok)
+      json_response("Signed In Successfully", true, { user: user_with_image(user), token: user.authentication_token, role: user.role }, :ok)
     else
       json_response("Invalid or expired authentication token", false, {}, :unauthorized)
     end

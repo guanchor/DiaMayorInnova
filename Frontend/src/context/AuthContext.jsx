@@ -17,10 +17,12 @@ export const AuthProvider = ({ children }) => {
       }
   }, [auth.token]);
 
-  if (auth.loading || !auth.roles) {
+  if (auth.loading || !auth.role) {
+    console.log("Loading state:", auth.loading);
+    console.log("User role:", auth.role);
     return <div>Loading...</div>;
   }
-  //console.log("DESDE CONTEXT:", auth);
+console.log("DESDE CONTEXT:", auth);
   return (
     <AuthContext.Provider value={auth}>
       {children}

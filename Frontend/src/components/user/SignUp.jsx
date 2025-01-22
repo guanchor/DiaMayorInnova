@@ -13,24 +13,12 @@ const SignUp = () => {
     first_lastName: "",
     second_lastName: "",
     featured_image: null,
-    roles: [],
+    role: "student",
   });
 
-  const [availableRoles, setAvailableRoles] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
-
-  useEffect(() => {
-    roleService.getRoles()
-      .then((roles) => {
-        setAvailableRoles(roles || [])
-      })
-      .catch((err) => {
-        console.error("Error al obtener roles:", err);
-        setAvailableRoles([]);
-      });
-  }, []);
 
   const handleSubmitEvent = (e) => {
     e.preventDefault();
@@ -54,11 +42,15 @@ const SignUp = () => {
     if (input.featured_image) {
       formData.append('featured_image', input.featured_image);
     }
-    formData.append("roles", JSON.stringify(input.roles));//json to string -> roles to string.
+    formData.append("role", input.role);
 
-    auth.signUpAction(formData).then((response) => {
+    auth
+    .signUpAction(formData)
+    .then((response) => {
       console.log("Usuario registrado", response);
-    }).catch((error) => {
+      navigate("/");
+    })
+    .catch((error) => {
       console.error("Error de registro:", error);
       setError(error.response?.data?.message || "Hubo un error al registar el usuario.");
     });
@@ -74,16 +66,6 @@ const SignUp = () => {
 
   const onImageChange = (event) => {
     setInput({ ...input, featured_image: event.target.files[0] });
-  };
-
-  const handleRoleChange = (e) => {
-    const { value, checked } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      roles: checked
-        ? [...prev.roles, value]
-        : prev.roles.filter((role) => role !== value),
-    }));
   };
 
   const handleClick = () => {
@@ -184,19 +166,18 @@ const SignUp = () => {
         </div>
 
         <div className="form_control">
-          <label>Selecciona tus roles:</label>
-          {Array.isArray(availableRoles) && availableRoles.map((role) => (
-            <div key={role.id}>
-              <input
-                type="checkbox"
-                id={`role-${role.id}`}
-                name="roles"
-                value={role.name}
-                onChange={handleRoleChange}
-              />
-              <label htmlFor={`role-${role.id}`}>{role.name}</label>
-            </div>
-          ))}
+          <label htmlFor="role">Seleccione el rol:</label>
+          <select  
+            id="role" 
+            name="role" 
+            value={input.role} 
+            onChange={handleInput} 
+            required
+          >
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
         </div>
 
         {error && <p style={{ color: "red" }}>{error}</p>}

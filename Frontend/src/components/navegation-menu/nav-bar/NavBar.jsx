@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import SettingsModal from "../settings-modal/SettingsModal";
 
 const NavBar = () => {
-  const { menuState, changeMenu, rol } = useContext(navContext);
+  const { menuState, changeMenu, currentRole } = useContext(navContext);
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,7 +27,7 @@ const NavBar = () => {
         <ul className="navBar__list" >
           {
             routes.map((route) => {
-              if (route.rol.includes(rol) && location !== "/sign_in") {
+              if (route.rol.includes(currentRole) && location !== "/sign_in") {
                 return <NavItem key={route.to} icon={route.icon} name={route.name} url={route.to} />
               } else return null;
             })

@@ -5,7 +5,7 @@ import './Dropdown.css';
 import useOnClickOutside from "../../../../hooks/useOnClickOutside";
 
 const Dropdown = () => {
-  const { dropdownState = false, setdropdownState, changeDropmenu, userName, userAvatarUrl, rol } = useContext(navContext);
+  const { dropdownState = false, setdropdownState, changeDropmenu, userName, userAvatarUrl, currentRole } = useContext(navContext);
   const avatarUrl = userAvatarUrl;
   const dropdownRef = useRef(null);
 
@@ -35,7 +35,7 @@ const Dropdown = () => {
           )}
           <div className='menuInfo'>
             <p className='menuInfo_name'>{userName}</p>
-            <p className='menuInfo_rol'>{rol}</p>
+            <p className='menuInfo_rol'>{currentRole}</p>
           </div>
         </div>
         <i className='fi fi-rr-angle-small-down'></i>

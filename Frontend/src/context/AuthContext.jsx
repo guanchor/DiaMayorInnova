@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       }
   }, [auth.token]);
 
-  if (auth.loading || !auth.role) {
+  if (auth.loading) {
     console.log("Loading state:", auth.loading);
     console.log("User role:", auth.role);
     return <div>Loading...</div>;

@@ -10,7 +10,6 @@ const Shortcuts = () => {
   const { currentRole } = useContext(navContext);
   const navigate = useNavigate();
   const auth = useAuth();
-  console.log("aliwdhoagwdkuiagwd", currentRole)
 
   return (
     <section className="top">

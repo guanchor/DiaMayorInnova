@@ -15,7 +15,7 @@ const SettingsModal = ({ onClose }) => {
   return (
     <>
       <div className="modal__background">
-        <section className="modal">
+        <section className="setting__modal">
           <button onClick={closeModal} className='btn light'>X</button>
           <section className="moda-settings__wrapper">
             <h2>Configuración</h2>

@@ -12,7 +12,6 @@ const useAuthLogic = (navigate) => {
 
   const checkTokenValidity = async (requiredRole = null) => {
     if (!token) {
-      console.log("No hay token, redirigiendo...");
       setLoading(false);
       navigate("/sign_in");
       return;

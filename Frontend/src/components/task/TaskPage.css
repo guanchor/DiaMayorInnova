@@ -48,6 +48,13 @@
   padding: 0 var(--gap-l);
 }
 
+.task-page__form--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-xl);
+}
+
 .task-page__preview {
   grid-area: task-preview;
   padding: var(--gap-m);
@@ -85,7 +92,7 @@
   background-color: var(--Color-Neutral-White);
   font-size: var(--text-desktop-subtitles-1);
   font-weight: bold;
-  margin-bottom: var(--gap-xl);
+  /*  margin-bottom: var(--gap-xl); */
 }
 
 .task-page__header--h4 {

@@ -10,7 +10,11 @@ const Modes = () => {
 
   if (location.pathname === "/modes") {
     return (
-      <AsignedTaskUser />
+      <div className="shortcut__wrapper wrapper-center">
+        <Shortcut url="practica" name='practica' />
+        <Shortcut url="tarea" name='tarea' />
+        <Shortcut url="examen" name='examen' />
+      </div>
 
     )
   }
@@ -24,8 +28,3 @@ const Modes = () => {
 
 export default Modes
 
-      /* <div className="shortcut__wrapper wrapper-center">
-        <Shortcut url="practica" name='practica' />
-        <Shortcut url="tarea" name='tarea' />
-        <Shortcut url="examen" name='examen' />
-      </div> */

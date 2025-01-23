@@ -342,7 +342,7 @@ input::placeholder {
 .search-bar {
   align-self: center;
   background-color: var(--Color-Neutral-White);
-  width: 336px;
+  width: 100%;
   height: 48px;
   border-radius: var(--r-xs);
   display: flex;

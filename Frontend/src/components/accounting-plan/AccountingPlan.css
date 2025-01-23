@@ -3,7 +3,22 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
+
+  & .search-bar--pgc {
+    width: 50%;
+    align-self: right;
+;
+  }
+}
+
+.accountingPlan__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-m);
+  gap: var(--gap-xl);
 }
 
 .accountingPlan__pgcList-item {
@@ -15,12 +30,13 @@
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
+  text-align: center;
 }
 
 .accountingPlan__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
+  align-self: self-start;
   font-weight: bold;
-  margin-bottom: var(--gap-m);
 }
 
 .accountingPlan__header--h4 .title {
@@ -53,8 +69,7 @@
 
 .accountingPlan__input--filter {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
   padding-bottom: var(--gap-s);
 }
 
@@ -74,7 +89,6 @@
 }
 
 th {
-  text-align: center;
   border-bottom: solid 1px var(--Color-grey-200);
   padding: var(--gap-xs);
   margin: var(--gap-xs);
@@ -197,6 +211,14 @@ th {
 
   & tbody {
     height: 100%;
+  }
+
+  & .fi-rr-angle-small-down {
+    color: var(--Color-grey-800);
+    display: flex;
+    align-items: center;
+    font-size: large;
+    background-color: peru;
   }
 }
 

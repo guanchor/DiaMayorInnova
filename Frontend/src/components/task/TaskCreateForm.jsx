@@ -84,7 +84,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     if (openingDate && closingDate) {
       const opening = new Date(openingDate);
       const closing = new Date(closingDate);
-  
+
       if (opening >= closing) {
         valid = false;
         errors.title = "La fecha de apertura debe ser anterior a la fecha de cierre.";
@@ -131,7 +131,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         <button className="back-button" onClick={() => navigate("/home")}>
           <i className="fi fi-rr-arrow-small-left"></i>
           Volver
-          </button>
+        </button>
         <div className="task-title">
           <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
         </div>
@@ -145,6 +145,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         setClosingDate={setClosingDate}
         handleSubmit={handleSubmit}
         errors={errors}
+        id={task && task.id}
       />
       <StatementsSelection
         statements={statements}

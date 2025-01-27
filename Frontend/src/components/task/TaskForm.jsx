@@ -1,16 +1,17 @@
-import React from "react";
 import dateTimeFormat from "../../utils/dateTimeFormat";
-import "./TaskPage.css";
 import AsignedTaskUser from "../asigned-tasks-user/AsignedTaskUser";
+import "./TaskPage.css";
 
-const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors }) => {
+const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors, id }) => {
 
   return (
     <section className="task-page__form">
       <form className="task-page__form--form">
         <header className="task-page__form--header">
           <h2 className="task-page__header">Crear Tarea</h2>
-          <AsignedTaskUser />
+          <AsignedTaskUser
+            id={id}
+          />
         </header>
         <div>
           <label className="task-page__label--title">Tarea:</label>

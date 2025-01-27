@@ -6,6 +6,7 @@ const getAll = async () => {
   return response;
 };
 
+
 const getByTaskId = async (id) => {
   try {
     const response = await http.get(`/student_exercises/find_by_task_id?task_id=${id}`);
@@ -15,10 +16,11 @@ const getByTaskId = async (id) => {
   }
 };
 
-const create = async (exerciseData) => {
-  console.log(exerciseData)
+
+const create = async (data) => {
+  console.log(data)
   try {
-    const response = await http.post("/student_exercises", exerciseData);
+    const response = await http.post("/exercises", data);
     return response;
   } catch (error) {
     console.error("Error en la creación de la tarea del usuario:", error);
@@ -45,7 +47,6 @@ const remove = async (id) => {
     return null;
   }
 };
-
 
 
 export default {

@@ -17,9 +17,14 @@ Rails.application.routes.draw do
   resources :student_entries
   resources :student_annotations
   resources :marks
-  resources :exercises
-  resources :student_exercises
-
+  resources :exercises do
+    delete 'destroy_on_group', on: :collection
+  end
+  resources :student_exercises do
+    get 'find_by_task_id', on: :collection
+  end
+  
+  
   resources :tasks, param: :id do
     delete 'statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
     member do

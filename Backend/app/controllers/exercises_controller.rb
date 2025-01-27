@@ -20,11 +20,16 @@ class ExercisesController < ApplicationController
     user_ids = exercise_params[:user_id] 
 
     if user_ids.present?
+      errors = []
+
       user_ids.each do | user_id |
         exercise= Exercise.create(task_id: task_id, user_id: user_id)
-        if exercise.errors.any?
-          render json: exercise.errors, status: :unprocessable_entity and return
-        end
+        errors << { user_id: user_id, errors: exercise.errors.full_messages } if exercise.errors.any?
+      end
+
+      if errors.any?
+        render json: { message: 'Algunas tareas no pudieron crearse.', errors: errors }, status: :unprocessable_entity
+      else
         render json: { message: 'Tareas creadas con éxito.' }, status: :created
       end
     else

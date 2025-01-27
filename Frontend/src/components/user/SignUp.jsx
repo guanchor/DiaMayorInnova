@@ -107,7 +107,7 @@ const SignUp = () => {
             type="password"
             id="confirmation_password"
             name="confirmation_password"
-            placeholder="Confirma tu contraseña"
+            placeholder="Confirma la contraseña"
             value={input.confirmation_password}
             onChange={handleInput}
             required
@@ -120,7 +120,7 @@ const SignUp = () => {
             type="text"
             id="name"
             name="name"
-            placeholder="Tu nombre"
+            placeholder="Nombre"
             value={input.name}
             onChange={handleInput}
             required
@@ -133,7 +133,7 @@ const SignUp = () => {
             type="text"
             id="first_lastName"
             name="first_lastName"
-            placeholder="Tu primer apellido"
+            placeholder="El primer apellido"
             value={input.first_lastName}
             onChange={handleInput}
             required
@@ -146,7 +146,7 @@ const SignUp = () => {
             type="text"
             id="second_lastName"
             name="second_lastName"
-            placeholder="Tu segundo apellido"
+            placeholder="El segundo apellido"
             value={input.second_lastName}
             onChange={handleInput}
             required

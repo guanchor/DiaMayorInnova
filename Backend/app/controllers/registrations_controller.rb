@@ -37,6 +37,24 @@ class RegistrationsController < Devise::RegistrationsController
     else
       json_response "Validation Error", false, { errors: user.errors.full_messages }, :unprocessable_entity
     end
+=begin 
+    current_user = User.find_by(authentication_token: request.headers['AUTH-TOKEN'])
+
+  # Usar los parámetros filtrados por `sign_up_params`
+  user = User.new(sign_up_params)
+
+  if user.save
+    user_data = user.as_json
+    if user.featured_image.attached?
+      user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
+    else
+      user_data[:featured_image] = nil
+    end
+    json_response "Signed Up Successfully", true, { user: user_data }, :ok
+  else
+    json_response "Validation Error", false, { errors: user.errors.full_messages }, :unprocessable_entity
+  end
+=end
   end
 
   private

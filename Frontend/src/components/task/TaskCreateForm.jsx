@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import statementService from "../../services/statementService";
 import taskService from "../../services/taskService";
 import { useAuth } from "../../context/AuthContext";
@@ -7,6 +7,7 @@ import TaskPreview from "./TaskPreview.jsx";
 import StatementsSelection from "./StatementsSelection.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./TaskPage.css";
+import TaskUsersProvider from "../../context/taks-users/TaskUsersProvider.jsx";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { state } = useLocation();
@@ -20,6 +21,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [selectedStatements, setSelectedStatements] = useState(task?.statements?.map(s => s.id) || []);
   const [solutions, setSolutions] = useState({});
   const [editMode, setEditMode] = useState(task ? true : false);
+
   const [errors, setErrors] = useState({
     title: "",
     openingDate: "",
@@ -126,45 +128,47 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   };
 
   return (
-    <main className="task-page">
-      <header className="task-page__header--header">
-        <button className="back-button" onClick={() => navigate("/home")}>
-          <i className="fi fi-rr-arrow-small-left"></i>
-          Volver
-        </button>
-        <div className="task-title">
-          <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
-        </div>
-      </header>
-      <TaskForm
-        title={title}
-        setTitle={setTitle}
-        openingDate={openingDate}
-        setOpeningDate={setOpeningDate}
-        closingDate={closingDate}
-        setClosingDate={setClosingDate}
-        handleSubmit={handleSubmit}
-        errors={errors}
-        id={task && task.id}
-      />
-      <StatementsSelection
-        statements={statements}
-        selectedStatements={selectedStatements}
-        handleStatementSelection={handleStatementSelection}
-        handleViewSolutions={handleViewSolutions}
-        handleEditSolutions={handleEditSolutions}
-        solutions={solutions}
-        editMode={editMode}
-      />
-      <TaskPreview
-        title={title}
-        openingDate={openingDate}
-        closingDate={closingDate}
-        statements={statements}
-        selectedStatements={selectedStatements}
-        handleRemoveStatement={handleRemoveStatement}
-      />
-    </main>
+    <TaskUsersProvider>
+      <main className="task-page">
+        <header className="task-page__header--header">
+          <button className="back-button" onClick={() => navigate("/home")}>
+            <i className="fi fi-rr-arrow-small-left"></i>
+            Volver
+          </button>
+          <div className="task-title">
+            <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
+          </div>
+        </header>
+        <TaskForm
+          title={title}
+          setTitle={setTitle}
+          openingDate={openingDate}
+          setOpeningDate={setOpeningDate}
+          closingDate={closingDate}
+          setClosingDate={setClosingDate}
+          handleSubmit={handleSubmit}
+          errors={errors}
+          id={task && task.id}
+        />
+        <StatementsSelection
+          statements={statements}
+          selectedStatements={selectedStatements}
+          handleStatementSelection={handleStatementSelection}
+          handleViewSolutions={handleViewSolutions}
+          handleEditSolutions={handleEditSolutions}
+          solutions={solutions}
+          editMode={editMode}
+        />
+        <TaskPreview
+          title={title}
+          openingDate={openingDate}
+          closingDate={closingDate}
+          statements={statements}
+          selectedStatements={selectedStatements}
+          handleRemoveStatement={handleRemoveStatement}
+        />
+      </main>
+    </TaskUsersProvider>
   );
 };
 

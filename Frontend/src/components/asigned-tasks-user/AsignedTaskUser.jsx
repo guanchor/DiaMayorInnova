@@ -1,50 +1,31 @@
-import userExerciseDataService from '../../services/userExerciseDataService';
 import Modal from '../modal/Modal';
-import http from '../../http-common';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import "./AsignedTaskUser.css";
+import { taskUsersContext } from '../../context/taks-users/taskUserContext';
 
 const AsignedTaskUser = ({ id = "" }) => {
-  const [users, setUsers] = useState([]);
-  const [userAsigned, setUserAsigned] = useState([]);
+  const { selectUser, deselectUser, getAllUsers, users, usersByTaskId, assignedInclude, currentUsers } = useContext(taskUsersContext)
 
 
-  const getAllUsers = () => http.get('/registrations'); //Esto debe estar en un servicio, pero para probar esta aqui
+  console.log(users)
+
 
   const checkboxActive = ({ target }, userId) => {
     const { checked } = target;
     if (checked) {
-      setUserAsigned(prevState => [...prevState, userId]);
+      selectUser(userId)
     } else {
-      setUserAsigned(prevState => prevState.filter(id => id !== userId));
+      deselectUser(userId)
     }
   };
 
-
-  const data = { //Como enviar los datos para que se creen los ejercicios 
-    "exercise": {
-      "task_id": "",
-      "user_id": []
-    }
-  }
-
   useEffect(() => {
-    if (id !== "" && id !== null) {
-      userExerciseDataService.getByTaskId(id)
-        .then(({ data }) => {
-          const assignedUsers = data.map(entry => entry.user_id);
-          setUserAsigned(assignedUsers);
-          console.log('Usuarios asignados:', assignedUsers);
-        });
+    getAllUsers();
+    if (id !== "") {
+      usersByTaskId(id)
+      console.log(currentUsers);
     }
-
-    getAllUsers()
-      .then((response) => {
-        setUsers(response.data);
-        console.log('Usuarios:', response.data);
-      });
-
-  }, [id]);
+  }, [])
 
   return (
     <>
@@ -65,11 +46,11 @@ const AsignedTaskUser = ({ id = "" }) => {
           <div className="list__container">
             <h3>Lista de estudiantes</h3>
             <div className="list__items">
-              {users.map((user) => (
-                <label className={userAsigned.includes(user.id) ? "user__item user__item--selected" : "user__item"} key={user.id}>
+              {users && users.map((user) => (
+                <label className={assignedInclude(user) ? "user__item user__item--selected" : "user__item"} key={user.id}>
                   <input
                     type="checkbox"
-                    checked={userAsigned.includes(user.id)}
+                    checked={assignedInclude(user.id)}
                     onChange={(event) => checkboxActive(event, user.id)}
                   />
                   {user.name} {user.first_lastName} {user.second_lastName}

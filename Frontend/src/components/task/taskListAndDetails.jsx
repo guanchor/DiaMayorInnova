@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import TaskModal from "../modal/TaskModal";
 import TaskDetails from "./TaskDetails";
 import "./TaskPage.css";
+import TaskUsersProvider from "../../context/taks-users/TaskUsersProvider";
 
 const TaskListAndDetails = () => {
   const location = useLocation();
@@ -120,69 +121,73 @@ const TaskListAndDetails = () => {
 
   return (
     <>
-      {isCreatingTask ? (
-        <TaskCreateForm onTaskCreated={handleTaskCreated} />
-      ) : (
-        <>
-          <section className="task-list">
-            <div className="task-list__header">
-              <h2 className="task-list__title">Tareas Activas</h2>
-              <button
-                onClick={() => setIsSearching((prev) => !prev)}
-                className="task-list__filter-button"
-                aria-label="Filtrar por nombre de tarea"
-              >
-                <i className="fi fi-rr-filter"></i>
-              </button>
-            </div>
+      <TaskUsersProvider>
 
-            {isSearching && (
-              <div className="task-list__search-container">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  placeholder="Buscar por Título"
-                  className="task-list__search-input"
-                />
-                <i className="fi fi-rr-search task-list__search-icon"></i>
+
+        {isCreatingTask ? (
+          <TaskCreateForm onTaskCreated={handleTaskCreated} />
+        ) : (
+          <>
+            <section className="task-list">
+              <div className="task-list__header">
+                <h2 className="task-list__title">Tareas Activas</h2>
+                <button
+                  onClick={() => setIsSearching((prev) => !prev)}
+                  className="task-list__filter-button"
+                  aria-label="Filtrar por nombre de tarea"
+                >
+                  <i className="fi fi-rr-filter"></i>
+                </button>
               </div>
-            )}
 
-            <ul className="task-list__items">
-              {filteredTasks.map((task) => (
-                <li key={`${task.id}-${task.created_at}`} className="task-list__item">
-                  <div className="task-list__item-content">
-                    <div className="task-list__square">
-                      <i className="fi fi-rr-pencil pencil"></i>
-                    </div>
-                    <div className="task-list__info">
-                      <p className="task-list__item-title">{task.title}</p>
-                      <p className="task-list__closing-date">
-                        <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
-                      </p>
-                      <button onClick={() => fetchTaskDetails(task.id)}
-                        className="task-list__button">
-                        Ver Información
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
+              {isSearching && (
+                <div className="task-list__search-container">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    placeholder="Buscar por Título"
+                    className="task-list__search-input"
+                  />
+                  <i className="fi fi-rr-search task-list__search-icon"></i>
+                </div>
+              )}
 
-          <TaskModal show={modalVisible} onClose={handleCloseModal}>
-            <TaskDetails
-              selectedTask={selectedTask}
-              onDeleteStatement={handleDeleteStatement}
-              onEditTask={() => setIsEditingTask(true)}
-              onDeleteTask={handleDeleteTask}
-              onCloseModal={handleCloseModal}
-            />
-          </TaskModal>
-        </>
-      )}
+              <ul className="task-list__items">
+                {filteredTasks.map((task) => (
+                  <li key={`${task.id}-${task.created_at}`} className="task-list__item">
+                    <div className="task-list__item-content">
+                      <div className="task-list__square">
+                        <i className="fi fi-rr-pencil pencil"></i>
+                      </div>
+                      <div className="task-list__info">
+                        <p className="task-list__item-title">{task.title}</p>
+                        <p className="task-list__closing-date">
+                          <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
+                        </p>
+                        <button onClick={() => fetchTaskDetails(task.id)}
+                          className="task-list__button">
+                          Ver Información
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <TaskModal show={modalVisible} onClose={handleCloseModal}>
+              <TaskDetails
+                selectedTask={selectedTask}
+                onDeleteStatement={handleDeleteStatement}
+                onEditTask={() => setIsEditingTask(true)}
+                onDeleteTask={handleDeleteTask}
+                onCloseModal={handleCloseModal}
+              />
+            </TaskModal>
+          </>
+        )}
+      </TaskUsersProvider>
     </>
   );
 };

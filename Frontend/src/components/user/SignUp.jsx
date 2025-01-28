@@ -34,15 +34,15 @@ const SignUp = () => {
     }
 
     const formData = new FormData();
-    formData.append("email", input.email);
-    formData.append("password", input.password);
-    formData.append("name", input.name);
-    formData.append("first_lastName", input.first_lastName);
-    formData.append("second_lastName", input.second_lastName);
+    formData.append("user[email]", input.email);
+    formData.append("user[password]", input.password);
+    formData.append("user[name]", input.name);
+    formData.append("user[first_lastName]", input.first_lastName);
+    formData.append("user[second_lastName]", input.second_lastName);
     if (input.featured_image) {
-      formData.append('featured_image', input.featured_image);
+      formData.append('user[featured_image]', input.featured_image);
     }
-    formData.append("role", input.role);
+    formData.append("user[role]", input.role);
 
     auth
     .signUpAction(formData)

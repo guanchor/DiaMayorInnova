@@ -20,32 +20,31 @@ const SignIn = () => {
       setErrorMessage("Por favor, complete todos los campos.");
       return;
     }
-      auth
-        .signInAction(input.email.toLowerCase(), input.password)
-        .then((response) => {
-          const user = response?.data?.data?.user;
+    auth
+      .signInAction(input.email.toLowerCase(), input.password)
+      .then((response) => {
+        const user = response?.data?.data?.user;
 
-          if (user) {
-            auth.setRole(user.role);
+        if (user) {
+          auth.setRole(user.role);
 
-            if (user.featured_image) {
-              const avatarUrl = `${API_BASE_URL}/${user.featured_image}`;
-              auth.setUserAvatarUrl(avatarUrl);
-            }
-            setErrorMessage("");
-            setSuccessMessage("Inicio de sesión exitoso.");
-            navigate("/home");
-          } else {
-            console.log("La respuesta no contiene informacion del usuario.");
-            setErrorMessage("No se pudo obtener información del usuario.");
+          if (user.featured_image) {
+            const avatarUrl = `${API_BASE_URL}/${user.featured_image}`;
+            auth.setUserAvatarUrl(avatarUrl);
           }
-        })
-        .catch((error) => {
-          console.error("Error durante el inicio de sesión:", error);
-          setErrorMessage("Hubo un error durante el inicio de sesión. Verifique sus credenciales.");
-          setSuccessMessage("");
-        });
-    };
+          setErrorMessage("");
+          setSuccessMessage("Inicio de sesión exitoso.");
+          navigate("/home");
+        } else {
+          setErrorMessage("No se pudo obtener información del usuario.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error durante el inicio de sesión:", error);
+        setErrorMessage("Hubo un error durante el inicio de sesión. Verifique sus credenciales.");
+        setSuccessMessage("");
+      });
+  };
 
   const handleInput = (e) => {
     const { name, value } = e.target;

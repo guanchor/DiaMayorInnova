@@ -32,12 +32,6 @@ private
     token = request.headers['AUTH-TOKEN']
     current_user = User.find_by(authentication_token: token)
 
-    if current_user.respond_to?(:admin?)
-      puts "Método admin? disponible"
-    else
-      puts "Método admin? NO disponible"
-    end
-
     unless current_user&.admin?
       json_response "Unauthorized", false, {}, :unauthorized
     end

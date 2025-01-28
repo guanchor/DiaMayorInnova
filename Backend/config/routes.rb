@@ -31,8 +31,6 @@ Rails.application.routes.draw do
     post 'add_solution', on: :member
     get 'solutions', to: 'statements#get_solutions', on: :member
   end
-
-  # resources :roles, only: [:index]
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }

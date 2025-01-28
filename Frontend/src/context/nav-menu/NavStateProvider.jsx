@@ -9,7 +9,6 @@ const NavStateProvider = ({ children }) => {
   const [dropdownState, setdropdownState] = useState(false);
 
   const userName = user ? user.name : "Pedro Picapiedra";
-  console.log("cotext roleeeeeeeee", role)
 
   const changeMenu = () => {
     setMenuState(!menuState);

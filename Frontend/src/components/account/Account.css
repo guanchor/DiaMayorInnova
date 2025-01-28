@@ -4,16 +4,32 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  & .search-bar--acc {
+    width: 50%;
+    align-self: right;
+  }
+}
+
+.account__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-m);
+  gap: var(--gap-xl);
 }
 
 .account__accList--item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
+  border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
+  text-align: center;
 }
 
 .account__header--h2 {
@@ -52,8 +68,7 @@
 
 .account__input--filter {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
   padding-bottom: var(--gap-s);
 }
 
@@ -70,6 +85,12 @@
   & table {
     width: 100%;
   }
+}
+
+th {
+  border-bottom: solid 1px var(--Color-grey-200);
+  padding: var(--gap-xs);
+  margin: var(--gap-xs);
 }
 
 .account__button {

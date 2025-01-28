@@ -6,7 +6,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 0.1fr repeat(2, 1fr);
   grid-template-areas:
-    "btn title yo"
+    "btn title empty"
     "form form form"
     "list list list";
 }
@@ -42,13 +42,13 @@
 .account__addAcc {
   grid-area: form;
   padding-bottom: 24px;
+  height: 340px;
   border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .account__listAcc {
   padding-top: var(--gap-xl);
   grid-area: list;
-  /* overflow-y: hidden; */
 }
 
 

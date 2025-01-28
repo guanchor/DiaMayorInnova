@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import AccountService from '../../services/AccountService';
 import "./Account.css";
 
@@ -9,6 +9,7 @@ const AccountsList = ({ newAcc }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccount, setSearchAccount] = useState("");
   const navigate = useNavigate();
+  const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
 
   useEffect(() => {
     retrieveAccounts();
@@ -24,12 +25,16 @@ const AccountsList = ({ newAcc }) => {
       });
   };
 
-  const findByName = () => {
+  const findByName = (e) => {
+    e.preventDefault();
     if (searchAccount) {
-      AccountService.findByName(searchAccount)
+      const searchTerm = searchAcccount.toLowerCase();
+      AccountService.getAll()
         .then(response => {
-          setAccounts(response.data);
-          console.log(response.data);
+          const filteredAccounts = response.data.filter (acc =>
+            acc.name.toLowerCase().includes(searchTerm)
+          );
+          setAccounts(filteredAccounts);
         })
         .catch(e => {
           console.log(e);
@@ -62,30 +67,56 @@ const AccountsList = ({ newAcc }) => {
     console.log(searchAccount)
   };
 
+  //Accounts sorted by Name column
+  const sortAccounts = (order) => {
+    const sortedAcc = [...accounts].sort((a, b) => {
+      if (order === "ascending") {
+        return a.name.localeCompare(b.name);
+      }
+      else {
+        return b.name.localeCompare(a.name);
+      }
+    });
+    setAccounts(sortedAcc);
+  }
+
+  //Change order
+  const handleSortClick = () => {
+    const newOrder = sortOrder === "ascending" ? "descending" : "ascending";
+    setSortOrder(newOrder);
+    sortAccounts(newOrder);
+  }
 
   return (
     <>
 
       <section className='account_accList'>
-        <h2 className='account__header--h2'>Todas las cuentas</h2>
+        <div className='account__header'>
+          <h2 className='account__header--h2'>Todas las cuentas</h2>
 
-        <div className='account__input--filter'>
-          <input
-            aria-label='Filtrar por nombre de cuenta'
-            className='account__input'
-            type='text'
-            value={searchAccount}
-            onChange={handleSearchChange}
-            placeholder='Filtrar por nombre de cuenta'
-          />
-          <button className='btn account__button' onClick={findByName}>Buscar</button>
+          <form className='search-bar search-bar--acc'>
+            <input
+              aria-label='Filtrar por nombre de cuenta'
+              className='search-bar_search'
+              type='text'
+              value={searchAccount}
+              onChange={handleSearchChange}
+              placeholder='Filtrar por nombre de cuenta'
+            />
+            <i className='fi fi-rr-search' onClick={findByName}></i>
+          </form>
         </div>
 
         <div className='account__table'>
+          {accounts.length === 0 ? (
+            <p>No hay cuentas disponibles</p>
+          ) : (
           <table className='account__tbody'>
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th onClick={handleSortClick} style={{cursor: "pointer"}}>
+                  Nombre {sortOrder === "ascending" ? <i className='fi fi-rr-angle-small-down'/> : <i className='fi fi-rr-angle-small-up'/>}
+                </th>
                 <th>Nº Cuenta</th>
                 <th>Descripción</th>
                 <th>PGC</th>
@@ -117,6 +148,7 @@ const AccountsList = ({ newAcc }) => {
               ))}
             </tbody>
           </table>
+          )}
         </div>
 
       </section>

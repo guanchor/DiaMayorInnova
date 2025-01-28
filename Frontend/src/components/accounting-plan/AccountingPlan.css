@@ -8,7 +8,6 @@
   & .search-bar--pgc {
     width: 50%;
     align-self: right;
-;
   }
 }
 
@@ -215,10 +214,8 @@ th {
 
   & .fi-rr-angle-small-down {
     color: var(--Color-grey-800);
-    display: flex;
     align-items: center;
     font-size: large;
-    background-color: peru;
   }
 }
 

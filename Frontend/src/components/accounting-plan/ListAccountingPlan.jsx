@@ -31,9 +31,13 @@ const AccountingPlansList = ({ newPGC }) => {
   const findByName = (e) => {
     e.preventDefault();
     if (searchAccPlan) {
-      AccountingPlanDataService.findByName(searchAccPlan)
+      const searchTerm = searchAccPlan.toLowerCase(); //Convert search parameter to lowercase
+      AccountingPlanDataService.getAll() //Get all plans
         .then(response => {
-          setAccountingPlans(response.data);
+          const filteredPlans = response.data.filter(plan => 
+            plan.name.toLowerCase().includes(searchTerm) //Compare pgc name and search parameters
+          );
+          setAccountingPlans(filteredPlans); //Get plans filter by search param
         })
         .catch(e => {
           console.log(e);

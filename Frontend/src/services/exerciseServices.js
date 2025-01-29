@@ -9,7 +9,7 @@ const getAll = async () => {
 
 const getByTaskId = async (id) => {
   try {
-    const response = await http.get(`/student_exercises/find_by_task_id?task_id=${id}`);
+    const response = await http.get(`/exercises/find_by_task_id?task_id=${id}`);
     return response;
   } catch (error) {
     return null;
@@ -28,19 +28,11 @@ const create = async (data) => {
   }
 };
 
-const update = async (id, data) => {
-  try {
-    const response = await http.put(`/student_entries/${id}`, data);
-    return response;
-  } catch (error) {
-    console.error("Error en la actualización:", error);
-    return null;
-  }
-};
 
-const remove = async (id) => {
+const deleteOnGroup = async (data) => {
   try {
-    const response = await http.delete(`/student_entries/${id}`);
+    console.log(data)
+    const response = await http.delete(`/exercises/destroy_on_group`, { data });
     return response;
   } catch (error) {
     console.error("Error en la eliminación:", error);
@@ -53,4 +45,5 @@ export default {
   getAll,
   create,
   getByTaskId,
+  deleteOnGroup,
 };

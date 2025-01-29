@@ -1,10 +1,16 @@
 import Modal from '../modal/Modal';
 import { useContext, useEffect } from 'react';
-import "./AsignedTaskUser.css";
-import { taskUsersContext } from '../../context/taks-users/taskUserContext';
+import { taskUsersContext } from '../../context/tasks-users/taskUserContext';
+import "./AssignedTaskUser.css";
 
-const AsignedTaskUser = ({ id = "" }) => {
-  const { users, usersByTaskId, assignedInclude, checkboxActive, getAllUsers } = useContext(taskUsersContext)
+const AssignedTaskUser = ({ id = "" }) => {
+  const { users, usersByTaskId, assignedInclude, checkboxActive, getAllUsers, addUsers, deleteUser } = useContext(taskUsersContext)
+
+  const onHandleSubmit = (e) => {
+    e.preventDefault();
+    deleteUser(id);
+    addUsers(id);
+  }
 
   useEffect(() => {
     getAllUsers();
@@ -19,7 +25,7 @@ const AsignedTaskUser = ({ id = "" }) => {
         btnText="Asignar Alumnos"
         modalTitle="Asignar tarea a usuario"
       >
-        <div className='task--asigned__container'>
+        <div className='task-assigned__container'>
           <div className="list__container">
             <h3>Lista de clases</h3>
             <div className="list__items">
@@ -45,10 +51,10 @@ const AsignedTaskUser = ({ id = "" }) => {
             </div>
           </div>
         </div>
-        {/* <button className='btn btn--taks-asigned' onClick={(e) => e.preventDefault()}>Guardar asignacion</button> */}
+        <button className='btn btn--tasks-assigned' onClick={onHandleSubmit}>Guardar asignación</button>
       </Modal>
     </>
   );
 };
 
-export default AsignedTaskUser;
+export default AssignedTaskUser;

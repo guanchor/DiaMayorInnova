@@ -41,14 +41,6 @@ class StudentExercisesController < ApplicationController
     end
   end
 
-  def find_by_task_id
-    @exercises = Exercise.where(task_id: params[:task_id])
-    if @exercises.any?
-      render json: @exercises
-    else
-      render json: { error: "Ejercicios no encontrados para ese task_id" }, status: :not_found
-    end
-  end
 
   private
 

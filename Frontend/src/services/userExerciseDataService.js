@@ -6,15 +6,6 @@ const getAll = async () => {
   return response;
 };
 
-const getByTaskId = async (id) => {
-  try {
-    const response = await http.get(`/student_exercises/find_by_task_id?task_id=${id}`);
-    return response;
-  } catch (error) {
-    return null;
-  }
-};
-
 const create = async (exerciseData) => {
   console.log(exerciseData)
   try {
@@ -51,5 +42,4 @@ const remove = async (id) => {
 export default {
   getAll,
   create,
-  getByTaskId,
 };

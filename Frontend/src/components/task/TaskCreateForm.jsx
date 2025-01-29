@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
-import statementService from "../../services/statementService";
+import TaskUsersProvider from "../../context/tasks-users/TaskUsersProvider.jsx";
 import taskService from "../../services/taskService";
-import { useAuth } from "../../context/AuthContext";
-import TaskForm from "./TaskForm.jsx";
 import TaskPreview from "./TaskPreview.jsx";
+import TaskForm from "./TaskForm.jsx";
 import StatementsSelection from "./StatementsSelection.jsx";
+import statementService from "../../services/statementService";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./TaskPage.css";
-import TaskUsersProvider from "../../context/taks-users/TaskUsersProvider.jsx";
+import { taskUsersContext } from "../../context/tasks-users/taskUserContext.js";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { state } = useLocation();
@@ -21,7 +22,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [selectedStatements, setSelectedStatements] = useState(task?.statements?.map(s => s.id) || []);
   const [solutions, setSolutions] = useState({});
   const [editMode, setEditMode] = useState(task ? true : false);
-
+  const { addUsers, deleteUser } = useContext(taskUsersContext)
   const [errors, setErrors] = useState({
     title: "",
     openingDate: "",
@@ -120,6 +121,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         const response = await taskService.createTask(taskData);
         const createdTask = await taskService.getTaskWithStatements(response.data.id);
         //alert("Tarea creada con éxito");
+        addUsers(response.data.id);
         onTaskCreated(createdTask.data);
       }
     } catch (error) {

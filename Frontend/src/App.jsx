@@ -32,6 +32,7 @@ import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
 import './App.css';
 import './assets/Styles/Global.css';
+import Task from './pages/task/Task';
 
 function App() {
 
@@ -62,8 +63,8 @@ function App() {
                     <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                     <Route path="/accounts" element={<Accounts />} />
                     <Route path="/accounts/:id" element={<Account />} />
-                    <Route path="/tasks" element={<TaskListAndDetails />} />
-                    <Route path="/task-edit" element={<TaskCreateForm />} />
+                    <Route path="/tasks" element={<Task />} />
+                    <Route path="/task-edit" element={<Task />} />
                     <Route path="/statements" element={<StatementsList />} />
                     <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />

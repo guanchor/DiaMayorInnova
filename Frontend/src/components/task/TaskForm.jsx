@@ -1,5 +1,5 @@
 import dateTimeFormat from "../../utils/dateTimeFormat";
-import AsignedTaskUser from "../asigned-tasks-user/AsignedTaskUser";
+import AssignedTaskUser from "../assigned-tasks-user/AssignedTaskUser";
 import "./TaskPage.css";
 
 const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors, id }) => {
@@ -9,7 +9,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
       <form className="task-page__form--form">
         <header className="task-page__form--header">
           <h2 className="task-page__header">Crear Tarea</h2>
-          <AsignedTaskUser
+          <AssignedTaskUser
             id={id}
           />
         </header>

@@ -2,7 +2,6 @@ import React from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Shortcut from '../../components/shortcuts/shortcut/Shortcut'
 import "./Modes.css"
-import AsignedTaskUser from '../../components/asigned-tasks-user/AsignedTaskUser'
 
 const Modes = () => {
   const location = useLocation();

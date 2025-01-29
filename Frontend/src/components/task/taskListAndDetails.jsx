@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import TaskUsersProvider from "../../context/tasks-users/TaskUsersProvider";
 import taskService from "../../services/taskService";
-import TaskCreateForm from "./TaskCreateForm";
-import { useAuth } from "../../context/AuthContext";
 import TaskModal from "../modal/TaskModal";
 import TaskDetails from "./TaskDetails";
+import TaskCreateForm from "./TaskCreateForm";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./TaskPage.css";
-import TaskUsersProvider from "../../context/taks-users/TaskUsersProvider";
 
 const TaskListAndDetails = () => {
   const location = useLocation();
@@ -122,7 +122,6 @@ const TaskListAndDetails = () => {
   return (
     <>
       <TaskUsersProvider>
-
 
         {isCreatingTask ? (
           <TaskCreateForm onTaskCreated={handleTaskCreated} />

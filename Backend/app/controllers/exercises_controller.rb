@@ -54,19 +54,39 @@ class ExercisesController < ApplicationController
   end
   
   def destroy_on_group
-    if exercise_params[:user_id].present? && exercise_params[:task_id].present?
-      exercises = Exercise.where(user_id: exercise_params[:user_id], task_id: exercise_params[:task_id])
-      exercises.destroy_all
-      @exercises = Exercise.all
-      render json: @exercises 
+    task_id = params[:task_id]
+    user_ids = params[:user_id]
+
+    if user_ids.present? 
+      errors = []
+      user_ids.each do | user_id |
+        exercise= Exercise.where(user_id: user_id, task_id: task_id)
+        exercise.destroy_all
+      end
+
+      if errors.any?
+        render json: { message: 'Algunas tareas no pudieron crearse.', errors: errors }, status: :unprocessable_entity
+      else
+        render json: { message: 'Eliminadas' }, status: :created
+      end
     else
-      render json: { error: "Invalid parameters" }, status: :unprocessable_entity
+      render json: { error: 'El array de usuarios no puede estar vacío.' }, status: :unprocessable_entity
     end
   end
 
+  def find_by_task_id
+    @exercises = Exercise.where(task_id: params[:task_id])
+    if @exercises.any?
+      render json: @exercises
+    else
+      render json: []
+    end
+  end
+
+
   private
     def exercise_params
-      params.require(:exercise).permit( :task_id, user_id:[])
+      params.require(:exercise).permit( :task_id, user_id: [])
   end 
 
 end

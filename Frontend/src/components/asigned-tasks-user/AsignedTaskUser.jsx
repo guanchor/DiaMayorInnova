@@ -4,26 +4,12 @@ import "./AsignedTaskUser.css";
 import { taskUsersContext } from '../../context/taks-users/taskUserContext';
 
 const AsignedTaskUser = ({ id = "" }) => {
-  const { selectUser, deselectUser, getAllUsers, users, usersByTaskId, assignedInclude, currentUsers } = useContext(taskUsersContext)
-
-
-  console.log(users)
-
-
-  const checkboxActive = ({ target }, userId) => {
-    const { checked } = target;
-    if (checked) {
-      selectUser(userId)
-    } else {
-      deselectUser(userId)
-    }
-  };
+  const { users, usersByTaskId, assignedInclude, checkboxActive, getAllUsers } = useContext(taskUsersContext)
 
   useEffect(() => {
     getAllUsers();
     if (id !== "") {
       usersByTaskId(id)
-      console.log(currentUsers);
     }
   }, [])
 
@@ -47,7 +33,7 @@ const AsignedTaskUser = ({ id = "" }) => {
             <h3>Lista de estudiantes</h3>
             <div className="list__items">
               {users && users.map((user) => (
-                <label className={assignedInclude(user) ? "user__item user__item--selected" : "user__item"} key={user.id}>
+                <label className={assignedInclude(user.id) ? "user__item user__item--selected" : "user__item"} key={user.id}>
                   <input
                     type="checkbox"
                     checked={assignedInclude(user.id)}

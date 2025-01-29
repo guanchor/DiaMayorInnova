@@ -6,7 +6,6 @@ import userExerciseDataService from '../../services/userExerciseDataService';
 const TaskUsersProvider = ({ children }) => {
   const [currentUsers, setCurrentUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
-  const [deletedUsers, setDeletedUsers] = useState([]);
   const [users, setUsers] = useState([]);
 
   const data = { //Como enviar los datos para que se creen los ejercicios 
@@ -16,55 +15,66 @@ const TaskUsersProvider = ({ children }) => {
     }
   }
 
+  const addUsers = () => {
+    console.log(currentUsers.filter(user => !assignedUsers.includes(user)))
+  }
+
+  const deleteUser = () => {
+    console.log(assignedUsers.filter(user => !currentUsers.includes(user)))
+  }
+
   const getAllUser = () => http.get('/registrations');
 
   const usersByTaskId = (id) => {
     userExerciseDataService.getByTaskId(id)
       .then(({ data }) => {
-        const assignedUsers = data.map(entry => entry.user_id);
-        setCurrentUsers(assignedUsers)
-        console.log('Usuarios asignados:', assignedUsers);
+        const assigned = data.map(user => user.user_id);
+        setCurrentUsers(assigned)
+        setAssignedUsers(assigned)
       });
-
   }
 
   const getAllUsers = () => {
     getAllUser()
       .then((response) => {
         setUsers(response.data);
-        console.log('Usuarios:', response.data);
       });
   }
 
   const selectUser = (userId) => {
-    setAssignedUsers(prevState => [...prevState, userId]);
-    setDeletedUsers(prevState => prevState.filter(id => id !== userId));
+    if (!currentUsers.includes(userId))
+      setCurrentUsers(prevState => [...prevState, userId]);
+    addUsers();
+
   }
 
   const deselectUser = (userId) => {
-    setAssignedUsers(prevState => prevState.filter(id => id !== userId));
-    setDeletedUsers(prevState => prevState.filter(id => id === userId));
+    setCurrentUsers(prevState => prevState.filter(id => id !== userId));
+    deleteUser();
   }
 
-  const assignedInclude = (user) => {
-    return assignedUsers.includes(user.id);
+  const assignedInclude = (id) => {
+    return currentUsers.includes(id);
   }
+
+  const checkboxActive = ({ target }, userId) => {
+    const { checked } = target;
+    if (checked) {
+      selectUser(userId)
+    } else {
+      deselectUser(userId)
+    }
+  };
+
 
   return (
     <taskUsersContext.Provider value={
       {
         users,
-        currentUsers,
-        deletedUsers,
-        assignedUsers,
         usersByTaskId,
         getAllUsers,
-        setAssignedUsers,
-        setDeletedUsers,
-        selectUser,
-        deselectUser,
         assignedInclude,
-        setCurrentUsers,
+        checkboxActive,
       }
     }>
       {children}

@@ -1,28 +1,33 @@
 import React, { useState } from "react";
 
 const FindNameUsers = ({ users }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchName, setSearchName] = useState("");
   const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.name.toLowerCase().includes(searchName.toLowerCase())
   );
 
   return (
-    <div className="find-name-users">
+    <section className="search-user_container">
       <h2>Buscar Usuarios por Nombre</h2>
-      <input
-        type="text"
-        placeholder="Buscar por nombre"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <ul>
-        {filteredUsers.map(user => (
-          <li key={user.id}>
-            {user.name} ({user.email})
-          </li>
-        ))}
-      </ul>
-    </div>
+      <label htmlFor="searchName" className='search-user_label'>
+        <input
+          type="text"
+          name="searchName"
+          placeholder="Buscar por nombre"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+        />
+      </label>
+      <div>
+        <ul className="user_list">
+          {filteredUsers.map(user => (
+            <li key={user.id}>
+              {user.name} ({user.email})
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 };
 

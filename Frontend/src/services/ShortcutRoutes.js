@@ -51,7 +51,7 @@ scRoutes.push({
 })
 
 scRoutes.push({
-  to: "/sign_up",
+  to: "/users",
   icon: "fi fi-rr-user-add",
   name: "Crear Usuario",
   student: false,

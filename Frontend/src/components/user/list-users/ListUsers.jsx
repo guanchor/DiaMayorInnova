@@ -15,18 +15,21 @@ const ListUsers = ({ users, setUsers }) => {
   };
 
   return (
-    <div className="user-list">
-      <h2>Usuarios Registrados</h2>
-      <ul>
-        {users.map(user => (
-          <li key={user.id}>
-            {user.name} ({user.email}) - {user.role}
-            <button onClick={() => updateForm(user)}>Editar</button>
-            <button onClick={() => deleteUser(user.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <section className='user-list__container scroll-style'>
+        <ul className="user_list">
+          {users.map(user => (
+            <li className='user-list_item' key={user.id}>
+              <div className="user-list_section">
+                {user.name} ({user.email}) - {user.role}
+                <button onClick={() => updateForm(user)}>Editar</button>
+                <button onClick={() => deleteUser(user.id)}>Eliminar</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 };
 

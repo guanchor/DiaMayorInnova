@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../../../context/AuthContext.jsx"; 
+import { useAuth } from "../../../context/AuthContext.jsx";
 
 const AddUsers = ({ setUsers }) => {
   const initialUserState = {
@@ -15,7 +15,7 @@ const AddUsers = ({ setUsers }) => {
 
   const [input, setInput] = useState(initialUserState);
   const [error, setError] = useState("");
-  
+
   const auth = useAuth();
 
   const addUser = (e) => {
@@ -66,77 +66,85 @@ const AddUsers = ({ setUsers }) => {
   };
 
   return (
-    <div className="add-user-form">
-      <h2>Registrar Nuevo Usuario</h2>
-      <form onSubmit={addUser}>
-        <input
-          type="email"
-          name="email"
-          value={input.email}
-          onChange={handleInput}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          value={input.password}
-          onChange={handleInput}
-          placeholder="Password"
-          required
-        />
-        <input
-          type="password"
-          name="confirmation_password"
-          value={input.confirmation_password}
-          onChange={handleInput}
-          placeholder="Confirmar Password"
-          required
-        />
-        <input
-          type="text"
-          name="name"
-          value={input.name}
-          onChange={handleInput}
-          placeholder="Nombre"
-          required
-        />
-        <input
-          type="text"
-          name="first_lastName"
-          value={input.first_lastName}
-          onChange={handleInput}
-          placeholder="Primer Apellido"
-          required
-        />
-        <input
-          type="text"
-          name="second_lastName"
-          value={input.second_lastName}
-          onChange={handleInput}
-          placeholder="Segundo Apellido"
-          required
-        />
-        <input
-          type="file"
-          name="featured_image"
-          onChange={onImageChange}
-        />
-        <select
-          name="role"
-          value={input.role}
-          onChange={handleInput}
-          required
-        >
-          <option value="admin">Admin</option>
-          <option value="teacher">Teacher</option>
-          <option value="student">Student</option>
-        </select>
+    <>
+      <section className="create-schools_wrapper">
+        <h2>Registrar Nuevo Usuario</h2>
+        <form className="create-schools_form" onSubmit={addUser}>
+          <fieldset className='create-schools_fieldset'>
+            <label className='school_label'>Email
+              <input
+                type="email"
+                name="email"
+                value={input.email}
+                onChange={handleInput}
+                placeholder="Email"
+                required
+              />
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={input.password}
+              onChange={handleInput}
+              placeholder="Password"
+              required
+            />
+            <input
+              type="password"
+              name="confirmation_password"
+              value={input.confirmation_password}
+              onChange={handleInput}
+              placeholder="Confirmar Password"
+              required
+            />
+          </fieldset>
+          <fieldset className='create-schools_fieldset'>
+            <input
+              type="text"
+              name="name"
+              value={input.name}
+              onChange={handleInput}
+              placeholder="Nombre"
+              required
+            />
+            <input
+              type="text"
+              name="first_lastName"
+              value={input.first_lastName}
+              onChange={handleInput}
+              placeholder="Primer Apellido"
+              required
+            />
+            <input
+              type="text"
+              name="second_lastName"
+              value={input.second_lastName}
+              onChange={handleInput}
+              placeholder="Segundo Apellido"
+              required
+            />
+          </fieldset>
+          <input
+            type="file"
+            name="featured_image"
+            onChange={onImageChange}
+          />
+          <select
+            name="role"
+            value={input.role}
+            onChange={handleInput}
+            required
+          >
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <button type="submit">Registrar</button>
+        </form>
+      </section>
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
 .list__container {
   display: flex;
   flex-direction: column;
-  width: 440px;
-  height: 600px;
+  width: 340px;
+  height: 440px;
   padding-top: var(--gap-m);
   border: solid 1px var(--Color-grey-100);
   border-radius: var(--gap-xs);
@@ -18,6 +18,7 @@
   justify-content: left;
   align-items: center;
   gap: var(--gap-m);
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   background-color: var(--Color-White);
@@ -48,7 +49,12 @@
 
 .task-assigned__container {
   display: flex;
-  gap: var(--gap-xxl);
+  gap: var(--gap-m);
+
+  & h3 {
+    font-size: var(--text-desktop-body-large);
+    font-weight: 600;
+  }
 }
 
 .btn--tasks-assigned {
@@ -58,4 +64,9 @@
 .user__item--selected {
   background-color: var(--Color-principal-600);
   color: var(--Color-White);
+}
+
+::backdrop {
+  background-color: black;
+  opacity: 0.55;
 }

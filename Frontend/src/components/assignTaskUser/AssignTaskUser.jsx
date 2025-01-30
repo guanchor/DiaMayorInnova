@@ -68,7 +68,7 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
             </div>
           </div>
         </div>
-        <button className='btn btn--tasks-assigned' onClick={(e) => e.preventDefault()}>Guardar asignación</button>
+        {/*         <button className='btn btn--tasks-assigned' onClick={(e) => e.preventDefault()}>Guardar asignación</button> */}
       </Modal>
     </>
   )

@@ -18,10 +18,10 @@
   justify-content: left;
   align-items: center;
   gap: var(--gap-m);
-  font-size: var(--text-desktop-body-large);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   background-color: var(--Color-White);
+  color: var(--Color-principal-700);
   box-shadow: var(--box-shadow-btn);
   padding: var(--gap-xxs);
   border-radius: var(--r-xs);

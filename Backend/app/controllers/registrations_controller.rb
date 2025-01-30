@@ -7,6 +7,11 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def index
+    @users = User.all
+    render json: @users
+  end
+
   def create
 
     current_user = User.find_by(authentication_token: request.headers['AUTH-TOKEN'])

@@ -17,8 +17,11 @@ Rails.application.routes.draw do
   resources :student_entries
   resources :student_annotations
   resources :marks
-  resources :exercises
   resources :student_exercises
+  resources :exercises do
+    delete 'destroy_on_group', on: :collection
+    get 'find_by_task_id', on: :collection
+  end
 
   resources :tasks, param: :id do
     delete 'statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
@@ -42,6 +45,7 @@ Rails.application.routes.draw do
     #get 'sign_up', to: 'registrations#new'
     delete 'log_out', to: 'sessions#destroy'
     post 'validate_token', to: 'sessions#valid_token'
+    resources :registrations
   end
 
   #resources :users, only: [:index, :show, :create, :update, :destroy]

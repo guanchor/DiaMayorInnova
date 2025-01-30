@@ -14,6 +14,13 @@
   overflow: hidden;
 }
 
+.task-page__form--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-xl);
+}
+
 /* ERROR 
 .error-message {
   color: var(--Color-red-600);
@@ -85,7 +92,6 @@
   background-color: var(--Color-Neutral-White);
   font-size: var(--text-desktop-subtitles-1);
   font-weight: bold;
-  margin-bottom: var(--gap-xl);
 }
 
 .task-page__header--h4 {

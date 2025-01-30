@@ -16,20 +16,15 @@ class ExercisesController < ApplicationController
   end
 
   def create
-    @exercise = Exercise.new(exercise_params)
-    if @exercise.save
-      render json: @exercise, status: :created
-    else
-      render json: @exercise.errors, status: :unprocessable_entity
-    end
-  end
+    task_id = exercise_params[:task_id]
+    user_ids = exercise_params[:user_id] 
 
-  def update
-    @exercise = Exercise.find(params[:id])
-    if @exercise.update(exercise_params)
-      render json: @exercise
+    if user_ids.present?
+      user_ids.each do | user_id |
+        exercise= Exercise.create(task_id: task_id, user_id: user_id)
+      end
     else
-      render json: @exercise.errors, status: :unprocessable_entity
+      render json: { error: 'El array de usuarios no puede estar vacío.' }, status: :unprocessable_entity
     end
   end
 
@@ -40,9 +35,32 @@ class ExercisesController < ApplicationController
     render json: @exercises
   end
 
-=begin   private
+  def destroy_on_group
+    task_id = exercise_params[:task_id]
+    user_ids = exercise_params[:user_id]
+
+    if user_ids.present? 
+      user_ids.each do | user_id |
+        exercise= Exercise.where(user_id: user_id, task_id: task_id)
+        exercise.destroy_all
+      end
+    else
+      render json: { error: 'El array de usuarios no puede estar vacío.' }, status: :unprocessable_entity
+    end
+  end
+
+  def find_by_task_id
+    user_ids = Exercise.where(task_id: params[:task_id]).pluck(:user_id)
+    if user_ids.any?
+      render json: user_ids
+    else
+      render json: []
+    end
+  end
+
+  private
     def exercise_params
-      params.require(:exercise).permit(:user_id, :task_id)
+      params.require(:exercise).permit( :task_id, user_id: [])
     end 
-=end
+
 end

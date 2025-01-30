@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
   margin-bottom: var(--gap-m);
   gap: var(--gap-xl);
 }
@@ -29,7 +29,6 @@
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
-  text-align: center;
 }
 
 .accountingPlan__header--h2 {
@@ -81,6 +80,7 @@
   display: flex;
   justify-content: center;
   align-items: start;
+  text-align: left;
 
   & table {
     width: 100%;
@@ -89,7 +89,7 @@
 
 th {
   border-bottom: solid 1px var(--Color-grey-200);
-  padding: var(--gap-xs);
+  padding: var(--gap-xs) 0;
   margin: var(--gap-xs);
 }
 
@@ -165,22 +165,23 @@ th {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 8px;
+  padding-top: var(--gap-m);
 }
 
 .accountingPlan__form--group.full-width {
   flex: 100%;
 }
 
+.accountingPlan__form--add {
+    margin-top: var(--gap-l);
+    display: flex;
+    justify-content: center;
+}
+
 .accountingPlan__form--actions {
   display: flex;
   font-family: inherit;
-  justify-content: center;
-
-  & .accountingPlan__button {
-    /* Añadir plan*/
-    margin-top: 16px;
-  }
+  justify-content: left;
 }
 
 .accountingPlan__form--actions.details {

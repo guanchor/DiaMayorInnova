@@ -5,12 +5,12 @@ import { API_BASE_URL } from "../config";
 const useAuthLogic = (navigate) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
-  const [roles, setRoles] = useState([]);
+  const [role, setRole] = useState(null);
   const [error, setError] = useState(null);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const checkTokenValidity = async (requiredRoles = []) => {
+  const checkTokenValidity = async (requiredRole = null) => {
     if (!token) {
       setLoading(false);
       navigate("/sign_in");
@@ -22,18 +22,18 @@ const useAuthLogic = (navigate) => {
 
       if (response.data.is_success) {
         const userData = response.data.data.user;
-        const roles = response.data.data.roles;
+        const userRole = response.data.data.role;
         const newToken = response.data.data.user.authentication_token;
-        if (userData && roles) {
+
+        if (userData && userRole) {
           setUser(userData);
-          setRoles(roles);
+          setRole(userRole);
           localStorage.setItem("site", newToken);
           setUserAvatarUrl(
             userData.featured_image ? `${API_BASE_URL}${userData.featured_image}` : null
           );
 
-          const hasAccess = requiredRoles.every((role) => roles.includes(role));
-          if (!hasAccess) {
+          if (requiredRole && userRole !== requiredRole) {
             setError("No tienes permiso para acceder a esta ruta.");
             navigate("/sign_in");
           }
@@ -72,11 +72,12 @@ const useAuthLogic = (navigate) => {
     try {
       const credentials = btoa(`${email}:${password}`);
       const response = await authService.signIn(credentials);
+
       if (response.data.is_success) {
-        const { user, token, roles } = response.data.data;
+        const { user, token, role } = response.data.data;
         setUser(user);
         setToken(token);
-        setRoles(roles);
+        setRole(role);
         setUserAvatarUrl(
           user.featured_image ? `${API_BASE_URL}${user.featured_image}` : null
         );
@@ -86,13 +87,7 @@ const useAuthLogic = (navigate) => {
       }
     } catch (err) {
       console.error("Error en login:", err);
-      if (err.response) {
-        console.error("Error en respuesta del servidor:", err.response.data);
-        alert(`Error: ${err.response.data.message || 'Problema al autenticar.'}`);
-      } else {
-        console.error("Error desconocido:", err);
-        alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales.");
-      }
+      setError(err.response?.data?.message || "Problema al autenticar.");
     }
   };
 
@@ -104,7 +99,7 @@ const useAuthLogic = (navigate) => {
     } finally {
       setUser(null);
       setToken(null);
-      setRoles([]);
+      setRole(null);
       setUserAvatarUrl(null);
       localStorage.removeItem("site");
       navigate("/sign_in");
@@ -114,11 +109,11 @@ const useAuthLogic = (navigate) => {
   return {
     user,
     token,
-    roles,
+    role,
     error,
     userAvatarUrl,
     loading,
-    setRoles,
+    setRole,
     setUserAvatarUrl,
     checkTokenValidity,
     signUpAction,

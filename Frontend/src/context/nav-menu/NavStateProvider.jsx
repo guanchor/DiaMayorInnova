@@ -3,9 +3,9 @@ import { navContext } from './navMenuContext'
 import { useAuth } from '../../context/AuthContext';
 
 const NavStateProvider = ({ children }) => {
-  const { user, roles, userAvatarUrl } = useAuth();
+  const { user, role, userAvatarUrl } = useAuth();
   const [menuState, setMenuState] = useState(false);
-  const [rol, setRol] = useState(roles[0]);
+  const [currentRole, setCurrentRole] = useState(role);
   const [dropdownState, setdropdownState] = useState(false);
 
   const userName = user ? user.name : "Pedro Picapiedra";
@@ -18,24 +18,24 @@ const NavStateProvider = ({ children }) => {
     setdropdownState(!dropdownState);
   }
 
-  const isAdmin = [...roles].includes("admin") ? true : false;
-  const isTeacher = [...roles].includes("teacher") ? true : false;
+  const isAdmin = role === "admin";
+  const isTeacher = role === "teacher";
 
   const setAdminRol = () => {
-    setRol("admin")
+    setCurrentRole("admin")
   }
 
   const setTeacherRol = () => {
-    setRol("teacher")
+    setCurrentRole("teacher")
   }
 
   const setStudentRol = () => {
-    setRol("student")
+    setCurrentRole("student")
   }
 
   useEffect(() => {
-    setRol(roles[0]);
-  }, [roles])
+    setCurrentRole(role);
+  }, [role])
 
   return (
     <navContext.Provider value={
@@ -46,7 +46,7 @@ const NavStateProvider = ({ children }) => {
         dropdownState,
         isAdmin,
         isTeacher,
-        rol,
+        currentRole,
         changeMenu,
         setdropdownState,
         changeDropmenu,

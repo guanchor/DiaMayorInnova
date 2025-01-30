@@ -3,8 +3,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   has_one_attached :featured_image
 
-  has_many :user_roles, dependent: :destroy
-  has_many :roles, through: :user_roles
   has_many :statements
   has_many :tasks, through: :exercises
   has_many :exercises, dependent: :destroy
@@ -15,21 +13,19 @@ class User < ApplicationRecord
 
   validates :name, :first_lastName, :second_lastName, presence: true
 
+  validates :role, presence: true, inclusion: { in: %w[admin teacher student], message: "%{value} no es un rol válido" }
+
   # Verificación de roles
   def admin?
-    has_role?(:admin)
+    role == 'admin'
   end
 
   def teacher?
-    has_role?(:teacher)
+    role == 'teacher'
   end
 
   def student?
-    has_role?(:student)
-  end
-  
-  def has_role?(role_name)
-    roles.exists?(name: role_name)
+    role == 'student'
   end
   
   def generate_new_authentication_token

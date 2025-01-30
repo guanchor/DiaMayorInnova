@@ -9,33 +9,41 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const auth = useAuth();
 
   const handleSubmitEvent = (e) => {
     e.preventDefault();
-    if (input.email !== "" && input.password !== "") {
-      auth.signInAction(input.email.toLowerCase(), input.password)
-        .then((response) => {
-          const user = response?.data?.data?.user;
-          const roles = response?.data?.data?.roles;
-          // Guardar roles en el contexto si no se han guardado aún
-          if (roles) {
-            auth.setRoles(roles);  // Guardamos los roles en el contexto
-          }
-          if (user && user.featured_image) {
-            const avatarUrl = `${API_BASE_URL}/${user.featured_image}`;
-            auth.setUserAvatarUrl(avatarUrl);
-          } else {
-            console.log("Response is missing user or featured_image");
-          }
-        }).catch((error) => {
-          console.error("Error during sign-in:", error);
-          alert("Hubo un error durante el inicio de sesión, por favor verifica tus credenciales SIGNIN.");
-        });
+
+    if (!input.email || !input.password) {
+      setErrorMessage("Por favor, complete todos los campos.");
       return;
     }
+    auth
+      .signInAction(input.email.toLowerCase(), input.password)
+      .then((response) => {
+        const user = response?.data?.data?.user;
 
-    alert("Please provide a valid input");
+        if (user) {
+          auth.setRole(user.role);
+
+          if (user.featured_image) {
+            const avatarUrl = `${API_BASE_URL}/${user.featured_image}`;
+            auth.setUserAvatarUrl(avatarUrl);
+          }
+          setErrorMessage("");
+          setSuccessMessage("Inicio de sesión exitoso.");
+          navigate("/home");
+        } else {
+          setErrorMessage("No se pudo obtener información del usuario.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error durante el inicio de sesión:", error);
+        setErrorMessage("Hubo un error durante el inicio de sesión. Verifique sus credenciales.");
+        setSuccessMessage("");
+      });
   };
 
   const handleInput = (e) => {
@@ -49,7 +57,7 @@ const SignIn = () => {
   return (
     <>
       <div className="log__section">
-        <img className="log__img" src="/images/log.jpg" alt="users imagen" />
+        <img className="log__img" src="/images/log.jpg" alt="Imagen de inicio de sesión" />
         <div className="log__container">
           <h1 className="log__tittle">Iniciar Sesión</h1>
           <form className="log__form" onSubmit={handleSubmitEvent}>
@@ -80,6 +88,8 @@ const SignIn = () => {
                 </label>
               </div>
             </div>
+            {errorMessage && <div style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</div>}
+            {successMessage && <div style={{ color: "green", marginBottom: "10px" }}>{successMessage}</div>}
             {auth.error && <div style={{ color: "red" }}>{auth.error}</div>}
             <button className="btn light">Iniciar Sesión</button>
           </form>

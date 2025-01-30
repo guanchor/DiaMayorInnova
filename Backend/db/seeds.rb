@@ -16,94 +16,68 @@
   school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
   school1 = SchoolCenter.create(school_name: "IES Siete Palmas",address: "calle de siete palmas 1",phone: "987654321",email: "sietePalmas@ies.elrincon.es",website: "www.sietePalmas.es",province: "Las Palmas")
 
-  # Crear roles si no existen
-  roles = %w[admin teacher student]
-
-  roles.each do |role_name|
-    Role.find_or_create_by(name: role_name)
-  end
-
-  # Crear un usuario de ejemplo (o encontrar uno existente)
+  # Usuario Admin
   user = User.find_or_create_by(email: 'admin@admin.es') do |u|
     u.name = "Admin"
     u.first_lastName = "Admin"
     u.second_lastName = "Admin"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
+    u.role = 'admin'
   end
+puts "Usuario admin creado: #{user.email} con rol #{user.role}"
 
-  # Asignar el rol 'admin' al usuario
-  admin_role = Role.find_by(name: 'admin')
-  if admin_role && !user.has_role?('admin')
-    user.roles << admin_role
-    puts "Rol 'admin' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'admin' o no se encontró el rol."
-  end
-
-  teacher_role = Role.find_by(name: 'teacher')
-  if teacher_role && !user.has_role?('teacher')
-    user.roles << teacher_role
-    puts "Rol 'teacher' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
-  end
-
-  student_rol = Role.find_by(name: 'student')
-  if student_rol && !user.has_role?('student')
-    user.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user.email}"
-  else
-    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
-  end
-
+  # Usuarios con rol Teacher
   user2 = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
     u.name = "Tiburcio"
     u.first_lastName = "Cruz"
     u.second_lastName = "Ravelo"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
+    u.role = 'teacher'
   end
-
-  teacher_role = Role.find_by(name: 'teacher')
-  if teacher_role && !user2.has_role?('teacher')
-    user2.roles << teacher_role
-    puts "Rol 'teacher' asignado al usuario #{user2.email}"
-  else
-    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
-  end
+puts "Usuario admin creado: #{user2.email} con rol #{user2.role}"
 
   user3 = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
-    u.name = "Miguel"
+    u.name = "Miguel Ángel"
     u.first_lastName = "Figueroa"
     u.second_lastName = "García"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
+    u.role = 'teacher'
   end
+puts "Usuario admin creado: #{user3.email} con rol #{user3.role}"
 
-  teacher_role = Role.find_by(name: 'teacher')
-  if teacher_role && !user3.has_role?('teacher')
-    user3.roles << teacher_role
-    puts "Rol 'teacher' asignado al usuario #{user3.email}"
-  else
-    puts "El usuario ya tiene el rol 'teacher' o no se encontró el rol."
-  end
+user7 = User.find_or_create_by(email: 'nira@ieselrincon.es') do |u|
+  u.name = "Nira"
+  u.first_lastName = "Ruíz"
+  u.second_lastName = "Díaz"
+  u.password = 'elrincon'
+  u.password_confirmation = 'elrincon'
+  u.role = 'teacher'
+end
+puts "Usuario admin creado: #{user7.email} con rol #{user7.role}"
 
+user8 = User.find_or_create_by(email: 'mirian@ieselrincon.es') do |u|
+  u.name = "Mirian de la Peña"
+  u.first_lastName = "Cabrera"
+  u.second_lastName = "Reyes"
+  u.password = 'elrincon'
+  u.password_confirmation = 'elrincon'
+  u.role = 'teacher'
+end
+puts "Usuario admin creado: #{user8.email} con rol #{user8.role}"
+
+ # Usuarios con rol Student
   user4 = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
     u.name = "Echedey"
     u.first_lastName = "Henríquez"
     u.second_lastName = "Hernández"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
+    u.role = 'student'
   end
-
-  student_rol = Role.find_by(name: 'student')
-  if student_rol && !user4.has_role?('student')
-    user4.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user4.email}"
-  else
-    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
-  end
+puts "Usuario admin creado: #{user4.email} con rol #{user4.role}"
 
   user5 = User.find_or_create_by(email: 'mayer@ieselrincon.es') do |u|
     u.name = "Mayer Alberto"
@@ -111,15 +85,20 @@
     u.second_lastName = "Gutierrez"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
+    u.role = 'student'
   end
+puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
 
-  student_rol = Role.find_by(name: 'student')
-  if student_rol && !user5.has_role?('student')
-    user5.roles << student_rol
-    puts "Rol 'student' asignado al usuario #{user5.email}"
-  else
-    puts "El usuario ya tiene el rol 'student' o no se encontró el rol."
+  user6 = User.find_or_create_by(email: 'juancarlos@ieselrincon.es') do |u|
+    u.name = "Juan Carlos"
+    u.first_lastName = "Bolaños"
+    u.second_lastName = "Ojeda"
+    u.password = 'elrincon'
+    u.password_confirmation = 'elrincon'
+    u.role = 'student'
   end
+puts "Usuario admin creado: #{user6.email} con rol #{user6.role}"
+
   
   task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
   task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)

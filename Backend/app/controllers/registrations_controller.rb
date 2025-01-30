@@ -9,47 +9,30 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
 
-    current_user = User.find_by(authentication_token: request.headers['AUTH-TOKEN'])
+  current_user = User.find_by(authentication_token: request.headers['AUTH-TOKEN'])
+  
+  user = User.new(sign_up_params)
 
-    email = params[:email]
-    password = params[:password]
-    featured_image = params[:featured_image]
-    roles = JSON.parse(params[:roles]) rescue []
-    
-    user = User.new(email: email, password: password)
-
-    if featured_image.present?
-      user.featured_image = featured_image
-    end
-
-    user.name = params[:name]
-    user.first_lastName = params[:first_lastName]
-    user.second_lastName = params[:second_lastName]
-
-    if user.save
-      roles.each do |role_name|
-        role = Role.find_by(name: role_name)
-        user.roles << role if role
-      end
-
-      user_data = user.as_json
-      if user.featured_image.attached?
-        user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
-      else
-        user_data[:featured_image] = nil
-      end
-      json_response "Signed Up Succesfully", true, { user: user_data}, :ok
+  if user.save
+    user_data = user.as_json
+    if user.featured_image.attached?
+      user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
     else
-      json_response "Validation Error", false, { errors: user.errors.full_messages }, :unprocessable_entity
+      user_data[:featured_image] = nil
     end
+    json_response "Signed Up Successfully", true, { user: user_data }, :ok
+  else
+    json_response "Validation Error", false, { errors: user.errors.full_messages }, :unprocessable_entity
   end
+end
 
-  private
+private
 
   def ensure_admin_user
     token = request.headers['AUTH-TOKEN']
     current_user = User.find_by(authentication_token: token)
-    unless current_user&.has_role?(:admin)
+
+    unless current_user&.admin?
       json_response "Unauthorized", false, {}, :unauthorized
     end
   end
@@ -61,6 +44,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :name, :first_lastName, :second_lastName, :featured_image, roles: [])
+    params.require(:user).permit(:email, :password, :password_confirmation, :name, :first_lastName, :second_lastName, :featured_image, :role)
   end
 end 

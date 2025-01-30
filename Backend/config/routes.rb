@@ -33,16 +33,14 @@ Rails.application.routes.draw do
   end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
+  devise_for :users, controllers: { sessions: 'sessions' }, skip: [:registrations]
   devise_scope :user do
-    #post 'sign_up', to: 'registrations#create'
     post 'sign_in', to: 'sessions#create'
-    #get 'sign_up', to: 'registrations#new'
     delete 'log_out', to: 'sessions#destroy'
     post 'validate_token', to: 'sessions#valid_token'
   end
 
-  #resources :users, only: [:index, :show, :create, :update, :destroy]
+  resources :users, only: [:index, :show, :create, :update, :destroy]
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

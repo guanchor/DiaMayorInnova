@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+=begin 
     skip_before_action :authenticate_user!, only: [:create]
     before_action :ensure_auth_header_present, only: :create
     before_action :ensure_admin_user, only: :create
@@ -45,5 +46,6 @@ private
 
   def sign_up_params
     params.require(:user).permit(:email, :password, :password_confirmation, :name, :first_lastName, :second_lastName, :featured_image, :role)
-  end
+  end 
+=end
 end 

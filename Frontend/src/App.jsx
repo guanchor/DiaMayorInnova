@@ -32,6 +32,7 @@ import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
 import './App.css';
 import './assets/Styles/Global.css';
+import UserManagement from './components/user/UserManagement';
 
 function App() {
 
@@ -73,6 +74,7 @@ function App() {
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin']} />}>
                       <Route path="/sign_up" element={<SignUp />} />
+                      <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />
                         <Route path='usuarios/' element={<SignUp />} />

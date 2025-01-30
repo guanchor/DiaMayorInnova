@@ -17,13 +17,15 @@ const SignUp = () => {
   });
 
   const [error, setError] = useState("");
+  const [updateState, setUpdateState] = useState(false);
+  const [newUser, setNewUser] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const handleSubmitEvent = (e) => {
+  const addUser = (e) => {
     e.preventDefault();
 
-    if (!input.email || !input.password || !input.confirmation_password) {
+    if (!input.email || !input.password || !input.confirmation_password || !input.name || !input.first_lastName || !input.second_lastName) {
       setError("Por favor, complete todos los campos.");
       return;
     }
@@ -74,7 +76,7 @@ const SignUp = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmitEvent}>
+      <form onSubmit={addUser}>
         <div className="form_control">
           <label htmlFor="email">Email:</label>
           <input

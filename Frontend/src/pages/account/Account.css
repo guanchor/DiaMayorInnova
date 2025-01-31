@@ -47,8 +47,14 @@
 }
 
 .account__listAcc {
-  padding-top: var(--gap-xl);
   grid-area: list;
+  overflow-y: hidden;
+
+  padding: var(--gap-s) var(--gap-s) var(--gap-s);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
 }
 
 

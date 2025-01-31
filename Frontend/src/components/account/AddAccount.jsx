@@ -159,7 +159,7 @@ const AddAccount = ({ setNewAcc }) => {
               </div>
             </div>
 
-            <div className='account__form--actions'>
+            <div className='account__form--add'>
               <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus' />Añadir cuenta</button>
             </div>
 

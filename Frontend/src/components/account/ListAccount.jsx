@@ -28,7 +28,7 @@ const AccountsList = ({ newAcc }) => {
   const findByName = (e) => {
     e.preventDefault();
     if (searchAccount) {
-      const searchTerm = searchAcccount.toLowerCase();
+      const searchTerm = searchAccount.toLowerCase();
       AccountService.getAll()
         .then(response => {
           const filteredAccounts = response.data.filter (acc =>
@@ -94,7 +94,7 @@ const AccountsList = ({ newAcc }) => {
         <div className='account__header'>
           <h2 className='account__header--h2'>Todas las cuentas</h2>
 
-          <form className='search-bar search-bar--acc'>
+          <form className='search-bar search-bar--acc' onSubmit={findByName}>
             <input
               aria-label='Filtrar por nombre de cuenta'
               className='search-bar_search'
@@ -111,7 +111,7 @@ const AccountsList = ({ newAcc }) => {
           {accounts.length === 0 ? (
             <p>No hay cuentas disponibles</p>
           ) : (
-          <table className='account__tbody'>
+          <table className='account_tbody'>
             <thead>
               <tr>
                 <th onClick={handleSortClick} style={{cursor: "pointer"}}>

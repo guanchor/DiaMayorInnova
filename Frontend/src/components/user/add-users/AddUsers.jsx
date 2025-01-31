@@ -90,6 +90,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
         }
       }
       setInput(initialUserState);
+      setError("");
     } catch (error) {
       console.error("Error al guardar usuario:", error);
       setError(error.response?.data?.data?.message || "Hubo un error al procesar la solicitud.");
@@ -194,7 +195,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
           </label>
 
           <button type="submit" className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedUser ? "Actualizar Usuario" : "Registrar Usuario"}</button>
-          {selectedUser && <button type="button" onClick={() => setSelectedUser(null)}>Cancelar</button>}
+          {selectedUser && <button type="button" className="btn light" onClick={() => setSelectedUser(null)}>Cancelar</button>}
           {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
       </section>

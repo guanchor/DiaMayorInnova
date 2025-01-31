@@ -24,10 +24,10 @@
 }
 
 .user-list_item {
-
   display: flex;
   flex-direction: column;
   gap: var(--gap-xxs);
+  padding: var(--gap-xxs);
 }
 
 .users_list {
@@ -38,4 +38,38 @@
 .user-list_section {
   display: flex;
   justify-content: space-between;
+}
+
+/* .user-list_section--sticky {
+  display: flex;
+  justify-content: space-between;
+  /*   position: sticky;
+  top: 20px;
+} */
+
+.edit-btn,
+.delete-btn {
+  padding: var(--gap-xxs) var(--gap-xs);
+  border-radius: var(--r-xs);
+  box-shadow: var(--box-shadow-btn);
+}
+
+.delete-btn {
+  background-color: var(--Color-red-600);
+  color: var(--Color-Neutral-White);
+}
+
+.edit-btn {
+  background-color: var(--Color-Neutral-Dark);
+  color: var(--Color-Neutral-White);
+}
+
+.delete-btn:hover {
+  background-color: var(--Color-red-600);
+  opacity: 0.8;
+}
+
+.edit-btn:hover {
+  background-color: var(--Color-Neutral-Dark);
+  opacity: 0.8;
 }

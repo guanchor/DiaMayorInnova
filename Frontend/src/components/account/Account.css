@@ -1,9 +1,14 @@
-.account__accList {
-  padding-top: var(--gap-s) var(--gap-s) var(--gap-s);
-  height: 100%;
+.account__header {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: var(--gap-m);
+  gap: var(--gap-xl);
+
+  & .search-bar--acc {
+    width: 50%;
+  }
 }
 
 .account__accList--item {
@@ -11,17 +16,16 @@
   margin-bottom: var(--gap-s);
   border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
-  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
 }
 
-.account__header--h4 {
+.account__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
+  align-self: self-start;
   font-weight: bold;
-  margin-bottom: var(--gap-m);
 }
 
 .account__header--h4 .title {
@@ -54,10 +58,8 @@
 
 .account__input--filter {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
   padding-bottom: var(--gap-s);
-  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .account__table {
@@ -69,10 +71,17 @@
   display: flex;
   justify-content: center;
   align-items: start;
+  text-align: left;
 
   & table {
     width: 100%;
   }
+}
+
+th {
+  border-bottom: solid 1px var(--Color-grey-200);
+  padding: var(--gap-xs) 0;
+  margin: var(--gap-xs);
 }
 
 .account__button {
@@ -102,7 +111,8 @@
 .account__button--remove.trash
 {
   margin-right: 8px;
-  font-size: 1.2rem;
+  color: var(--Color-grey-800);
+  font-size: var(--text-desktop-body-small);
 }
 
 .account__button--remove {
@@ -148,20 +158,26 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 8px;
+  padding-top: var(--gap-m);
 }
 
 .account__form--group.full-width {
   flex: 100%;
 }
 
-.account__form--actions {
+.account__form--add {
+  margin-top: var(--gap-l);
   display: flex;
   justify-content: center;
+}
+
+.account__form--actions {
+  display: flex;
+  justify-content: left;
   font-family: inherit;
-  & .account__button {
+  /* & .account__button {
     margin-top: 16px;
-  }
+  } */
 }
 
 .account__form--actions.details {
@@ -190,6 +206,12 @@
   height: 100%;
   & tbody {
     height: 100%;
+  }
+
+  & .fi-rr-angle-small-down {
+    color: var(--Color-grey-800);
+    align-items: center;
+    font-size: large;
   }
 }
 

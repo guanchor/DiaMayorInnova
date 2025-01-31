@@ -15,13 +15,20 @@ const ListUsers = ({ users, setUsers, setSelectedUser }) => {
     <>
       <section className='user-list__container scroll-style'>
         <ul className="user_list">
+          <div className="user-list_section">
+            <p><strong>Nombre</strong></p>
+            <p><strong>Correo</strong></p>
+            <p><strong>Role</strong></p>
+          </div>
           {users.map(user => (
             <li className='user-list_item' key={user.id}>
               <div className="user-list_section">
-                {user.name} ({user.email}) - {user.role}
+                <p>{user.name}</p>
+                <p>({user.email})</p>
+                <p>{user.role}</p>
               </div>
               <div className="user-list_section">
-                <button onClick={() => setSelectedUser(user)}>Editar</button>
+                <button onClick={() => setSelectedUser(user)} >Editar</button>
                 <button onClick={() => deleteUser(user.id)}>Eliminar</button>
               </div>
             </li>

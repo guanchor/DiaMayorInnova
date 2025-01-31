@@ -1,7 +1,7 @@
 .user_page {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 0.49fr 1fr;
   grid-template-areas:
     "form find"
     "form list"
@@ -19,7 +19,7 @@
   padding-top: 400px;
 }
 
-.user_list {
+.users_list {
   font-size: 0.7rem;
   display: flex;
   flex-wrap: wrap;
@@ -31,7 +31,7 @@
   background-color: #eee;
 }
 
-.user_list>li {
+.users_list>li {
   list-style-type: none;
 
 }

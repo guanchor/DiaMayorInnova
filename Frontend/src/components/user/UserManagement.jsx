@@ -8,6 +8,7 @@ import "./UserManagement.css";
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [searchName, setSearchName] = useState("");
   const [error, setError] = useState("");
 
 
@@ -29,10 +30,14 @@ const UserManagement = () => {
       });
   }, []);
 
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchName.toLowerCase())
+  );
+
   return (
     <main className="user_page">
       <ListUsers
-        users={users}
+        users={filteredUsers}
         setUsers={setUsers}
         setSelectedUser={setSelectedUser}
       />
@@ -43,7 +48,7 @@ const UserManagement = () => {
         setSelectedUser={setSelectedUser}
       />
 
-      <FindNameUsers users={users} />
+      <FindNameUsers searchName={searchName} setSearchName={setSearchName} />
     </main>
   );
 };

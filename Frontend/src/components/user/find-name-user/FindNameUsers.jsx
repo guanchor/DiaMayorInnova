@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import './FindNameUsers.css';
 
-const FindNameUsers = ({ users }) => {
-  const [searchName, setSearchName] = useState("");
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchName.toLowerCase())
-  );
-
+const FindNameUsers = ({ searchName, setSearchName }) => {
   return (
     <section className="search-user_container">
       <h2>Buscar Usuarios por Nombre</h2>
@@ -21,15 +16,6 @@ const FindNameUsers = ({ users }) => {
           onChange={(e) => setSearchName(e.target.value)}
         />
       </label>
-      </div>
-      <div>
-        <ul className="user_list">
-          {filteredUsers.map(user => (
-            <li key={user.id}>
-              {user.name} ({user.email})
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

@@ -10,7 +10,7 @@
     "task-form task-preview"
     "statements-selection statements-selection";
   gap: var(--gap-l);
-  padding: var(--gap-l);
+  padding: var(--gap-s);
   overflow: hidden;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .task-page__form--form {
-  padding: 0 var(--gap-l);
+  padding: 0
 }
 
 .task-page__preview {
@@ -63,7 +63,7 @@
 
 .task-page__selection {
   grid-area: statements-selection;
-  padding: var(--gap-xl) 40px;
+  padding: var(--gap-xl) var(--gap-xxxs) var(--gap-xl) var(--gap-xl);
   border-top: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
   height: 100%;
@@ -82,10 +82,9 @@
 
 .task-page__header {
   top: 0;
-  background-color: var(--Color-Neutral-White);
   font-size: var(--text-desktop-subtitles-1);
   font-weight: bold;
-  margin-bottom: var(--gap-xl);
+  margin-bottom: var(--gap-m);
 }
 
 .task-page__header--h4 {
@@ -210,8 +209,8 @@
 }
 
 .task-page__list-item {
-  padding: var(--gap-s);
-  margin-bottom: var(--gap-s);
+  padding: var(--gap-s) 0;
+
   border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
   display: flex;
@@ -525,7 +524,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--gap-l);
+  padding: var(--gap-l) var(--gap-xl);
   grid-area: task-header;
 }
 
@@ -558,6 +557,7 @@
 .task-title h1 {
   font-size: var(--text-desktop-medium);
   font-weight: lighter;
+  margin-right: 80px;
 }
 
 /* Estilo para la modal */

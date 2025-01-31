@@ -58,7 +58,7 @@ const useAuthLogic = (navigate) => {
       const response = await authService.signUp(formData);
 
       if (response.data.is_success) {
-        navigate("/Home");
+        return response;
       } else {
         throw new Error(response.data.message || "Error al registrar.");
       }

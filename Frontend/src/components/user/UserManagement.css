@@ -1,7 +1,7 @@
 .user_page {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 0.48fr 1fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "form find"
     "form list"
@@ -14,7 +14,6 @@
   }
 
 }
-
 
 .user__page {
   padding-top: 400px;
@@ -41,7 +40,7 @@
   margin-top: 5rem;
 }
 
-.user_item {
+.user__item {
   background-color: #eee;
   padding: 0.5rem 1rem;
   border: none;
@@ -49,7 +48,7 @@
   margin-left: 1rem;
 }
 
-.users_wrapper>form {
+.createUsers_wrapper>form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -76,7 +75,7 @@ label {
   width: 100%;
   align-items: end;
 
-  &>.user_item {
+  &>.label-user_item {
     width: 500px;
   }
 }

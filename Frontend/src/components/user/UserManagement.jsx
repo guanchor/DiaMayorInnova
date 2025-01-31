@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
 import userService from "../../services/userService.js";
 import AddUsers from "./add-users/AddUsers.jsx";
 import ListUsers from "./list-users/ListUsers.jsx";
 import FindNameUsers from "./find-name-user/FindNameUsers.jsx";
+import "./UserManagement.css";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState("");
-  const { token } = useAuth();
-  const navigate = useNavigate();
-  const auth = useAuth();
+
 
   useEffect(() => {
     userService.getAllUsers()
@@ -36,9 +34,14 @@ const UserManagement = () => {
       <ListUsers
         users={users}
         setUsers={setUsers}
+        setSelectedUser={setSelectedUser}
       />
 
-      <AddUsers setUsers={setUsers} />
+      <AddUsers
+        setUsers={setUsers}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+      />
 
       <FindNameUsers users={users} />
     </main>

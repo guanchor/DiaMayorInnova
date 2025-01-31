@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext.jsx";
+import userService from "../../../services/userService.js";
+import './AddUsers.css';
 
-const AddUsers = ({ setUsers }) => {
+const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
   const initialUserState = {
     email: "",
     password: "",
@@ -15,19 +17,46 @@ const AddUsers = ({ setUsers }) => {
 
   const [input, setInput] = useState(initialUserState);
   const [error, setError] = useState("");
-
   const auth = useAuth();
 
-  const addUser = (e) => {
+  useEffect(() => {
+    if (selectedUser) {
+      setInput({
+        email: selectedUser.email,
+        password: "",
+        confirmation_password: "",
+        name: selectedUser.name,
+        first_lastName: selectedUser.first_lastName || "",
+        second_lastName: selectedUser.second_lastName || "",
+        featured_image: null,
+        role: selectedUser.role,
+      });
+    } else {
+      setInput(initialUserState);
+    }
+  }, [selectedUser]);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const onImageChange = (event) => {
+    setInput({ ...input, featured_image: event.target.files[0] });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!input.email || !input.password || !input.confirmation_password || !input.name || !input.first_lastName || !input.second_lastName) {
-      setError("Por favor, complete todos los campos.");
+    if (!input.email || !input.name || !input.first_lastName || !input.second_lastName) {
+      setError("Por favor, complete todos los campos obligatorios.");
       return;
     }
 
-    if (input.password !== input.confirmation_password) {
-      setError("Las contraseñas no coinciden.");
+    if (!selectedUser && (!input.password || input.password !== input.confirmation_password)) {
+      setError("Las contraseñas no coinciden o están vacías.");
       return;
     }
 
@@ -38,110 +67,135 @@ const AddUsers = ({ setUsers }) => {
     formData.append("user[first_lastName]", input.first_lastName);
     formData.append("user[second_lastName]", input.second_lastName);
     if (input.featured_image) {
-      formData.append('user[featured_image]', input.featured_image);
+      formData.append("user[featured_image]", input.featured_image);
     }
     formData.append("user[role]", input.role);
 
-    auth.signUpAction(formData)
-      .then(response => {
-        setUsers(prev => [...prev, response.data.user]);
-        setInput(initialUserState); // Clear form
-      })
-      .catch((error) => {
-        console.error("Error de registro:", error);
-        setError(error.response?.data?.message || "Hubo un error al registrar el usuario.");
-      });
-  };
+    try {
+      if (selectedUser) {
+        // Editar usuario
+        const response = await userService.updateUser(selectedUser.id, formData);
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+        if (response.data?.data?.user) {
+          setUsers(prev => prev.map(user => user.id === selectedUser.id ? response.data.data.user : user));
+        }
+        setSelectedUser(null);
+      } else {
+        const response = await auth.signUpAction(formData);
 
-  const onImageChange = (event) => {
-    setInput({ ...input, featured_image: event.target.files[0] });
+        console.log("Respuesta del servidor:", response);
+
+        if (response.data?.data?.user) {
+          setUsers(prev => [...prev, response.data.data.user]);
+        }
+      }
+      setInput(initialUserState);
+    } catch (error) {
+      console.error("Error al guardar usuario:", error);
+      setError(error.response?.data?.data?.message || "Hubo un error al procesar la solicitud.");
+    }
   };
 
   return (
     <>
-      <section className="create-schools_wrapper">
-        <h2>Registrar Nuevo Usuario</h2>
-        <form className="create-schools_form" onSubmit={addUser}>
-          <fieldset className='create-schools_fieldset'>
-            <label className='school_label'>Email
+      <section className="create-users_wrapper">
+        <h2>{selectedUser ? "Editar Usuario" : "Registrar Nuevo Usuario"}</h2>
+        <form className="create-users_form" onSubmit={handleSubmit}>
+          <fieldset className='create-users_fieldset'>
+            <label htmlFor='email' className='user_label'>Correo electrónico
               <input
                 type="email"
                 name="email"
+                className="user_item"
                 value={input.email}
                 onChange={handleInput}
-                placeholder="Email"
+                placeholder="ejemplo@yahoo.es"
                 required
               />
             </label>
-            <input
-              type="password"
-              name="password"
-              value={input.password}
-              onChange={handleInput}
-              placeholder="Password"
-              required
-            />
-            <input
-              type="password"
-              name="confirmation_password"
-              value={input.confirmation_password}
-              onChange={handleInput}
-              placeholder="Confirmar Password"
-              required
-            />
+            <label htmlFor='password' className='user_label'>Contraseña
+              <input
+                type="password"
+                name="password"
+                className="user_item"
+                value={input.password}
+                onChange={handleInput}
+                placeholder="Password"
+                required
+              />
+            </label>
+            <label htmlFor='confirmation_password' className='user_label'>Confirmar contraseña
+              <input
+                type="password"
+                name="confirmation_password"
+                className="user_item"
+                value={input.confirmation_password}
+                onChange={handleInput}
+                placeholder="Confirmar Password"
+                required
+              />
+            </label>
           </fieldset>
-          <fieldset className='create-schools_fieldset'>
-            <input
-              type="text"
-              name="name"
-              value={input.name}
-              onChange={handleInput}
-              placeholder="Nombre"
-              required
-            />
-            <input
-              type="text"
-              name="first_lastName"
-              value={input.first_lastName}
-              onChange={handleInput}
-              placeholder="Primer Apellido"
-              required
-            />
-            <input
-              type="text"
-              name="second_lastName"
-              value={input.second_lastName}
-              onChange={handleInput}
-              placeholder="Segundo Apellido"
-              required
-            />
+          <fieldset className='create-users_fieldset'>
+            <label htmlFor='name' className='user_label'>Nombre
+              <input
+                type="text"
+                name="name"
+                className="user_item"
+                value={input.name}
+                onChange={handleInput}
+                placeholder="Pedro"
+                required
+              />
+            </label>
+            <label htmlFor='first_lastName' className='user_label'>Primer Apellido
+              <input
+                type="text"
+                name="first_lastName"
+                className="user_item"
+                value={input.first_lastName}
+                onChange={handleInput}
+                placeholder="Pica"
+                required
+              />
+            </label>
+            <label htmlFor='second_lastName' className='user_label'>Segundo Apellido
+              <input
+                type="text"
+                name="second_lastName"
+                className="user_item"
+                value={input.second_lastName}
+                onChange={handleInput}
+                placeholder="Piedras"
+                required
+              />
+            </label>
           </fieldset>
-          <input
-            type="file"
-            name="featured_image"
-            onChange={onImageChange}
-          />
-          <select
-            name="role"
-            value={input.role}
-            onChange={handleInput}
-            required
-          >
-            <option value="admin">Admin</option>
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-          </select>
+          <label htmlFor='featured_image' className='user_label'>Introduzca una imagen de usuario
+            <input
+              type="file"
+              name="featured_image"
+              className="user_item"
+              onChange={onImageChange}
+            />
+          </label>
+          <label htmlFor='role' className='user_label'>Seleccione un rol
+            <select
+              name="role"
+              className="user_item"
+              value={input.role}
+              onChange={handleInput}
+              required
+            >
+              <option value="admin">Admin</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
+            </select>
+          </label>
 
+          <button type="submit" className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedUser ? "Actualizar Usuario" : "Registrar Usuario"}</button>
+          {selectedUser && <button type="button" onClick={() => setSelectedUser(null)}>Cancelar</button>}
           {error && <p style={{ color: "red" }}>{error}</p>}
-          <button type="submit">Registrar</button>
         </form>
       </section>
     </>

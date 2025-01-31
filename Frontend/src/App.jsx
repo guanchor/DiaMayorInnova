@@ -77,7 +77,7 @@ function App() {
                       <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />
-                        <Route path='usuarios/' element={<SignUp />} />
+                        <Route path='usuarios/' element={<UserManagement />} />
                       </Route >
 
                     </Route>

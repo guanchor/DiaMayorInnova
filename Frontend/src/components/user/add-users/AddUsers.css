@@ -1,0 +1,64 @@
+.create-users_wrapper {
+  grid-area: form;
+  width: 100%;
+  padding: var(--gap-s) var(--gap-xl);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: var(--gap-xl);
+  color: var(--Color-Principal);
+
+  & h2 {
+    font-size: var(--text-desktop-subtitles-1);
+    color: var(--Color-Principal);
+  }
+}
+
+.create-users_form {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: var(--gap-s);
+  font-size: var(--text-desktop-tiny);
+}
+
+.create-users_fieldset {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+  gap: var(--gap-l);
+  padding: 0;
+  color: var(--Color-Principal);
+
+
+  & .user_label {
+    width: 65%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: var(--gap-xxs);
+  }
+
+  & .user_label:nth-child(2) {
+    width: 35%;
+  }
+}
+
+.user_item {
+  width: 100%;
+  margin: 0;
+}
+
+.createUser_submit {
+  margin-top: var(--gap-m);
+}

@@ -1,0 +1,30 @@
+.search-user_container {
+  grid-area: find;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: var(--gap-s) var(--gap-xl);
+  border-bottom: solid 1px var(--Color-grey-200);
+  border-left: solid 1px var(--Color-grey-200);
+}
+
+.search-user_form {
+  margin-top: var(--gap-xl);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+  gap: var(--gap-l);
+
+}
+
+.search-form_input {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.search-user_label {
+  font-size: var(--text-desktop-tiny);
+
+}

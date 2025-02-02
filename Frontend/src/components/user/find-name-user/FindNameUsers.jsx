@@ -9,6 +9,7 @@ const FindNameUsers = ({ searchName, setSearchName }) => {
       <label htmlFor="searchName" className='search-user_label'>Nombre de usuario
         <input
           type="text"
+          id="searchName"
           name="searchName"
           className='search-form_input'
           placeholder="Escribe un nombre"

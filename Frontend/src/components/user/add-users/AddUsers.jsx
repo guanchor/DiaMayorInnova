@@ -103,9 +103,11 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
         <h2>{selectedUser ? "Editar Usuario" : "Registrar Nuevo Usuario"}</h2>
         <form className="create-users_form" onSubmit={handleSubmit}>
           <fieldset className='create-users_fieldset'>
+            <legend>Información de acceso</legend>
             <label htmlFor='email' className='user_label'>Correo electrónico
               <input
                 type="email"
+                id="email"
                 name="email"
                 className="user_item"
                 value={input.email}
@@ -117,6 +119,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             <label htmlFor='password' className='user_label'>Contraseña
               <input
                 type="password"
+                id="password"
                 name="password"
                 className="user_item"
                 value={input.password}
@@ -128,6 +131,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             <label htmlFor='confirmation_password' className='user_label'>Confirmar contraseña
               <input
                 type="password"
+                id="confirmation_password"
                 name="confirmation_password"
                 className="user_item"
                 value={input.confirmation_password}
@@ -138,9 +142,11 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             </label>
           </fieldset>
           <fieldset className='create-users_fieldset'>
+            <legend>Información personal</legend>
             <label htmlFor='name' className='user_label'>Nombre
               <input
                 type="text"
+                id="name"
                 name="name"
                 className="user_item"
                 value={input.name}
@@ -152,6 +158,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             <label htmlFor='first_lastName' className='user_label'>Primer Apellido
               <input
                 type="text"
+                id="first_lastName"
                 name="first_lastName"
                 className="user_item"
                 value={input.first_lastName}
@@ -163,6 +170,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             <label htmlFor='second_lastName' className='user_label'>Segundo Apellido
               <input
                 type="text"
+                id="second_lastName"
                 name="second_lastName"
                 className="user_item"
                 value={input.second_lastName}
@@ -175,6 +183,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
           <label htmlFor='featured_image' className='user_label'>Introduzca una imagen de usuario
             <input
               type="file"
+              id="featured_image"
               name="featured_image"
               className="user_item"
               onChange={onImageChange}
@@ -182,6 +191,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
           </label>
           <label htmlFor='role' className='user_label'>Seleccione un rol
             <select
+              id="role"
               name="role"
               className="user_item"
               value={input.role}

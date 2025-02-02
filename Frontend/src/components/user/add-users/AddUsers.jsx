@@ -17,8 +17,9 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
 
   const [input, setInput] = useState(initialUserState);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const auth = useAuth();
-
+  
   useEffect(() => {
     if (selectedUser) {
       setInput({
@@ -60,9 +61,16 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
       return;
     }
 
+    if (selectedUser && input.password && input.password !== input.confirmation_password) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("user[email]", input.email);
-    formData.append("user[password]", input.password);
+    if (input.password) {
+      formData.append("user[password]", input.password);
+    }
     formData.append("user[name]", input.name);
     formData.append("user[first_lastName]", input.first_lastName);
     formData.append("user[second_lastName]", input.second_lastName);
@@ -73,27 +81,30 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
 
     try {
       if (selectedUser) {
-        // Editar usuario
         const response = await userService.updateUser(selectedUser.id, formData);
 
         if (response.data?.data?.user) {
           setUsers(prev => prev.map(user => user.id === selectedUser.id ? response.data.data.user : user));
+          setSuccessMessage("El usuario se ha modificado correctamente.");
         }
         setSelectedUser(null);
       } else {
         const response = await auth.signUpAction(formData);
 
-        console.log("Respuesta del servidor:", response);
-
         if (response.data?.data?.user) {
           setUsers(prev => [...prev, response.data.data.user]);
+          setSuccessMessage("El usuario se ha creado correctamente.");
         }
       }
       setInput(initialUserState);
       setError("");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
     } catch (error) {
       console.error("Error al guardar usuario:", error);
       setError(error.response?.data?.data?.message || "Hubo un error al procesar la solicitud.");
+      setSuccessMessage("");
     }
   };
 
@@ -125,7 +136,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.password}
                 onChange={handleInput}
                 placeholder="Password"
-                required
+                required={!selectedUser}
               />
             </label>
             <label htmlFor='confirmation_password' className='user_label'>Confirmar contraseña
@@ -137,7 +148,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.confirmation_password}
                 onChange={handleInput}
                 placeholder="Confirmar Password"
-                required
+                required={!selectedUser}
               />
             </label>
           </fieldset>
@@ -206,7 +217,8 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
 
           <button type="submit" className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedUser ? "Actualizar Usuario" : "Registrar Usuario"}</button>
           {selectedUser && <button type="button" className="btn light" onClick={() => setSelectedUser(null)}>Cancelar</button>}
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p role="alert" style={{ color: "red" }}>{error}</p>}
+          {successMessage && <p role="alert" style={{ color: "green" }}>{successMessage}</p>}
         </form>
       </section>
     </>

@@ -100,8 +100,8 @@ puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
 puts "Usuario admin creado: #{user6.email} con rol #{user6.role}"
 
   
-  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: Date.new(2024, 11, 27), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
-  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: Date.new(2024, 11, 12), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+  task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: DateTime.new(2024, 11, 27 ,04, 00, 0), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+  task2 = Task.create(title: "Tarea 2 - Inventada S.L.", opening_date: DateTime.new(2024, 11, 12,05, 00, 0), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
 
   statement1 = Statement.create(definition: "Compramos mercaderías a 30 días por 1250€. El proveedor nos incluye en factura un descuento comercial del 2%. Además, la compra tiene unos gastos de transporte de 100€", explanation: "Explicación 1", user: user2, is_public: false)
   statement2 = Statement.create(definition: "Vendemos mercaderías por valor de 3000€. Para el cobro giramos una letra de cambio a 30 días, que es aceptada.", explanation: "Explicación 2", user: user2, is_public: false)

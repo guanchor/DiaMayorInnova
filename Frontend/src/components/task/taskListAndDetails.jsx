@@ -159,11 +159,11 @@ const TaskListAndDetails = () => {
                     <div className="task-list__info-body">
                       <div className="task-list__date">
                         <i className="fi fi-rr-calendar"></i>
-                        <strong>Apertura: </strong> {new Date(task.closing_date).toLocaleString()}
+                        <strong>Apertura: </strong> {new Date(task.opening_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
                       </div>
                       <div className="task-list__date">
                         <i className="fi fi-rr-calendar"></i>
-                        <strong>Cierre: </strong> {new Date(task.closing_date).toLocaleString()}
+                        <strong>Cierre: </strong> {new Date(task.closing_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
                       </div>
                     </div>
                   </div>

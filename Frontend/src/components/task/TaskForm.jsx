@@ -24,8 +24,8 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
             <label className="task-page__label">Fecha de apertura:</label>
             <input
               className="task-page__input"
-              type="date"
-              value={openingDate}
+              type="datetime-local"
+              value={ openingDate ? dateTimeFormat(openingDate) : ""}
               onChange={(e) => setOpeningDate(e.target.value)}
             />
           </div>

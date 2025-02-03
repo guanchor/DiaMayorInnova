@@ -2,7 +2,7 @@ import React from "react";
 import "./TaskPage.css";
 
 const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStatements, handleRemoveStatement }) => {
-  
+
   const validSelectedStatements = selectedStatements.filter((statementId) =>
     statements.some((s) => s.id === statementId)
   );
@@ -15,11 +15,11 @@ const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStat
         <div className="task-page__dates-container">
           <p>
             <strong>Fecha de apertura:</strong>{" "}
-            {new Date(openingDate).toLocaleDateString()}
+            {new Date(openingDate).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
           </p>
           <p>
             <strong>Fecha de cierre:</strong>{" "}
-            {new Date(closingDate).toLocaleString()}
+            {new Date(closingDate).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
           </p>
         </div>
         {validSelectedStatements.length > 0 ? (

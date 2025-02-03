@@ -88,9 +88,8 @@ const SignIn = () => {
                 </label>
               </div>
             </div>
-            {errorMessage && <div style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</div>}
+            {errorMessage && <div className="error__message">{errorMessage}</div>}
             {successMessage && <div style={{ color: "green", marginBottom: "10px" }}>{successMessage}</div>}
-            {auth.error && <div style={{ color: "red" }}>{auth.error}</div>}
             <button className="btn light">Iniciar Sesión</button>
           </form>
         </div>

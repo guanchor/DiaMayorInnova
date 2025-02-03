@@ -11,7 +11,7 @@ const ModalConfirmDelete = ({ isOpen, user, onDelete, onClose }) => {
         <p>Esta acción no se puede deshacer.</p>
         <div className="modalConfirmDelete-buttons">
           <button className="btn-cancel" onClick={onClose}>Cancelar</button>
-          <button className="btn-confirm" onClick={() => onDelete(user.id)}>Eliminar</button>
+          <button className="btn-confirm" data-testid="confirm-delete-button" onClick={() => onDelete(user.id)}>Eliminar</button>
         </div>
       </div>
     </div>

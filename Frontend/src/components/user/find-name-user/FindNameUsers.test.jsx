@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import FindNameUsers from "./FindNameUsers";
 
 test("Debe renderizar el campo de búsqueda", () => {
-  render(<FindNameUsers searchName="" setSearchName={() => {}} />);
-  
+  render(<FindNameUsers searchName="" setSearchName={() => { }} />);
+
   const input = screen.getByPlaceholderText("Escribe un nombre");
   expect(input).toBeInTheDocument();
 });
@@ -12,7 +12,7 @@ test("Debe renderizar el campo de búsqueda", () => {
 test("Debe actualizar el estado cuando se escribe en el input", async () => {
   const setSearchName = vi.fn();
   render(<FindNameUsers searchName="" setSearchName={setSearchName} />);
-  
+
   const input = screen.getByPlaceholderText("Escribe un nombre");
   await userEvent.type(input, "Juan");
 

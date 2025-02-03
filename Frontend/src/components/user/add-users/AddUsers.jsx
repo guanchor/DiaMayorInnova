@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import userService from "../../../services/userService.js";
+import { API_BASE_URL } from "../../../config.js";
 import './AddUsers.css';
 
 const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
@@ -19,7 +20,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const auth = useAuth();
-  
+
   useEffect(() => {
     if (selectedUser) {
       setInput({
@@ -29,7 +30,9 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
         name: selectedUser.name,
         first_lastName: selectedUser.first_lastName || "",
         second_lastName: selectedUser.second_lastName || "",
-        featured_image: null,
+        featured_image: selectedUser.featured_image?.url
+        ? `${API_BASE_URL}${selectedUser.featured_image.url}`
+        : null,
         role: selectedUser.role,
       });
     } else {
@@ -50,19 +53,23 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Formulario enviado"); // Depuración
 
     if (!input.email || !input.name || !input.first_lastName || !input.second_lastName) {
       setError("Por favor, complete todos los campos obligatorios.");
+      console.log("Error: Campos obligatorios vacíos"); // Depuración
       return;
     }
 
     if (!selectedUser && (!input.password || input.password !== input.confirmation_password)) {
       setError("Las contraseñas no coinciden o están vacías.");
+      console.log("Error: Contraseñas no coinciden"); // Depuración
       return;
     }
 
     if (selectedUser && input.password && input.password !== input.confirmation_password) {
       setError("Las contraseñas no coinciden.");
+      console.log("Error: Contraseñas no coinciden en edición"); // Depuración
       return;
     }
 
@@ -79,9 +86,16 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
     }
     formData.append("user[role]", input.role);
 
+    console.log("Datos enviados en FormData:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
     try {
       if (selectedUser) {
+        console.log("🟢 selectedUser:", selectedUser);
         const response = await userService.updateUser(selectedUser.id, formData);
+        console.log("Respuesta del servidor:", response); // Depuración
 
         if (response.data?.data?.user) {
           setUsers(prev => prev.map(user => user.id === selectedUser.id ? response.data.data.user : user));
@@ -90,6 +104,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
         setSelectedUser(null);
       } else {
         const response = await auth.signUpAction(formData);
+        console.log("Respuesta del servidor (registro):", response); // Depuración
 
         if (response.data?.data?.user) {
           setUsers(prev => [...prev, response.data.data.user]);
@@ -98,11 +113,10 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
       }
       setInput(initialUserState);
       setError("");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 5000);
+
     } catch (error) {
       console.error("Error al guardar usuario:", error);
+      console.error("❌ Respuesta del servidor:", error.response?.data);
       setError(error.response?.data?.data?.message || "Hubo un error al procesar la solicitud.");
       setSuccessMessage("");
     }
@@ -192,6 +206,20 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             </label>
           </fieldset>
           <label htmlFor='featured_image' className='user_label'>Introduzca una imagen de usuario
+            {input.featured_image && (
+              <div>
+                <p>Imagen actual:</p>
+                <img
+                  src={
+                    typeof input.featured_image === "string"
+                      ? input.featured_image
+                      : URL.createObjectURL(input.featured_image)
+                  }
+                  alt="Imagen actual del usuario"
+                  style={{ width: "100px", height: "auto", marginBottom: "10px" }}
+                />
+              </div>
+            )}
             <input
               type="file"
               id="featured_image"

@@ -11,7 +11,6 @@
 
 }
 
-
 .user_list {
   background-color: var(--Color-White);
   border-radius: var(--r-xxs);
@@ -28,6 +27,8 @@
   flex-direction: column;
   gap: var(--gap-xxs);
   padding: var(--gap-xxs);
+  margin-top: var(--gap-xxs);
+  background-color: var(--Color-Neutral-White);
 }
 
 .users_list {

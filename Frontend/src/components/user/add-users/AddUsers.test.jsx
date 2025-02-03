@@ -4,6 +4,7 @@ import flushPromises from 'flush-promises';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from "vitest";
 import AddUsers from "./AddUsers";
+import { faker } from '@faker-js/faker';
 
 vi.mock("../../../context/AuthContext.jsx", () => ({
   useAuth: () => ({ signUpAction: vi.fn().mockResolvedValue({ data: { data: { user: {} } } }) })
@@ -12,6 +13,14 @@ vi.mock("../../../context/AuthContext.jsx", () => ({
 vi.mock("../../../services/userService.js", () => ({
   updateUser: vi.fn().mockResolvedValue({ data: { data: { user: {} } } })
 }));
+
+beforeAll(() => {
+  global.URL.createObjectURL = vi.fn().mockReturnValue('blob://dummy-url');
+});
+
+afterAll(() => {
+  global.URL.createObjectURL.mockRestore();
+});
 
 describe("AddUsers Component", () => {
   const mockSetUsers = vi.fn();
@@ -29,8 +38,9 @@ describe("AddUsers Component", () => {
   it("Debe permitir la entrada de datos en los campos de texto", () => {
     render(<AddUsers setUsers={mockSetUsers} setSelectedUser={mockSetSelectedUser} />);
     const emailInput = screen.getByLabelText(/Correo electrónico/i);
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    expect(emailInput.value).toBe("test@example.com");
+    const fakeEmail = faker.internet.email();
+    fireEvent.change(emailInput, { target: { value: fakeEmail } });
+    expect(emailInput.value).toBe(fakeEmail);
   });
 
   it("Debe actualizar el estado al seleccionar un archivo", () => {
@@ -59,12 +69,12 @@ describe("AddUsers Component", () => {
     const secondLastNameInput = screen.getByLabelText('Segundo Apellido');
     const submitButton = screen.getByRole('button', { name: /Registrar Usuario/i });
 
-    await userEvent.type(emailInput, 'ejemplo@prueba.es');
-    await userEvent.type(passwordInput, 'password123');
-    await userEvent.type(confirmPasswordInput, 'differentPassword123');
-    await userEvent.type(nameInput, 'NombrePrueba');
-    await userEvent.type(firstLastNameInput, 'Apellido1');
-    await userEvent.type(secondLastNameInput, 'Apellido2');
+    await userEvent.type(emailInput, faker.internet.email());
+    await userEvent.type(passwordInput, faker.internet.password());
+    await userEvent.type(confirmPasswordInput, faker.internet.password());
+    await userEvent.type(nameInput, faker.person.firstName());
+    await userEvent.type(firstLastNameInput, faker.person.lastName());
+    await userEvent.type(secondLastNameInput, faker.person.lastName());
 
     await userEvent.click(submitButton);
 

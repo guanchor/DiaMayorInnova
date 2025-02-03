@@ -12,7 +12,7 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
 import SignUp from "./components/user/SignUp";
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
-import NavegationMenu from "./components/navegation-menu/NavegationMenu";
+import NavigationMenu from "./components/navigation-menu/NavigationMenu";
 import Account from './components/account/Account';
 // import AccountList from './components/account/ListAccount';
 // import AddAccount from './components/account/AddAccount';
@@ -40,7 +40,7 @@ function App() {
       <Router>
         <AuthProvider>
           <NavStateProvider>
-            <NavegationMenu />
+            <NavigationMenu />
             <div className='app-main'>
               <Routes>
                 <Route path="/sign_in" element={<SignIn />} />

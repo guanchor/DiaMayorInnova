@@ -335,6 +335,14 @@ a {
   }
 }
 
+.error__message {
+  color: var(--Color-red-700);
+  font-weight: 600;
+  background-color: var(--Color-red-50);
+  padding: var(--gap-xxs) var(--gap-xs);
+  border-radius: var(--r-xxs);
+}
+
 input::placeholder {
   color: var(--Color-grey-200);
 }

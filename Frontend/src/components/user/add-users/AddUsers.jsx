@@ -53,23 +53,19 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Formulario enviado"); // Depuración
 
     if (!input.email || !input.name || !input.first_lastName || !input.second_lastName) {
       setError("Por favor, complete todos los campos obligatorios.");
-      console.log("Error: Campos obligatorios vacíos"); // Depuración
       return;
     }
 
     if (!selectedUser && (!input.password || input.password !== input.confirmation_password)) {
       setError("Las contraseñas no coinciden o están vacías.");
-      console.log("Error: Contraseñas no coinciden"); // Depuración
       return;
     }
 
     if (selectedUser && input.password && input.password !== input.confirmation_password) {
       setError("Las contraseñas no coinciden.");
-      console.log("Error: Contraseñas no coinciden en edición"); // Depuración
       return;
     }
 
@@ -86,16 +82,9 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
     }
     formData.append("user[role]", input.role);
 
-    console.log("Datos enviados en FormData:");
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     try {
       if (selectedUser) {
-        console.log("🟢 selectedUser:", selectedUser);
         const response = await userService.updateUser(selectedUser.id, formData);
-        console.log("Respuesta del servidor:", response); // Depuración
 
         if (response.data?.data?.user) {
           setUsers(prev => prev.map(user => user.id === selectedUser.id ? response.data.data.user : user));
@@ -103,8 +92,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
         }
         setSelectedUser(null);
       } else {
-        const response = await auth.signUpAction(formData);
-        console.log("Respuesta del servidor (registro):", response); // Depuración
+        const response = await userService.createUser(formData);
 
         if (response.data?.data?.user) {
           setUsers(prev => [...prev, response.data.data.user]);
@@ -113,10 +101,12 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
       }
       setInput(initialUserState);
       setError("");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
 
     } catch (error) {
       console.error("Error al guardar usuario:", error);
-      console.error("❌ Respuesta del servidor:", error.response?.data);
       setError(error.response?.data?.data?.message || "Hubo un error al procesar la solicitud.");
       setSuccessMessage("");
     }
@@ -138,7 +128,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.email}
                 onChange={handleInput}
                 placeholder="ejemplo@yahoo.es"
-                required
+                
               />
             </label>
             <label htmlFor='password' className='user_label'>Contraseña
@@ -177,7 +167,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.name}
                 onChange={handleInput}
                 placeholder="Pedro"
-                required
+                
               />
             </label>
             <label htmlFor='first_lastName' className='user_label'>Primer Apellido
@@ -189,7 +179,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.first_lastName}
                 onChange={handleInput}
                 placeholder="Pica"
-                required
+                
               />
             </label>
             <label htmlFor='second_lastName' className='user_label'>Segundo Apellido
@@ -201,7 +191,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.second_lastName}
                 onChange={handleInput}
                 placeholder="Piedras"
-                required
+                
               />
             </label>
           </fieldset>
@@ -235,7 +225,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
               className="user_item"
               value={input.role}
               onChange={handleInput}
-              required
+              
             >
               <option value="admin">Admin</option>
               <option value="teacher">Teacher</option>

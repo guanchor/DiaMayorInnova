@@ -10,7 +10,6 @@ import SchoolsCenters from './components/schoolCenters/SchoolCenters'
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
-import SignUp from "./components/user/SignUp";
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
 import NavegationMenu from "./components/navegation-menu/NavegationMenu";
 import Account from './components/account/Account';
@@ -73,7 +72,6 @@ function App() {
                     <Route path="/add-class-list" element={<AddClassGroup />} />
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-                      <Route path="/sign_up" element={<SignUp />} />
                       <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />

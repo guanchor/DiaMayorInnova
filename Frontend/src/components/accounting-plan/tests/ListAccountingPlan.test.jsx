@@ -100,41 +100,6 @@ describe("AccoutingPlansList", () => {
     });
   });
 
-  // TEST DE ELIMINACIÓN (NOT WORKING)
-  // it("Debería eliminar un PGC cuando se hace click en Eliminar", async () => {
-    
-  //   AccountingPlanDataService.remove.mockResolvedValue({});
-
-  //   render(
-  //     <MemoryRouter>
-  //       <AccountingPlansList newPGC={false} />
-  //     </MemoryRouter>
-  //   );
-
-  //   await waitFor(() => {
-  //     expect(screen.getByText("PGC test 1")).toBeInTheDocument();
-  //   });
-
-  //   //Primer botón de Eliminar PGC
-  //   const deleteButton = screen.getByRole("button", {name: /Eliminar PGC/i});
-  //   fireEvent.click(deleteButton);
-
-  //   //Verificar que se llamó a la función on el id correcto
-  //   await waitFor(() => {
-  //     expect(AccountingPlanDataService.remove).toHaveBeenCalled(1);
-  //   });
-
-  //   //Segunda llamada para recargar la lista después de la eliminación
-  //   await waitFor(() => {
-  //     expect(AccountingPlanDataService.getAll).toHaveBeenCalled(2);
-  //   })
-
-  //   //PGC eliminado
-  //   await waitFor(() => {
-  //     expect(screen.queryByText("PGC test 1")).not.toBeInTheDocument();
-  //   });
-  // })
-
 });
 
 

@@ -1,0 +1,81 @@
+.user_page {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.49fr 1fr;
+  grid-template-areas:
+    "form find"
+    "form list"
+  ;
+  overflow: hidden;
+  height: 100%;
+
+  & h2 {
+    font-size: var(--text-desktop-subtitles-1);
+  }
+
+}
+
+.user__page {
+  padding-top: 400px;
+}
+
+.users_list {
+  font-size: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 1rem;
+  margin-top: 20px;
+  padding: 1rem 2rem;
+  border-radius: 0.25rem;
+  background-color: #eee;
+}
+
+.users_list>li {
+  list-style-type: none;
+
+}
+
+.createUser_wrapper {
+  margin-top: 5rem;
+}
+
+.user__item {
+  background-color: #eee;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  margin-left: 1rem;
+}
+
+.createUsers_wrapper>form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &>.createUser_submit {
+    align-self: flex-end;
+  }
+}
+
+
+
+fieldset {
+  border: none;
+  display: flex;
+  text-align: end;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 1rem;
+}
+
+label {
+  display: inline-block;
+  width: 100%;
+  align-items: end;
+
+  &>.label-user_item {
+    width: 500px;
+  }
+}

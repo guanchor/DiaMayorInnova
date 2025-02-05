@@ -6,10 +6,7 @@ class User < ApplicationRecord
   has_many :statements
   has_many :tasks, through: :exercises
   has_many :exercises, dependent: :destroy
-  has_many :teacher_class_groups
-  has_many :class_groups, through: :teacher_class_groups
-  belongs_to :class_groups, optional: true
-
+  
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

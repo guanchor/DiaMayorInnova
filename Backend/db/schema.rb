@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_03_180734) do
+
+ActiveRecord::Schema[7.2].define(version: 2025_02_03_164828) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -190,6 +192,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_180734) do
     t.integer "created_by"
   end
 
+  create_table "teacher_class_groups", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "class_groups_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_groups_id"], name: "index_teacher_class_groups_on_class_groups_id"
+    t.index ["user_id"], name: "index_teacher_class_groups_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -203,7 +214,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_180734) do
     t.string "first_lastName"
     t.string "second_lastName"
     t.string "role", default: "student"
+    t.bigint "class_groups_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+    t.index ["class_groups_id"], name: "index_users_on_class_groups_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -225,4 +238,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_180734) do
   add_foreign_key "student_entries", "marks"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
+  add_foreign_key "teacher_class_groups", "class_groups", column: "class_groups_id"
+  add_foreign_key "teacher_class_groups", "users"
+  add_foreign_key "users", "class_groups", column: "class_groups_id"
 end

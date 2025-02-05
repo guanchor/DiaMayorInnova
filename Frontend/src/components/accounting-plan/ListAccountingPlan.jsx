@@ -142,9 +142,7 @@ const AccountingPlansList = ({ newPGC }) => {
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (window.confirm("¿Está seguro de que quiere eliminar este PGC?")) { //Usability upgrade #2 -> Confirm before PGC remove
-                            deleteAccountingPlan(accountingPlan.id);
-                          }
+                          deleteAccountingPlan(accountingPlan.id);
                         }}>
                         <i className="fi-rr-trash" />
                       </button>

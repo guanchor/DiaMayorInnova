@@ -5,6 +5,7 @@ import userExerciseDataService from '../../services/userExerciseDataService';
 const StudentMark = () => {
 
   const [marks, setMarks] = useState(null);
+  const [includeMark, setIncludeMark] = useState(false)
 
   useEffect(() => {
     userExerciseDataService.getAll()
@@ -14,12 +15,16 @@ const StudentMark = () => {
       })
   }, [])
 
+  const onHandldeMarks = () => {
+    return false
+  }
+
   return (
-    <section className={marks ? "mark__section " : "mark__section principalSection__img"}>
-      <p className='mark__tittle'>Calificaciones</p>
+    <section className={includeMark ? "mark__section " : "mark__section principalSection__img"}>
+      <h2 className='mark__tittle'>Calificaciones</h2>
       <div className="marks__wrapper">
         {
-          marks && marks.map((mark, index) => (
+          includeMark && marks.map((mark, index) => (
             <div className="mark_container" key={index}>
               <p className='mark_mark'>{mark?.marks?.[0]?.mark || "No mark available"}</p>
               <div className="mark_text">

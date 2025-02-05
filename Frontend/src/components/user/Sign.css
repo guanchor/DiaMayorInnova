@@ -12,6 +12,7 @@
 }
 
 .log__container {
+    width: 300px;
     height: auto;
     background-color: var(--Color-Principal);
     color: var(--Color-letra-claro);
@@ -19,10 +20,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: var(--gap-xxxl);
+    align-items: start;
+    gap: var(--gap-l);
     border-radius: var(--gap-xs);
     box-shadow: var(--box-shadow-M3);
+
+    & .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 .log__tittle {
@@ -34,11 +40,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: end;
-    gap: var(--gap-s);
+    gap: var(--gap-xxl);
+    width: 100%;
 }
 
 .inputs__wrapper {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-m);
 }
 
 .form_control {
@@ -50,7 +60,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: var(--gap-xs);
+    gap: var(--gap-xxs);
 
 }
 
@@ -60,25 +70,29 @@
         height: 460px;
         background-color: white;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: var(--gap-xl);
+        gap: var(--gap-xxs);
         margin: 0 auto;
         box-shadow: var(--box-shadow-M3);
+
+        & input {
+            margin: 0;
+        }
     }
 
     .log__img {
         display: inline;
         flex: 1;
-        width: 370px;
-        height: 280px;
+        width: 340px;
+        padding: var(--gap-xs);
     }
 
     .log__container {
+        width: 360px;
         height: 100%;
         margin: auto;
         display: flex;
-        padding: 0 var(--gap-xxl);
+        align-items: start;
+        padding: 0 var(--gap-xl);
         border-radius: 0 var(--gap-xs) var(--gap-xs) 0;
         box-shadow: none;
     }

@@ -3,7 +3,20 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
+
+  & .search-bar--pgc {
+    width: 50%;
+  }
+}
+
+.accountingPlan__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: var(--gap-m);
+  gap: var(--gap-xl);
 }
 
 .accountingPlan__pgcList-item {
@@ -19,8 +32,8 @@
 
 .accountingPlan__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
+  align-self: self-start;
   font-weight: bold;
-  margin-bottom: var(--gap-m);
 }
 
 .accountingPlan__header--h4 .title {
@@ -53,10 +66,8 @@
 
 .accountingPlan__input--filter {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
   padding-bottom: var(--gap-s);
-  border-bottom: solid 1px var(--Color-grey-200);
 }
 
 .accountingPlan__table {
@@ -68,6 +79,7 @@
   display: flex;
   justify-content: center;
   align-items: start;
+  text-align: left;
 
   & table {
     width: 100%;
@@ -75,11 +87,9 @@
 }
 
 th {
-  text-align: center;
-}
-
-thead {
-  width: 100%;
+  border-bottom: solid 1px var(--Color-grey-200);
+  padding: var(--gap-xs) 0;
+  margin: var(--gap-xs);
 }
 
 .accountingPlan__button {
@@ -94,7 +104,6 @@ thead {
 .accountingPlan__button--link {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
-  color: var(--Color-grey-800);
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -108,7 +117,8 @@ thead {
 .accountingPlan__button--link.eye,
 .accountingPlan__button--remove.trash {
   margin-right: 8px;
-  font-size: 1.2rem;
+  color: var(--Color-grey-800);
+  font-size: var(--text-desktop-body-small);
 }
 
 .accountingPlan__button--remove {
@@ -154,22 +164,23 @@ thead {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 8px;
+  padding-top: var(--gap-m);
 }
 
 .accountingPlan__form--group.full-width {
   flex: 100%;
 }
 
+.accountingPlan__form--add {
+    margin-top: var(--gap-l);
+    display: flex;
+    justify-content: center;
+}
+
 .accountingPlan__form--actions {
   display: flex;
   font-family: inherit;
-  justify-content: center;
-
-  & .accountingPlan__button {
-    /* Añadir plan*/
-    margin-top: 16px;
-  }
+  justify-content: left;
 }
 
 .accountingPlan__form--actions.details {
@@ -199,6 +210,12 @@ thead {
 
   & tbody {
     height: 100%;
+  }
+
+  & .fi-rr-angle-small-down {
+    color: var(--Color-grey-800);
+    align-items: center;
+    font-size: large;
   }
 }
 

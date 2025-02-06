@@ -1,158 +1,112 @@
-import React, { useEffect, useState } from 'react'
-import HelpExampleDataService from '../../services/HelpExampleService';
-import { Link } from 'react-router-dom';
-import AccountService from '../../services/AccountService';
+import React, { useEffect, useState } from "react";
+import HelpExampleDataService from "../../services/HelpExampleService";
+import AccountService from "../../services/AccountService";
+import "./HelpExample.css";
 
-const AddHelpExample = ({}) => {
+const AddHelpExample = ({ setNewHelpExample }) => {
   const initialHelpExampleState = {
     id: null,
     creditMoves: "",
     debitMoves: "",
     account_id: 0,
-    description: ""
+    description: "",
   };
 
   const [helpExample, setHelpExample] = useState(initialHelpExampleState);
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [accounts, setAccounts] = useState([]);
 
-  const handleInputChange = event => {
+  useEffect(() => {
+    AccountService.getAll().then(({ data }) => {
+      setAccounts(data);
+    });
+  }, []);
+
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    // setHelpExample({...helpExample, [name]:value});
-    setHelpExample({...helpExample, [name]: name === "account_id" ? parseInt(value) : value});
+    setHelpExample({
+      ...helpExample,
+      [name]: name === "account_id" ? parseInt(value) : value,
+    });
   };
 
   const validateForm = () => {
-    if (!helpExample.creditMoves || !helpExample.debitMoves || !helpExample.account_id || !helpExample.description) {
+    if (
+      !helpExample.creditMoves ||
+      !helpExample.debitMoves ||
+      !helpExample.account_id ||
+      !helpExample.description
+    ) {
       setError("Todos los campos son obligatorios y deben tener valores válidos.");
       return false;
-    };
-    setError("")
+    }
+    setError("");
     return true;
-  }
+  };
 
   const saveHelpExample = () => {
     if (validateForm()) {
-      let data = {
-        creditMoves: helpExample.creditMoves.trim(),
-        debitMoves: helpExample.debitMoves.trim(),
-        account_id: helpExample.account_id,
-        description: helpExample.description.trim(),
-      };
-
-      HelpExampleDataService.create(data)
-      .then(response => {
-        setHelpExample({
-          id: parseInt(response.data.id),
-          creditMoves: response.data.creditMoves.trim(),
-          debitMoves: response.data.debitMoves.trim(),
-          account_id: parseInt(response.data.account_id),
-          description: response.data.description.trim(),
+      HelpExampleDataService.create(helpExample)
+        .then(() => {
+          setNewHelpExample(false);
+        })
+        .catch(() => {
+          setError("Problema al crear el ejemplo.");
         });
-        console.log("no llega",response.data);
-        setSubmitted(true);
-      })
-      .catch(e => {
-        console.log(e);
-        setError("Problema al crear");
-      });
     }
   };
 
-  const newHelpExample = () => {
-    setHelpExample(initialHelpExampleState);
-    setSubmitted(false);
-    setError("");
-  };
-
-  useEffect(() => {
-    AccountService.getAll()
-      .then(({data}) => {
-        setAccounts(data);
-        console.log(data);
-      })
-  },[])
-
   return (
-    <>
-      <Link to={"/help-examples/"}>
-        Atrás
-      </Link>
-
-      <div>
-        {submitted ? (
-          <div>
-            <h4>Se ha creado el ejemplo</h4>
-            <button onClick={newHelpExample}>Añadir otro ejemplo</button>
-          </div>
-        ) : (
-          <div>
-            <h4>Nuevo ejemplo</h4>
-            <div>
-              <label>Movimientos Debe</label>
-              <input
-                type="text"
-                id='debitMoves'
-                required
-                value={helpExample.debitMoves}
-                onChange={handleInputChange}
-                name='debitMoves'
-              />
-            </div>
-
-            <div>
-              <label>Movimientos Haber</label>
-              <input
-                type="text"
-                id='creditMoves'
-                required
-                value={helpExample.creditMoves}
-                onChange={handleInputChange}
-                name='creditMoves'
-              />
-            </div>
-
-            <div>
-              <label>Cuenta</label>
-              <select 
-                type="text"
-                id='account_id'
-                required
-                value={helpExample.account_id}
-                onChange={handleInputChange}
-                name='account_id'
-              >
-              <option value={0}>-- Cuenta --</option>
-                    {accounts.map((account, index) => {
-                      return (
-                        <option key={index} value={account.id}>{account.name}</option>
-                      );
-                    })}
-                  </select>
-            </div>
-
-            <div>
-              <label>Descripción</label>
-              <input
-                type="text"
-                id='description'
-                required
-                value={helpExample.description}
-                onChange={handleInputChange}
-                name='description'
-              />
-            </div>
-
-            <button onClick={saveHelpExample}>Crear ejemplo</button>
-
-            {error && <div className="helpExample__error">{error}</div>}
-          </div>
-
-        )}
+    <form className="helpExample__form">
+      <h2 className="helpExample__form--title">Nuevo Ejemplo</h2>
+      {error && <div className="helpExample__error">{error}</div>}
+      <div className="helpExample__form--group">
+        <label>Movimientos Debe</label>
+        <input
+          type="text"
+          name="debitMoves"
+          value={helpExample.debitMoves}
+          onChange={handleInputChange}
+        />
       </div>
-    </>
+      <div className="helpExample__form--group">
+        <label>Movimientos Haber</label>
+        <input
+          type="text"
+          name="creditMoves"
+          value={helpExample.creditMoves}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="helpExample__form--group">
+        <label>Cuenta</label>
+        <select
+          name="account_id"
+          value={helpExample.account_id}
+          onChange={handleInputChange}
+        >
+          <option value={0}>-- Seleccionar Cuenta --</option>
+          {accounts.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="helpExample__form--group">
+        <label>Descripción</label>
+        <input
+          type="text"
+          name="description"
+          value={helpExample.description}
+          onChange={handleInputChange}
+        />
+      </div>
+      <button type="button" className="helpExample__action--save" onClick={saveHelpExample}>
+        Crear Ejemplo
+      </button>
+    </form>
   );
 };
 
-export default AddHelpExample
+export default AddHelpExample;

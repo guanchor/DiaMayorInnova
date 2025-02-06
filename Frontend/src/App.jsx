@@ -30,6 +30,7 @@ import Accounts from './pages/account/Accounts';
 import TaskCreateForm from './components/task/TaskCreateForm';
 import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
+import HelpExamplePage from './pages/help-example/HelpExamplePage';
 import './App.css';
 import './assets/Styles/Global.css';
 
@@ -76,6 +77,8 @@ function App() {
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />
                         <Route path='usuarios/' element={<SignUp />} />
+                        <Route path="/help-examples" element={<HelpExamplePage/>} />
+
                       </Route >
 
                     </Route>

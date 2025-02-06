@@ -1,111 +1,58 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import HelpExampleService from '../../services/HelpExampleService';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import HelpExampleDataService from "../../services/HelpExampleService";
+import "./HelpExample.css";
 
-const HelpExamplesList = () => {
+const ListHelpExample = () => {
   const [helpExamples, setHelpExamples] = useState([]);
-  const [currentHelpExample, setCurrentHelpExample] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchHelpExample, setSearchHelpExample] = useState("");
 
   useEffect(() => {
     retrieveHelpExamples();
   }, []);
 
   const retrieveHelpExamples = () => {
-    HelpExampleService.getAll()
-      .then(response => {
-        setHelpExamples(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    HelpExampleDataService.getAll().then(({ data }) => {
+      setHelpExamples(data);
+    });
   };
 
-  const findByAccount = () => {
-    if (searchHelpExample) {
-      HelpExampleService.findByAccount(searchHelpExample)
-        .then(response => {
-          setHelpExamples(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
+  const deleteHelpExample = (id) => {
+    HelpExampleDataService.remove(id).then(() => {
       retrieveHelpExamples();
-    }
-  };
-
-  const setActiveHelpExample = (helpExample, index) => {
-    setCurrentHelpExample(helpExample);
-    setCurrentIndex(index);
-  }
-
-  const handleSearchChange = (e) => {
-    setSearchHelpExample(e.target.value);
+    });
   };
 
   return (
-    <>
-      <section>
-        <h2>Ejemplos de Ayuda</h2>
-        <Link to={"/home"}>
-          Volver al Home
-        </Link>
-
-        <div>
-          <input
-            type="text"
-            value={searchHelpExample}
-            onChange={handleSearchChange}
-            placeholder="Número de cuenta"
-          />
-          <button onClick={findByAccount}>Filtrar</button>
-        </div>
-
-        <ul className='helpExample_list'>
-          {helpExamples && helpExamples.map((helpExample, index) => (
-            <li onClick={() => setActiveHelpExample(helpExample, index)} key={index}>
-              {helpExample.description}{helpExample.account}
-            </li>
+    <section className="helpExample__list">
+      <h2 className="section-title">Todos los Ejemplos</h2>
+      <table className="helpExample__table">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {helpExamples.map((example) => (
+            <tr key={example.id}>
+              <td>{example.description}</td>
+              <td className="helpExample__actions">
+                <Link to={`/help-examples/${example.id}`} className="helpExample__action--edit">
+                  <i className="fi-rr-pencil" /> Editar
+                </Link>
+                <button
+                  className="helpExample__action--delete"
+                  onClick={() => deleteHelpExample(example.id)}
+                >
+                  <i className="fi-rr-trash" /> Eliminar
+                </button>
+              </td>
+            </tr>
           ))}
-        </ul>
-
-        <button><Link to={"/add-help-example"}>Añadir nueva ayuda</Link></button>
-      </section>
-
-      <section className='helpExample_wrapper'>
-        {currentHelpExample ? (
-          <div className='currentHelpExample_detail'>
-            <h3>Ejemplo</h3>
-            <div className='detail'>
-              <label>{""}
-                {currentHelpExample.creditMoves}
-              </label>
-            </div>
-            <div className='detail'>
-              <label>{""}
-                {currentHelpExample.debitMoves}
-              </label>
-            </div>
-            <div className='detail'>
-              <label>{""}
-                {currentHelpExample.account}
-              </label>
-            </div>
-            <Link to={"/help-examples/" + currentHelpExample.id}>
-              Editar
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Haga click sobre un ejemplo</p>
-          </div>
-        )}
-      </section>
-    </>
+        </tbody>
+      </table>
+    </section>
   );
 };
 
-export default HelpExamplesList
+export default ListHelpExample;

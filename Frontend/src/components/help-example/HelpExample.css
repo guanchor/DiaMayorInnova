@@ -1,0 +1,66 @@
+.helpExamplePage {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.helpExamplePage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.helpExamplePage__btnHome {
+  background-color: var(--Color-Principal);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.helpExamplePage__title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.helpExample__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.helpExample__form--group {
+  display: flex;
+  flex-direction: column;
+}
+
+.helpExample__action--save {
+  background-color: var(--Color-Principal);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.helpExample__list {
+  width: 100%;
+}
+
+.helpExample__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.helpExample__table th,
+.helpExample__table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.helpExample__actions {
+  display: flex;
+  gap: 10px;
+}

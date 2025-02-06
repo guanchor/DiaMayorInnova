@@ -76,6 +76,7 @@ puts "Usuario admin creado: #{user8.email} con rol #{user8.role}"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
     u.role = 'student'
+    u.class_groups_id = 2
   end
 puts "Usuario admin creado: #{user4.email} con rol #{user4.role}"
 
@@ -86,6 +87,7 @@ puts "Usuario admin creado: #{user4.email} con rol #{user4.role}"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
     u.role = 'student'
+    u.class_groups_id = 1
   end
 puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
 
@@ -96,8 +98,20 @@ puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
     u.password = 'elrincon'
     u.password_confirmation = 'elrincon'
     u.role = 'student'
+    u.class_groups_id = 2
   end
 puts "Usuario admin creado: #{user6.email} con rol #{user6.role}"
+
+user9 = User.find_or_create_by(email: 'diago@ieselrincon.es') do |u|
+  u.name = "Diago"
+  u.first_lastName = "Tall"
+  u.second_lastName = "Alioune"
+  u.password = 'elrincon'
+  u.password_confirmation = 'elrincon'
+  u.role = 'student'
+  u.class_groups_id = 1
+end
+puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
 
   
   task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: DateTime.new(2024, 11, 27 ,04, 00, 0), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
@@ -159,3 +173,7 @@ puts "Usuario admin creado: #{user6.email} con rol #{user6.role}"
   student_annotation2 = StudentAnnotation.create(number: 2, account_number: 1334, credit: 0, debit: 1000, student_entry: student_entry2, account: account2) 
   student_annotation3 = StudentAnnotation.create(number: 3, account_number: 2234, credit: 100, debit: 0, student_entry: student_entry3, account: account3)
   
+  teacher_class_group1 = TeacherClassGroup.create(user_id: 2, class_group_id: 1)
+  teacher_class_group2 = TeacherClassGroup.create(user_id: 2, class_group_id: 2)
+  teacher_class_group3 = TeacherClassGroup.create(user_id: 3, class_group_id: 1)
+  teacher_class_group4 = TeacherClassGroup.create(user_id: 3, class_group_id: 2)

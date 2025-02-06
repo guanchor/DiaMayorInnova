@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'find_by_account_id', on: :collection
   end
   
+  resources :teacher_class_groups
   resources :annotations
   resources :entries
   resources :solutions

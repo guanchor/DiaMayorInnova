@@ -70,6 +70,16 @@ const findByModule = async (module) => {
     }
 };
 
+const findByTeacherId = async (id) => {
+    try {
+        const response = await http.get(`class_groups?user_id=${id}`);
+        return response;
+    } catch (error) {
+        console.error("Error al obtener las clases :", error);
+        return null;
+    }
+}
+
 const ClassGroupService = {
     getAll,
     get,
@@ -77,7 +87,8 @@ const ClassGroupService = {
     update,
     remove,
     removeAll,
-    findByModule
+    findByModule,
+    findByTeacherId,
 };
 
 export default ClassGroupService;

@@ -1,5 +1,4 @@
 import http from "../http-common";
-import axios from "axios";
 
 const getAllUsers = () => http.get('/users');
 
@@ -22,10 +21,13 @@ const deleteUser = (userId) => http.delete(`/users/${userId}`);
 
 const findByName = (userName) => http.get(`/users?name=${userName}`);
 
+const getUserByClassId = (id) => http.get(`/users?class_groups_id=${id}`);
+
 export default {
   getAllUsers,
   createUser,
   updateUser,
   deleteUser,
   findByName,
+  getUserByClassId,
 };

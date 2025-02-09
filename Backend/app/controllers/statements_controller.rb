@@ -1,6 +1,6 @@
 class StatementsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution] #He añadido esto para QUITARLO SI FALLA
+  before_action :set_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution]
   before_action :authorize_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution]
 
   def index
@@ -92,12 +92,9 @@ end
   end
 
   def update
-    Rails.logger.debug "Actualizando el enunciado con los parámetros: #{params.inspect}"
-# BORRAR HASTA ESTE MOMENTO
       if @statement.user_id == current_user.id || current_user.admin?
         if @statement.update(statement_params)
           process_account_ids(@statement)
-          Rails.logger.debug "Errores después de procesar cuentas: #{@statement.errors.full_messages}"
     
           if @statement.errors.any?
             render json: @statement.errors, status: :unprocessable_entity
@@ -106,7 +103,6 @@ end
             render json: @statement, status: :ok
           end
         else
-          Rails.logger.debug "Errores al actualizar el enunciado: #{@statement.errors.full_messages}"
           render json: @statement.errors, status: :unprocessable_entity
         end
       else
@@ -117,7 +113,6 @@ end
   def destroy
     if @statement.user_id == current_user.id || current_user.admin?
       @statement.solutions.destroy_all
-      Rails.logger.debug "Eliminando el enunciado con ID #{@statement.id}."
       if @statement.destroy
         render json: { message: "Enunciado eliminado"}, status: :ok
       else
@@ -149,16 +144,19 @@ end
     solutions_attributes: [
       :id,
       :description,
+      :_destroy,
       entries_attributes: [
         :id,
         :entry_number,
         :entry_date,
+        :_destroy,
         annotations_attributes: [
           :id,
           :number,
           :credit,
           :debit,
-          :account_number
+          :account_number,
+          :_destroy
         ]
       ]
     ]
@@ -175,8 +173,11 @@ end
     render json: { error: 'Statement not found' }, status: :not_found
   end
 
-  def process_account_ids(statement)
-    statement.solutions.each do |solution|
+  def process_account_ids(resource)
+    solutions = resource.is_a?(Statement) ? resource.solutions : [resource]
+    has_errors = false
+
+    solutions.each do |solution|
       solution.entries.each do |entry|
         entry.annotations.each do |annotation|
           Rails.logger.debug "Account number: #{annotation.account_number}"
@@ -189,54 +190,61 @@ end
               Rails.logger.debug "Assigned account_id: #{annotation.account_id}"
               unless annotation.save
                 Rails.logger.debug "Error al guardar la anotación: #{annotation.errors.full_messages}"
+                has_errors = true
               end
             else
               annotation.errors.add(:account_number, "no válido o no encontrado")
+              has_errors = true
             end
           else
             annotation.errors.add(:account_number, "es obligatorio")
+            has_errors = true
           end
         end
       end
+    end
+
+    if has_errors
+      raise ActiveRecord::RecordInvalid, "Una o más anotaciones tienen errores y no se pueden guardar."
     end
   end
 
   def update_solutions_and_entries
-    if params[:statement][:solutions_attributes].present?
-      params[:statement][:solutions_attributes].each do |solution_attr|
-        solution = @statement.solutions.find_by(id: solution_attr[:id])
-
-        if solution
-          solution.update(solution_attr.permit(:description))
-
-          if solution_attr[:entries_attributes].present?
-            solution_attr[:entries_attributes].each do |entry_attr|
-              entry = solution.entries.find_by(id: entry_attr[:id])
-
-              if entry
-                entry.update(entry_attr.permit(:entry_number, :entry_date))
-              else
-                solution.entries.create(entry_attr)
-              end
-
-              if entry_attr[:annotations_attributes].present?
-                entry_attr[:annotations_attributes].each do |annotation_attr|
-                annotation = entry.annotations.find_by(id: annotation_attr[:id])
-
-                if annotation
-                  annotation.update(annotation_attr.permit(:debit, :credit))
+    if statement_params[:solutions_attributes].present?
+      statement_params[:solutions_attributes].each do |solution_attr|
+        if solution_attr[:id].present?
+          solution = @statement.solutions.find_by(id: solution_attr[:id])
+          if solution
+            solution.update(solution_attr.permit(:description))
+  
+            if solution_attr[:entries_attributes].present?
+              solution_attr[:entries_attributes].each do |entry_attr|
+                if entry_attr[:id].present?
+                  entry = solution.entries.find_by(id: entry_attr[:id])
+                  if entry
+                    entry.update(entry_attr.permit(:entry_number, :entry_date))
+  
+                    if entry_attr[:annotations_attributes].present?
+                      entry_attr[:annotations_attributes].each do |annotation_attr|
+                        if annotation_attr[:id].present?
+                          annotation = entry.annotations.find_by(id: annotation_attr[:id])
+                          annotation.update(annotation_attr.permit(:number, :credit, :debit, :account_number)) if annotation
+                        else
+                          entry.annotations.create(annotation_attr)
+                        end
+                      end
+                    end
+                  end
                 else
-                  entry.annotations.create(annotation_attr)
+                  entry = solution.entries.create(entry_attr)
                 end
               end
             end
           end
+        else
+          solution = @statement.solutions.create(solution_attr)
         end
-      else
-        @statement.solutions.create(solution_attr)
       end
     end
   end
-end
-
 end

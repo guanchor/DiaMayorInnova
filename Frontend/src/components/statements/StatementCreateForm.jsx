@@ -70,8 +70,11 @@ const StatementCreateForm = () => {
   };
 
   const handleDeleteSolution = (index) => {
-    const updatedSolutions = solutions.filter((_, i) => i !== index);
-    setSolutions(updatedSolutions);
+    setSolutions((prevSolutions) => 
+      prevSolutions.map((solution, i) =>
+        i === index ? { ...solution, _destroy: true } : solution
+      )
+    );
   };
 
   const handleCloseModal = () => {
@@ -112,6 +115,7 @@ const StatementCreateForm = () => {
           setSolutions={setSolutions}
           onSaveSolution={handleSaveSolution}
           statement={selectedStatement}
+          onDeleteSolution={handleDeleteSolution}
         />
       </section>
 

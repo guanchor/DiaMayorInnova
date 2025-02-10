@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import statementService from "../../services/statementService";
 
 
-const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSolutions, onSaveSolution, statement }) => {
-  //const [solutions, setSolutions] = useState(propSolutions || []);
+const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSolutions, onSaveSolution, statement, onDeleteSolution }) => {
   const [definition, setDefinition] = useState(statement?.definition || "");
   const [explanation, setExplanation] = useState(statement?.explanation || "");
   const [isPublic, setIsPublic] = useState(statement?.is_public || false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const prevStatementRef = useRef();
 
@@ -20,7 +20,6 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
     }
 
     prevStatementRef.current = statement;
-
   }, [statement]);
 
   const handleAddSolution = () => {
@@ -36,13 +35,18 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
               account_number: 0,
               credit: 0,
               debit: 0
-            }
+            },
+            {
+              number: 2,
+              account_number: 0,
+              credit: 0,
+              debit: 0,
+            },
           ]
         }
       ]
     };
     setSolutions((prevSolutions) => [...prevSolutions, newSolution]);
-    // Lo que añadía la segunda solución era el if(onAddSolution)
   };
 
   const handleSaveSolution = (updatedSolution, index) => {
@@ -55,34 +59,89 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Datos de soluciones antes de enviar al BACKEND:", solutions);
-    if (!solutions) {
-      console.error("Error: solutions es undefined");
-      setErrorMessage("Por favor, añada soluciones antes de enviar.");
-      setTimeout(() => setErrorMessage(""), 5000);
-      return;
+  const handleDeleteSolution = (index) => {
+    if (onDeleteSolution) {
+      onDeleteSolution(index);
+    }
+  };
+
+  const validateForm = () => {
+    let errors = "";
+
+    // Validar campos del enunciado
+    if (!definition.trim()) {
+      errors += "La definición es obligatoria.\n";
     }
 
-    const hasEmptySolutions = solutions.some((solution) =>
-      !solution.description ||
-      solution.entries.some((entry) =>
-        !entry.entry_date ||
-        !entry.entry_number ||
-        entry.annotations.some((annotation) =>
-          annotation.credit === undefined ||
-          annotation.debit === undefined
-        )
-      )
-    );
+    // Validar soluciones
+    solutions.forEach((solution, solutionIndex) => {
+      if (!solution.description.trim()) {
+        errors += `La descripción de la solución ${solutionIndex + 1} es obligatoria.\n`;
+      }
 
-    if (hasEmptySolutions) {
-      console.error("Error: Hay campos vacíos en las soluciones.", solutions);
-      setErrorMessage("Hay campos vacíos en las soluciones. Por favor, complete todos los campos antes de enviar.");
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
+      solution.entries.forEach((entry, entryIndex) => {
+        if (entry.annotations.length < 2) {
+          errors += `El asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} debe tener al menos dos anotaciones.\n`;
+        }
+
+        let totalDebit = 0;
+        let totalCredit = 0;
+
+        if (!entry.entry_number) {
+          errors += `El número de asiento de la solución ${solutionIndex + 1} es obligatorio.\n`;
+        }
+        if (!entry.entry_date) {
+          errors += `La fecha del asiento de la solución ${solutionIndex + 1} es obligatoria.\n`;
+        }
+
+        entry.annotations.forEach((annotation, annotationIndex) => {
+
+          let credit = Number(annotation.credit) || 0;
+          let debit = Number(annotation.debit) || 0;
+
+          if (!annotation.account_number) {
+            errors += `El número de cuenta de la anotación ${annotationIndex + 1} en la solución ${solutionIndex + 1} es obligatorio.\n`;
+          }
+
+          if (credit > 0 && debit > 0) {
+            errors += `La anotación ${annotationIndex + 1} en el asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} no puede tener valores en ambos, débito y crédito.\n`;
+          }
+          if (credit === 0 && debit === 0) {
+            errors += `La anotación ${annotationIndex + 1} en el asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} debe tener un valor en débito o crédito.\n`;
+          }
+
+          // Sumar débitos y créditos
+          totalDebit += annotation.debit;
+          totalCredit += annotation.credit;
+
+          // Validar que credit y debit sean números válidos
+          if (isNaN(annotation.credit)) {
+            errors += `El crédito de la anotación ${annotationIndex + 1} en la solución ${solutionIndex + 1} no es un número válido.\n`;
+          }
+          if (isNaN(annotation.debit)) {
+            errors += `El débito de la anotación ${annotationIndex + 1} en la solución ${solutionIndex + 1} no es un número válido.\n`;
+          }
+
+          // Validar que la suma de débitos sea igual a la suma de créditos
+          if (totalDebit !== totalCredit) {
+            errors += `El asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} no está balanceado. La suma de débitos (${totalDebit}) no es igual a la suma de créditos (${totalCredit}).\n`;
+          }
+        });
+      });
+    });
+
+    setErrorMessage(errors);
+    console.log("ERRORES: ", errors);
+    return errors === "";// Retorna true si no hay errores
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setErrorMessage("");
+
+    if (!validateForm()) {
+      console.error("Errores de validación:", errorMessage);
       return;
     }
 
@@ -93,16 +152,19 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       solutions_attributes: solutions.map((solution) => ({
         ...(solution.id && { id: solution.id }),
         description: solution.description,
+        ...(solution._destroy === true ? { _destroy: true } : {}),
         entries_attributes: solution.entries.map((entry) => ({
           ...(entry.id && { id: entry.id }),
           entry_number: entry.entry_number,
           entry_date: entry.entry_date,
+          ...(entry._destroy === true ? { _destroy: true } : {}),
           annotations_attributes: entry.annotations.map((annotation) => ({
             ...(annotation.id && { id: annotation.id }),
             number: annotation.number,
             account_number: annotation.account_number,
             credit: parseFloat(annotation.credit),
             debit: parseFloat(annotation.debit),
+            ...(annotation._destroy === true ? { _destroy: true } : {}),
           })),
         })),
       })),
@@ -130,6 +192,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
           annotations: [{ number: 1, account_number: 0, credit: 0, debit: 0 }],
         }],
       }]);
+      setFieldErrors({});
     } catch (error) {
       if (error.response) {
         if (error.response.status === 403) {
@@ -143,9 +206,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
         console.error("Error desconocido:", error);
         setErrorMessage("Hubo un problema al contactar con el servidor. Intenta nuevamente.");
       }
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
+      setTimeout(() => setErrorMessage(""), 5000);
     }
   };
 
@@ -164,6 +225,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             value={definition}
             onChange={(e) => setDefinition(e.target.value)}
           />
+          {fieldErrors.definition && <div className="error-message">{fieldErrors.definition}</div>}
         </div>
         <div className="statement-page__form--content">
           <label className="statement-page__label--explanation">Explicación:</label>
@@ -172,6 +234,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             value={explanation}
             onChange={(e) => setExplanation(e.target.value)}
           />
+          {fieldErrors.explanation && <div className="error-message">{fieldErrors.explanation}</div>}
         </div>
 
         <div className="statement-page__buttons-container">
@@ -197,7 +260,9 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
               <i className="fi fi-rr-plus"></i>
               Añadir Solución
             </button>
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {errorMessage && <div className="error-message">{errorMessage.split("\n").map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}</div>}
           </div>
         </div>
 

@@ -7,64 +7,72 @@ class StatementsController < ApplicationController
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
     else
-      if current_user.admin?
-        @statements = Statement.includes(solutions: { entries: :annotations })
-      else
-        @statements = Statement.includes(solutions: { entries: :annotations }).where("is_public = ? OR user_id = ?", true, current_user.id)
-      end
-      render json: @statements.as_json(
-        include: {
-          solutions: {
-            include: {
-              entries: {
-               include: :annotations
+      @statements = if current_user.admin?
+        Statement.includes(solutions: { entries: :annotations })
+          else
+            Statement.includes(solutions: { entries: :annotations }).where("is_public = ? OR user_id = ?", true, current_user.id)
+          end
+        render json: @statements.as_json(
+          include: {
+            solutions: {
+              include: {
+                entries: {
+                  include: {
+                    annotations: {
+                      order: :number
+                    }
+                  }
+                }
               }
             }
           }
-        }
-      )
+        )
     end
   end
 
   def show
-    @statement = Statement.includes(solutions: { entries: :annotations }).find(params[:id])
     render json: @statement.as_json(
-    include: {
-      solutions: {
-        include: {
-          entries: {
-            include: :annotations
+      include: {
+        solutions: {
+          include: {
+            entries: {
+              include: {
+                annotations: {
+                  order: :number
+                }
+              }
+            }
           }
-        }
+        } 
       }
-    }
-  )
+    )
   end
 
   def create
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
     else
-    @statement = current_user.statements.build(statement_params)
+      @statement = current_user.statements.build(statement_params)
+      process_account_ids(@statement)
 
-    process_account_ids(@statement)
-
-    if @statement.save
-      render json: @statement, status: :created
-    else
-      render json: @statement.errors, status: :unprocessable_entity
+      if @statement.save
+        render json: @statement, status: :created
+      else
+        render json: @statement.errors, status: :unprocessable_entity
+      end
     end
   end
-end
 
   def get_solutions
-    @statement = Statement.find(params[:id])
-    authorize_statement
     solutions = @statement.solutions.includes(entries: :annotations)
     render json: solutions.as_json(
       include: {
         entries: {
-          include: :annotations
+          include: {
+            annotations: {
+              order: :number
+            }
+          }
         }
       }
     )
@@ -92,22 +100,23 @@ end
   end
 
   def update
-      if @statement.user_id == current_user.id || current_user.admin?
-        if @statement.update(statement_params)
-          process_account_ids(@statement)
+    Rails.logger.debug "Params received in update: #{params[:statement].inspect}"
+    if @statement.user_id == current_user.id || current_user.admin?
+      if @statement.update(statement_params)
+        update_solutions_and_entries
+        process_account_ids(@statement)
     
-          if @statement.errors.any?
-            render json: @statement.errors, status: :unprocessable_entity
-          else
-            update_solutions_and_entries
-            render json: @statement, status: :ok
-          end
-        else
+        if @statement.errors.any?
           render json: @statement.errors, status: :unprocessable_entity
+        else
+          render json: @statement, status: :ok
         end
       else
-        render json: { error: "No autorizado" }, status: :forbidden
+        render json: @statement.errors, status: :unprocessable_entity
       end
+    else
+      render json: { error: "No autorizado" }, status: :forbidden
+    end
   end
 
   def destroy
@@ -126,45 +135,61 @@ end
   private
 
   def authorize_statement
-    @statement = Statement.find(params[:id])
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
     elsif current_user.admin? || (current_user.teacher? && (@statement.user_id == current_user.id || @statement.is_public))
-      return true
+      return true #si falla esto, quitar el return y dejar solo true
     else
       render json: { error: "No autorizado" }, status: :forbidden
     end
   end
 
   def statement_params
+    Rails.logger.debug "Params received: #{params[:statement].inspect}"
     params.require(:statement).permit(
-    :definition, 
-    :explanation, 
-    :is_public,
-    solutions_attributes: [
-      :id,
-      :description,
-      :_destroy,
-      entries_attributes: [
+      :definition, 
+      :explanation, 
+      :is_public,
+      solutions_attributes: [
         :id,
-        :entry_number,
-        :entry_date,
+        :description,
         :_destroy,
-        annotations_attributes: [
+        entries_attributes: [
           :id,
-          :number,
-          :credit,
-          :debit,
-          :account_number,
-          :_destroy
+          :entry_number,
+          :entry_date,
+          :_destroy,
+          annotations_attributes: [
+            :id,
+            :number,
+            :credit,
+            :debit,
+            :account_number,
+            :_destroy
+          ]
         ]
       ]
-    ]
-  )
+    )
   end
 
   def solution_params
-    params.require(:solution).permit(:content)
+    params.require(:solution).permit(
+    :description, :_destroy, # Debes permitir el atributo _destroy aquí también
+    entries_attributes: [
+      :id,
+      :entry_number,
+      :entry_date,
+      :_destroy,
+      annotations_attributes: [
+        :id,
+        :number,
+        :credit,
+        :debit,
+        :account_number,
+        :_destroy
+      ]
+    ]
+  )
   end
 
   def set_statement
@@ -215,36 +240,50 @@ end
         if solution_attr[:id].present?
           solution = @statement.solutions.find_by(id: solution_attr[:id])
           if solution
-            solution.update(solution_attr.permit(:description))
+            if solution_attr[:_destroy] == "1" || solution_attr[:_destroy] == true
+              solution.destroy
+            else
+              solution.update(solution_attr.except(:_destroy).permit(:description))
   
-            if solution_attr[:entries_attributes].present?
-              solution_attr[:entries_attributes].each do |entry_attr|
-                if entry_attr[:id].present?
-                  entry = solution.entries.find_by(id: entry_attr[:id])
-                  if entry
-                    entry.update(entry_attr.permit(:entry_number, :entry_date))
+              if solution_attr[:entries_attributes].present?
+                solution_attr[:entries_attributes].each do |entry_attr|
+                  if entry_attr[:id].present?
+                    entry = solution.entries.find_by(id: entry_attr[:id])
+                    if entry
+                      if entry_attr[:_destroy] == "1" || entry_attr[:_destroy] == true
+                        entry.destroy
+                      else
+                        entry.update(entry_attr.except(:_destroy).permit(:entry_number, :entry_date))
   
-                    if entry_attr[:annotations_attributes].present?
-                      entry_attr[:annotations_attributes].each do |annotation_attr|
-                        if annotation_attr[:id].present?
-                          annotation = entry.annotations.find_by(id: annotation_attr[:id])
-                          annotation.update(annotation_attr.permit(:number, :credit, :debit, :account_number)) if annotation
-                        else
-                          entry.annotations.create(annotation_attr)
+                      if entry_attr[:annotations_attributes].present?
+                        entry_attr[:annotations_attributes].each do |annotation_attr|
+                          if annotation_attr[:id].present?
+                            annotation = entry.annotations.find_by(id: annotation_attr[:id])
+                            if annotation_attr[:_destroy] == "1" || annotation_attr[:_destroy] == true
+                              annotation.destroy
+                            else
+                              annotation.update(annotation_attr.except(:_destroy).permit(:number, :credit, :debit, :account_number))
+                            end
+                          else
+                            entry.annotations.create(annotation_attr.except(:_destroy).permit(:number, :credit, :debit, :account_number))
+                          end
                         end
                       end
                     end
                   end
                 else
-                  entry = solution.entries.create(entry_attr)
+                  entry = solution.entries.create(entry_attr.except(:_destroy).permit(:entry_number, :entry_date))
                 end
               end
             end
           end
-        else
-          solution = @statement.solutions.create(solution_attr)
+        end
+      else
+        unless solution_attr[:_destroy] == "1" || solution_attr[:_destroy] == true
+          solution = @statement.solutions.create(solution_attr.except(:_destroy).permit(:description))
         end
       end
     end
   end
+end
 end

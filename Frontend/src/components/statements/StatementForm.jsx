@@ -33,14 +33,14 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             {
               number: 1,
               account_number: 0,
-              credit: 0,
-              debit: 0
+              credit: "",
+              debit: "",
             },
             {
               number: 2,
               account_number: 0,
-              credit: 0,
-              debit: 0,
+              credit: "",
+              debit: "",
             },
           ]
         }
@@ -111,28 +111,21 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
           }
 
           // Sumar débitos y créditos
-          totalDebit += annotation.debit;
-          totalCredit += annotation.credit;
-
-          // Validar que credit y debit sean números válidos
-          if (isNaN(annotation.credit)) {
-            errors += `El crédito de la anotación ${annotationIndex + 1} en la solución ${solutionIndex + 1} no es un número válido.\n`;
-          }
-          if (isNaN(annotation.debit)) {
-            errors += `El débito de la anotación ${annotationIndex + 1} en la solución ${solutionIndex + 1} no es un número válido.\n`;
-          }
-
-          // Validar que la suma de débitos sea igual a la suma de créditos
-          if (totalDebit !== totalCredit) {
-            errors += `El asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} no está balanceado. La suma de débitos (${totalDebit}) no es igual a la suma de créditos (${totalCredit}).\n`;
-          }
+          totalDebit += debit;
+          totalCredit += credit;
         });
+        // Validar que la suma de débitos sea igual a la suma de créditos
+        if (totalDebit !== totalCredit) {
+          errors += `El asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} no está balanceado. La suma de débitos (${totalDebit}) no es igual a la suma de créditos (${totalCredit}).\n`;
+        }
+        console.log("Total Credit", totalCredit);
+        console.log("Total Debit", totalDebit);
       });
     });
 
     setErrorMessage(errors);
     console.log("ERRORES: ", errors);
-    return errors === "";// Retorna true si no hay errores
+    return errors === "";
   };
 
   const handleSubmit = async (e) => {
@@ -189,7 +182,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
         entries: [{
           entry_number: 1,
           entry_date: "",
-          annotations: [{ number: 1, account_number: 0, credit: 0, debit: 0 }],
+          annotations: [{ number: 1, account_number: 0, credit: "", debit: "" }],
         }],
       }]);
       setFieldErrors({});

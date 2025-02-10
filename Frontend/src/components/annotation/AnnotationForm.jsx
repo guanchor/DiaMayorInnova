@@ -50,6 +50,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
         type="number"
         name="debit"
         value={annotation.debit}
+        disabled={!!annotation.credit && annotation.credit !== "" && annotation.credit !== 0}
         onChange={handleAnnotationChange}
         className="statement-page__input"
         placeholder="Debe"
@@ -58,6 +59,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
         type="number"
         name="credit"
         value={annotation.credit}
+        disabled={!!annotation.debit && annotation.debit !== "" && annotation.debit !== 0}
         onChange={handleAnnotationChange}
         className="statement-page__input"
         placeholder="Haber"

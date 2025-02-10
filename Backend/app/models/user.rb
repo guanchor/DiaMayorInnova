@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :exercises, dependent: :destroy
   has_many :teacher_class_groups
   has_many :class_groups, through: :teacher_class_groups
-  belongs_to :class_groups, optional: true
+  belongs_to :class_group, optional: true
 
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable,

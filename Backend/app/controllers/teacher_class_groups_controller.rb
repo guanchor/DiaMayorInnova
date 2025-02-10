@@ -8,7 +8,6 @@ class TeacherClassGroupsController < ApplicationController
     else
       if current_user.admin?
         # render json: { message: "Operación exitosa"}
-
         @teacherClassGroups = TeacherClassGroup.all
       render json: @teacherClassGroups
       end

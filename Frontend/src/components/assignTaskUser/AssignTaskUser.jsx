@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import userService from '../../services/userService';
 import Modal from '../modal/Modal';
-import userServices from '../../services/userServices';
+import ClassGroupService from '../../services/ClassGroupService';
+import { useEffect, useState } from 'react';
+import { useAuth } from "../../context/AuthContext";
 import "./AssignTaskUser.css"
 
+
 const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
+  const { user } = useAuth();
   const [users, setUsers] = useState([]);
+  const [teacherClass, setTeacherClass] = useState([]);
+  const [currentClass, setCurrentClass] = useState(0)
+
   const selectUser = (userId) => {
     if (!currentUsers.includes(userId))
       setCurrentUsers(prevState => [...prevState, userId]);
@@ -24,17 +31,42 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
   };
 
   const getAllUsers = () => {
-    userServices.getAllUser()
+    userService.getAllUsers()
       .then(({ data }) => {
-        console.log("all users ", data)
-        setUsers(data);
-        return data
+        console.log("all users ", data.data.users)
+        setUsers(data.data.users);
       });
   }
 
+  const getAllClass = () => {
+    ClassGroupService.findByTeacherId(user.id)
+      .then(({ data }) => {
+        console.log("all class ", data)
+        setTeacherClass(data);
+      });
+  }
+
+  const handleSelectClass = (e, id) => {
+    e.preventDefault()
+    setCurrentClass(id);
+  }
+
   useEffect(() => {
-    getAllUsers()
-  }, [])
+    console.log(teacherClass)
+
+    userService.getUserByClassId(currentClass)
+      .then(({ data }) => {
+        console.log("all users ", data)
+        setUsers(data.data.users);
+      });
+
+
+    ClassGroupService.findByTeacherId(user.id)
+      .then(({ data }) => {
+        console.log("all class ", data)
+        setTeacherClass(data);
+      });
+  }, [currentClass])
 
   return (
     <>
@@ -46,17 +78,19 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
           <div className="list__container">
             <h3>Lista de clases</h3>
             <div className="list__items">
-              <button className="btn light" onClick={(e) => e.preventDefault()}>Clase 1</button>
-              <button className="btn light" onClick={(e) => e.preventDefault()}>Clase 2</button>
-              <button className="btn light" onClick={(e) => e.preventDefault()}>Clase 3</button>
+              {
+                teacherClass && teacherClass.map((module) => (
+                  <button className={(currentClass === module.id) ? "btn " : "btn light"} onClick={(e) => handleSelectClass(e, module.id)} key={`class_btn_${module.id}`}>{module.module}</button>
+                ))
+              }
             </div>
           </div>
 
           <div className="list__container">
             <h3>Lista de estudiantes</h3>
             <div className="list__items">
-              {users && users.map((user) => (
-                <label className={assignedInclude(user.id) ? "user__item user__item--selected" : "user__item"} key={user.id}>
+              {(users.length !== 0) ? users.map((user) => (
+                <label className={assignedInclude(user.id) ? "user__item user__item--selected" : "user__item light"} key={user.id}>
                   <input
                     type="checkbox"
                     checked={assignedInclude(user.id)}
@@ -64,11 +98,13 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
                   />
                   {user.name} {user.first_lastName} {user.second_lastName}
                 </label>
-              ))}
+              )) :
+                <p>Seleccione una clase para mostrar los Estudiantes</p>
+              }
             </div>
           </div>
         </div>
-        {/*         <button className='btn btn--tasks-assigned' onClick={(e) => e.preventDefault()}>Guardar asignación</button> */}
+        <button className='btn btn--tasks-assigned' onClick={(e) => e.preventDefault()}>Guardar asignación</button>
       </Modal>
     </>
   )

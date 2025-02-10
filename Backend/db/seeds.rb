@@ -10,7 +10,7 @@
 
   class_group1 = ClassGroup.create(course: 1, module: "TUM", modality: "Presencial", number_students: 24, max_students: 30, location: "Taller 12", weekly_hours: 6)
   class_group2 = ClassGroup.create(course: 2, module: "PNG", modality: "Distancia", number_students: 12, max_students: 20, location: "Aula 106", weekly_hours: 6)
-  accPlan1 = AccountingPlan.create(name: "PGC para PYMES", description: "El plan más utilizado por el alumnado", acronym: "PGC PYMES")
+  accPlanPyme = AccountingPlan.create(name: "PGC para PYMES", description: "El plan más utilizado por el alumnado", acronym: "PGC PYMES")
   accPlan2 = AccountingPlan.create(name: "PGC prueba1", description: "Plan para probar el Crud 1", acronym: "PGC prueba1")
   accPlan3 = AccountingPlan.create(name: "PGC prueba2", description: "Plan para probar el Crud 2", acronym: "PGC prueba2")
   school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
@@ -143,7 +143,7 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   entry1= Entry.create(solution:solution1, entry_number: 1, entry_date: Date.new(2024,11,25))
   entry2= Entry.create(solution:solution2, entry_number: 2, entry_date: Date.new(2024,11,26))
 
-  account1 = Account.create(account_number: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlan1, name: "Cuenta 1")
+  account1 = Account.create(account_number: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlanPyme, name: "Cuenta 1")
   account2 = Account.create(account_number: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
   account3 = Account.create(account_number: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
 
@@ -177,3 +177,191 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   teacher_class_group2 = TeacherClassGroup.create(user_id: 2, class_group_id: 2)
   teacher_class_group3 = TeacherClassGroup.create(user_id: 3, class_group_id: 1)
   teacher_class_group4 = TeacherClassGroup.create(user_id: 3, class_group_id: 2)
+
+  taskExample1 = Task.create(title: "Contabiliza en el libro diario las operaciones que la empresa GAMONAL SL realiza durante el año 20X4", opening_date: DateTime.new(2024, 10, 8,05, 00, 0), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)
+
+  statementExample1 = Statement.create(definition: "01/08 Hace un pedido a un proveedor de 200 unidades del producto ROJO a 15 € la unidad. El proveedor nos solicita un anticipo por lo que le transferimos por banco 1.284 €.", explanation: "", user: user2, is_public: false)
+  statementExample2 = Statement.create(definition: "03/08 Llega el pedido anterior junto con la factura en la que se incluye un descuento comercial de 2%,además de 200 envases SIN facultad de devolución a 0,25 € la unidad. En las condiciones comerciales se indica que el pago se realizará a final de mes.", explanation: "Aplica el anticipo", user: user2, is_public: false)
+  statementExample3 = Statement.create(definition: "07/08 Tras revisar la compra anterior se observa que 25 unidades están inservibles por lo que se las devuelve al proveedor junto con los envases correspondientes.", explanation: "", user: user2, is_public: false)
+  statementExample4 = Statement.create(definition: "16/08 Acuerda con el proveedor no esperar a final de mes y procede al pago de la deuda pendiente por lo que le concede un descuento de 150 € y le transfiere por banco el resto.", explanation: "", user: user2, is_public: false)
+  statementExample5 = Statement.create(definition: "19/08 D. Luis Mendoza, abogado que se ha dado de alta en el año 20X3, le remite una factura por los servicios prestados por importe de 450 € + IGIC que le abona mediante transferencia bancaria.", explanation: "", user: user2, is_public: false)
+  statementExample6 = Statement.create(definition: "21/08 Uno de los empleados solicita un anticipo de la nómina de 600 € que se le paga en efectivo.", explanation: "", user: user2, is_public: false)
+  statementExample7 = Statement.create(definition: "31/08 El desglose de la nómina del mes de agosto es el siguiente: Sueldos y salarios: 7.500 €, seguridad social a cargo empresa: 1.875 €, seguridad social de los trabajadores 375 €; retenciones: 975 €. La nómina se paga los días 5 de cada mes.", explanation: "", user: user2, is_public: false)
+  statementExample8 = Statement.create(definition: "El 1/09 firma un contrato de leasing de dos años de duración para la adquisición de un vehículo. La empresa no tiene dudas de que va a ejercer la opción de compra. El pago de las cuotas es prepagable y periodicidad cuatrimestral. El tipo de interés de la operación es del 3% cuatrimestral. El valor actual del bien 32.503,15 € coincide con su valor razonable. El cuadro del leasing es el siguiente:", explanation: "", user: user2, is_public: false)
+  statementExample9 = Statement.create(definition: "01/09 y el pago de la primera cuota del leasing.", explanation: "", user: user2, is_public: false)
+  statementExample10 = Statement.create(definition: "05/09 Paga por transferencia bancaria la nómina de los trabajadores correspondiente al mes de agosto.", explanation: "", user: user2, is_public: false)
+  statementExample11 = Statement.create(definition: "16/09 Vende mercaderías por importe de 7.900 €. En la factura se incluyen envases con facultad de devolución por importe de 100 €. Operación a crédito de 45 días.", explanation: "", user: user2, is_public: false)
+  statementExample12 = Statement.create(definition: "21/09 Vende en 18.000 € + IGIC una furgoneta que adquirió el 1 de julio del año 20X3 por importe de 26.000 € y un valor residual de 1.000 €. La venía amortizando aplicando el coeficiente lineal máximo que para el 20X3 y 20X4 es del 16%. Cobra la mitad al contado y la otra mitad mediante un efecto aceptado.", explanation: "Contabiliza la amortización del 20X3 y la del 20X4 antes de la venta y la venta.", user: user2, is_public: false)
+  statementExample13 = Statement.create(definition: "25/09 Llega la factura del suministro eléctrico del mes en curso por importe de 120 € + IGIC. El recibo está domiciliado en el banco y se paga a principios de mes.", explanation: "", user: user2, is_public: false)
+  statementExample14 = Statement.create(definition: "28/09 La nómina del mes de septiembre es igual a la de agosto. Paga a los empleados el mismo día por transferencia bancaria.", explanation: "", user: user2, is_public: false)
+  statementExample15 = Statement.create(definition: "29/09 Paga por banco la seguridad social del mes de agosto.", explanation: "", user: user2, is_public: false)
+  statementExample16 = Statement.create(definition: "30/09 Contabiliza la liquidación del IGIC correspondiente al tercer trimestre del año en curso.", explanation: "", user: user2, is_public: false)
+
+  taskExample1.statements << statementExample1
+  taskExample1.statements << statementExample2
+  taskExample1.statements << statementExample3
+  taskExample1.statements << statementExample4
+  taskExample1.statements << statementExample5
+  taskExample1.statements << statementExample6
+  taskExample1.statements << statementExample7
+  taskExample1.statements << statementExample8
+  taskExample1.statements << statementExample9
+  taskExample1.statements << statementExample10
+  taskExample1.statements << statementExample11
+  taskExample1.statements << statementExample12
+  taskExample1.statements << statementExample13
+  taskExample1.statements << statementExample14
+  taskExample1.statements << statementExample15
+  taskExample1.statements << statementExample16
+
+  solutionExample1= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample1)
+  solutionExample2= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample2)
+  solutionExample3= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample3)
+  solutionExample4= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample4)
+  solutionExample5= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample5)
+  solutionExample6= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample6)
+  solutionExample7= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample7)
+  solutionExample8= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample8)
+  solutionExample9= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample9)
+  solutionExample10= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample10)
+  solutionExample11= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample11)
+  solutionExample12= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample12)
+  solutionExample13= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample13)
+  solutionExample14= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample14)
+  solutionExample15= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample15)
+  solutionExample16= Solution.create(description: "Primera solución para la tarea con las cuentas principales", statement: statementExample16)
+
+
+  entryExample1= Entry.create(solution:solutionExample1, entry_number: 1, entry_date: Date.new(2024,8,1)) # año/mes/dia
+  entryExample2= Entry.create(solution:solutionExample2, entry_number: 2, entry_date: Date.new(2024,8,3)) 
+  entryExample3= Entry.create(solution:solutionExample3, entry_number: 3, entry_date: Date.new(2024,8,7)) 
+  entryExample4= Entry.create(solution:solutionExample4, entry_number: 4, entry_date: Date.new(2024,8,16))
+  entryExample5= Entry.create(solution:solutionExample5, entry_number: 5, entry_date: Date.new(2024,8,19))
+  entryExample6= Entry.create(solution:solutionExample6, entry_number: 6, entry_date: Date.new(2024,8,21))
+  entryExample7= Entry.create(solution:solutionExample7, entry_number: 7, entry_date: Date.new(2024,8,31))
+  entryExample8= Entry.create(solution:solutionExample8, entry_number: 8, entry_date: Date.new(2024,9,1))
+  entryExample9= Entry.create(solution:solutionExample9, entry_number: 9, entry_date: Date.new(2024,9,1))
+  entryExample10= Entry.create(solution:solutionExample10, entry_number: 10, entry_date: Date.new(2024,9,5))
+  entryExample11= Entry.create(solution:solutionExample11, entry_number: 11, entry_date: Date.new(2024,9,16))
+  entryExample12= Entry.create(solution:solutionExample12, entry_number: 12, entry_date: Date.new(2024,9,21))
+  entryExample13= Entry.create(solution:solutionExample13, entry_number: 13, entry_date: Date.new(2024,9,25))
+  entryExample14= Entry.create(solution:solutionExample14, entry_number: 14, entry_date: Date.new(2024,9,28))
+  entryExample15= Entry.create(solution:solutionExample15, entry_number: 15, entry_date: Date.new(2024,9,29))
+  entryExample16= Entry.create(solution:solutionExample16, entry_number: 16, entry_date: Date.new(2024,9,30))
+
+
+  account174 = Account.create(account_number: 174, description: "Acreedores por arrendamiento financiero a largo plazo", accounting_plan: accPlanPyme, name: "Acreedores por arrendamiento financiero a largo plazo")
+  account218 = Account.create(account_number: 218, description: "Elementos de transporte", accounting_plan: accPlanPyme, name: "Elementos de transporte")
+  account281 = Account.create(account_number: 281, description: "Amortización acumulada del inmovilizado material", accounting_plan: accPlanPyme, name: "Amortización acumulada del inmovilizado material")
+  account400 = Account.create(account_number: 400, description: "Proveedores", accounting_plan: accPlanPyme, name: "Proveedores")
+  account407 = Account.create(account_number: 407, description: "Anticipo a proveedores", accounting_plan: accPlanPyme, name: "Anticipo a proveedores")
+  account410 = Account.create(account_number: 410, description: "Acreedores por prestaciones de servicios", accounting_plan: accPlanPyme, name: "Acreedores por prestaciones de servicios")
+  account430 = Account.create(account_number: 430, description: "Clientes", accounting_plan: accPlanPyme, name: "Clientes")
+  account437 = Account.create(account_number: 437, description: "Envases y embalajes a devolver por clientes", accounting_plan: accPlanPyme, name: "Envases y embalajes a devolver por clientes")
+  account441 = Account.create(account_number: 441, description: "Deudores, efectos comerciales a cobrar", accounting_plan: accPlanPyme, name: "Deudores, efectos comerciales a cobrar")
+  account460 = Account.create(account_number: 460, description: "Anticipo de remuneraciones", accounting_plan: accPlanPyme, name: "Anticipo de remuneraciones")
+  account465 = Account.create(account_number: 465, description: "Remuneraciones pendientes de pago", accounting_plan: accPlanPyme, name: "Remuneraciones pendientes de pago")
+  account472 = Account.create(account_number: 4727, description: "Hacienda Pública IGIC soportado", accounting_plan: accPlanPyme, name: "Hacienda Pública IGIC soportado")
+  account476 = Account.create(account_number: 476, description: "Organismos de la Seguridad Social, acreedores", accounting_plan: accPlanPyme, name: "Organismos de la Seguridad Social, acreedores")
+  account524 = Account.create(account_number: 524, description: "Acreedores por arrendamiento financiero a corto plazo", accounting_plan: accPlanPyme, name: "Acreedores por arrendamiento financiero a corto plazo")
+  account570 = Account.create(account_number: 570, description: "Caja, euros", accounting_plan: accPlanPyme, name: "Caja, euros")
+  account572 = Account.create(account_number: 572, description: "Banco e instituciones de crédito c/c vista, euros", accounting_plan: accPlanPyme, name: "Banco e instituciones de crédito c/c vista, euros")
+  account600 = Account.create(account_number: 600, description: "Compras", accounting_plan: accPlanPyme, name: "Compras de mercaderías")
+  account602 = Account.create(account_number: 602, description: "Compras de otros aprovisionamientos", accounting_plan: accPlanPyme, name: "Compras de otros aprovisionamientos")
+  account606 = Account.create(account_number: 606, description: "Descuentos sobre compras por pronto pago", accounting_plan: accPlanPyme, name: "Descuentos sobre compras por pronto pago")
+  account608 = Account.create(account_number: 608, description: "Devoluciones de compras y operaciones similares", accounting_plan: accPlanPyme, name: "Devoluciones de compras y operaciones similares")
+  account623 = Account.create(account_number: 623, description: "Servicios de profesionales independientes", accounting_plan: accPlanPyme, name: "Servicios de profesionales independientes")
+  account628 = Account.create(account_number: 628, description: "Suministros", accounting_plan: accPlanPyme, name: "Suministros")
+  account640 = Account.create(account_number: 640, description: "Sueldos y salarios", accounting_plan: accPlanPyme, name: "Sueldos y salarios")
+  account642 = Account.create(account_number: 642, description: "Seguridad Social a cargo de la empresa", accounting_plan: accPlanPyme, name: "Seguridad Social a cargo de la empresa")
+  account662 = Account.create(account_number: 662, description: "Intereses de deudas", accounting_plan: accPlanPyme, name: "Intereses de deudas")
+  account671 = Account.create(account_number: 671, description: "Pérdidas procedentes del inmovilizado material", accounting_plan: accPlanPyme, name: "Pérdidas procedentes del inmovilizado material")
+  account681 = Account.create(account_number: 681, description: "Amortización del inmovilizado material", accounting_plan: accPlanPyme, name: "Amortización del inmovilizado material")
+  account700 = Account.create(account_number: 700, description: "Ventas de mercaderías", accounting_plan: accPlanPyme, name: "Ventas de mercaderías")
+  account4751 = Account.create(account_number: 4751, description: "Hacienda Pública, acreedora por retenciones practicadas", accounting_plan: accPlanPyme, name: "Hacienda Pública, acreedora por retenciones practicadas")
+  account4727 = Account.create(account_number: 4751, description: "Hacienda Pública, IGIC soportado", accounting_plan: accPlanPyme, name: "Hacienda Pública, IGIC soportado")
+  account4757 = Account.create(account_number: 4757, description: "Hacienda Pública, acreedora por IGIC", accounting_plan: accPlanPyme, name: "Hacienda Pública, acreedora por IGIC")
+  account4777 = Account.create(account_number: 4777, description: "Hacienda Pública IGIC repercutido", accounting_plan: accPlanPyme, name: "Hacienda Pública IGIC repercutido")
+
+  annotationExample1 = Annotation.create(entry: entryExample1, account: account407, number: 1, debit: 1200.00 , credit: 0)
+  annotationExample2 = Annotation.create(entry: entryExample1, account: account4727, number: 2, debit: 84.00 , credit: 0)
+  annotationExample3 = Annotation.create(entry: entryExample1, account: account572, number: 3, debit: 0 , credit: 1284.00)
+
+  annotationExample4 = Annotation.create(entry: entryExample2, account: account600, number: 1, debit: 2940.00 , credit: 0)
+  annotationExample5 = Annotation.create(entry: entryExample2, account: account602, number: 2, debit: 50.00 , credit: 0)
+  annotationExample6 = Annotation.create(entry: entryExample2, account: account4727, number: 3, debit: 125.30 , credit: 0)
+  annotationExample7 = Annotation.create(entry: entryExample2, account: account407, number: 4, debit: 0 , credit: 1200.00)
+  annotationExample8 = Annotation.create(entry: entryExample2, account: account400, number: 5, debit: 0 , credit: 1915.30)
+
+  annotationExample9 = Annotation.create(entry: entryExample3, account: account400, number: 1, debit: 419.71 , credit: 0)
+  annotationExample10 = Annotation.create(entry: entryExample3, account: account608, number: 2, debit: 0 , credit: 392.25)
+  annotationExample11 = Annotation.create(entry: entryExample3, account: account4727, number: 3, debit: 0 , credit: 27.46)
+
+  annotationExample12 = Annotation.create(entry: entryExample4, account: account400, number: 1, debit: 1495.59 , credit: 0)
+  annotationExample13 = Annotation.create(entry: entryExample4, account: account606, number: 2, debit: 0 , credit: 150.00)
+  annotationExample14 = Annotation.create(entry: entryExample4, account: account4727, number: 3, debit: 0 , credit: 10.50)
+  annotationExample15 = Annotation.create(entry: entryExample4, account: account572, number: 4, debit: 0 , credit: 1335.09)
+
+  annotationExample16 = Annotation.create(entry: entryExample5, account: account623, number: 1, debit: 450.00 , credit: 0)
+  annotationExample17 = Annotation.create(entry: entryExample5, account: account4727, number: 2, debit: 31.50 , credit: 0)
+  annotationExample18 = Annotation.create(entry: entryExample5, account: account4751, number: 3, debit: 0 , credit: 31.50)
+  annotationExample19 = Annotation.create(entry: entryExample5, account: account410, number: 4, debit: 0 , credit: 450.00)
+  annotationExample20 = Annotation.create(entry: entryExample5, account: account410, number: 5, debit: 450.00 , credit: 0)
+  annotationExample21 = Annotation.create(entry: entryExample5, account: account572, number: 6, debit: 0 , credit: 450.00)
+
+  annotationExample22 = Annotation.create(entry: entryExample6, account: account460, number: 1, debit: 600.00 , credit: 0)
+  annotationExample23 = Annotation.create(entry: entryExample6, account: account570, number: 2, debit: 0 , credit: 600.00)
+
+  annotationExample24 = Annotation.create(entry: entryExample7, account: account640, number: 1, debit: 7500.00 , credit: 0)
+  annotationExample25 = Annotation.create(entry: entryExample7, account: account642, number: 2, debit: 1875.00 , credit: 0)
+  annotationExample26 = Annotation.create(entry: entryExample7, account: account460, number: 3, debit: 0, credit: 600.00)
+  annotationExample27 = Annotation.create(entry: entryExample7, account: account4751, number: 4, debit: 0 , credit: 975.00)
+  annotationExample28 = Annotation.create(entry: entryExample7, account: account476, number: 5, debit: 0 , credit: 2250.00)
+  annotationExample29 = Annotation.create(entry: entryExample7, account: account465, number: 6, debit: 0 , credit: 5550.00)
+
+  annotationExample30 = Annotation.create(entry: entryExample8, account: account218, number: 1, debit: 32503.15 , credit: 0)
+  annotationExample31 = Annotation.create(entry: entryExample8, account: account524, number: 2, debit: 0 , credit: 15531.48)
+  annotationExample32 = Annotation.create(entry: entryExample8, account: account174, number: 3, debit: 0 , credit: 16971.67)
+
+  annotationExample33 = Annotation.create(entry: entryExample9, account: account524, number: 1, debit: 5024.91 , credit: 0)
+  annotationExample34 = Annotation.create(entry: entryExample9, account: account662, number: 2, debit: 975.09 , credit: 0)
+  annotationExample35 = Annotation.create(entry: entryExample9, account: account4727, number: 3, debit: 420.00 , credit: 0)
+  annotationExample36 = Annotation.create(entry: entryExample9, account: account572, number: 4, debit: 0 , credit: 6420.00)
+
+  annotationExample37 = Annotation.create(entry: entryExample10, account: account465, number: 1, debit: 5550.00 , credit: 0)
+  annotationExample38 = Annotation.create(entry: entryExample10, account: account572, number: 2, debit: 0 , credit: 5550.00)
+
+  annotationExample39 = Annotation.create(entry: entryExample11, account: account430, number: 1, debit: 8560.00 , credit: 0)
+  annotationExample40 = Annotation.create(entry: entryExample11, account: account700, number: 2, debit: 0 , credit: 7900.00)
+  annotationExample41 = Annotation.create(entry: entryExample11, account: account437, number: 3, debit: 0 , credit: 100.00)
+  annotationExample42 = Annotation.create(entry: entryExample11, account: account4777, number: 4, debit: 0 , credit: 560.00)
+
+  annotationExample43 = Annotation.create(entry: entryExample12, account: account681, number: 1, debit: 2000.00 , credit: 0)
+  annotationExample44 = Annotation.create(entry: entryExample12, account: account281, number: 2, debit: 0 , credit: 2000.00)
+  annotationExample45 = Annotation.create(entry: entryExample12, account: account681, number: 3, debit: 2882.19 , credit: 0)
+  annotationExample46 = Annotation.create(entry: entryExample12, account: account281, number: 4, debit: 0 , credit: 2882.19)
+  annotationExample47 = Annotation.create(entry: entryExample12, account: account281, number: 5, debit: 4882.19 , credit: 0)
+  annotationExample48 = Annotation.create(entry: entryExample12, account: account671, number: 6, debit: 3117.81 , credit: 0)
+  annotationExample49 = Annotation.create(entry: entryExample12, account: account572, number: 7, debit: 9639.00 , credit: 0)
+  annotationExample50 = Annotation.create(entry: entryExample12, account: account441, number: 8, debit: 9630.00 , credit: 0)
+  annotationExample51 = Annotation.create(entry: entryExample12, account: account218, number: 9, debit: 0 , credit: 26000.00)
+  annotationExample52 = Annotation.create(entry: entryExample12, account: account4777, number: 10, debit: 0 , credit: 1260.00)
+
+  annotationExample53 = Annotation.create(entry: entryExample13, account: account628, number: 1, debit: 120.00 , credit: 0)
+  annotationExample54 = Annotation.create(entry: entryExample13, account: account4727, number: 2, debit: 8.40 , credit: 0)
+  annotationExample55 = Annotation.create(entry: entryExample13, account: account410, number: 3, debit: 0 , credit: 128.40)
+  
+  annotationExample56 = Annotation.create(entry: entryExample14, account: account640, number: 1, debit: 7500.00 , credit: 0)
+  annotationExample57 = Annotation.create(entry: entryExample14, account: account642, number: 2, debit: 1875.00 , credit: 0)
+  annotationExample58 = Annotation.create(entry: entryExample14, account: account4751, number: 3, debit: 0 , credit: 975.00)
+  annotationExample59 = Annotation.create(entry: entryExample14, account: account476, number: 4, debit: 0 , credit: 2250.00)
+  annotationExample60 = Annotation.create(entry: entryExample14, account: account465, number: 5, debit: 0 , credit: 6150.00)
+  annotationExample61 = Annotation.create(entry: entryExample14, account: account465, number: 6, debit: 6150.00 , credit: 0)
+  annotationExample62 = Annotation.create(entry: entryExample14, account: account572, number: 7, debit: 0 , credit: 6150.00)
+
+  annotationExample63 = Annotation.create(entry: entryExample15, account: account476, number: 1, debit: 2250.00 , credit: 0)
+  annotationExample64 = Annotation.create(entry: entryExample15, account: account572, number: 2, debit: 0 , credit: 2250.00)
+
+  annotationExample65 = Annotation.create(entry: entryExample16, account: account4777, number: 1, debit: 1820.00 , credit: 0)
+  annotationExample66 = Annotation.create(entry: entryExample16, account: account4727, number: 2, debit: 0 , credit: 631.24)
+  annotationExample67 = Annotation.create(entry: entryExample16, account: account4757, number: 3, debit: 0 , credit: 1188.76)

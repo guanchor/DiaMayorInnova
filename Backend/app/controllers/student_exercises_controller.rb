@@ -31,14 +31,21 @@ class StudentExercisesController < ApplicationController
     )
   end
 
+
+
   def create
     @exercise = current_user.exercises.build(exercise_params)
+    @solution =   Solution.joins(statement: :tasks).where(tasks: :params[:task_id])
 
     if @exercise.save
       render json: @exercise, status: :created
     else
       render json: @exercise.errors, status: :unprocessable_entity
     end
+  end
+
+  def prueba
+    @solution =   Solution.joins(statement: :tasks).where(tasks: :params[:task_id])
   end
 
   private

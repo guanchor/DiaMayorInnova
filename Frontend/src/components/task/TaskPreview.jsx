@@ -1,7 +1,16 @@
 import React from "react";
 import "./TaskPage.css";
 
-const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStatements, handleRemoveStatement }) => {
+const TaskPreview = ({ 
+  title, 
+  openingDate, 
+  closingDate, 
+  statements, 
+  selectedStatements, 
+  handleRemoveStatement,
+  additionalInformation,
+  isExam
+}) => {
 
   const validSelectedStatements = selectedStatements.filter((statementId) =>
     statements.some((s) => s.id === statementId)
@@ -21,6 +30,8 @@ const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStat
             <strong>Fecha de cierre:</strong>{" "}
             {new Date(closingDate).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
           </p>
+          <p><strong>Información adicional:</strong> {additionalInformation || "No se ha añadido información adicional."}</p>
+          <p><strong>¿Es un examen?</strong> {isExam ? "Sí" : "No"}</p>
         </div>
         {validSelectedStatements.length > 0 ? (
           <ul className="task-page__list">

@@ -7,6 +7,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
   const [explanation, setExplanation] = useState(statement?.explanation || "");
   const [isPublic, setIsPublic] = useState(statement?.is_public || false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
 
   const prevStatementRef = useRef();
@@ -21,6 +22,12 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
 
     prevStatementRef.current = statement;
   }, [statement]);
+
+  const clearSuccessMessage = () => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+  };
 
   const handleAddSolution = () => {
     const newSolution = {
@@ -124,7 +131,6 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
     });
 
     setErrorMessage(errors);
-    console.log("ERRORES: ", errors);
     return errors === "";
   };
 
@@ -132,6 +138,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
     e.preventDefault();
 
     setErrorMessage("");
+    setSuccessMessage("");
 
     if (!validateForm()) {
       console.error("Errores de validación:", errorMessage);
@@ -174,17 +181,14 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       if (onStatementCreated) {
         onStatementCreated(response.data);
       }
+
+      setSuccessMessage(statement?.id ? "Enunciado actualizado correctamente." : "Enunciado creado correctamente.");
+      clearSuccessMessage();
+
       setDefinition("");
       setExplanation("");
       setIsPublic(false);
-      setSolutions([{
-        description: "",
-        entries: [{
-          entry_number: 1,
-          entry_date: "",
-          annotations: [{ number: 1, account_number: 0, credit: "", debit: "" }],
-        }],
-      }]);
+      setSolutions([]);
       setFieldErrors({});
     } catch (error) {
       if (error.response) {
@@ -256,9 +260,13 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             {errorMessage && <div className="error-message">{errorMessage.split("\n").map((line, index) => (
               <div key={index}>{line}</div>
             ))}</div>}
+            {successMessage && (
+              <div className="success-message">
+                {successMessage}
+              </div>
+            )}
           </div>
         </div>
-
       </form>
     </>
   );

@@ -13,11 +13,7 @@ const StatementCreateForm = () => {
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [statements, setStatements] = useState([]);
-
-  function setSolutions(a, b, c) {
-    console.log('ZZZZZZZZZZZZ', a, b);
-    setPrevSolutions(a, b, c);
-  }
+  const [solutionToDeleteIndex, setSolutionToDeleteIndex] = useState(null);
 
   const handleSelectStatement = (statement) => {
     setSelectedStatement(statement);
@@ -26,7 +22,7 @@ const StatementCreateForm = () => {
       setSolutions(statement.solutions);
       console.log("Soluciones establecidas:", statement.solutions);
     } else {
-      setSolutions([]); // Si no hay soluciones, aseg├║rate de que el estado est├® vac├¡o
+      setPrevSolutions([]);
     }
   };
 
@@ -34,9 +30,9 @@ const StatementCreateForm = () => {
     console.log("Enunciado actualizado/creado:", updatedStatement);
     if (updatedStatement.id === selectedStatement?.id) {
       setSelectedStatement(updatedStatement);
-      navigate("/");
+      navigate("/add-statements");
     } else {
-      navigate("/");
+      navigate("/add-statements");
     }
   };
 
@@ -46,13 +42,13 @@ const StatementCreateForm = () => {
       entries: [{
         entry_number: 1, entry_date: "", annotations: [{
           number: 1,
-          credit: 0,
-          debit: 0,
+          credit: "",
+          debit: "",
           account_number: 0,
         },]
       }],
     };
-    setSolutions((prevSolutions) => {
+    setPrevSolutions((prevSolutions) => {
       const updatedSolutions = [...prevSolutions, newSolution];
       console.log("Soluciones actualizadas:", updatedSolutions);
       return updatedSolutions;
@@ -70,7 +66,8 @@ const StatementCreateForm = () => {
   };
 
   const handleDeleteSolution = (index) => {
-    setSolutions((prevSolutions) => 
+    setSolutionToDeleteIndex(index);
+    setPrevSolutions((prevSolutions) => 
       prevSolutions.map((solution, i) =>
         i === index ? { ...solution, _destroy: true } : solution
       )
@@ -93,7 +90,7 @@ const StatementCreateForm = () => {
         })),
       })),
     };
-    setSolutions(updatedSolutions);
+    setPrevSolutions(updatedSolutions);
     handleCloseModal();
   };
 
@@ -112,7 +109,7 @@ const StatementCreateForm = () => {
           onStatementCreated={handleStatementCreated}
           onAddSolution={handleAddSolution}
           solutions={solutions}
-          setSolutions={setSolutions}
+          setSolutions={setPrevSolutions}
           onSaveSolution={handleSaveSolution}
           statement={selectedStatement}
           onDeleteSolution={handleDeleteSolution}
@@ -124,13 +121,14 @@ const StatementCreateForm = () => {
           solutions={solutions}
           onEditSolution={handleEditSolution}
           onDeleteSolution={handleDeleteSolution}
+          solutionToDeleteIndex={solutionToDeleteIndex}
         />
         {isModalOpen && selectedSolutionIndex !== null && (
           <EditSolutionModal
             solution={solutions[selectedSolutionIndex]}
             solutionIndex={selectedSolutionIndex}
             solutions={solutions}
-            setSolutions={setSolutions}
+            setSolutions={setPrevSolutions}
             onClose={handleCloseModal}
             onSave={handleSaveSolution}
           />

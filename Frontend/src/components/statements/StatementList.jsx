@@ -103,7 +103,6 @@ const StatementsList = ({ onSelectStatement }) => {
 
   const handleStatementCreated = (newStatement) => {
     console.log("Nuevo enunciado creado:", newStatement);
-    // Aquí agregas el nuevo enunciado al estado de la lista de enunciados
     setStatements((prevStatements) => [...prevStatements, newStatement]);
     setFormVisible(false);
   };
@@ -114,37 +113,52 @@ const StatementsList = ({ onSelectStatement }) => {
       <h3 className="statement-page__list--header">Enunciados</h3>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <ul className="statement-page__list">
-        {statements.map((statement) => (
-          <li className="statement-page__list-item" key={statement.id}>
-            <div className="statement-page__statement-container">
-              <span className="statement-page__definition">{statement.definition}</span>
-              <div className="statement-page__actions">
-                <button onClick={() => handleDelete(statement.id)} className="statement-page__button--delete">
-                  <i className="fi-rr-trash"></i>
-                  <span className="statement-page__button-text--delete">Borrar</span>
-                </button>
-                <button onClick={() => handleStatementSelection(statement)}>
-                  <i className="fi-rr-pencil"></i>
-                  <span className="statement-page__button-text">Editar</span>
-                </button>
-                <div className="statement-page__toggle-visibility">
+        {statements.map((statement) => {
+          // Verificar si el enunciado es público y no pertenece al usuario conectado
+          const isPublicAndNotOwned = statement.is_public && statement.user_id !== user.id;
+
+          return (
+            <li className="statement-page__list-item" key={statement.id}>
+              <div className="statement-page__statement-container">
+                <span className="statement-page__definition">{statement.definition}</span>
+                <div className="statement-page__actions">
                   <button
-                    onClick={() => toggleVisibility(statement.id, false)} // Cambiar a "Privado"
-                    className={`toggle-option ${!statement.is_public ? "active" : ""}`}
+                    onClick={() => handleDelete(statement.id)}
+                    className={`statement-page__button--delete ${isPublicAndNotOwned ? "disabled" : ""}`}
+                    disabled={isPublicAndNotOwned}
                   >
-                    Privado
+                    <i className="fi-rr-trash"></i>
+                    <span className="statement-page__button-text--delete">Borrar</span>
                   </button>
                   <button
-                    onClick={() => toggleVisibility(statement.id, true)} // Cambiar a "Público"
-                    className={`toggle-option ${statement.is_public ? "active" : ""}`}
+                    onClick={() => handleStatementSelection(statement)}
+                    className={`statement-page__button--edit ${isPublicAndNotOwned ? "disabled" : ""}`}
+                    disabled={isPublicAndNotOwned}
                   >
-                    Público
+                    <i className="fi-rr-pencil"></i>
+                    <span className="statement-page__button-text">Editar</span>
                   </button>
+                  <div className="statement-page__toggle-visibility">
+                    <button
+                      onClick={() => toggleVisibility(statement.id, false)} // Cambiar a "Privado"
+                      className={`toggle-option ${!statement.is_public ? "active" : ""}`}
+                      disabled={isPublicAndNotOwned} // Deshabilitar si es público y no es del usuario
+                    >
+                      Privado
+                    </button>
+                    <button
+                      onClick={() => toggleVisibility(statement.id, true)}
+                      className={`toggle-option ${statement.is_public ? "active" : ""}`}
+                      disabled={isPublicAndNotOwned}
+                    >
+                      Público
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -3,7 +3,20 @@ import dateTimeFormat from "../../utils/dateTimeFormat";
 import "./TaskPage.css";
 import AssignTaskUser from "../assignTaskUser/AssignTaskUser";
 
-const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors, id, assignedInclude, setCurrentUsers, currentUsers }) => {
+const TaskForm = ({
+  title, setTitle,
+  openingDate, setOpeningDate,
+  closingDate, setClosingDate,
+  additionalInformation, setAdditionalInformation,
+  isExam, setIsExam,
+  handleSubmit,
+  errors,
+  id,
+  assignedInclude,
+  setCurrentUsers,
+  currentUsers
+}) => {
+
 
   return (
     <section className="task-page__form">
@@ -46,6 +59,25 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
               value={closingDate ? dateTimeFormat(closingDate) : ""}
               onChange={(e) => setClosingDate(e.target.value)}
             />
+          </div>
+          <div>
+            <label className="task-page__label">Información adicional:</label>
+            <textarea
+              id="task-textarea"
+              className="task-page__input"
+              value={additionalInformation}
+              onChange={(e) => setAdditionalInformation(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="task-page__label">
+              <input
+                type="checkbox"
+                checked={isExam}
+                onChange={(e) => setIsExam(e.target.checked)}
+              />
+              ¿Es un examen?
+            </label>
           </div>
         </div>
         <div className="task-page__dates--errors">

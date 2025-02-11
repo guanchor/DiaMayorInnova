@@ -18,7 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--gap-xl);
+  margin-bottom: var(--gap-s); /* Estaba en xl */
 }
 
 /* ERROR 
@@ -138,7 +138,12 @@
   border: 1px solid var(--Color-grey-200);
   border-radius: var(--r-xs);
   font-size: var(--text-desktop-small);
-  font-family: var(--font-family)
+  font-family: var(--font-family);
+}
+
+#task-textarea {
+  resize: none;
+  margin-top: 0;
 }
 
 .task-page__input[type="date"],

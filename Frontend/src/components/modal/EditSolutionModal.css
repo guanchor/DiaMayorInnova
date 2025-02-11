@@ -24,6 +24,7 @@
   margin-bottom: 20px;
 }
 
+
 textarea {
   width: 100%;
   padding: 10px;
@@ -73,6 +74,7 @@ textarea {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: var(--r-xxs);
+  resize: none;
 }
 
 .statement-page-modal__actions {

@@ -184,7 +184,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   return (
     <main className="task-page">
       <header className="task-page__header--header">
-        <button className="back-button" onClick={() => navigate("/home")}>
+        <button className="btn light" onClick={() => navigate("/home")}>
           <i className="fi fi-rr-arrow-small-left"></i>
           Volver
         </button>

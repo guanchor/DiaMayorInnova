@@ -10,7 +10,7 @@ const SolutionList = ({ solutions, onEditSolution, onDeleteSolution, solutionToD
         {solutions.map((solution, index) => (
           <li key={index} className={`statement-page__list-item ${solutionToDeleteIndex === index ? 'statement-page__list-item--deleting' : ''}`}>
             <div className="statement-page__statement-container">
-              <p className="statement-page__definition-solution">{`Solución ${index + 1}`}</p>
+              <h4 className="statement-page__definition-solution">{`Solución ${index + 1}`}</h4>
             </div>
             <div className="statement-page__actions">
               <button onClick={() => onEditSolution(index)} className="statement-page__button-text">Editar</button>

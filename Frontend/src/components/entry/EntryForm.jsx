@@ -36,8 +36,9 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
     <div className="statement-page__entry-expanded">
       {/* Fecha del asiento */}
       <div className="statement-page__entry-expanded--date">
-        <label className="statement-page__date-label">Fecha:</label>
+        <label className="statement-page__date-label" htmlFor="entry_date">Fecha:</label>
         <input
+          id="entry_date"
           type="date"
           name="entry_date"
           value={entry.entry_date}

@@ -93,7 +93,7 @@
   font-weight: bold;
 }
 
-.task-page__header--h4 {
+.task-page__header--h2 {
   font-size: var(--text-desktop-subtitles-2);
   font-weight: bold;
   padding: var(--gap-xs) 0 var(--gap-xs) 0;
@@ -141,9 +141,40 @@
   font-family: var(--font-family);
 }
 
-#task-textarea {
+.task-page__others {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--gap-m);
+  margin-top: var(--gap-xxs);
+}
+
+.task-page__container--exam {
+  display: flex;
+  /*align-items: flex-start;*/
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-s);
+  width: auto;
+}
+
+.task-page__label--exam {
+  margin: 0;
+  width: auto;
+}
+
+.task-page__checkbox--exam {
+  margin: 0;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+
+#additional_information {
   resize: none;
+  font-size: var(--text-desktop-small);
   margin-top: 0;
+  width: 100%;
+  height: 44px;
 }
 
 .task-page__input[type="date"],
@@ -151,6 +182,12 @@
   font-family: var(--font-family);
   font-size: var(--text-desktop-small);
   color: var(--Color-grey-500);
+}
+
+.task-page__buttons-container {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-s);
 }
 
 .task-page__button--form {
@@ -161,7 +198,7 @@
   border: none;
   border-radius: var(--r-xs);
   cursor: pointer;
-  margin-top: var(--gap-xxs);
+  /* margin-top: var(--gap-xxs); */
   box-shadow: var(--box-shadow-btn);
 }
 
@@ -202,7 +239,7 @@
 }
 
 .task-page__button--edit {
-  padding: var(--gap-s) var(--gap-m);
+  padding: var(--gap-s) var(--gap-xxs);
   background-color: transparent;
   color: var(--Color-grey-400);
   border: none;
@@ -221,7 +258,6 @@
 
 .task-page__list-item {
   padding: var(--gap-s) 0;
-
   border-bottom: 1px solid var(--Color-grey-200);
   border-radius: var(--border-radius);
   display: flex;
@@ -239,7 +275,7 @@
 }
 
 .task-page__statement {
-  flex: 0 1 60%;
+  flex: 0 1 70%;
   font-size: var(--text-desktop-body-small);
   word-wrap: break-word;
 }
@@ -247,7 +283,7 @@
 .task-page__actions {
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
+  gap: var(--gap-xxxs);
   flex: 1;
 }
 

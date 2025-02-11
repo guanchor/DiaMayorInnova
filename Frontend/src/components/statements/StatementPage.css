@@ -49,15 +49,20 @@
   background-color: var(--Color-Neutral-White);
   font-size: var(--text-desktop-subtitles-1);
   font-weight: bold;
-  margin-bottom: var(--gap-xl);
+  margin-bottom: var(--gap-m);
 }
 
 .statement-page__solutions {
   grid-area: statements-solutions;
   padding: var(--gap-m);
   border-radius: var(--border-radius);
+  border-left: 1px solid var(--Color-grey-200);
   overflow-y: auto;
   max-height: 100%;
+
+  & div {
+    border-left: 0;
+  }
 }
 
 .statement-page__solutions-header {
@@ -168,7 +173,7 @@
 }
 
 .statement-page__definition {
-  flex: 0 1 60%;
+  flex: 0 1 70%;
   font-size: var(--text-desktop-body-small);
   word-wrap: break-word;
   display: flex;
@@ -212,7 +217,7 @@
 }
 
 .statement-page__button-text {
-  color: var(--Color-grey-500);
+  color: var(--Color-grey-700);
 }
 
 .statement-page__button-text:hover {

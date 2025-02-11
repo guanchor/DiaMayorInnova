@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import dateTimeFormat from "../../utils/dateTimeFormat";
 import "./TaskPage.css";
 import AssignTaskUser from "../assignTaskUser/AssignTaskUser";
@@ -16,6 +17,7 @@ const TaskForm = ({
   setCurrentUsers,
   currentUsers
 }) => {
+  const navigate = useNavigate();
 
 
   return (
@@ -31,8 +33,9 @@ const TaskForm = ({
           />
         </header>
         <div>
-          <label className="task-page__label--title">Tarea:</label>
+          <label className="task-page__label--title" htmlFor="title">Tarea:</label>
           <input
+            id="title"
             className="task-page__input"
             type="text"
             placeholder="Título de la tarea"
@@ -43,8 +46,9 @@ const TaskForm = ({
         </div>
         <div className="task-page__dates">
           <div className="task-page__date">
-            <label className="task-page__label">Fecha de apertura:</label>
+            <label className="task-page__label" htmlFor="opening_date">Fecha de apertura:</label>
             <input
+              id="opening_date"
               className="task-page__input"
               type="datetime-local"
               value={openingDate ? dateTimeFormat(openingDate) : ""}
@@ -52,41 +56,59 @@ const TaskForm = ({
             />
           </div>
           <div className="task-page__date">
-            <label className="task-page__label">Fecha de cierre:</label>
+            <label className="task-page__label" htmlFor="closing_date">Fecha de cierre:</label>
             <input
+              id="closing_date"
               className="task-page__input"
               type="datetime-local"
               value={closingDate ? dateTimeFormat(closingDate) : ""}
               onChange={(e) => setClosingDate(e.target.value)}
             />
           </div>
+        </div>
+        <div className="task-page__others">
           <div>
-            <label className="task-page__label">Información adicional:</label>
+            <label className="task-page__label" htmlFor="additional_information">Información adicional:</label>
             <textarea
-              id="task-textarea"
+              id="additional_information"
               className="task-page__input"
               value={additionalInformation}
               onChange={(e) => setAdditionalInformation(e.target.value)}
             />
           </div>
-          <div>
-            <label className="task-page__label">
-              <input
-                type="checkbox"
-                checked={isExam}
-                onChange={(e) => setIsExam(e.target.checked)}
-              />
-              ¿Es un examen?
-            </label>
+          <div className="task-page__container--exam">
+            <label className="task-page__label--exam" htmlFor="isExam">¿Es un examen?</label>
+            <input
+              id="isExam"
+              type="checkbox"
+              checked={isExam}
+              className="task-page__checkbox--exam"
+              onChange={(e) => setIsExam(e.target.checked)}
+            />
           </div>
         </div>
         <div className="task-page__dates--errors">
           {errors.openingDate && <p className="error-message">{errors.openingDate}</p>}
           {errors.closingDate && <p className="error-message">{errors.closingDate}</p>}
         </div>
-        <button type="button" className="task-page__button--form" onClick={handleSubmit}>
-          Finalizar
-        </button>
+        <div className="task-page__buttons-container">
+          <button
+            type="button"
+            className="task-page__button--form"
+            onClick={handleSubmit}
+          >
+            Crear
+          </button>
+          <button
+            type="button"
+            // className="task-page__button--form"
+            className="btn light"
+            onClick={() => navigate("/add-statements")}
+          >
+            <i className="fi fi-rr-arrow-right"></i>
+            Ir a enunciados
+          </button>
+        </div>
       </form>
     </section>
   );

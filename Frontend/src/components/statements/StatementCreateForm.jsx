@@ -97,7 +97,7 @@ const StatementCreateForm = () => {
   return (
     <main className="statement-page">
       <header className="statement-page__header--header">
-        <button className="back-button" onClick={() => navigate("/home")}>
+        <button className="btn light" onClick={() => navigate("/home")}>
           <i className="fi fi-rr-arrow-small-left"></i>
           Volver
         </button>

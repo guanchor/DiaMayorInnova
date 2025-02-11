@@ -75,11 +75,13 @@ const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
       <div className="statement-page__form-modal--solution">
         <h5>Solución {solutionIndex + 1}:</h5>
         <textarea
+          id="solution-description"
           name="description"
           className="statement-page__description"
           value={solution.description}
           onChange={handleSolutionChange}
           placeholder="Descripción de la solución"
+          aria-label="Descripción de la solución"
         />
         {/* <button type="button" onClick={removeSolution}>Eliminar Solución</button> */}
       </div>

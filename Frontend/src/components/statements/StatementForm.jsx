@@ -216,8 +216,9 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       <h2 className="statement-page__form--header">Crear Enunciado</h2>
       <form className="statement-page__form--form" onSubmit={handleSubmit}>
         <div className="statement-page__form--content">
-          <label className="statement-page__label--definition">Definición:</label>
+          <label className="statement-page__label--definition" htmlFor="definition">Definición:</label>
           <textarea
+            id="definition"
             className="statement-page__input"
             value={definition}
             onChange={(e) => setDefinition(e.target.value)}
@@ -225,8 +226,9 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
           {fieldErrors.definition && <div className="error-message">{fieldErrors.definition}</div>}
         </div>
         <div className="statement-page__form--content">
-          <label className="statement-page__label--explanation">Explicación:</label>
+          <label className="statement-page__label--explanation" htmlFor="explanation">Explicación:</label>
           <textarea
+            id="explanation"
             className="statement-page__input"
             value={explanation}
             onChange={(e) => setExplanation(e.target.value)}
@@ -236,11 +238,12 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
 
         <div className="statement-page__buttons-container">
           <div className="statement-page__visibility--container">
-            <label className="statement-page__label--visibility">
+            <label className="statement-page__label--visibility" htmlFor="isPublic">
               Público:
             </label>
             <input
               type="checkbox"
+              id="isPublic"
               checked={isPublic}
               onChange={(e) => setIsPublic(e.target.checked)}
               className="statement-page__checkbox--visibility"

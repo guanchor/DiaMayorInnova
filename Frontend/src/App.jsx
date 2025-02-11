@@ -10,9 +10,8 @@ import SchoolsCenters from './components/schoolCenters/SchoolCenters'
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
-import SignUp from "./components/user/SignUp";
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
-import NavegationMenu from "./components/navegation-menu/NavegationMenu";
+import NavigationMenu from "./components/navigation-menu/NavigationMenu";
 import Account from './components/account/Account';
 // import AccountList from './components/account/ListAccount';
 // import AddAccount from './components/account/AddAccount';
@@ -32,6 +31,7 @@ import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
 import './App.css';
 import './assets/Styles/Global.css';
+import UserManagement from './components/user/UserManagement';
 
 function App() {
 
@@ -40,7 +40,7 @@ function App() {
       <Router>
         <AuthProvider>
           <NavStateProvider>
-            <NavegationMenu />
+            <NavigationMenu />
             <div className='app-main'>
               <Routes>
                 <Route path="/sign_in" element={<SignIn />} />
@@ -72,10 +72,10 @@ function App() {
                     <Route path="/add-class-list" element={<AddClassGroup />} />
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-                      <Route path="/sign_up" element={<SignUp />} />
+                      <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />
-                        <Route path='usuarios/' element={<SignUp />} />
+                        <Route path='usuarios/' element={<UserManagement />} />
                       </Route >
 
                     </Route>
@@ -91,5 +91,3 @@ function App() {
 }
 
 export default App;
-
-// # A

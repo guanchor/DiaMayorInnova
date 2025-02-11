@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_06_191031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,12 +121,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
     t.index ["exercise_id"], name: "index_marks_on_exercise_id"
   end
 
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "school_centers", force: :cascade do |t|
     t.string "school_name"
     t.string "address"
@@ -189,21 +183,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "title"
-    t.date "opening_date"
+    t.datetime "opening_date"
     t.datetime "closing_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
   end
 
-  create_table "user_roles", force: :cascade do |t|
+  create_table "teacher_class_groups", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "role_id", null: false
+    t.bigint "class_group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_user_roles_on_role_id"
-    t.index ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true
-    t.index ["user_id"], name: "index_user_roles_on_user_id"
+    t.index ["class_group_id"], name: "index_teacher_class_groups_on_class_group_id"
+    t.index ["user_id"], name: "index_teacher_class_groups_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -218,7 +211,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
     t.string "name"
     t.string "first_lastName"
     t.string "second_lastName"
+    t.string "role", default: "student"
+    t.bigint "class_groups_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+    t.index ["class_groups_id"], name: "index_users_on_class_groups_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -240,6 +236,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_10_174043) do
   add_foreign_key "student_entries", "marks"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
-  add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
+  add_foreign_key "teacher_class_groups", "class_groups"
+  add_foreign_key "teacher_class_groups", "users"
+  add_foreign_key "users", "class_groups", column: "class_groups_id"
 end

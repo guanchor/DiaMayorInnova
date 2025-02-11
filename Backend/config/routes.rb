@@ -11,14 +11,18 @@ Rails.application.routes.draw do
     get 'find_by_account_id', on: :collection
   end
   
+  resources :teacher_class_groups
   resources :annotations
   resources :entries
   resources :solutions
   resources :student_entries
   resources :student_annotations
   resources :marks
-  resources :exercises
   resources :student_exercises
+  resources :exercises do
+    delete 'destroy_on_group', on: :collection
+    get 'find_by_task_id', on: :collection
+  end
 
   resources :tasks, param: :id do
     delete 'statements/:statement_id', to: 'tasks#destroy_statement', as: 'destroy_statement_from_task'
@@ -31,20 +35,17 @@ Rails.application.routes.draw do
     post 'add_solution', on: :member
     get 'solutions', to: 'statements#get_solutions', on: :member
   end
-
-  resources :roles, only: [:index]
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
+  devise_for :users, controllers: { sessions: 'sessions' }, skip: [:registrations]
   devise_scope :user do
-    #post 'sign_up', to: 'registrations#create'
     post 'sign_in', to: 'sessions#create'
-    #get 'sign_up', to: 'registrations#new'
     delete 'log_out', to: 'sessions#destroy'
     post 'validate_token', to: 'sessions#valid_token'
+    resources :registrations
   end
 
-  #resources :users, only: [:index, :show, :create, :update, :destroy]
+  resources :users, only: [:index, :show, :create, :update, :destroy]
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

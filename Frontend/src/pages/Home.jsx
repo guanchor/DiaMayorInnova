@@ -11,21 +11,15 @@ import useStatements from "../hooks/useStatements";
 
 function Home() {
   const navigate = useNavigate();
-  const { rol } = useContext(navContext);
+  const { currentRole } = useContext(navContext);
 
   const { statements, solutions, editMode, loading, handleEditSolutions } = useStatements();
 
-  if (rol === 'admin') {
+  if (currentRole === 'admin') {
     return (
       <>
         <main className="home_section">
           <section className="principal">
-            {/*             <div className="buttons_container">
-              <button onClick={() => navigate("/class-list")}>Mostrar la lista de Grupos de clase</button>
-              <button onClick={() => navigate("/accounting-plans")}>Mostrar la lista de Accounting plans</button>
-              <button onClick={() => navigate("/schools")}>Mostrar Schools centers</button>
-              <button onClick={() => navigate("/sign_up")}>Registro</button>
-            </div> */}
             <Outlet />
           </section>
           <aside className="aside"></aside>
@@ -36,7 +30,7 @@ function Home() {
     )
   }
 
-  if (rol === 'teacher') {
+  if (currentRole === 'teacher') {
     return (
       <>
         <main className="home_section">

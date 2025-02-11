@@ -1,7 +1,7 @@
 import AddAccountingPlan from "../../components/accounting-plan/AddAccountingPlan";
 import AccountingPlansList from "../../components/accounting-plan/ListAccountingPlan";
 import "./AccountingPlans.css"
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 import React, { useState } from 'react'
 

@@ -4,6 +4,7 @@ class Statement < ApplicationRecord
   has_many :solutions
 
   accepts_nested_attributes_for :solutions, allow_destroy: true
-  validates :definition, :explanation, presence: true
+  validates :definition, presence: true
+  validates :explanation, presence: true, allow_blank: true
   validates :is_public, inclusion: { in: [true, false] }
 end

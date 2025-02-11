@@ -21,10 +21,9 @@ class AccountsController < ApplicationController
       account_number: params[:account_number],
       description: params[:description],
       name: params[:name],
-      accounting_plan_id: params[:accounting_plan_id], #accounting plan id
-      
+      accounting_plan_id: params[:accounting_plan_id], #accounting plan id 
     )
-    render json: @account
+    render json: @account, status: :created
   end
 
    # Método de Strong Parameters

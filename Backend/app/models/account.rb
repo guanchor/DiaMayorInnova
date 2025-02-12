@@ -3,6 +3,6 @@ class Account < ApplicationRecord
   has_many :help_examples, dependent: :destroy
   has_many :annotations, dependent: :destroy
   has_many :student_annotations
-end
 
-# A
+  validates :name, presence: true #Nombre obligatorio para test
+end

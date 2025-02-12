@@ -55,17 +55,17 @@ describe AccountingPlansController do
     end
 
 
-    describe "PATCH update" do
+    describe "PUT update" do
         it "actualizar PGC existente" do
             newInfo = { id: accounting_plan.id, accounting_plan: { name: "Actualizadooo"} }
-            patch :update, params: newInfo
+            put :update, params: newInfo
 
             expect(response).to have_http_status(:success)
         end
 
         it "error 422, datos no válidos" do
             newInfo = { id: accounting_plan.id, accounting_plan: { name: ""} }
-            patch :update, params: newInfo
+            put :update, params: newInfo
 
             expect(response).to have_http_status(:unprocessable_entity)
         end          

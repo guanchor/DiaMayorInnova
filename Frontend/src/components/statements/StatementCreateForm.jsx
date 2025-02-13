@@ -19,7 +19,7 @@ const StatementCreateForm = () => {
     setSelectedStatement(statement);
     console.log("Enunciado seleccionado:", statement);
     if (statement && statement.solutions) {
-      setSolutions(statement.solutions);
+      setPrevSolutions(statement.solutions);
       console.log("Soluciones establecidas:", statement.solutions);
     } else {
       setPrevSolutions([]);

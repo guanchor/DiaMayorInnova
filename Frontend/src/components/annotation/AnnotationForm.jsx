@@ -25,7 +25,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
       <input
         type="number"
         name="number"
-        value={annotation.number}
+        value={annotation.number || ""}
         onChange={handleAnnotationChange}
         id="number"
         className="statement-page__input"
@@ -55,7 +55,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
       <input
         type="number"
         name="debit"
-        value={annotation.debit}
+        value={annotation.debit || ""}
         disabled={!!annotation.credit && annotation.credit !== "" && annotation.credit !== 0}
         onChange={handleAnnotationChange}
         id="debit"
@@ -66,7 +66,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
       <input
         type="number"
         name="credit"
-        value={annotation.credit}
+        value={annotation.credit || ""}
         disabled={!!annotation.debit && annotation.debit !== "" && annotation.debit !== 0}
         onChange={handleAnnotationChange}
         id="credit"

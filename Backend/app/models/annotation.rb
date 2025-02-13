@@ -9,14 +9,16 @@ class Annotation < ApplicationRecord
   validates :debit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :credit_or_debit_but_not_both
 
-  before_validation :assign_account_id
+  before_validation :set_account_id, if: :account_number_changed?
 
   private
 
-  def assign_account_id
-    if account_number.present?
-      account = Account.find_by(account_number: account_number)
-      self.account_id = account.id if account
+  def set_account_id
+    account = Account.find_by(account_number: account_number)
+    if account
+      self.account_id = account.id
+    else
+      errors.add(:account_number, "no válido o no encontrado")
     end
   end
 

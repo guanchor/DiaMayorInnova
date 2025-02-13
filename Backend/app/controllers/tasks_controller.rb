@@ -1,12 +1,11 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [:show, :update, :destroy, :destroy_statement]
-  before_action :authorize_task, only: [:show, :update, :destroy, :destroy_statement]
+  before_action :authorize_task_access, only: [:show, :update, :destroy, :destroy_statement]
   
   def index
     if current_user.student?
-      @tasks = Task.orderer_by_closing_date
-      render json: @tasks
+      render json: { error: "No autorizado" }, status: :unauthorized
     else
       if current_user.admin?
         @tasks = Task.orderer_by_closing_date
@@ -90,12 +89,12 @@ class TasksController < ApplicationController
     end
 
     @task.statements.delete(@statement)
-    render json: { message: "Enunciado desvinculado de la tarea correctamente." }, status: :ok
+    render json: { message: "Enunciado desvinculado de la tarea correctamente." }, status: :ok 
   end
 
   private 
 
-  def authorize_task
+  def authorize_task_access
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
     else

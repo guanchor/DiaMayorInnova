@@ -10,7 +10,7 @@ FactoryBot.define do
     role { 'student' }
   end
 
-  factory :studen_user, parent: :user do
+  factory :student_user, parent: :user do
     sequence(:name) { |n| "Student #{n}" }
     role { 'student' }
   end

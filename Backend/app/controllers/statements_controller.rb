@@ -53,7 +53,20 @@ class StatementsController < ApplicationController
       render json: { error: "No autorizado" }, status: :forbidden
     else
       @statement = current_user.statements.build(statement_params)
-      process_account_ids(@statement)
+      
+      unless process_account_ids(@statement)
+        @statement.solutions.each do |solution|
+          solution.entries.each do |entry|
+            entry.annotations.each do |annotation|
+              annotation.errors.full_messages.each do |message|
+                @statement.errors.add(:base, "Anotación #{annotation.number}: #{message}")
+              end
+            end
+          end
+        end
+        render json: @statement.errors, status: :unprocessable_entity
+        return
+      end
 
       if @statement.save
         render json: @statement, status: :created
@@ -79,16 +92,20 @@ class StatementsController < ApplicationController
   end
 
   def add_solution
-    @solution = @statement.solutions.create(solution_params)
-    process_account_ids_in_solution(@solution) #comprobar 
+    @solution = @statement.solutions.build(solution_params)
 
+    unless process_account_ids(@solution)
+      render json: @solution.errors, status: :unprocessable_entity
+      return
+    end
+    
     if @solution.save
       if params[:entries]
         params[:entries].each do |entry_params|
-          entry = @solution.entries.create(entry_params)
+          entry = @solution.entries.build(entry_params)
           if entry.save && entry_params[:annotations]
             entry_params[:annotations].each do |annotation_params|
-              entry.annotations.create(annotation_params)
+              entry.annotations.build(annotation_params)
             end
           end
         end
@@ -103,14 +120,13 @@ class StatementsController < ApplicationController
     Rails.logger.debug "Params received in update: #{params[:statement].inspect}"
     if @statement.user_id == current_user.id || current_user.admin?
       if @statement.update(statement_params)
-        update_solutions_and_entries
-        process_account_ids(@statement)
-    
-        if @statement.errors.any?
+        unless process_account_ids(@statement)
           render json: @statement.errors, status: :unprocessable_entity
-        else
-          render json: @statement, status: :ok
+          return
         end
+
+        update_solutions_and_entries
+        render json: @statement, status: :ok
       else
         render json: @statement.errors, status: :unprocessable_entity
       end
@@ -138,7 +154,7 @@ class StatementsController < ApplicationController
     if current_user.student?
       render json: { error: "No autorizado" }, status: :forbidden
     elsif current_user.admin? || (current_user.teacher? && (@statement.user_id == current_user.id || @statement.is_public))
-      return true #si falla esto, quitar el return y dejar solo true
+
     else
       render json: { error: "No autorizado" }, status: :forbidden
     end
@@ -211,11 +227,12 @@ class StatementsController < ApplicationController
             account = Account.find_by(account_number: annotation.account_number)
             
             if account
-              annotation.account_id = account.id if annotation.account_id.nil? || annotation.account_id != account.id
-              Rails.logger.debug "Assigned account_id: #{annotation.account_id}"
-              unless annotation.save
-                Rails.logger.debug "Error al guardar la anotación: #{annotation.errors.full_messages}"
-                has_errors = true
+              if annotation.account_id.nil? || annotation.account_id != account.id
+                annotation.account_id = account.id 
+                unless annotation.valid?
+                  Rails.logger.debug "Error en la anotación: #{annotation.errors.full_messages}"
+                  has_errors = true
+                end
               end
             else
               annotation.errors.add(:account_number, "no válido o no encontrado")
@@ -230,7 +247,10 @@ class StatementsController < ApplicationController
     end
 
     if has_errors
-      raise ActiveRecord::RecordInvalid, "Una o más anotaciones tienen errores y no se pueden guardar."
+      resource.errors.add(:base, "Una o más anotaciones tienen errores y no se pueden guardar.")
+      false
+    else
+      true
     end
   end
 

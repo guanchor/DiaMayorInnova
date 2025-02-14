@@ -18,7 +18,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--gap-s); /* Estaba en xl */
+  margin-bottom: var(--gap-s);
+  /* Estaba en xl */
 }
 
 /* ERROR 
@@ -478,7 +479,7 @@
   /*background-color: var(--Color-Neutral-White);*/
   padding: var(--gap-m);
   border-radius: var(--r-xs);
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
   position: relative;
 }
@@ -505,7 +506,7 @@
 }
 
 .modal-solutionViewer__statement-info {
-padding-top: var(--gap-xs);
+  padding-top: var(--gap-xs);
 }
 
 .modal-solutionViewer__statement-button {
@@ -532,7 +533,7 @@ padding-top: var(--gap-xs);
 
 .modal-solutionViewer__solution-content {
   padding: var(--gap-m);
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   background-color: var(--Color-Neutral-White);
   border-radius: var(--r-xs);
@@ -604,7 +605,7 @@ padding-top: var(--gap-xs);
 
 .modal-solutionViewer__annotation-items-title {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 10px;
   margin-bottom: var(--gap-xs);
   font-weight: bold;
@@ -620,7 +621,7 @@ padding-top: var(--gap-xs);
 
 .modal-solutionViewer__annotation-item {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 10px;
   text-align: center;
   padding: 5px 0;

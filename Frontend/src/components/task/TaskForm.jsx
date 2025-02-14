@@ -1,13 +1,22 @@
 import React from "react";
 import dateTimeFormat from "../../utils/dateTimeFormat";
 import "./TaskPage.css";
+import AssignTaskUser from "../assignTaskUser/AssignTaskUser";
 
-const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors }) => {
+const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, setClosingDate, handleSubmit, errors, id, assignedInclude, setCurrentUsers, currentUsers }) => {
 
   return (
     <section className="task-page__form">
       <form className="task-page__form--form">
-        <h2 className="task-page__header">Crear Tarea</h2>
+        <header className="task-page__form--header">
+          <h2 className="task-page__header">Crear Tarea</h2>
+          <AssignTaskUser
+            id={id}
+            assignedInclude={assignedInclude}
+            setCurrentUsers={setCurrentUsers}
+            currentUsers={currentUsers}
+          />
+        </header>
         <div>
           <label className="task-page__label--title">Tarea:</label>
           <input
@@ -25,7 +34,7 @@ const TaskForm = ({ title, setTitle, openingDate, setOpeningDate, closingDate, s
             <input
               className="task-page__input"
               type="datetime-local"
-              value={ openingDate ? dateTimeFormat(openingDate) : ""}
+              value={openingDate ? dateTimeFormat(openingDate) : ""}
               onChange={(e) => setOpeningDate(e.target.value)}
             />
           </div>

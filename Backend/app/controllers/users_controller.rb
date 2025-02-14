@@ -13,7 +13,11 @@ class UsersController < ApplicationController
     if params[:name].present?
       users = User.where("name ILIKE ?", "%#{params[:name]}%")
     else
-      users = User.all
+      if params[:class_groups_id].present?
+        users = User.where(role: "student", class_groups_id: params[:class_groups_id])
+      else
+        users = User.all
+      end
     end
 
     users_data = users.map do |user|

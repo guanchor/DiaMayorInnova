@@ -9,7 +9,12 @@ class ClassGroupsController < ApplicationController
         if params[:module].present?
             @classGroups = ClassGroup.where("module LIKE ?", "%#{params[:module]}%")
         else
-            @classGroups = ClassGroup.all
+            if params[:user_id].present?
+                @classGroups = ClassGroup.joins(:teacher_class_groups).where(teacher_class_groups: { user_id: params[:user_id] })
+            else
+                @classGroups = ClassGroup.all
+            end
+
         end
         render json: @classGroups
     end

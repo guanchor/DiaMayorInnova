@@ -26,6 +26,7 @@ const SolutionsViewer = ({ solutions }) => {
                     <div className="modal-solutionViewer__annotation-items-title">
                     <span className="annotation-items--header"><strong>Apunte</strong></span>
                     <span className="annotation-items--header"><strong>Nº de Cuenta</strong></span>
+                    <span className="annotation-items--header"><strong>Nombre Cuenta</strong></span>
                     <span className="annotation-items--header"><strong>Debe</strong></span>
                     <span className="annotation-items--header"><strong>Haber</strong></span>
                     </div>
@@ -33,6 +34,7 @@ const SolutionsViewer = ({ solutions }) => {
                       <li key={annotation.id} className="modal-solutionViewer__annotation-item">
                         <span className="annotation-item--item">{annotation.number}</span> 
                         <span className="annotation-item--item">{annotation.account_number}</span> 
+                        <span className="annotation-item--item">{annotation.account_name}</span> 
                         <span className="annotation-item--item">{annotation.debit || "0,0"} €</span>
                         <span className="annotation-item--item">{annotation.credit || "0,0"} €</span> 
                       </li>

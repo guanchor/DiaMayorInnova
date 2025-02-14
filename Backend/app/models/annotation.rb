@@ -11,6 +11,10 @@ class Annotation < ApplicationRecord
 
   before_validation :set_account_id, if: :account_number_changed?
 
+  def account_name
+    account&.name || "Cuenta desconocida"
+  end
+
   private
 
   def set_account_id

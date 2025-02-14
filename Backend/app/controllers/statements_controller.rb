@@ -77,12 +77,14 @@ class StatementsController < ApplicationController
   end
 
   def get_solutions
-    solutions = @statement.solutions.includes(entries: :annotations)
+    solutions = @statement.solutions.includes(entries: { annotations: :account })
     render json: solutions.as_json(
       include: {
         entries: {
           include: {
             annotations: {
+              include: { account: { only: [:name] } },
+              methods: [:account_name],
               order: :number
             }
           }
@@ -282,10 +284,10 @@ class StatementsController < ApplicationController
                             if annotation_attr[:_destroy] == "1" || annotation_attr[:_destroy] == true
                               annotation.destroy
                             else
-                              annotation.update(annotation_attr.except(:_destroy).permit(:number, :credit, :debit, :account_number))
+                              annotation.update(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
                             end
                           else
-                            entry.annotations.create(annotation_attr.except(:_destroy).permit(:number, :credit, :debit, :account_number))
+                            entry.annotations.create(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
                           end
                         end
                       end

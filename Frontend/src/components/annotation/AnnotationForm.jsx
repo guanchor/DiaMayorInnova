@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import Modal from "../modal/Modal";
+import http from "../../http-common";
 
 const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions, setSolutions }) => {
+  
   const annotation = solutions[solutionIndex].entries[entryIndex].annotations[annotationIndex];
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [accounts, setAccounts] = useState([]);
+  const accountNumberInputRef = useRef(null);
+  const modalRef = useRef(null);
+
+  const openAccountModal = async () => {
+    try {
+      const response = await http.get("/accounts");
+      setAccounts(response.data);
+      modalRef.current?.showModal();
+    } catch (error) {
+      console.error("Error al cargar las cuentas:", error);
+    }
+  };
+
+  const handleAccountSelect = (account) => {
+    const updatedSolutions = [...solutions];
+    updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex].account_number = account.account_number;
+    updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex].account_name = account.name;
+    setSolutions(updatedSolutions);
+    setIsModalOpen(false);
+  };
+
   const handleAnnotationChange = (event) => {
     const updatedSolutions = [...solutions];
     updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex][event.target.name] = event.target.value;
@@ -18,6 +44,20 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
     );
     setSolutions(updatedSolutions);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "F1" && document.activeElement === accountNumberInputRef.current) {
+        event.preventDefault();
+        openAccountModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="statement-page__annotation-row">
@@ -41,6 +81,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
         className="statement-page__input"
         placeholder="Nº Cuenta"
         aria-label="account_number"
+        ref={accountNumberInputRef}
       />
       <input
         type="text"
@@ -82,6 +123,22 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
       >
         <i className="fi fi-rr-trash"></i>
       </button>
+
+      {/* Modal para seleccionar una cuenta */}
+      <Modal ref={modalRef} title="Seleccionar Cuenta" showButton={false}>
+        <div className="account-list">
+          {accounts.map((account) => (
+            <div
+              key={account.account_number}
+              className="account-item"
+              onClick={() => handleAccountSelect(account)}
+            >
+              <span>{account.account_number}</span>
+              <span>{account.name}</span>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 };

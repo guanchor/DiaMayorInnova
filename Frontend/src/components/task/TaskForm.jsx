@@ -92,13 +92,24 @@ const TaskForm = ({
           {errors.closingDate && <p className="error-message">{errors.closingDate}</p>}
         </div>
         <div className="task-page__buttons-container">
-          <button
-            type="button"
-            className="task-page__button--form"
-            onClick={handleSubmit}
-          >
-            Crear
-          </button>
+          <div className="task-page__buttons-container--edition">
+            <button
+              type="button"
+              className="task-page__button--form"
+              onClick={handleSubmit}
+            >
+              {id ? "Actualizar" : "Crear"}
+            </button>
+            {id && (
+              <button
+                type="button"
+                className="task-page__button--form task-page__button--cancel"
+                onClick={() => navigate("/home")}
+              >
+                Cancelar
+              </button>
+            )}
+          </div>
           <button
             type="button"
             // className="task-page__button--form"

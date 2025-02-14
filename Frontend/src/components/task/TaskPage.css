@@ -191,6 +191,12 @@
   gap: var(--gap-s);
 }
 
+.task-page__buttons-container--edition {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-s);
+}
+
 .task-page__button--form {
   padding: var(--gap-xxs) var(--gap-xs);
   background-color: var(--Color-Neutral-Dark);
@@ -566,6 +572,11 @@
   color: var(--Color-Neutral-Dark);
 }
 
+.modal-solutionViewer__solution-item:nth-of-type(n+2) 
+  .modal-solutionViewer__solution--subtitle {
+  border-top: 1px solid var(--Color-grey-100);
+}
+
 .modal-solutionViewer__annotation--subtitle {
   font-size: var(--text-desktop-body-large);
   font-weight: bold;
@@ -628,10 +639,27 @@
 }
 
 .annotation-item--item {
-  padding: var(--gap-xxxs) 0;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  padding: var(--gap-xxxs) 0 var(--gap-xxxs) var(--gap-xs);
   background-color: var(--Color-grey-50);
   border: 1px solid var(--Color-grey-100);
   border-radius: var(--r-xxs);
+}
+
+.annotation-item--item.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.annotation-item--item.total-debit,
+.annotation-item--item.total-credit,
+.annotation-item--item.total-label {
+  padding: var(--gap-xxxs) var(--gap-xs) var(--gap-xxxs) 0;
+  align-items: flex-end;
 }
 
 .modal-solutionViewer__annotation-item:last-child {

@@ -32,7 +32,7 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
       <section className="task-details__task-content">
         <p className="task-details__task-content--date">
           <strong>Fecha de apertura:{" "}</strong>
-          {new Date(selectedTask.opening_date).toLocaleDateString()}
+          {new Date(selectedTask.opening_date).toLocaleString()}
         </p>
         <p className="task-details__task-content--date">
           <strong>Fecha de cierre:{" "}</strong>
@@ -53,6 +53,7 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
                 <button
                   onClick={() => onDeleteStatement(selectedTask.id, statement.id)}
                   className="task-details__statement-item--delete-btn"
+                  aria-label="botón de eliminar enunciado de la tarea"
                 >
                   <i className="fi-rr-trash"></i>
                 </button>

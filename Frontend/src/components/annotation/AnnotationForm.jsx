@@ -5,7 +5,6 @@ import http from "../../http-common";
 const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions, setSolutions }) => {
   
   const annotation = solutions[solutionIndex].entries[entryIndex].annotations[annotationIndex];
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -61,7 +60,6 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
 
   return (
     <div className="statement-page__annotation-row">
-      {/* <label>Apunte {annotationIndex + 1}:</label> */}
       <input
         type="number"
         name="number"
@@ -124,7 +122,6 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
         <i className="fi fi-rr-trash"></i>
       </button>
 
-      {/* Modal para seleccionar una cuenta */}
       <Modal ref={modalRef} title="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
           {accounts.map((account) => (
@@ -133,8 +130,8 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
               className="account-item"
               onClick={() => handleAccountSelect(account)}
             >
-              <span>{account.account_number}</span>
-              <span>{account.name}</span>
+              <span className="account-item_account">{account.account_number}</span>
+              <span className="account-item_account">{account.name}</span>
             </div>
           ))}
         </div>

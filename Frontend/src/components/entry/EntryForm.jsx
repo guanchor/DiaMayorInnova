@@ -34,7 +34,6 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
 
   return (
     <div className="statement-page__entry-expanded">
-      {/* Fecha del asiento */}
       <div className="statement-page__entry-expanded--date">
         <label className="statement-page__date-label" htmlFor="entry_date">Fecha:</label>
         <input
@@ -47,7 +46,6 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
         />
       </div>
 
-      {/* Encabezado de columnas */}
       <div className="statement-page__entry-columns">
         <span>Apt</span>
         <span>N° Cuenta</span>
@@ -57,7 +55,6 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
         <span>Acción</span>
       </div>
 
-      {/* Lista de Apuntes */}
       {entry.annotations.map((annotation, annotationIndex) => (
         <AnnotationForm
           key={annotationIndex}
@@ -70,7 +67,6 @@ const EntryForm = ({ solutionIndex, entry, entryIndex, solutions, setSolutions }
         />
       ))}
 
-      {/* Botón para añadir Apunte */}
       <button
         type="button"
         onClick={addAnnotation}

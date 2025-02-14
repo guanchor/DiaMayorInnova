@@ -88,7 +88,6 @@ const StatementsSelection = ({
           ))}
         </ul>
 
-        {/* Modal para ver soluciones */}
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
@@ -103,9 +102,6 @@ const StatementsSelection = ({
                   </div>
                 </div>
                 <SolutionsViewer solutions={currentSolutions} />
-{/*                 <div className="modal-solutionViewer__statement-button">
-                  <button className="modal-solutionViewer__statement-info--close" onClick={hideSolutions}>Cerrar</button>
-                </div> */}
               </section>
             </div>
           </div>

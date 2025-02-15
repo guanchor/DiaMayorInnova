@@ -11,8 +11,18 @@ class ExercisesController < ApplicationController
   end
 
   def show
-    @exercise = Exercise.find(params[:id])
-    render @exercise
+    @exercise = Exercise.includes(marks: { student_entries: :student_annotations }).find(params[:id])
+    render json: @exercise.as_json(
+      include: {
+        marks: {
+          include: {
+            student_entries: {
+              include: :student_annotations
+            }
+          }
+        }
+      }
+    )
   end
 
   def create

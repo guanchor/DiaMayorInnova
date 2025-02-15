@@ -2,19 +2,29 @@ class StudentExercisesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @exercises = Exercise.includes(marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
-    render json: @exercises.as_json(
-      include: {
-        marks: {
-          include: {
-            student_entries: {
-              include: :student_annotations
-            }
-          }
-        }
-      }
-    )
+    @tasks = Task.includes(statements: { solutions: { entries: :annotations } }).where(id: params[:task_id])
+  
+    if @tasks.any?
+      render json: @tasks, include: { statements: { include: { solutions: { include: { entries: { include: :annotations } } } } } }
+    else
+      render json: { error: 'No tasks found' }, status: :not_found
+    end
   end
+
+  # def index
+  #   @exercises = Exercise.includes(marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
+  #   render json: @exercises.as_json(
+  #     include: {
+  #       marks: {
+  #         include: {
+  #           student_entries: {
+  #             include: :student_annotations
+  #           }
+  #         }
+  #       }
+  #     }
+  #   )
+  # end
 
   def show
     @exercise = Exercise.includes(marks: { student_entries: :student_annotations }).find(params[:id])

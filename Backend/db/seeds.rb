@@ -365,3 +365,13 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   annotationExample65 = Annotation.create(entry: entryExample16, account: account4777, number: 1, debit: 1820.00 , credit: 0)
   annotationExample66 = Annotation.create(entry: entryExample16, account: account4727, number: 2, debit: 0 , credit: 631.24)
   annotationExample67 = Annotation.create(entry: entryExample16, account: account4757, number: 3, debit: 0 , credit: 1188.76)
+
+  exercise_example1 = Exercise.create(user: user5, task: taskExample1) 
+  
+  mark_example1 = Mark.create(mark: 7.5, exercise: exercise_example1, statement: statementExample1)
+
+  student_entry_example1 = StudentEntry.create(entry_number: 1, entry_date: Date.new(2024,8,1), mark: mark_example1) 
+
+  student_annotation_example1 = StudentAnnotation.create(number: 1, account_number: 407, credit: 0, debit: 1200.00, student_entry: student_entry_example1, account: account407) 
+  student_annotation_example2 = StudentAnnotation.create(number: 2, account_number: 4727, credit: 100, debit: 84.00, student_entry: student_entry_example1, account: account4727) 
+  student_annotation_example3 = StudentAnnotation.create(number: 3, account_number: 572, credit: 1284.00, debit: 0, student_entry: student_entry_example1, account: account572) 

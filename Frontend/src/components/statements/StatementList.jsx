@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import statementService from "../../services/statementService";
-import StatementForm from "./StatementForm";
-import StatementDetails from "./StatementDetails";
+import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 
 const StatementsList = ({ onSelectStatement }) => {
   const { user, loading: authLoading } = useAuth();
@@ -12,6 +11,8 @@ const StatementsList = ({ onSelectStatement }) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [statementToDelete, setStatementToDelete] = useState(null);
 
   useEffect(() => {
     const fetchStatements = async () => {
@@ -43,6 +44,7 @@ const StatementsList = ({ onSelectStatement }) => {
       setStatements((prevStatements) =>
         prevStatements.filter((statement) => statement.id !== id)
       );
+      setIsDeleteModalOpen(false);
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setErrorMessage("No tienes permiso para eliminar este enunciado.");
@@ -56,6 +58,11 @@ const StatementsList = ({ onSelectStatement }) => {
         }, 5000);
       }
     }
+  };
+
+  const openDeleteModal = (statement) => {
+    setStatementToDelete(statement);
+    setIsDeleteModalOpen(true);
   };
 
   const toggleVisibility = async (id, newVisibility) => {
@@ -107,14 +114,12 @@ const StatementsList = ({ onSelectStatement }) => {
     setFormVisible(false);
   };
 
-  //console.log("Lista de enunciados:", statements);
   return (
     <div className="statement-page__selection--content">
       <h3 className="statement-page__list--header">Enunciados</h3>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <ul className="statement-page__list">
         {statements.map((statement) => {
-          // Verificar si el enunciado es público y no pertenece al usuario conectado
           const isPublicAndNotOwned = statement.is_public && statement.user_id !== user.id;
 
           return (
@@ -123,7 +128,7 @@ const StatementsList = ({ onSelectStatement }) => {
                 <span className="statement-page__definition">{statement.definition}</span>
                 <div className="statement-page__actions">
                   <button
-                    onClick={() => handleDelete(statement.id)}
+                    onClick={() => openDeleteModal(statement)}
                     className={`statement-page__button--delete ${isPublicAndNotOwned ? "disabled" : ""}`}
                     disabled={isPublicAndNotOwned}
                   >
@@ -160,6 +165,13 @@ const StatementsList = ({ onSelectStatement }) => {
           );
         })}
       </ul>
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        title="¿Estás seguro de que deseas eliminar este enunciado?"
+        message={`El enunciado "${statementToDelete?.definition}" será eliminado permanentemente.`}
+        onDelete={() => handleDelete(statementToDelete?.id)}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

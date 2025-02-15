@@ -1,7 +1,7 @@
 import React from "react";
 import "./TaskModal.css";
 
-const Modal = ({ show, onClose, children }) => {
+const TaskModal = ({ show, onClose, children }) => {
   if (!show) return null;
 
   return (
@@ -16,4 +16,4 @@ const Modal = ({ show, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default TaskModal;

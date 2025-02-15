@@ -249,39 +249,225 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   entryExample15= Entry.create(solution:solutionExample15, entry_number: 15, entry_date: Date.new(2024,9,29))
   entryExample16= Entry.create(solution:solutionExample16, entry_number: 16, entry_date: Date.new(2024,9,30))
 
+  # Creación de cuentas / Si está en la base de datos, no se crea
+  Account.find_or_create_by(account_number: 174) do |account|
+    account.description = "Acreedores por arrendamiento financiero a largo plazo"
+    account.accounting_plan = accPlanPyme
+    account.name = "Acreedores por arrendamiento financiero a largo plazo"
+  end
+  
+  Account.find_or_create_by(account_number: 218) do |account|
+    account.description = "Elementos de transporte"
+    account.accounting_plan = accPlanPyme
+    account.name = "Elementos de transporte"
+  end
+  
+  Account.find_or_create_by(account_number: 281) do |account|
+    account.description = "Amortización acumulada del inmovilizado material"
+    account.accounting_plan = accPlanPyme
+    account.name = "Amortización acumulada del inmovilizado material"
+  end
+  
+  Account.find_or_create_by(account_number: 400) do |account|
+    account.description = "Proveedores"
+    account.accounting_plan = accPlanPyme
+    account.name = "Proveedores"
+  end
+  
+  Account.find_or_create_by(account_number: 407) do |account|
+    account.description = "Anticipo a proveedores"
+    account.accounting_plan = accPlanPyme
+    account.name = "Anticipo a proveedores"
+  end
+  
+  Account.find_or_create_by(account_number: 410) do |account|
+    account.description = "Acreedores por prestaciones de servicios"
+    account.accounting_plan = accPlanPyme
+    account.name = "Acreedores por prestaciones de servicios"
+  end
+  
+  Account.find_or_create_by(account_number: 430) do |account|
+    account.description = "Clientes"
+    account.accounting_plan = accPlanPyme
+    account.name = "Clientes"
+  end
+  
+  Account.find_or_create_by(account_number: 437) do |account|
+    account.description = "Envases y embalajes a devolver por clientes"
+    account.accounting_plan = accPlanPyme
+    account.name = "Envases y embalajes a devolver por clientes"
+  end
+  
+  Account.find_or_create_by(account_number: 441) do |account|
+    account.description = "Deudores, efectos comerciales a cobrar"
+    account.accounting_plan = accPlanPyme
+    account.name = "Deudores, efectos comerciales a cobrar"
+  end
+  
+  Account.find_or_create_by(account_number: 460) do |account|
+    account.description = "Anticipo de remuneraciones"
+    account.accounting_plan = accPlanPyme
+    account.name = "Anticipo de remuneraciones"
+  end
+  
+  Account.find_or_create_by(account_number: 465) do |account|
+    account.description = "Remuneraciones pendientes de pago"
+    account.accounting_plan = accPlanPyme
+    account.name = "Remuneraciones pendientes de pago"
+  end
+  
+  Account.find_or_create_by(account_number: 476) do |account|
+    account.description = "Organismos de la Seguridad Social, acreedores"
+    account.accounting_plan = accPlanPyme
+    account.name = "Organismos de la Seguridad Social, acreedores"
+  end
+  
+  Account.find_or_create_by(account_number: 524) do |account|
+    account.description = "Acreedores por arrendamiento financiero a corto plazo"
+    account.accounting_plan = accPlanPyme
+    account.name = "Acreedores por arrendamiento financiero a corto plazo"
+  end
+  
+  Account.find_or_create_by(account_number: 570) do |account|
+    account.description = "Caja, euros"
+    account.accounting_plan = accPlanPyme
+    account.name = "Caja, euros"
+  end
+  
+  Account.find_or_create_by(account_number: 572) do |account|
+    account.description = "Banco e instituciones de crédito c/c vista, euros"
+    account.accounting_plan = accPlanPyme
+    account.name = "Banco e instituciones de crédito c/c vista, euros"
+  end
+  
+  Account.find_or_create_by(account_number: 600) do |account|
+    account.description = "Compras"
+    account.accounting_plan = accPlanPyme
+    account.name = "Compras de mercaderías"
+  end
+  
+  Account.find_or_create_by(account_number: 602) do |account|
+    account.description = "Compras de otros aprovisionamientos"
+    account.accounting_plan = accPlanPyme
+    account.name = "Compras de otros aprovisionamientos"
+  end
+  
+  Account.find_or_create_by(account_number: 606) do |account|
+    account.description = "Descuentos sobre compras por pronto pago"
+    account.accounting_plan = accPlanPyme
+    account.name = "Descuentos sobre compras por pronto pago"
+  end
+  
+  Account.find_or_create_by(account_number: 608) do |account|
+    account.description = "Devoluciones de compras y operaciones similares"
+    account.accounting_plan = accPlanPyme
+    account.name = "Devoluciones de compras y operaciones similares"
+  end
+  
+  Account.find_or_create_by(account_number: 623) do |account|
+    account.description = "Servicios de profesionales independientes"
+    account.accounting_plan = accPlanPyme
+    account.name = "Servicios de profesionales independientes"
+  end
+  
+  Account.find_or_create_by(account_number: 628) do |account|
+    account.description = "Suministros"
+    account.accounting_plan = accPlanPyme
+    account.name = "Suministros"
+  end
+  
+  Account.find_or_create_by(account_number: 640) do |account|
+    account.description = "Sueldos y salarios"
+    account.accounting_plan = accPlanPyme
+    account.name = "Sueldos y salarios"
+  end
+  
+  Account.find_or_create_by(account_number: 642) do |account|
+    account.description = "Seguridad Social a cargo de la empresa"
+    account.accounting_plan = accPlanPyme
+    account.name = "Seguridad Social a cargo de la empresa"
+  end
+  
+  Account.find_or_create_by(account_number: 662) do |account|
+    account.description = "Intereses de deudas"
+    account.accounting_plan = accPlanPyme
+    account.name = "Intereses de deudas"
+  end
+  
+  Account.find_or_create_by(account_number: 671) do |account|
+    account.description = "Pérdidas procedentes del inmovilizado material"
+    account.accounting_plan = accPlanPyme
+    account.name = "Pérdidas procedentes del inmovilizado material"
+  end
+  
+  Account.find_or_create_by(account_number: 681) do |account|
+    account.description = "Amortización del inmovilizado material"
+    account.accounting_plan = accPlanPyme
+    account.name = "Amortización del inmovilizado material"
+  end
+  
+  Account.find_or_create_by(account_number: 700) do |account|
+    account.description = "Ventas de mercaderías"
+    account.accounting_plan = accPlanPyme
+    account.name = "Ventas de mercaderías"
+  end
+  
+  Account.find_or_create_by(account_number: 4751) do |account|
+    account.description = "Hacienda Pública, acreedora por retenciones practicadas"
+    account.accounting_plan = accPlanPyme
+    account.name = "Hacienda Pública, acreedora por retenciones practicadas"
+  end
+  
+  Account.find_or_create_by(account_number: 4727) do |account|
+    account.description = "Hacienda Pública, IGIC soportado"
+    account.accounting_plan = accPlanPyme
+    account.name = "Hacienda Pública, IGIC soportado"
+  end
+  
+  Account.find_or_create_by(account_number: 4757) do |account|
+    account.description = "Hacienda Pública, acreedora por IGIC"
+    account.accounting_plan = accPlanPyme
+    account.name = "Hacienda Pública, acreedora por IGIC"
+  end
+  
+  Account.find_or_create_by(account_number: 4777) do |account|
+    account.description = "Hacienda Pública IGIC repercutido"
+    account.accounting_plan = accPlanPyme
+    account.name = "Hacienda Pública IGIC repercutido"
+  end
+  
+  account174 = Account.find_by(account_number: 174)
+  account218 = Account.find_by(account_number: 218)
+  account281 = Account.find_by(account_number: 281)
+  account400 = Account.find_by(account_number: 400)
+  account407 = Account.find_by(account_number: 407)
+  account410 = Account.find_by(account_number: 410)
+  account430 = Account.find_by(account_number: 430)
+  account437 = Account.find_by(account_number: 437)
+  account441 = Account.find_by(account_number: 441)
+  account460 = Account.find_by(account_number: 460)
+  account465 = Account.find_by(account_number: 465)
+  account476 = Account.find_by(account_number: 476)
+  account524 = Account.find_by(account_number: 524)
+  account570 = Account.find_by(account_number: 570)
+  account572 = Account.find_by(account_number: 572)
+  account600 = Account.find_by(account_number: 600)
+  account602 = Account.find_by(account_number: 602)
+  account606 = Account.find_by(account_number: 606)
+  account608 = Account.find_by(account_number: 608)
+  account623 = Account.find_by(account_number: 623)
+  account628 = Account.find_by(account_number: 628)
+  account640 = Account.find_by(account_number: 640)
+  account642 = Account.find_by(account_number: 642)
+  account662 = Account.find_by(account_number: 662)
+  account671 = Account.find_by(account_number: 671)
+  account681 = Account.find_by(account_number: 681)
+  account700 = Account.find_by(account_number: 700)
+  account4751 = Account.find_by(account_number: 4751)
+  account4727 = Account.find_by(account_number: 4727)
+  account4757 = Account.find_by(account_number: 4757)
+  account4777 = Account.find_by(account_number: 4777)
 
-  account174 = Account.create(account_number: 174, description: "Acreedores por arrendamiento financiero a largo plazo", accounting_plan: accPlanPyme, name: "Acreedores por arrendamiento financiero a largo plazo")
-  account218 = Account.create(account_number: 218, description: "Elementos de transporte", accounting_plan: accPlanPyme, name: "Elementos de transporte")
-  account281 = Account.create(account_number: 281, description: "Amortización acumulada del inmovilizado material", accounting_plan: accPlanPyme, name: "Amortización acumulada del inmovilizado material")
-  account400 = Account.create(account_number: 400, description: "Proveedores", accounting_plan: accPlanPyme, name: "Proveedores")
-  account407 = Account.create(account_number: 407, description: "Anticipo a proveedores", accounting_plan: accPlanPyme, name: "Anticipo a proveedores")
-  account410 = Account.create(account_number: 410, description: "Acreedores por prestaciones de servicios", accounting_plan: accPlanPyme, name: "Acreedores por prestaciones de servicios")
-  account430 = Account.create(account_number: 430, description: "Clientes", accounting_plan: accPlanPyme, name: "Clientes")
-  account437 = Account.create(account_number: 437, description: "Envases y embalajes a devolver por clientes", accounting_plan: accPlanPyme, name: "Envases y embalajes a devolver por clientes")
-  account441 = Account.create(account_number: 441, description: "Deudores, efectos comerciales a cobrar", accounting_plan: accPlanPyme, name: "Deudores, efectos comerciales a cobrar")
-  account460 = Account.create(account_number: 460, description: "Anticipo de remuneraciones", accounting_plan: accPlanPyme, name: "Anticipo de remuneraciones")
-  account465 = Account.create(account_number: 465, description: "Remuneraciones pendientes de pago", accounting_plan: accPlanPyme, name: "Remuneraciones pendientes de pago")
-  account472 = Account.create(account_number: 4727, description: "Hacienda Pública IGIC soportado", accounting_plan: accPlanPyme, name: "Hacienda Pública IGIC soportado")
-  account476 = Account.create(account_number: 476, description: "Organismos de la Seguridad Social, acreedores", accounting_plan: accPlanPyme, name: "Organismos de la Seguridad Social, acreedores")
-  account524 = Account.create(account_number: 524, description: "Acreedores por arrendamiento financiero a corto plazo", accounting_plan: accPlanPyme, name: "Acreedores por arrendamiento financiero a corto plazo")
-  account570 = Account.create(account_number: 570, description: "Caja, euros", accounting_plan: accPlanPyme, name: "Caja, euros")
-  account572 = Account.create(account_number: 572, description: "Banco e instituciones de crédito c/c vista, euros", accounting_plan: accPlanPyme, name: "Banco e instituciones de crédito c/c vista, euros")
-  account600 = Account.create(account_number: 600, description: "Compras", accounting_plan: accPlanPyme, name: "Compras de mercaderías")
-  account602 = Account.create(account_number: 602, description: "Compras de otros aprovisionamientos", accounting_plan: accPlanPyme, name: "Compras de otros aprovisionamientos")
-  account606 = Account.create(account_number: 606, description: "Descuentos sobre compras por pronto pago", accounting_plan: accPlanPyme, name: "Descuentos sobre compras por pronto pago")
-  account608 = Account.create(account_number: 608, description: "Devoluciones de compras y operaciones similares", accounting_plan: accPlanPyme, name: "Devoluciones de compras y operaciones similares")
-  account623 = Account.create(account_number: 623, description: "Servicios de profesionales independientes", accounting_plan: accPlanPyme, name: "Servicios de profesionales independientes")
-  account628 = Account.create(account_number: 628, description: "Suministros", accounting_plan: accPlanPyme, name: "Suministros")
-  account640 = Account.create(account_number: 640, description: "Sueldos y salarios", accounting_plan: accPlanPyme, name: "Sueldos y salarios")
-  account642 = Account.create(account_number: 642, description: "Seguridad Social a cargo de la empresa", accounting_plan: accPlanPyme, name: "Seguridad Social a cargo de la empresa")
-  account662 = Account.create(account_number: 662, description: "Intereses de deudas", accounting_plan: accPlanPyme, name: "Intereses de deudas")
-  account671 = Account.create(account_number: 671, description: "Pérdidas procedentes del inmovilizado material", accounting_plan: accPlanPyme, name: "Pérdidas procedentes del inmovilizado material")
-  account681 = Account.create(account_number: 681, description: "Amortización del inmovilizado material", accounting_plan: accPlanPyme, name: "Amortización del inmovilizado material")
-  account700 = Account.create(account_number: 700, description: "Ventas de mercaderías", accounting_plan: accPlanPyme, name: "Ventas de mercaderías")
-  account4751 = Account.create(account_number: 4751, description: "Hacienda Pública, acreedora por retenciones practicadas", accounting_plan: accPlanPyme, name: "Hacienda Pública, acreedora por retenciones practicadas")
-  account4727 = Account.create(account_number: 4751, description: "Hacienda Pública, IGIC soportado", accounting_plan: accPlanPyme, name: "Hacienda Pública, IGIC soportado")
-  account4757 = Account.create(account_number: 4757, description: "Hacienda Pública, acreedora por IGIC", accounting_plan: accPlanPyme, name: "Hacienda Pública, acreedora por IGIC")
-  account4777 = Account.create(account_number: 4777, description: "Hacienda Pública IGIC repercutido", accounting_plan: accPlanPyme, name: "Hacienda Pública IGIC repercutido")
 
   annotationExample1 = Annotation.create(entry: entryExample1, account: account407, number: 1, debit: 1200.00 , credit: "")
   annotationExample2 = Annotation.create(entry: entryExample1, account: account4727, number: 2, debit: 84.00 , credit: "")
@@ -346,6 +532,7 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   annotationExample50 = Annotation.create(entry: entryExample12, account: account441, number: 8, debit: 9630.00 , credit: "")
   annotationExample51 = Annotation.create(entry: entryExample12, account: account218, number: 9, debit: "" , credit: 26000.00)
   annotationExample52 = Annotation.create(entry: entryExample12, account: account4777, number: 10, debit: "" , credit: 1260.00)
+  puts "Creada annotation con cuenta: #{annotationExample52.account.account_number}"
 
   annotationExample53 = Annotation.create(entry: entryExample13, account: account628, number: 1, debit: 120.00 , credit: "")
   annotationExample54 = Annotation.create(entry: entryExample13, account: account4727, number: 2, debit: 8.40 , credit: "")

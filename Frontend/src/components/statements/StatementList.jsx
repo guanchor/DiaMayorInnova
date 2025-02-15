@@ -172,6 +172,7 @@ const StatementsList = ({ onSelectStatement }) => {
         onDelete={() => handleDelete(statementToDelete?.id)}
         onClose={() => setIsDeleteModalOpen(false)}
       />
+
     </div>
   );
 };

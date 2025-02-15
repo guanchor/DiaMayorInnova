@@ -24,7 +24,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
     updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex].account_number = account.account_number;
     updatedSolutions[solutionIndex].entries[entryIndex].annotations[annotationIndex].account_name = account.name;
     setSolutions(updatedSolutions);
-    setIsModalOpen(false);
+    modalRef.current?.close();
   };
 
   const handleAnnotationChange = (event) => {

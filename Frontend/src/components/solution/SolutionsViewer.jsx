@@ -59,7 +59,7 @@ const SolutionsViewer = ({ solutions }) => {
                     {entry.annotations.map((annotation) => (
                       <li key={annotation.id} className="modal-solutionViewer__annotation-item">
                         <span className="annotation-item--item">{annotation.number}</span> 
-                        <span className="annotation-item--item">{annotation.account_number}</span> 
+                        <span className="annotation-item--item">{annotation.account.account_number}</span> 
                         <span className="annotation-item--item">{annotation.account_name}</span> 
                         <span className="annotation-item--item">{annotation.debit || "0,0"} €</span>
                         <span className="annotation-item--item">{annotation.credit || "0,0"} €</span> 

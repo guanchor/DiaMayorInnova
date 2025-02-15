@@ -9,11 +9,12 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+  const [isUpdated, setIsUpdated] = useState(false);
 
   const prevStatementRef = useRef();
 
   useEffect(() => {
-    if (statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
+    if (!isUpdated && statement?.id && (JSON.stringify(prevStatementRef.current) !== JSON.stringify(statement))) {
       setDefinition(statement?.definition || "");
       setExplanation(statement?.explanation || "");
       setIsPublic(statement?.is_public || false);
@@ -21,7 +22,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
     }
 
     prevStatementRef.current = statement;
-  }, [statement]);
+  }, [statement, isUpdated]);
 
   const clearSuccessMessage = () => {
     setTimeout(() => {
@@ -75,12 +76,10 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
   const validateForm = () => {
     let errors = "";
 
-    // Validar campos del enunciado
     if (!definition.trim()) {
       errors += "La definición es obligatoria.\n";
     }
 
-    // Validar soluciones
     solutions.forEach((solution, solutionIndex) => {
       if (!solution.description.trim()) {
         errors += `La descripción de la solución ${solutionIndex + 1} es obligatoria.\n`;
@@ -117,11 +116,10 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
             errors += `La anotación ${annotationIndex + 1} en el asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} debe tener un valor en débito o crédito.\n`;
           }
 
-          // Sumar débitos y créditos
           totalDebit += debit;
           totalCredit += credit;
         });
-        // Validar que la suma de débitos sea igual a la suma de créditos
+        
         if (totalDebit !== totalCredit) {
           errors += `El asiento ${entryIndex + 1} de la solución ${solutionIndex + 1} no está balanceado. La suma de débitos (${totalDebit}) no es igual a la suma de créditos (${totalCredit}).\n`;
         }
@@ -190,6 +188,7 @@ const StatementForm = ({ onStatementCreated, onAddSolution, solutions, setSoluti
       setIsPublic(false);
       setSolutions([]);
       setFieldErrors({});
+      setIsUpdated(true);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 403) {

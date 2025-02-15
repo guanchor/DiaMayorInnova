@@ -83,7 +83,7 @@ class StatementsController < ApplicationController
         entries: {
           include: {
             annotations: {
-              include: { account: { only: [:name] } },
+              include: { account: { only: [:account_number, :name] } },
               methods: [:account_name],
               order: :number
             }
@@ -265,8 +265,14 @@ class StatementsController < ApplicationController
             if solution_attr[:_destroy] == "1" || solution_attr[:_destroy] == true
               solution.destroy
             else
-              solution.update(solution_attr.except(:_destroy).permit(:description))
+              # Actualiza la solución
+              unless solution.update(solution_attr.except(:_destroy, :entries_attributes).permit(:description))
+                Rails.logger.error "Error al actualizar la solución: #{solution.errors.full_messages}"
+                @statement.errors.add(:base, "Error en la solución: #{solution.errors.full_messages.join(', ')}")
+                next
+              end
   
+              # Procesa las entradas de la solución
               if solution_attr[:entries_attributes].present?
                 solution_attr[:entries_attributes].each do |entry_attr|
                   if entry_attr[:id].present?
@@ -275,37 +281,64 @@ class StatementsController < ApplicationController
                       if entry_attr[:_destroy] == "1" || entry_attr[:_destroy] == true
                         entry.destroy
                       else
-                        entry.update(entry_attr.except(:_destroy).permit(:entry_number, :entry_date))
+                        # Actualiza la entrada
+                        unless entry.update(entry_attr.except(:_destroy, :annotations_attributes).permit(:entry_number, :entry_date))
+                          Rails.logger.error "Error al actualizar la entrada: #{entry.errors.full_messages}"
+                          @statement.errors.add(:base, "Error en la entrada: #{entry.errors.full_messages.join(', ')}")
+                          next
+                        end
   
-                      if entry_attr[:annotations_attributes].present?
-                        entry_attr[:annotations_attributes].each do |annotation_attr|
-                          if annotation_attr[:id].present?
-                            annotation = entry.annotations.find_by(id: annotation_attr[:id])
-                            if annotation_attr[:_destroy] == "1" || annotation_attr[:_destroy] == true
-                              annotation.destroy
+                        # Procesa las anotaciones de la entrada
+                        if entry_attr[:annotations_attributes].present?
+                          entry_attr[:annotations_attributes].each do |annotation_attr|
+                            if annotation_attr[:id].present?
+                              annotation = entry.annotations.find_by(id: annotation_attr[:id])
+                              if annotation
+                                if annotation_attr[:_destroy] == "1" || annotation_attr[:_destroy] == true
+                                  annotation.destroy
+                                else
+                                  # Actualiza la anotación
+                                  unless annotation.update(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
+                                    Rails.logger.error "Error al actualizar la anotación: #{annotation.errors.full_messages}"
+                                    @statement.errors.add(:base, "Error en la anotación: #{annotation.errors.full_messages.join(', ')}")
+                                  end
+                                end
+                              end
                             else
-                              annotation.update(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
+                              # Crea una nueva anotación
+                              annotation = entry.annotations.build(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
+                              unless annotation.save
+                                Rails.logger.error "Error al crear la anotación: #{annotation.errors.full_messages}"
+                                @statement.errors.add(:base, "Error al crear la anotación: #{annotation.errors.full_messages.join(', ')}")
+                              end
                             end
-                          else
-                            entry.annotations.create(annotation_attr.except(:_destroy, :account_name).permit(:number, :credit, :debit, :account_number))
                           end
                         end
                       end
                     end
+                  else
+                    # Crea una nueva entrada
+                    entry = solution.entries.build(entry_attr.except(:_destroy, :annotations_attributes).permit(:entry_number, :entry_date))
+                    unless entry.save
+                      Rails.logger.error "Error al crear la entrada: #{entry.errors.full_messages}"
+                      @statement.errors.add(:base, "Error al crear la entrada: #{entry.errors.full_messages.join(', ')}")
+                    end
                   end
-                else
-                  entry = solution.entries.create(entry_attr.except(:_destroy).permit(:entry_number, :entry_date))
                 end
               end
             end
           end
-        end
-      else
-        unless solution_attr[:_destroy] == "1" || solution_attr[:_destroy] == true
-          solution = @statement.solutions.create(solution_attr.except(:_destroy).permit(:description))
+        else
+          # Crea una nueva solución
+          unless solution_attr[:_destroy] == "1" || solution_attr[:_destroy] == true
+            solution = @statement.solutions.build(solution_attr.except(:_destroy, :entries_attributes).permit(:description))
+            unless solution.save
+              Rails.logger.error "Error al crear la solución: #{solution.errors.full_messages}"
+              @statement.errors.add(:base, "Error al crear la solución: #{solution.errors.full_messages.join(', ')}")
+            end
+          end
         end
       end
     end
   end
-end
 end

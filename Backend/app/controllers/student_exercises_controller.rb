@@ -1,7 +1,3 @@
-#Mostrar todas las notas por usuario (de los enunciados, no de la tarea)
-#Crear otro método para mostrar todos los exercises de una tarea filtrada por parámetro
-# Mark y exercise asociado, por lo que falta devolver el nombre del estudiante (todo con includes para las tablas relacionadas) EXERCISE - MARK - STUDENT
-
 class StudentExercisesController < ApplicationController
   before_action :authenticate_user!
 
@@ -45,6 +41,28 @@ class StudentExercisesController < ApplicationController
     end
   end
 
+  def students_mark_list
+    @exercises = Exercise
+      .includes(:task, :marks, user: :class_group) # Cargamos Task, Marks y la relación con el estudiante
+      .joins(task: { user: :teacher_class_groups }) # Unimos con los TeacherClassGroups del profesor actual
+      .where(teacher_class_groups: { user_id: current_user.id }) # Filtramos por el profesor actual
+  
+    result = @exercises.map do |exercise|
+      task = exercise.task 
+      student = exercise.user 
+      avMark = exercise.marks.average(:mark).to_f
+  
+      {
+        task: task.title,
+        student: student.name, 
+        mark: avMark
+      }
+    end
+  
+    render json: result
+  end
+  
+
   private
 
   def exercise_params
@@ -70,6 +88,7 @@ class StudentExercisesController < ApplicationController
     )
   end
 
+end
   # def student_marks_list
   #   #Array {}
   #   #media inicializar = 0
@@ -99,4 +118,3 @@ class StudentExercisesController < ApplicationController
   #   #consulta user_id para nombre
   #   #Array.push({"Nombre":  ,"Media": #media})
   # end
-end

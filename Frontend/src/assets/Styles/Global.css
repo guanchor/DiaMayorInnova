@@ -344,6 +344,18 @@ a {
   border-radius: var(--r-xxs);
 }
 
+body {
+
+  & .tooltip {
+    background-color: var(--Color-Principal);
+    border-radius: var(--r-xxs);
+    color: var(--Color-White);
+    font-size: var(--text-desktop-small);
+    opacity: 95%;
+  }
+
+}
+
 input::placeholder {
   color: var(--Color-grey-200);
 }

@@ -1,7 +1,7 @@
 import http from "../http-common";
 
 const getAll = async () => {
-  const response = await http.get(`/student_exercises`);
+  const response = await http.get(`/student_exercises/find_mark_exercise_by_user`);
   console.log("all exercise info of user ", response)
   return response;
 };

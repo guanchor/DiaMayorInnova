@@ -74,6 +74,8 @@ class ExercisesController < ApplicationController
     end
   end
 
+  
+
   private
     def exercise_params
       params.require(:exercise).permit( :task_id, user_id: [])

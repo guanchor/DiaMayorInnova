@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import SolutionsViewer from "../solution/SolutionsViewer";
 import statementService from "../../services/statementService";
 import "./TaskPage.css";
+import useStatements from "../../hooks/useStatements";
 
 const StatementsSelection = ({
-  statements,
   selectedStatements,
   handleStatementSelection,
-  handleEditSolutions,
-  solutions,
-  editMode,
   showCheckboxes = true,
 }) => {
   const [currentSolutions, setCurrentSolutions] = useState([]);
@@ -17,6 +14,7 @@ const StatementsSelection = ({
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatementId, setSelectedStatementId] = useState(null);
+  const { statements, solutions, editMode, handleEditSolutions } = useStatements();
 
   const viewSolutions = (statementId) => {
     console.log("ID del enunciado:", statementId);

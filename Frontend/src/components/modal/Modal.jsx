@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./Modal.css";
 
-const Modal = ({ children, btnText = "Abrir Modal", modalTitle = "Modal" }) => {
+const Modal = ({ children, btnText = "Abrir Modal", modalTitle = "Modal", needOpen = true }) => {
   const modalRef = useRef(null);
 
   const openModal = (e) => {
@@ -16,7 +16,7 @@ const Modal = ({ children, btnText = "Abrir Modal", modalTitle = "Modal" }) => {
 
   return (
     <>
-      <button className="btn light" onClick={openModal}>
+      <button className="btn light" onClick={needOpen ? openModal : (e) => e.preventDefault()}>
         {btnText}
       </button>
 

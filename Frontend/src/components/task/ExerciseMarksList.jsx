@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import getStudentsMarkList from "../../services/exerciseMarksList";
+import Modal from "../modal/Modal";
 
 const ExerciseMarksList = () => {
     const location = useLocation();
@@ -27,20 +28,22 @@ const ExerciseMarksList = () => {
 
     return (
         <div>
-            <h2>Listado de notas</h2>
-            {exerciseMarksList.length > 0 ? (
-                <ul>
-                    {exerciseMarksList.map((student, index) => (
-                        <li key={index}>
-                            {student.student} - {student.task} - {student.mark}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No hay notas disponibles</p>
-            )}
+            {exerciseMarksList.map((student, index) => (
+                    <Modal
+                        btnText={
+                            <div className="mark_container" key={index}>
+                                <p className='mark_mark'>{student.mark}</p>
+                                <p className='mark-text_tittle'>{student.student}</p>
+                                <p className='mark-text_tittle'>{student.task}</p>
+                            </div>
+                        }
+                        needOpen = {false}
+                        modalTitle={student.task}
+                    >                     
+                    </Modal>
+                ))}
         </div>
-    );
-};
+    )
+}    
 
 export default ExerciseMarksList;

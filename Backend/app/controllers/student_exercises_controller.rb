@@ -41,27 +41,28 @@ class StudentExercisesController < ApplicationController
     end
   end
 
+
   def students_mark_list
-    @exercises = Exercise
-      .includes(:task, :marks, user: :class_group) # Cargamos Task, Marks y la relación con el estudiante
-      .joins(task: { user: :teacher_class_groups }) # Unimos con los TeacherClassGroups del profesor actual
-      .where(teacher_class_groups: { user_id: current_user.id }) # Filtramos por el profesor actual
-  
-    result = @exercises.map do |exercise|
-      task = exercise.task 
-      student = exercise.user 
-      avMark = exercise.marks.average(:mark).to_f
-  
+    task_id = params[:task_id] # Get ID by param
+
+    @students_marks = Exercise
+      .includes(:marks, :task, :user)     # Get relations
+      .where(task_id: task_id)            # Filter all exercises from a specific task
+      .where(users: { role: "student" })  # Only students
+      .joins(:user)                       # Join all student users
+    
+    result = @students_marks.map do |exercise|
       {
-        task: task.title,
-        student: student.name, 
-        mark: avMark
+        task: exercise.task.title,  
+        student: exercise.user.name,
+        mark: exercise.total_mark 
       }
-    end
-  
-    render json: result
   end
-  
+
+  render json: result
+end
+
+
 
   private
 

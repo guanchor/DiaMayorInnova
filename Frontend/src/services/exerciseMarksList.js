@@ -1,11 +1,9 @@
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import http from "../http-common";
 
-const getStudentsMarkList = async () => {
+const getStudentsMarkList = async (task_id) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/student_exercises/students_mark_list`);
-        console.log("Serviciooo: ", response.data)
-        return response.data
+        const response = http.get(`/student_exercises/students_mark_list?task_id=${task_id}`);
+        return response
     }
     catch (error) {
         console.error('Error fetching students mark list', error);

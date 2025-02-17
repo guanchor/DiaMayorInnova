@@ -25,7 +25,7 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
   };
 
   const handleShowMarks = () => {
-    navigate("/student-marks");
+    navigate("/student-marks", { state: { task_id: selectedTask.id } });
   }
 
   return (
@@ -75,7 +75,7 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
           Eliminar tarea
         </button>
         <button onClick={handleShowMarks} className="btn light">
-          Botonto
+          Ver notas
         </button>
       </footer>
     </article>

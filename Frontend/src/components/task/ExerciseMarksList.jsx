@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import getStudentsMarkList from "../../services/exerciseMarksList";
 
 const ExerciseMarksList = () => {
@@ -7,21 +7,23 @@ const ExerciseMarksList = () => {
     const navigate = useNavigate();
     const [exerciseMarksList, setExerciseMarksList] = useState([]);
 
+    //Get task_id
+    const taskId = location.state?.task_id;
+
     useEffect(() => {
-        const markList = async () => {
+        if (!taskId) return; // No ID, no request
+
+        const fetchMarkList = async () => {
             try {
-                const data = await getStudentsMarkList();
-                console.log(data)
+                const {data} = await getStudentsMarkList(taskId); // ID as param
                 setExerciseMarksList(data);
-            }
-            catch (error)
-            {
+            } catch (error) {
                 console.error("Error devolviendo la lista", error);
             }
         };
-        markList();
-    }, []);
 
+        fetchMarkList();
+    }, [taskId]); // When task_id changes
 
     return (
         <div>
@@ -39,7 +41,6 @@ const ExerciseMarksList = () => {
             )}
         </div>
     );
-
-}
+};
 
 export default ExerciseMarksList;

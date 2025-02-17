@@ -34,34 +34,35 @@ class StudentExercisesController < ApplicationController
 
   def create
     @exercise = current_user.exercises.build(exercise_params)
-
+  
     if @exercise.save
-      render json: @exercise, status: :created
+      @mark = Mark.new(exercise_id: @exercise.id, mark: 5, statement_id: 9)
+      
+      if @mark.save
+        render json: { exercise: @exercise, mark: @mark }, status: :created
+      else
+        render json: @mark.errors, status: :unprocessable_entity
+      end
     else
       render json: @exercise.errors, status: :unprocessable_entity
     end
   end
 
-
   def find_mark_exercise_by_user
 
     @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
-    @exercises.each do |exercise|
-      exercise.marks.each do |mark|
-      end
-    end
 
-    puts "
+    # puts "
     
-    *****************************************
-    ****************************************
+    # *****************************************
+    # ****************************************
     
-    Suma total de marcas: #{@total_mark}
+    # Suma total de marcas: #{@total_mark}
     
-    *********************************
-    *********************************
+    # *********************************
+    # *********************************
     
-    "
+    # "
   
     render json: @exercises.as_json(
       include: {

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import "./EntriesSection.css"
 
-const EntriesSection = ({ selectedStatement, taskId, existingExerciseId, onStatementComplete }) => {
+const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
   const navigate = useNavigate();
@@ -125,22 +125,22 @@ const EntriesSection = ({ selectedStatement, taskId, existingExerciseId, onState
   const handleSubmitStatement = () => {
     if (!selectedStatement) return;
 
-  setAllStatementsData((prevData) => ({
-    ...prevData,
-    [selectedStatement.id]: { entries, annotations },
-  }));
+    setAllStatementsData((prevData) => ({
+      ...prevData,
+      [selectedStatement.id]: { entries, annotations },
+    }));
 
-  setStatementData((prevData) => ({
-    ...prevData,
-    [selectedStatement.id]: { entries: [], annotations: [] },
-  }));
+    setStatementData((prevData) => ({
+      ...prevData,
+      [selectedStatement.id]: prevData[selectedStatement.id] || { entries: [], annotations: [] },
+    }));
 
-  onStatementComplete(selectedStatement.id, { entries, annotations });
+    onStatementComplete(selectedStatement.id, { entries, annotations });
   };
 
   const handleFinalSubmit = () => {
     if (!exercise || !taskId) {
-      console.error("El ID del ejercicio no está definido.");
+      console.error("El objeto exercise no está definido correctamente:", exercise);
       return;
     }
 
@@ -171,6 +171,8 @@ const EntriesSection = ({ selectedStatement, taskId, existingExerciseId, onState
       },
     };
 
+    console.log("DATA SUBMIT - verificar", dataToSubmit)
+
     taskSubmitService(dataToSubmit, navigate)
       .then(() => {
         console.log("Datos enviados correctamente");
@@ -181,29 +183,42 @@ const EntriesSection = ({ selectedStatement, taskId, existingExerciseId, onState
       });
   };
 
+  const updateEntryDate = (statementId, entryNumber, newDate) => {
+    setStatementData((prevData) => ({
+      ...prevData,
+      [statementId]: {
+        ...prevData[statementId],
+        entries: prevData[statementId].entries.map((entry) =>
+          entry.entry_number === entryNumber ? { ...entry, entry_date: newDate } : entry
+        ),
+      },
+    }));
+  };
+
   return (
     <div className='entry_container'>
-      <EntryHeader addEntry={() => addEntry(selectedStatement.id) } selectedStatement={selectedStatement}/>
+      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} />
       <section className='modes-entries-containner scroll-style'>
         {entries.map((entry, index) => (
-              <Entry
-                key={entry.entry_number}
-                entryIndex={entry.entry_number}
-                number={index + 1}
-                date={entry.entry_date}
-                // markId={entry.mark_id}
-                annotations={annotations.filter(
-                  (annotation) => annotation.student_entry_id === entry.entry_number
-                )}
-                updateAnnotation={updateAnnotation}
-                deleteAnnotation={(annotationUid) =>
-                  deleteAnnotation(selectedStatement.id, annotationUid)
-                }
-                addAnnotation={(entryId) => addAnnotation(selectedStatement.id, entryId)}
-                deleteEntry={removeEntry}
-                selectedStatement={selectedStatement}
-              />
-            ))}
+          <Entry
+            key={entry.entry_number}
+            entryIndex={entry.entry_number}
+            number={index + 1}
+            date={entry.entry_date}
+            // markId={entry.mark_id}
+            annotations={annotations.filter(
+              (annotation) => annotation.student_entry_id === entry.entry_number
+            )}
+            updateAnnotation={updateAnnotation}
+            deleteAnnotation={(annotationUid) =>
+              deleteAnnotation(selectedStatement.id, annotationUid)
+            }
+            addAnnotation={(entryId) => addAnnotation(selectedStatement.id, entryId)}
+            deleteEntry={removeEntry}
+            selectedStatement={selectedStatement}
+            updateEntryDate={updateEntryDate}
+          />
+        ))}
       </section>
       <button onClick={handleSubmitStatement} className='btn light'>Guardar y Continuar</button>
       <button onClick={handleFinalSubmit} className='btn'>

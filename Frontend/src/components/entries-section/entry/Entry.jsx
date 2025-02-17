@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
-const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement }) => {
+const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement }) => {
   console.log("Annotations recibidos en Entry:", annotations);
   const [entryStatus, setEntryStatus] = useState(false);
-  const [entrydate, setDate] = useState(date);
+  const [entrydate, setDate] = useState("2024-10-10");
   const formattedDate = new Date(`${entrydate}T00:00:00`).toLocaleDateString("es-ES");
   const [total, setTotal] = useState(0);
 
@@ -14,7 +14,9 @@ const Entry = ({ number, date = "2024-10-10", annotations, updateAnnotation, del
   }
 
   const handleChangeDate = (e) => {
-    setDate(e.target.value)
+    const newDate = e.target.value;
+    setDate(newDate);
+    updateEntryDate(selectedStatement.id, entryIndex, newDate);
   }
 
   const calculateTotal = () => {

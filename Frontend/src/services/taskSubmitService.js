@@ -1,6 +1,13 @@
 import userExerciseDataService from "./userExerciseDataService";
 
 const taskSubmitService = async ({ entries, annotations, taskId, exerciseId }, navigate) => {
+  if (!exerciseId) {
+    console.error("Error: exerciseId es undefined en taskSubmitService");
+    return;
+  }
+
+  console.log("✅ Enviando datos para ejercicio ID antes del try:", exerciseId);
+
   const mark = 5;
   const safeEntries = Array.isArray(entries) ? entries : [];
   const safeAnnotations = Array.isArray(annotations) ? annotations : [];
@@ -34,7 +41,10 @@ const taskSubmitService = async ({ entries, annotations, taskId, exerciseId }, n
 
   const exerciseData = prepareExerciseData();
 
+  console.log("✅ Datos preparados:", JSON.stringify(exerciseData, null, 2));
+
   try {
+    console.log("🔍 Intentando actualizar con exerciseId:", exerciseId);
     await userExerciseDataService.update(exerciseId, exerciseData)
     navigate("/home");
   } catch (err) {

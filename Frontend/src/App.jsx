@@ -19,6 +19,7 @@ import HelpExample from './components/help-example/HelpExample';
 import HelpExampleList from './components/help-example/ListHelpExample';
 import AddHelpExample from './components/help-example/AddHelpExample';
 import TaskListAndDetails from './components/task/taskListAndDetails';
+import ExerciseMarksList from './components/task/ExerciseMarksList'; // pruebaaaaaaaa
 import StatementsList from './components/statements/StatementList';
 import Modes from './pages/modes/Modes';
 import AccountingPlans from './pages/accounting-plan/AccountingPlans';
@@ -64,6 +65,7 @@ function App() {
                     <Route path="/accounts/:id" element={<Account />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/task-edit" element={<TaskCreateForm />} />
+                    <Route path="student-marks" element={<ExerciseMarksList/>}/>
                     <Route path="/statements" element={<StatementsList />} />
                     <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />

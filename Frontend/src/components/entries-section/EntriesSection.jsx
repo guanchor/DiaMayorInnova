@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import "./EntriesSection.css"
 
-const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise }) => {
+const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise, examStarted }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
   const accounts = exercise?.chartOfAccounts || [];
@@ -227,10 +227,14 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
           />
         ))}
       </section>
-      <button onClick={handleSubmitStatement} className='btn light'>Guardar y Continuar</button>
-      <button onClick={handleFinalSubmit} className='btn'>
-        Enviar Examen
-      </button>
+      <div className='modes-entries-container--buttons'>
+        <button onClick={handleSubmitStatement} className='btn light'>
+          Guardar y Continuar
+        </button>
+        <button onClick={handleFinalSubmit} className='btn '>
+          Enviar Examen
+        </button>
+      </div>
     </div >
   )
 }

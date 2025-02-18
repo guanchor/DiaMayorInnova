@@ -174,14 +174,14 @@ const ExamPage = () => {
     <div className='modes_page_container exam-color'>
       <p className='head_task'>Modo Examen - {exercise.task.title}</p>
       {!examStarted && (
-        <>
-          <button onClick={startExam} disabled={!examAvailable}>
+        <div className='modes_page_container--button'>
+          <button className="btn" onClick={startExam} disabled={!examAvailable}>
             Comenzar examen
           </button>
           {!examAvailable && (
-            <p>El examen estará disponible a: {new Date(exercise.task.opening_date).toLocaleString()}</p>
+            <p className='exam-available'><strong>El examen estará disponible a: {new Date(exercise.task.opening_date).toLocaleString()}</strong></p>
           )}
-        </>
+        </div>
       )}
       {examStarted && (
         <div className="timer">

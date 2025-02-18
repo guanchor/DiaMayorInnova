@@ -22,3 +22,12 @@
   flex-direction: column;
   gap: var(--r-s);
 }
+
+.modes-entries-container--buttons {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: var(--gap-s);
+  padding: var(--gap-s) var(--gap-xxl) var(--gap-s) var(--gap-l);
+}

@@ -46,16 +46,33 @@ const StudentAside = () => {
 
   return (
     <section className={exercises.length > 0 ? "student__aside " : "student__aside asidelSection__img"}>
-      <p className='aside__tittle'>Próximas Entregas</p>
+      <header className='student-aside__header'>
+        <h2 className='aside__tittle'>Próximas Entregas</h2>
+      </header>
       {loading ? (
         <p>Cargando...</p>
       ) : exercises.length > 0 ? (
-        <ul>
+        <ul className='student-aside__list-items'>
           {exercises.map((exercise) => (
-            <li key={exercise.id} onClick={() => handleClick(exercise.id)} style={{ cursor: "pointer" }}>
-              <p><strong>Tarea:</strong> {exercise.task.title || "Sin título"}</p>
-              <p><strong>Apertura:</strong> {new Date(exercise.task.opening_date).toLocaleString()}</p>
-              <p><strong>Cierre:</strong> {new Date(exercise.task.closing_date).toLocaleString()}</p>
+            <li key={exercise.id} className='student-aside__list-item' onClick={() => handleClick(exercise.id)} style={{ cursor: "pointer" }}>
+              <div className="student-aside__list-info">
+                <div className="student-aside__info-header">
+                  <p><strong>Tarea:</strong> {exercise.task.title || "Sin título"}</p>
+                  <div className="student-aside__square">
+                    <i className="fi fi-rr-book-alt"></i>
+                  </div>
+                </div>
+                <div className="student-aside__list-info--body">
+                  <div className="student-aside__date">
+                    <i className="fi fi-rr-calendar"></i>
+                    <p><strong>Apertura:</strong> {new Date(exercise.task.opening_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}</p>
+                  </div>
+                  <div className="student-aside__date">
+                    <i className="fi fi-rr-calendar"></i>
+                    <p><strong>Cierre:</strong> {new Date(exercise.task.closing_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}</p>
+                  </div>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

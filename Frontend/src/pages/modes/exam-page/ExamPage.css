@@ -1,3 +1,15 @@
 .exam-color {
   background-color: var(--Color-red-200);
 }
+
+.modes_page_container--button{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.exam-available {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

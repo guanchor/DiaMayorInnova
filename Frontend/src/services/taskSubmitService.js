@@ -20,7 +20,7 @@ const taskSubmitService = async (data, navigate) => {
       student_annotations_attributes: (data.annotations || [])
         .filter((annotation) => annotation.student_entry_id === entry.entry_number)
         .map(({ account_id, account_number, credit, debit }) => ({
-          account_id,
+          account_id: account_id || 9999,
           account_number,
           credit: credit || 0,
           debit: debit || 0,

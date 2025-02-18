@@ -9,6 +9,18 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
 
+  useEffect(() => {
+    const loadAccounts = async () => {
+      try {
+        const response = await http.get("/accounts");
+        setAccounts(response.data);
+      } catch (error) {
+        console.error("Error al cargar las cuentas:", error);
+      }
+    };
+    loadAccounts();
+  }, []);
+
   const openAccountModal = async () => {
     try {
       const response = await http.get("/accounts");
@@ -35,7 +47,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     const updated = { 
       ...annotation, 
       account_number: account.account_number, 
-      account_name: account.name 
+      account_name: account.name,
+      account_id: account.id 
     };
     updateAnnotation(updated);
     modalRef.current?.close();
@@ -46,6 +59,19 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     console.log("Name:", name, "Value:", value);  // Depuración
     const updatedAnnotation = { ...annotation, [name]: value };
 
+    if (name === 'account_number') {
+      const foundAccount = accounts.find(
+        acc => acc.account_number === value
+      );
+      console.log("Account seleccionada:", foundAccount);
+      if (foundAccount) {
+        updatedAnnotation.account_id = foundAccount.id;
+        updatedAnnotation.account_name = foundAccount.name;
+      } else {
+        updatedAnnotation.account_id = "";
+        updatedAnnotation.account_name = "";
+      }
+    }
     if (name === 'debit' && value) {
       updatedAnnotation.credit = '';
     } else if (name === 'credit' && value) {

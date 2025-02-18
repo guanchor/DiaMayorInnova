@@ -95,7 +95,7 @@ class StudentExercisesController < ApplicationController
     if @exercise.update(exercise_params)
       render json: @exercise, status: :ok
     else
-      render json: @exercise.errors, status: :unprocessable_entity
+      render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -106,6 +106,7 @@ class StudentExercisesController < ApplicationController
       :task_id,
       marks_attributes: [
         :id,
+        :statement_id,
         :mark,
         :_destroy,
         student_entries_attributes: [

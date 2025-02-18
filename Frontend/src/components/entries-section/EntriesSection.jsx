@@ -10,8 +10,10 @@ import "./EntriesSection.css"
 const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
+  const accounts = exercise?.chartOfAccounts || [];
   const navigate = useNavigate();
-
+  
+  console.log("Accounts EXIST?", accounts);
   const currentStatementData = selectedStatement ? statementData[selectedStatement.id] : null;
   const entries = currentStatementData?.entries || [];
   const annotations = currentStatementData?.annotations || [];
@@ -30,8 +32,14 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
 
       setStatementData((prevData) => ({
         ...prevData,
-        [statementId]: { entries: [], annotations: [] },
-      }));
+    [statementId]: {
+      ...prevData[statementId],
+      entries: [...(prevData[statementId]?.entries || []), {
+        entry_number: (prevData[statementId]?.entries?.length || 0) + 1,
+        entry_date: "2024-10-10",
+      }],
+    },
+  }));
     }
 
     const newEntry = {
@@ -68,7 +76,17 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     if (!statementData[statementId]) {
       setStatementData((prevData) => ({
         ...prevData,
-        [statementId]: { entries: [], annotations: [] },
+        [statementId]: {
+          ...prevData[statementId],
+          annotations: [...(prevData[statementId]?.annotations || []), {
+            uid: `annotation-${Date.now()}`,
+            student_entry_id: entryId,
+            account_id: "",
+            account_number: "",
+            debit: 0,
+            credit: 0,
+          }],
+        },
       }));
     }
 
@@ -96,6 +114,16 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
 
   const updateAnnotation = (statementId, annotationUid, updatedAnnotation) => {
     if (!statementId || !statementData[statementId]) return;
+
+    if (updatedAnnotation.account_number !== undefined) {
+      const foundAccount = accounts.find(
+        acc => acc.account_number === updatedAnnotation.account_number
+      );
+      
+      updatedAnnotation.account_id = foundAccount 
+        ? foundAccount.id 
+        : "";
+    }
 
     setStatementData((prevData) => ({
       ...prevData,

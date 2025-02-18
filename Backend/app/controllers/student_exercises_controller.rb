@@ -51,18 +51,6 @@ class StudentExercisesController < ApplicationController
   def find_mark_exercise_by_user
 
     @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
-
-    # puts "
-    
-    # *****************************************
-    # ****************************************
-    
-    # Suma total de marcas: #{@total_mark}
-    
-    # *********************************
-    # *********************************
-    
-    # "
   
     render json: @exercises.as_json(
       include: {

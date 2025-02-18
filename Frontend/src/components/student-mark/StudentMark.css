@@ -3,6 +3,9 @@
   height: 100%;
   padding: var(--gap-l) var(--gap-l);
 
+  & .defaultModal {
+    min-width: 800px;
+  }
 }
 
 .mark__title {

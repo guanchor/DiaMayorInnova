@@ -44,16 +44,16 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   }, []);
 
   const handleAccountSelect = (account) => {
-    const updated = { 
-      ...annotation, 
-      account_number: account.account_number, 
+    const updated = {
+      ...annotation,
+      account_number: account.account_number,
       account_name: account.name,
-      account_id: account.id 
+      account_id: account.id
     };
     updateAnnotation(updated);
     modalRef.current?.close();
   };
-  
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     console.log("Name:", name, "Value:", value);  // Depuración
@@ -99,7 +99,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             placeholder='12345'
             onChange={handleChange}
             value={annotation.account_number || ''}
-            min={0} 
+            min={0}
             ref={accountNumberInputRef} />
         </div>
         <div className="form_group">
@@ -110,7 +110,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             placeholder='Cuenta carne'
             name='account_name'
             onChange={handleChange}
-            value={annotation.account_name || ''} 
+            value={annotation.account_name || ''}
             readOnly />
         </div>
         <div className="form_group">

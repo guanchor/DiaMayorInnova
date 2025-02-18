@@ -90,32 +90,3 @@ end
   end
 
 end
-  # def student_marks_list
-  #   #Array {}
-  #   #media inicializar = 0
-  #   # task = ""
-    
-
-  #     @exercises = Exercise.includes(marks: {}).where(user_id: current_user.id)
-  #     render json: @exercises.as_json(
-  #       task = task.id(name) # Devolver título de la tarea
-  #       include: {
-  #         marks: {} # Devuelve la nota de todos los enunciados que forman la tarea
-  #       }
-  #     )
-
-  #     exercises.each do | exercise |
-  #       # bucle de exercise; exercises.each | mark |
-  #       # se hace la #media
-
-  #     llamar al metodo private con las variables
-
-    
-  # end
-
-  # private
-
-  # def addStudentMark #(user_id, #media, task_id)
-  #   #consulta user_id para nombre
-  #   #Array.push({"Nombre":  ,"Media": #media})
-  # end

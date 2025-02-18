@@ -9,6 +9,7 @@ class Exercise < ApplicationRecord
     return nil unless task.is_exam
 
     current_time = Time.current
+
     if current_time < task.opening_date
       0
     elsif current_time > task.closing_date

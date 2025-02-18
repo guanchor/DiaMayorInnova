@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :student_exercises, only: [:index, :show, :create, :update] do
     member do
       post 'start'
+      post 'finish'
     end
   end
   

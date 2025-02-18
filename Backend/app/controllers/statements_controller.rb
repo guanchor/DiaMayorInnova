@@ -137,6 +137,27 @@ class StatementsController < ApplicationController
     end
   end
 
+=begin   
+def update
+    Rails.logger.debug "Params received in update: #{params[:statement].inspect}"
+  
+    if @statement.user_id == current_user.id || current_user.admin?
+      unless process_account_ids(@statement)  # Validamos cuentas antes de actualizar
+        render json: @statement.errors, status: :unprocessable_entity
+        return
+      end
+  
+      if @statement.update(statement_params)
+        render json: @statement, status: :ok
+      else
+        render json: @statement.errors, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "No autorizado" }, status: :forbidden
+    end
+  end
+=end
+
   def destroy
     if @statement.user_id == current_user.id || current_user.admin?
       @statement.solutions.destroy_all

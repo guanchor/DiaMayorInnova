@@ -1,7 +1,45 @@
+import React, { useEffect, useRef, useState } from "react";
+import Modal from "../../../modal/Modal";
+import http from "../../../../http-common";
 import "./EntryForm.css"
 
 const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   console.log("Annotation recibido en EntryForm:", annotation);
+  const [accounts, setAccounts] = useState([]);
+  const accountNumberInputRef = useRef(null);
+  const modalRef = useRef(null);
+
+  const openAccountModal = async () => {
+    try {
+      const response = await http.get("/accounts");
+      setAccounts(response.data);
+      modalRef.current?.showModal();
+    } catch (error) {
+      console.error("Error al cargar las cuentas:", error);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "F1" && document.activeElement === accountNumberInputRef.current) {
+        event.preventDefault();
+        openAccountModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleAccountSelect = (account) => {
+    const updated = { 
+      ...annotation, 
+      account_number: account.account_number, 
+      account_name: account.name 
+    };
+    updateAnnotation(updated);
+    modalRef.current?.close();
+  };
   
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,7 +73,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             placeholder='12345'
             onChange={handleChange}
             value={annotation.account_number || ''}
-            min={0} />
+            min={0} 
+            ref={accountNumberInputRef} />
         </div>
         <div className="form_group">
           <input
@@ -45,7 +84,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             placeholder='Cuenta carne'
             name='account_name'
             onChange={handleChange}
-            value={annotation.account_name || ''} />
+            value={annotation.account_name || ''} 
+            readOnly />
         </div>
         <div className="form_group">
           <input
@@ -71,6 +111,21 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
         </div>
         <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
       </form>
+
+      <Modal ref={modalRef} title="Seleccionar Cuenta" showButton={false}>
+        <div className="account-list">
+          {accounts.map((account) => (
+            <div
+              key={account.account_number}
+              className="account-item"
+              onClick={() => handleAccountSelect(account)}
+            >
+              <span className="account-item_account">{account.account_number}</span>
+              <span className="account-item_account">{account.name}</span>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   )
 }

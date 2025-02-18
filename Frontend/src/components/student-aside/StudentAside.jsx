@@ -12,6 +12,11 @@ const StudentAside = () => {
   const { user } = useAuth();
 
   const handleClick = (exerciseId) => {
+    const selectedExercise = exercises.find((ex) => ex.id === exerciseId);
+    if (selectedExercise && selectedExercise.started) {
+      alert("Este examen ya se ha iniciado y no se puede acceder nuevamente.");
+      return;
+    }
     navigate(`/modes/examen/${exerciseId}`);
   };
 

@@ -46,7 +46,7 @@ class StudentExercisesController < ApplicationController
           }
         }
       ),
-      statements: @exercise.task.statements, # Asegurar que se envía correctamente
+      statements: @exercise.task.statements,
       time_remaining: time_remaining
     }
   end

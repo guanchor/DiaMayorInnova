@@ -2,20 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import EntriesSection from '../../../components/entries-section/EntriesSection';
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo';
-import "./ExamPage.css";
 import HelpSection from '../../../components/help-section/HelpSection';
 import userExerciseDataService from "../../../services/userExerciseDataService";
+import "./ExamPage.css";
 
 const ExamPage = () => {
-
   const { exerciseId } = useParams();
-  const navigate = useNavigate();
   const [exercise, setExercise] = useState(null);
   const [statements, setStatements] = useState([]);
   const [examStarted, setExamStarted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [completedStatements, setCompletedStatements] = useState({});
+  const navigate = useNavigate();
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -33,15 +32,21 @@ const ExamPage = () => {
           throw new Error("Respuesta vacía o malformada");
         }
 
-        const { exercise, statements } = response.data;
-
+        const { exercise, statements, time_remaining } = response.data;
+        console.log("Opening date:", exercise.task.opening_date);
+        console.log("Closing date:", exercise.task.closing_date);
+        console.log("Tiempo restante recibido:", time_remaining);
+        console.log("Hora actual:", new Date());
         if (exercise) {
           setExercise(exercise);
           setStatements(statements || []);
 
-          if (exercise.task?.is_exam && exercise.time_remaining > 0) {
+          if (exercise.task?.is_exam && exercise.started) {
             setExamStarted(true);
-            setTimeRemaining(exercise.time_remaining);
+            setTimeRemaining(time_remaining);
+          } else {
+            setExamStarted(false);
+            setTimeRemaining(0);
           }
         }
       } catch (err) {
@@ -62,35 +67,82 @@ const ExamPage = () => {
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [examStarted]);
 
-    if (examStarted && timeRemaining > 0) {
-      const timer = setInterval(() => {
-        setTimeRemaining((prevTime) => {
-          const newTimeRemaining = prevTime - 1;
-          if (newTimeRemaining <= 0) {
-            clearInterval(timer);
-            setExamStarted(false);
-            alert("Se ha agotado el tiempo. El examen ha terminado.");
+  const finishExam = async () => {
+    try {
+      const response = await userExerciseDataService.finish(exerciseId);
+      if (response && response.status === 200) {
+        console.log("Examen finalizado correctamente");
+      } else {
+        console.error("Error al finalizar el examen", response);
+      }
+    } catch (err) {
+      console.error("Error al finalizar el examen", err);
+    }
+  };
+
+  useEffect(() => {
+    if (examStarted) {
+      const handleVisibilityChange = async () => {
+        if (document.visibilityState === "hidden") {
+          const confirmation = window.confirm(
+            "Si sales de la pestaña, perderás tu progreso y no hay vuelta atrás. ¿Desea continuar?"
+          );
+          if (confirmation) {
+            await finishExam();
+            alert("Examen terminado.");
             navigate("/home");
+          }
+        }
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }
+  }, [examStarted, navigate, exerciseId]);
+
+  useEffect(() => {
+    if (examStarted) {
+      const timer = setInterval(() => {
+        setTimeRemaining(prevTime => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
             return 0;
           }
-          console.log("Tiempo restante: ", newTimeRemaining);
-          return newTimeRemaining;
+          return prevTime - 1;
         });
       }, 1000);
 
       return () => clearInterval(timer);
     }
+  }, [examStarted]);
 
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [examStarted, timeRemaining, navigate]);
+  useEffect(() => {
+    if (timeRemaining === 0 && examStarted) {
+      alert("Se ha agotado el tiempo. El examen ha terminado.");
+      navigate("/home");
+    }
+  }, [timeRemaining, examStarted, navigate]);
 
   const startExam = async () => {
-    setExamStarted(true);
+    const now = new Date();
+    const openingDate = new Date(exercise.task.opening_date);
+    if (now < openingDate) {
+      alert("El examen aún no está disponible.");
+      return;
+    }
+
     try {
       const response = await userExerciseDataService.start(exerciseId);
       if (response && response.status === 200) {
         console.log("Examen iniciado con éxito");
+        setExamStarted(true);
+        const closingDate = new Date(exercise.task.closing_date);
+        const remaining = Math.floor((closingDate - new Date()) / 1000);
+        setTimeRemaining(remaining);
+        setExercise({ ...exercise, started: true });
       } else {
         console.error("Error al iniciar el examen: ", response);
       }
@@ -114,12 +166,22 @@ const ExamPage = () => {
   };
 
   if (!exercise) return <p>Cargando...</p>;
+  const now = new Date();
+  const openingDate = new Date(exercise.task.opening_date);
+  const examAvailable = now >= openingDate;
 
   return (
     <div className='modes_page_container exam-color'>
       <p className='head_task'>Modo Examen - {exercise.task.title}</p>
       {!examStarted && (
-        <button onClick={startExam}>Comenzar examen</button>
+        <>
+          <button onClick={startExam} disabled={!examAvailable}>
+            Comenzar examen
+          </button>
+          {!examAvailable && (
+            <p>El examen estará disponible a: {new Date(exercise.task.opening_date).toLocaleString()}</p>
+          )}
+        </>
       )}
       {examStarted && (
         <div className="timer">
@@ -135,7 +197,11 @@ const ExamPage = () => {
         exercise={exercise}
       />
       <HelpSection />
-      <AuxSectionTwo statements={statements} examStarted={examStarted} onSelectStatement={setSelectedStatement} />
+      <AuxSectionTwo
+        statements={statements}
+        examStarted={examStarted}
+        onSelectStatement={setSelectedStatement}
+      />
     </div>
   )
 }

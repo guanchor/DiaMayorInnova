@@ -75,7 +75,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     const newAnnotation = {
       uid: `annotation-${Date.now()}`,
       student_entry_id: entryId,
-      account_id: 1,
+      account_id: "",
       account_number: "",
       debit: 0,
       credit: 0,
@@ -108,10 +108,12 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     }));
   };
 
-  const deleteAnnotation = (annotationUid) => {
+  const handleDeleteAnnotation = (annotationUid) => {
     if (!selectedStatement) return;
 
-    const updatedAnnotations = annotations.filter((annotation) => annotation.uid !== annotationUid);
+    const updatedAnnotations = annotations.filter(
+      (annotation) => annotation.uid !== annotationUid
+    );
 
     setStatementData((prevData) => ({
       ...prevData,
@@ -139,48 +141,27 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
   };
 
   const handleFinalSubmit = () => {
-    if (!exercise || !taskId) {
+    if (!exercise || !exercise.id) {
       console.error("El objeto exercise no está definido correctamente:", exercise);
       return;
     }
 
-    const marksAttributes = Object.entries(allStatementsData).map(([statementId, data]) => {
-      return {
-        statement_id: statementId,
-        mark: 5,
-        student_entries_attributes: data.entries.map((entry) => ({
-          entry_number: entry.entry_number,
-          entry_date: entry.entry_date,
-          student_annotations_attributes: data.annotations
-            .filter((annotation) => annotation.student_entry_id === entry.entry_number)
-            .map(({ account_id, account_number, credit, debit }) => ({
-              account_id,
-              account_number,
-              credit: credit || 0,
-              debit: debit || 0,
-            })),
-        })),
-      };
-    });
+    const updatedStatementsData = { ...allStatementsData, ...statementData };
+
+    if (Object.keys(updatedStatementsData).length === 0) {
+      console.error("❌ Error: No hay datos en updatedStatementsData", updatedStatementsData);
+      return;
+    }
 
     const dataToSubmit = {
-      exercise: {
-        id: exercise.id,
-        task_id: exercise.task.id,
-        marks_attributes: marksAttributes,
-      },
+      statementsData: updatedStatementsData,
+      taskId: exercise.task.id,
+      exerciseId: exercise.id,
     };
 
-    console.log("DATA SUBMIT - verificar", dataToSubmit)
+    console.log("✅ DATA SUBMIT - Verificar antes de enviar:", dataToSubmit);
 
-    taskSubmitService(dataToSubmit, navigate)
-      .then(() => {
-        console.log("Datos enviados correctamente");
-        navigate("/home");
-      })
-      .catch((err) => {
-        console.error("Error al enviar los datos:", err);
-      });
+    taskSubmitService(dataToSubmit, navigate);
   };
 
   const updateEntryDate = (statementId, entryNumber, newDate) => {
@@ -210,9 +191,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
               (annotation) => annotation.student_entry_id === entry.entry_number
             )}
             updateAnnotation={updateAnnotation}
-            deleteAnnotation={(annotationUid) =>
-              deleteAnnotation(selectedStatement.id, annotationUid)
-            }
+            deleteAnnotation={handleDeleteAnnotation}
             addAnnotation={(entryId) => addAnnotation(selectedStatement.id, entryId)}
             deleteEntry={removeEntry}
             selectedStatement={selectedStatement}

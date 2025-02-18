@@ -41,7 +41,7 @@ it("Debe abrir la modal cuando se hace clic en eliminar", () => {
     </>
   );
 
-  expect(screen.getByText(/Estás seguro de que deseas eliminar al usuario:/i)).toBeInTheDocument();
+  expect(screen.getByText(/Esta acción no se puede deshacer./i)).toBeInTheDocument();
 })
 
 it("Debe llamar a handleDeleteClick cuando se hace clic en eliminar", async () => {

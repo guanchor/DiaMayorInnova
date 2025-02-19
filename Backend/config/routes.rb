@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       post 'start'
       post 'finish'
     end
+    collection do
+      get 'find_mark_exercise_by_user'
+    end
   end
   
   resources :exercises do

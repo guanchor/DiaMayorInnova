@@ -1,12 +1,17 @@
 .mark__section {
   width: 100%;
   height: 100%;
-  padding: var(--gap-l) var(--gap-xl);
+  padding: var(--gap-l) var(--gap-l);
+
+  & .defaultModal {
+    min-width: 800px;
+  }
 }
 
-.mark_tittle {
+.mark__title {
   font-size: var(--text-desktop-subtitles-2);
   font-weight: 700;
+  padding: 0 var(--gap-xxs) var(--gap-xs) var(--gap-xxs);
 }
 
 .principalSection__img {
@@ -31,31 +36,91 @@
 }
 
 .marks__wrapper {
-  padding: var(--gap-xl);
+  padding: var(--gap-xl) 0;
   display: flex;
   flex-direction: column;
   gap: var(--gap-m);
+
+  overflow-y: auto;
+  height: 94%;
+  padding: var(--gap-xxs);
+
+  &>.btn {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
 }
 
 .mark_container {
+  width: 100%;
   padding: var(--gap-s) var(--gap-xl);
-  height: 80px;
   display: flex;
   justify-content: left;
   align-items: center;
-  gap: var(--gap-l);
-  border-bottom: solid 1px var(--Color-grey-200);
+  gap: var(--gap-xl);
 }
 
-.mark-text_tittle {
+.mark-text_title {
+  width: 85%;
   font-weight: 700;
-  font-size: var(--text-desktop-body-large);
+  font-size: var(--text-desktop-body-small);
   color: var(--Color-Principal);
-  margin-bottom: var(--gap-xxxs);
 
 }
 
 .mark_info {
   color: var(--Color-Principal-claro);
   font-size: var(--text-desktop-small);
+}
+
+.exercise_marks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+
+  padding: var(--gap-m) 0;
+  border-bottom: 1px solid var(--Color-grey-100);
+}
+
+
+.exercise_annotations {
+  display: flex;
+  flex-direction: column;
+
+  & th {
+    text-align: left;
+  }
+}
+
+.exercise_modal__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+  overflow-y: auto;
+  max-height: 60vh;
+  width: 100%;
+}
+
+.exercise_entries__container {
+  margin-bottom: var(--gap-s);
+  padding: var(--gap-xs) var(--gap-m);
+  border-radius: var(--r-xs);
+  margin-right: var(--gap-xs);
+}
+
+.exercise_modal__mark {
+  width: 280px;
+
+}
+
+.exercise_modal__header {
+  padding: var(--gap-s) 0 var(--gap-m) 0;
+  border-bottom: 1px solid var(--Color-grey-100);
+}
+
+.exercise_entry__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--gap-xs);
 }

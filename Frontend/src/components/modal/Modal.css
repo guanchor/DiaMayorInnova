@@ -9,11 +9,16 @@
   padding: var(--gap-m) var(--gap-xxl);
   border-radius: var(--r-s);
   border: none;
+  max-width: 900px;
+  min-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
 }
 
 .modal__content {
-  margin-top: var(--gap-s);
-
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .modal__header {
@@ -25,7 +30,12 @@
   padding-bottom: var(--gap-s);
 }
 
-.account-list{
+.modal__h2 {
+  font-size: var(--text-desktop-lead);
+  font-weight: 600;
+}
+
+.account-list {
   padding: var(--gap-m);
 }
 

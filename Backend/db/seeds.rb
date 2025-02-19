@@ -146,6 +146,7 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   account1 = Account.create(account_number: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlanPyme, name: "Cuenta 1")
   account2 = Account.create(account_number: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
   account3 = Account.create(account_number: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
+  account9999 = Account.create(id:9999, account_number: 9999, description: "Cuenta Dummy", accounting_plan: accPlan3, name: "Cuenta dummy")
 
   annotation1 = Annotation.create(entry: entry1, account: account1, number: 1, debit: 0 , credit: 100)
   annotation2 = Annotation.create(entry: entry1, account: account2, number: 2, debit: 100 , credit: 0)
@@ -468,7 +469,6 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   account4757 = Account.find_by(account_number: 4757)
   account4777 = Account.find_by(account_number: 4777)
 
-
   annotationExample1 = Annotation.create(entry: entryExample1, account: account407, number: 1, debit: 1200.00 , credit: "")
   annotationExample2 = Annotation.create(entry: entryExample1, account: account4727, number: 2, debit: 84.00 , credit: "")
   annotationExample3 = Annotation.create(entry: entryExample1, account: account572, number: 3, debit: "" , credit: 1284.00)
@@ -532,7 +532,6 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   annotationExample50 = Annotation.create(entry: entryExample12, account: account441, number: 8, debit: 9630.00 , credit: "")
   annotationExample51 = Annotation.create(entry: entryExample12, account: account218, number: 9, debit: "" , credit: 26000.00)
   annotationExample52 = Annotation.create(entry: entryExample12, account: account4777, number: 10, debit: "" , credit: 1260.00)
-  puts "Creada annotation con cuenta: #{annotationExample52.account.account_number}"
 
   annotationExample53 = Annotation.create(entry: entryExample13, account: account628, number: 1, debit: 120.00 , credit: "")
   annotationExample54 = Annotation.create(entry: entryExample13, account: account4727, number: 2, debit: 8.40 , credit: "")
@@ -552,3 +551,24 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   annotationExample65 = Annotation.create(entry: entryExample16, account: account4777, number: 1, debit: 1820.00 , credit: "")
   annotationExample66 = Annotation.create(entry: entryExample16, account: account4727, number: 2, debit: "" , credit: 631.24)
   annotationExample67 = Annotation.create(entry: entryExample16, account: account4757, number: 3, debit: "" , credit: 1188.76)
+
+  exercise_example1 = Exercise.create(user: user5, task: taskExample1) 
+  
+  mark_example1 = Mark.create(mark: 10, exercise: exercise_example1, statement: statementExample1)
+  mark_example2 = Mark.create(mark: 5, exercise: exercise_example1, statement: statementExample2)
+  mark_example3 = Mark.create(mark: 7.5, exercise: exercise_example1, statement: statementExample3)
+
+  student_entry_example1 = StudentEntry.create(entry_number: 1, entry_date: Date.new(2024,8,1), mark: mark_example1) 
+  student_entry_example2 = StudentEntry.create(entry_number: 2, entry_date: Date.new(2024,8,3), mark: mark_example2) 
+  student_entry_example3 = StudentEntry.create(entry_number: 3, entry_date: Date.new(2024,8,7), mark: mark_example3) 
+
+  student_annotation_example1 = StudentAnnotation.create(number: 1, account_number: 407, credit: 0, debit: 1200.00, student_entry: student_entry_example1, account: account407) 
+  student_annotation_example2 = StudentAnnotation.create(number: 2, account_number: 4727, credit: 100, debit: 84.00, student_entry: student_entry_example1, account: account4727) 
+  student_annotation_example3 = StudentAnnotation.create(number: 3, account_number: 572, credit: 1284.00, debit: 0, student_entry: student_entry_example1, account: account572) 
+
+  student_annotation_example4 = StudentAnnotation.create(number: 1, account_number: 600, credit: 0, debit: 2940.00, student_entry: student_entry_example2, account: account600) 
+  student_annotation_example5 = StudentAnnotation.create(number: 2, account_number: 602, credit: 0, debit: 50.00, student_entry: student_entry_example2, account: account602) 
+  student_annotation_example6 = StudentAnnotation.create(number: 3, account_number: 4727, credit: 0, debit: 125.30, student_entry: student_entry_example2, account: account4727) 
+  
+  student_annotation_example7 = StudentAnnotation.create(number: 1, account_number: 400, credit:0.0, debit: 419.71, student_entry: student_entry_example3, account: account400) 
+  student_annotation_example8 = StudentAnnotation.create(number: 2, account_number: 608, credit:392.25, debit: 0.0, student_entry: student_entry_example3, account: account608) 

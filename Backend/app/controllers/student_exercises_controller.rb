@@ -7,12 +7,12 @@ class StudentExercisesController < ApplicationController
       include: {
         task: { only: [:id, :title, :opening_date, :closing_date] },
         marks: {
-          include: {
-            student_entries: {
-              include: :student_annotations
+            include: {
+              student_entries: {
+                include: :student_annotations
+              }
             }
           }
-        }
       }
     )
   end
@@ -53,12 +53,31 @@ class StudentExercisesController < ApplicationController
 
   def create
     @exercise = current_user.exercises.build(exercise_params)
-
+  
     if @exercise.save
       render json: @exercise, status: :created
     else
       render json: @exercise.errors, status: :unprocessable_entity
     end
+  end
+
+  def find_mark_exercise_by_user
+
+    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
+  
+    render json: @exercises.as_json(
+      include: {
+        task: {only: [:title]},  
+        marks: {
+            include: {
+              student_entries: {
+                include: :student_annotations
+              }
+            }
+          }
+      },
+      methods: [:total_mark]
+    )
   end
 
   def start

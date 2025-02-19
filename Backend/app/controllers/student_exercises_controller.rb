@@ -55,13 +55,7 @@ class StudentExercisesController < ApplicationController
     @exercise = current_user.exercises.build(exercise_params)
   
     if @exercise.save
-      @mark = Mark.new(exercise_id: @exercise.id, mark: 5, statement_id: 9)
-      
-      if @mark.save
-        render json: { exercise: @exercise, mark: @mark }, status: :created
-      else
-        render json: @mark.errors, status: :unprocessable_entity
-      end
+      render json: @exercise, status: :created
     else
       render json: @exercise.errors, status: :unprocessable_entity
     end

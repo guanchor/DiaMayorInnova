@@ -4,7 +4,7 @@ const getAll = (id) => {
   try {
     console.log(id)
     const response = http.get(`/student_annotations?student_entry_id=${id}`);
-    console.log(response, "repsuesta annota")
+    console.log(response, "respuesta anotación")
     return response;
   } catch (error) {
     console.error("Error en la petición:", error);

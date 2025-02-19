@@ -29,7 +29,7 @@ const Modal = forwardRef(({ children, btnText = "Abrir Modal", modalTitle = "Mod
 
       <dialog ref={modalRef} className="defaultModal">
         <header className="modal__header">
-          <h2>{modalTitle}</h2>
+          <h2 className="modal__h2">{modalTitle}</h2>
           <button className="btn light" onClick={closeModal}>X</button>
         </header>
         <div className="modal__content">

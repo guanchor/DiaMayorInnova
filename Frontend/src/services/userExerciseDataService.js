@@ -68,10 +68,16 @@ const remove = async (id) => {
   }
 };
 
+const getAllCalification = async () => {
+  const response = await http.get(`/student_exercises/find_mark_exercise_by_user`);
+  console.log("all exercise info of user ", response)
+  return response;
+};
 
 
 export default {
   getAll,
+  getAllCalification,
   getById,
   create,
   update,

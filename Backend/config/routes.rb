@@ -25,7 +25,8 @@ Rails.application.routes.draw do
       post 'finish'
     end
     collection do
-       get 'students_mark_list'
+      get 'students_mark_list'
+      get 'find_mark_exercise_by_user'
     end
   end
   

@@ -1,19 +1,18 @@
-import useEntry from '../../hooks/useEntry'
-import useAnnotation from '../../hooks/useAnnotation'
+import { useState, useEffect, useRef } from 'react'
 import taskSubmitService from '../../services/taskSubmitService'
 import EntryHeader from './entry-header/EntryHeader'
 import Entry from './entry/Entry'
+import Modal from '../modal/Modal';
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import "./EntriesSection.css"
 
 const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise, examStarted }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
   const accounts = exercise?.chartOfAccounts || [];
+  const confirmModalRef = useRef(null);
   const navigate = useNavigate();
 
-  console.log("Accounts EXIST?", accounts);
   const currentStatementData = selectedStatement ? statementData[selectedStatement.id] : null;
   const entries = currentStatementData?.entries || [];
   const annotations = currentStatementData?.annotations || [];
@@ -231,10 +230,32 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
         <button onClick={handleSubmitStatement} className='btn light' disabled={!examStarted}>
           Guardar y Continuar
         </button>
-        <button onClick={handleFinalSubmit} className='btn' disabled={!examStarted}>
+        <button onClick={() => confirmModalRef.current?.showModal()} className='btn' disabled={!examStarted}>
           Enviar Examen
         </button>
       </div>
+
+      <Modal ref={confirmModalRef} modalTitle="Confirmar envío" showButton={false}>
+        <p>¿Está seguro de enviar el examen?</p>
+        <div className="modal__buttons">
+          <button 
+            className="btn" 
+            onClick={() => {
+              confirmModalRef.current?.close();
+              handleFinalSubmit();
+            }}
+          >
+            Sí
+          </button>
+          <button 
+            className="btn light" 
+            onClick={() => confirmModalRef.current?.close()}
+          >
+            No
+          </button>
+        </div>
+      </Modal>
+      
     </div >
   )
 }

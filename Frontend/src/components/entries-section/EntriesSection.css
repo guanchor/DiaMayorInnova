@@ -31,3 +31,15 @@
   gap: var(--gap-s);
   padding: var(--gap-s) var(--gap-xxl) var(--gap-s) var(--gap-l);
 }
+
+.modal__buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: var(--gap-m);
+
+  & .btn {
+    box-shadow: var(--box-shadow-btn);
+  }
+}

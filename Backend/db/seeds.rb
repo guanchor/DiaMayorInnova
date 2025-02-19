@@ -146,6 +146,7 @@ puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
   account1 = Account.create(account_number: 1234, description: "Cuenta de prueba número 1", accounting_plan: accPlanPyme, name: "Cuenta 1")
   account2 = Account.create(account_number: 6543, description: "Cuenta de prueba número 2", accounting_plan: accPlan2, name: "Cuenta 2")
   account3 = Account.create(account_number: 2711, description: "Cuenta de prueba número 3", accounting_plan: accPlan3, name: "Cuenta 3")
+  account9999 = Account.create(id:9999, account_number: 9999, description: "Cuenta Dummy", accounting_plan: accPlan3, name: "Cuenta dummy")
 
   annotation1 = Annotation.create(entry: entry1, account: account1, number: 1, debit: 0 , credit: 100)
   annotation2 = Annotation.create(entry: entry1, account: account2, number: 2, debit: 100 , credit: 0)

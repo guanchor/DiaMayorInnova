@@ -84,6 +84,8 @@ class StudentExercisesController < ApplicationController
       },
       methods: [:total_mark]
     )
+  end
+
   def start
     @exercise = Exercise.find(params[:id])
 

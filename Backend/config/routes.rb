@@ -23,6 +23,8 @@ Rails.application.routes.draw do
     member do
       post 'start'
       post 'finish'
+    end
+    collection do
       get 'find_mark_exercise_by_user'
     end
   end

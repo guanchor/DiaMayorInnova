@@ -10,7 +10,7 @@ const StudentMark = () => {
   const [includeMark, setIncludeMark] = useState(false)
 
   useEffect(() => {
-    userExerciseDataService.getAll()
+    userExerciseDataService.getAllCalification()
       .then(({ data }) => {
         console.log(data)
         setMarks(data)
@@ -24,7 +24,7 @@ const StudentMark = () => {
       <h2 className='mark__title'>Calificaciones</h2>
       <div className="marks__wrapper">
         {
-          includeMark && marks.map((task, index) => (
+          includeMark && marks.map((task) => (
 
             <Modal
               key={"modal" + task.id}
@@ -78,7 +78,7 @@ const StudentMark = () => {
                                   <tbody>
                                     {
                                       entry.student_annotations.map((annotation, index) => (
-                                        <tr>
+                                        <tr key={index + annotation.account_number}>
                                           <td>{index + 1}</td>
                                           <td>{annotation.account_number}</td>
                                           <td>{annotation.credit}</td>

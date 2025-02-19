@@ -32,6 +32,10 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
     }
   };
 
+  const handleShowMarks = () => {
+    navigate("/student-marks", { state: { task_id: selectedTask.id } });
+  }
+
   return (
     <article className="task-details">
       <header className="task-details__header">
@@ -78,6 +82,9 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
         </button>
         <button onClick={handleDeleteTask} className="task-details__footer--delete-btn">
           Eliminar tarea
+        </button>
+        <button onClick={handleShowMarks} className="btn light">
+          Ver notas
         </button>
       </footer>
 

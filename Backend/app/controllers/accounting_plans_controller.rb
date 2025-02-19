@@ -31,7 +31,7 @@ class AccountingPlansController < ApplicationController
         if @accountingPlan.update(accounting_plan_params)
             render json: @accountingPlan
         else
-            render json @accountingPlan.errors, status: :unprocessable_entity
+            render json: @accountingPlan.errors, status: :unprocessable_entity
         end
     end
 

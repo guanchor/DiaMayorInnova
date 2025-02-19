@@ -18,13 +18,14 @@ Rails.application.routes.draw do
   resources :student_entries
   resources :student_annotations
   resources :marks
-  
+
   resources :student_exercises, only: [:index, :show, :create, :update] do
     member do
       post 'start'
       post 'finish'
     end
     collection do
+      get 'students_mark_list'
       get 'find_mark_exercise_by_user'
     end
   end

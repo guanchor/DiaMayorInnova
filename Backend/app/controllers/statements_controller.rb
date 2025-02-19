@@ -4,30 +4,26 @@ class StatementsController < ApplicationController
   before_action :authorize_statement, only: [:show, :update, :destroy, :get_solutions, :add_solution]
 
   def index
-    if current_user.student?
-      render json: { error: "No autorizado" }, status: :forbidden
-    else
-      @statements = if current_user.admin?
-        Statement.includes(solutions: { entries: :annotations })
-          else
-            Statement.includes(solutions: { entries: :annotations }).where("is_public = ? OR user_id = ?", true, current_user.id)
-          end
-        render json: @statements.as_json(
+    return render json: { error: "No autorizado" }, status: :forbidden if current_user.student?
+    
+    @statements = Statement.includes(solutions: { entries: :annotations })
+    @statements = @statements.where("is_public = ? OR user_id = ?", true, current_user.id) unless current_user.admin?
+
+    render json: @statements.as_json(
+      include: {
+        solutions: {
           include: {
-            solutions: {
+            entries: {
               include: {
-                entries: {
-                  include: {
-                    annotations: {
-                      order: :number
-                    }
-                  }
+                annotations: {
+                  order: :number
                 }
               }
             }
           }
-        )
-    end
+        }
+      }
+    )
   end
 
   def show

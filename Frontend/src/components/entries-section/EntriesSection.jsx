@@ -206,7 +206,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
 
   return (
     <div className='entry_container'>
-      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} />
+      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} />
       <section className='modes-entries-containner scroll-style'>
         {entries.map((entry, index) => (
           <Entry
@@ -228,10 +228,10 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
         ))}
       </section>
       <div className='modes-entries-container--buttons'>
-        <button onClick={handleSubmitStatement} className='btn light'>
+        <button onClick={handleSubmitStatement} className='btn light' disabled={!examStarted}>
           Guardar y Continuar
         </button>
-        <button onClick={handleFinalSubmit} className='btn '>
+        <button onClick={handleFinalSubmit} className='btn' disabled={!examStarted}>
           Enviar Examen
         </button>
       </div>

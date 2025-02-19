@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 import exerciseService from "../../services/userExerciseDataService";
+import Modal from "../modal/Modal";
 import "./StudentAside.css";
 
 const StudentAside = () => {
@@ -9,12 +10,13 @@ const StudentAside = () => {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const modalRef = useRef(null);
   const { user } = useAuth();
 
   const handleClick = (exerciseId) => {
     const selectedExercise = exercises.find((ex) => ex.id === exerciseId);
     if (selectedExercise && selectedExercise.started) {
-      alert("Este examen ya se ha iniciado y no se puede acceder nuevamente.");
+      modalRef.current?.showModal();
       return;
     }
     navigate(`/modes/examen/${exerciseId}`);
@@ -22,7 +24,29 @@ const StudentAside = () => {
 
   useEffect(() => {
     if (!user?.id) return;
-
+    /*
+        const fetchExercises = async () => {
+          try {
+            const response = await exerciseService.getAll();
+            if (response?.data) {
+              console.log("Ejercicios obtenidos:", response.data);
+              const currentDate = new Date();
+              const filteredExercises = response.data.filter((exercise) => {
+                const closingDate = new Date(exercise.task.closing_date);
+                return closingDate > currentDate;
+              });
+              setExercises(filteredExercises);
+            } else {
+              console.log("No hay datos de ejercicios");
+              setExercises([]);
+            }
+          } catch (error) {
+            console.error("Error obteniendo los ejercicios:", error);
+            setExercises([]);
+          } finally {
+            setLoading(false);
+          }
+    */
     const fetchExercises = async () => {
       try {
         const response = await exerciseService.getAll();
@@ -79,6 +103,14 @@ const StudentAside = () => {
       ) : (
         <p>No tienes tareas asignadas.</p>
       )}
+
+      <Modal
+        ref={modalRef}
+        modalTitle="Atención"
+        showButton={false}
+      >
+        <p>Este examen ya se ha iniciado y no se puede acceder nuevamente.</p>
+      </Modal>
     </section>
   )
 }

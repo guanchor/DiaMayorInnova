@@ -1,6 +1,11 @@
+import React, { useRef } from 'react';
+import Modal from "../../modal/Modal";
 import "./EntryHeader.css"
 
-const EntryHeader = ({ addEntry, selectedStatement }) => {
+const EntryHeader = ({ addEntry, selectedStatement, examStarted }) => {
+
+  const modalRef = useRef(null);
+  
   return (
     <div className='entry_header'>
       <h2>Asientos Contables</h2>
@@ -10,14 +15,22 @@ const EntryHeader = ({ addEntry, selectedStatement }) => {
             <option value="">Seleccione un asiento</option>
           </select>
         </label>
-        <button className='btn' onClick={() => {
+        <button className='btn' disabled={!examStarted} onClick={() => {
           if (selectedStatement) {
             addEntry(selectedStatement.id);
           } else {
-            alert("Por favor, selecciona un enunciado antes de agregar un asiento.");
+            modalRef.current?.showModal();
           }
         }}><i className='fi fi-rr-plus'></i>Asiento</button>
       </section>
+
+      <Modal
+        ref={modalRef}
+        modalTitle="Atención"
+        showButton={false}
+      >
+        <p>Por favor, selecciona un enunciado antes de agregar un asiento.</p>
+      </Modal>
     </div>
   )
 }

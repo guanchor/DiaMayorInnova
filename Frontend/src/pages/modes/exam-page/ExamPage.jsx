@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import EntriesSection from '../../../components/entries-section/EntriesSection';
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo';
 import HelpSection from '../../../components/help-section/HelpSection';
 import userExerciseDataService from "../../../services/userExerciseDataService";
+import Modal from "../../../components/modal/Modal"
 import "./ExamPage.css";
 
 const ExamPage = () => {
@@ -14,6 +15,9 @@ const ExamPage = () => {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [completedStatements, setCompletedStatements] = useState({});
+  const modalNotAvailableRef = useRef(null);
+  const modalTimeExpiredRef = useRef(null);
+  const modalFinishedRef = useRef(null);
   const navigate = useNavigate();
 
   const formatTime = (timeInSeconds) => {
@@ -92,7 +96,7 @@ const ExamPage = () => {
           );
           if (confirmation) {
             await finishExam();
-            alert("Examen terminado.");
+            modalFinishedRef.current?.showModal();
             navigate("/home");
           }
         }
@@ -121,7 +125,7 @@ const ExamPage = () => {
 
   useEffect(() => {
     if (timeRemaining === 0 && examStarted) {
-      alert("Se ha agotado el tiempo. El examen ha terminado.");
+      modalTimeExpiredRef.current?.showModal();
       navigate("/home");
     }
   }, [timeRemaining, examStarted, navigate]);
@@ -130,7 +134,7 @@ const ExamPage = () => {
     const now = new Date();
     const openingDate = new Date(exercise.task.opening_date);
     if (now < openingDate) {
-      alert("El examen aún no está disponible.");
+      modalNotAvailableRef.current?.showModal();
       return;
     }
 
@@ -195,6 +199,7 @@ const ExamPage = () => {
         onStatementComplete={handleStatementComplete}
         completedStatements={completedStatements}
         exercise={exercise}
+        examStarted={examStarted}
       />
       <HelpSection />
       <AuxSectionTwo
@@ -202,6 +207,45 @@ const ExamPage = () => {
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
       />
+
+      <Modal
+        ref={modalNotAvailableRef}
+        modalTitle="Examen terminado"
+        showButton={false}
+      >
+        <p>Examen terminado.</p>
+        <button className="btn light" onClick={() => modalNotAvailableRef.current?.close()}>
+          Cerrar
+        </button>
+      </Modal>
+
+      <Modal
+        ref={modalNotAvailableRef}
+        modalTitle="Examen no disponible"
+        showButton={false}
+      >
+        <p>El examen aún no está disponible.</p>
+        <button className="btn light" onClick={() => modalNotAvailableRef.current?.close()}>
+          Cerrar
+        </button>
+      </Modal>
+
+      <Modal
+        ref={modalTimeExpiredRef}
+        modalTitle="Tiempo Expirado"
+        showButton={false}
+      >
+        <p>Se ha agotado el tiempo. El examen ha terminado.</p>
+        <button
+          className="btn light"
+          onClick={() => {
+            modalTimeExpiredRef.current?.close();
+            navigate("/home");
+          }}
+        >
+          Cerrar
+        </button>
+      </Modal>
     </div>
   )
 }

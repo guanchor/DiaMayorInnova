@@ -1,7 +1,14 @@
 .student__aside {
-  padding: var(--gap-xxl) var(--gap-xl);
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  padding: var(--gap-s);
+  overflow: hidden;
+
+  & header {
+    border-bottom: 1px solid var(--Color-grey-100);
+    margin-bottom: var(--gap-s);
+  }
 }
 
 .asidelSection__img {
@@ -11,7 +18,106 @@
   background-size: 15rem;
 }
 
+.student-aside__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .aside__tittle {
+  /* font-weight: 700; */
   font-size: var(--text-desktop-subtitles-1);
-  font-weight: 700;
+  margin: var(--gap-xl) 0 var(--gap-m);
+}
+
+.student-aside__list-items {
+  height: 100%;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0 var(--gap-xs) 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-xs);
+}
+
+.student-aside__list-item{
+  background-color: var(--Color-White);
+  border-radius: var(--r-xs);
+  width: 100%;
+  max-width: 350px;
+  padding: var(--gap-xs) var(--gap-xs);
+  border: 1px solid var(--Color-grey-50);
+  box-shadow: var(--box-shadow-btn);
+}
+
+.student-aside__list-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--gap-xs);
+}
+
+.student-aside__info-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-aside__square {
+  width: 28px;
+  height: 28px;
+  padding: var(--gap-xxs);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Color-red-100);
+  border-radius: var(--r-xs);
+}
+
+.student-aside__square .fi{
+  display: flex;
+  font-size: medium;
+  color: var(--Color-Principal);
+}
+
+.student-aside__list-info--body{
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxxs);
+}
+
+.student-aside__date{
+  display: flex;
+  gap: var(--gap-xxs);
+  align-items: center;
+  justify-content: start;
+  font-size: var(--text-desktop-small);
+  color: var(--Color-grey-700);
+  font-weight: 400;
+
+  & .fi {
+    display: flex;
+    color: var(--Color-Principal);
+  }
+
+  & strong {
+    font-weight: 600;
+    color: var(--Color-Principal);
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .student-aside__list-items {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
 }

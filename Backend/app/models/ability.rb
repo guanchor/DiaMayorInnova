@@ -33,6 +33,8 @@ class Ability
       cannot :manage, Solution
       cannot :manage, Entry
       cannot :manage, Annotation
+      can :index, Account
+      can :show, Account
       can :index, AccountingPlan
       can :show, AccountingPlan
       # Asume que los estudiantes pueden gestionar sus propias anotaciones

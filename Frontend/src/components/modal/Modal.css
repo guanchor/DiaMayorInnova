@@ -34,3 +34,17 @@
   font-size: var(--text-desktop-lead);
   font-weight: 600;
 }
+
+.account-list {
+  padding: var(--gap-m);
+}
+
+.account-item {
+  display: grid;
+  grid-template-columns: 80px auto;
+  gap: 10px;
+}
+
+.account-item_account {
+  text-align: left;
+}

@@ -1,8 +1,28 @@
 .exam-color {
   background-color: var(--Color-red-200);
+
+  & .defaultModal {
+    max-width: auto;
+    min-width: auto;
+    max-height: auto;
+
+    & p {
+      margin-top: var(--gap-m);
+    }
+
+    & .modal__buttons {
+      .btn {
+        width: 68px;
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
 }
 
-.modes_page_container--button{
+.modes_page_container--button {
   display: flex;
   justify-content: flex-start;
   align-items: center;

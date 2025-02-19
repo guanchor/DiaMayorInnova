@@ -6,5 +6,5 @@ class Account < ApplicationRecord
 
   default_scope { order(account_number: :asc) }
 
-  validates :name, presence: true #Nombre obligatorio para test
+  validates :name, presence: true
 end

@@ -70,6 +70,7 @@ class StudentExercisesController < ApplicationController
       .where(task_id: task_id)            # Filter all exercises from a specific task
       .where(users: { role: "student" })  # Only students
       .joins(:user)                       # Join all student users
+      .distinct                           # Avoid dupes
     
     result = @students_marks.map do |exercise|
       {

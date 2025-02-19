@@ -13,71 +13,88 @@ describe AccountingPlansController do
 
     #Tests
     describe "GET /index" do
-        it "devolver todos los PGC" do
-            accounting_plans = create_list(:accounting_plan, 3)
-            get :index
+        describe "devolver todos los PGC" do
+            before do
+                accounting_plans = create_list(:accounting_plan, 3)
+                get :index
+            end
 
-            expect(response).to have_http_status(:ok)
+            it { expect(response).to have_http_status(:ok) }
+
         end
 
-        it "filtrar por nombre" do
-            plan_a = create(:accounting_plan, name: "Plan A")
-            get :index, params: { name: "Plan A" }
+        describe "filtrar por nombre" do
+            before do
+                plan_a = create(:accounting_plan, name: "Plan A")
+                get :index, params: { name: "Plan A" }
+            end
 
-            expect(response).to have_http_status(:ok)
+            it { expect(response).to have_http_status(:ok) }
         end
     end
 
 
     describe "GET show" do
-        it "devolver un PGC existente" do
-            get :show, params: { id: accounting_plan.id }
+        describe "devolver un PGC existente" do
+            before do
+                get :show, params: { id: accounting_plan.id }
+            end
 
-            expect(response).to have_http_status(:ok)
+            it { expect(response).to have_http_status(:ok) }
         end
     end
 
 
-    describe "POST create" do 
-        it "crear nuevo PGC" do
-            newPGC = { accounting_plan: {name: "Nuevo PGC", description: "Desc nueva", acronym: "NP"} }
-            post :create, params: newPGC
+    describe "POST create" do
+        describe "crear nuevo  PGC" do
+            before do
+                newPGC = { accounting_plan: {name: "Nuevo PGC", description: "Desc nueva", acronym: "NP"} }
+                post :create, params: newPGC
+            end
 
-            expect(response).to have_http_status(:created)
+            it { expect(response).to have_http_status(:created) }
         end
 
-        it "error 422, datos no válidos" do
-            newPGC = { accounting_plan: { name: ""} } # Campo vacío, CAMBIOS EN EL MODELO 
-            post :create, params: newPGC
+        describe "error 422, datos no válidos" do
+            before do
+                newPGC = { accounting_plan: { name: ""} }
+                post :create, params: newPGC
+            end
 
-            expect(response).to have_http_status(:unprocessable_entity)
+            it { expect(response).to have_http_status(:unprocessable_entity) }
         end
     end
 
 
     describe "PUT update" do
-        it "actualizar PGC existente" do
-            newInfo = { id: accounting_plan.id, accounting_plan: { name: "Actualizadooo"} }
-            put :update, params: newInfo
+        describe "actualizar PGC existente" do
+            before do
+                newInfo = { id: accounting_plan.id, accounting_plan: { name: "Actualizadooo"} }
+                put :update, params: newInfo
+            end
 
-            expect(response).to have_http_status(:success)
+            it { expect(response).to have_http_status(:success) }
         end
 
-        it "error 422, datos no válidos" do
-            newInfo = { id: accounting_plan.id, accounting_plan: { name: ""} }
-            put :update, params: newInfo
+        describe "error 422, datos no válidos" do
+            before do
+                newInfo = { id: accounting_plan.id, accounting_plan: { name: ""} }
+                put :update, params: newInfo
+            end
 
-            expect(response).to have_http_status(:unprocessable_entity)
+            it { expect(response).to have_http_status(:unprocessable_entity) }   
         end          
     end
 
 
     describe "DELETE destroy" do
-        it "eliminar PGC" do
-            accounting_plan # Crear PGC para el test
-            delete :destroy, params: {id: accounting_plan.id}
+        describe "eliminar PGC" do
+            before do
+                accounting_plan # Crear PGC para el test
+                delete :destroy, params: {id: accounting_plan.id}
+            end
 
-            expect(response).to have_http_status(:success)
+            it { expect(response).to have_http_status(:success) }
         end
     end
 end

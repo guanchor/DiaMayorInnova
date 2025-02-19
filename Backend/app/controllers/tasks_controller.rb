@@ -8,9 +8,9 @@ class TasksController < ApplicationController
       render json: { error: "No autorizado" }, status: :unauthorized
     else
       if current_user.admin?
-        @tasks = Task.orderer_by_closing_date
+        @tasks = Task.ordered_by_closing_date
       else
-        @tasks = Task.where(created_by: current_user.id).orderer_by_closing_date
+        @tasks = Task.where(created_by: current_user.id).ordered_by_closing_date
       end
       if params[:title].present?
         @tasks = @tasks.where("title ILIKE ?", "%#{params[:title]}%")

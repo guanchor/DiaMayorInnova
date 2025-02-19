@@ -3,7 +3,7 @@ class Task < ApplicationRecord
   belongs_to :user, foreign_key: :created_by
   has_many :users, through: :exercises
 
-  scope :orderer_by_closing_date, -> { order(closing_date: :asc) }
+  scope :ordered_by_closing_date, -> { order(closing_date: :asc) }
 
   validate :opening_date_is_before_closing_date
   validates :title, :opening_date, :closing_date, presence: true

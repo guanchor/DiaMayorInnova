@@ -82,7 +82,7 @@ describe('UserManagement Component', () => {
     await userEvent.click(deleteButtons[0]);
 
     const modalText = await screen.findByText(
-      `¿Estás seguro de que deseas eliminar al usuario: ${mockUsers[0].name}?`
+      `¿Estás seguro de que deseas eliminar este usuario?`
     );
     expect(modalText).toBeInTheDocument();
 

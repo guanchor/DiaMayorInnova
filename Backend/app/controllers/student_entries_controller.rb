@@ -26,11 +26,11 @@ class StudentEntriesController < ApplicationController
   end
 
   def update
-    @studentEntry = StudentEntry.find(params[:id])
-    if @studentEntry.update(student_entry_params)
-      render json: @studentEntry
+    @student_entry  = StudentEntry.find(params[:id])
+    if @student_entry .update(student_entry_params)
+      render json: @student_entry
     else
-      render json: @studentEntry.errors, status: :unprocessable_entity
+      render json: @student_entry.errors, status: :unprocessable_entity
     end
   end
 
@@ -41,8 +41,13 @@ class StudentEntriesController < ApplicationController
     render json: @studentEntries
   end
 
-  def student_entry_params 
-    params.require(:student_entry).permit(:entry_number, :entry_date, :mark_id)
+  def student_entry_params
+    params.require(:student_entry).permit(
+      :entry_number, :entry_date, :mark_id,
+      student_annotations_attributes: [
+        :id, :account_id, :account_number, :debit, :credit, :student_entry_id
+      ]
+    )
   end
 
   def convert_entry_date

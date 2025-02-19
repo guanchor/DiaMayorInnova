@@ -53,7 +53,7 @@ function App() {
                   <Route path="/modes" element={<Modes />} >
                     <Route path='tarea/' element={<TaskPage />} />
                     <Route path='practica/' element={<PracticePage />} />
-                    <Route path='examen/' element={<ExamPage />} />
+                    <Route path='examen/:exerciseId' element={<ExamPage />} />
                   </Route>
                   <Route path="/help-examples" element={<HelpExampleList />} />
                   <Route path="/help-examples/:id" element={<HelpExample />} />

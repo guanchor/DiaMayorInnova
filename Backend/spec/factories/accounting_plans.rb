@@ -1,8 +1,7 @@
 FactoryBot.define do
-    factory :accounting_plan do
-      sequence(:name) { |n| "Accounting Plan #{n}" }
-      sequence(:description) { |n| "Description #{n}" }
-      sequence(:acronym) { |n| "AP#{n}" }
-    end
+  factory :accounting_plan do
+    sequence(:name) { |n| "Accounting Plan #{n}" }
+    description { "Test Accounting Plan Description" }
+    acronym { |n| "T#{n}P" }
   end
-  
+end

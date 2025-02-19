@@ -17,13 +17,15 @@ const Dropdown = () => {
 
   return (
     <div ref={dropdownRef} className="dropdown-container">
-      <a 
-        className="userZone" 
-        tabIndex={0} 
-        onClick={changeDropmenu} 
+      <a
+        className="userZone"
+        href="#"
+        role="button"
+        tabIndex={0}
+        onClick={changeDropmenu}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
-          changeDropmenu();
+            changeDropmenu();
           }
         }}
       >

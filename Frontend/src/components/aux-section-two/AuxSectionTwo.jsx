@@ -1,36 +1,56 @@
+import { useState } from "react";
 import "./AuxSectionTwo.css"
 
-const AuxSectionTwo = () => {
+const AuxSectionTwo = ({ statements, examStarted, onSelectStatement }) => {
+  const [selectedStatement, setSelectedStatement] = useState(null);
+  const [visitedStatements, setVisitedStatements] = useState([]);
+
+  const handleStatementClick = (statement) => {
+    if (!visitedStatements.includes(statement.id)) {
+      setVisitedStatements([...visitedStatements, statement.id]);
+    }
+    setSelectedStatement(statement);
+    onSelectStatement(statement);
+  };
+
   return (
     <div className='aux-section_two__container'>
-      <h2 className='help_secction_tittle'>Mayores</h2>
-      <section className='section-two_loader'>
-        <label className='ledger_labels'> Cuenta:
-          <input type="text" placeholder='Cuenta pescado' />
-        </label>
-        <label className='ledger_labels--small'> Asiento:
-          <input type="number" placeholder='1' />
-        </label>
-      </section>
-      <section>
-        <div className="ledger">
-          <p>numero Cuenta</p>
-          <p>Asiento</p>
-          <p>Debe</p>
-          <p>Haber</p>
-          <p>Saldo</p>
-        </div>
-        <div className="ledger_container">
-          <div className="ledger_wrapper">
+      <h2 className='help_secction_tittle'>Enunciados</h2>
 
+      {examStarted && (
+        <section>
+          <div className="statement-grid">
+            {statements.map((statement, index) => {
+              let buttonClass = "statement-button";
+              if (selectedStatement?.id === statement.id) {
+                buttonClass += " selected";
+              } else if (visitedStatements.includes(statement.id)) {
+                buttonClass += " visited";
+              }
+              return (
+                <button
+                  key={statement.id}
+                  className={buttonClass}
+                  onClick={() => handleStatementClick(statement)}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
           </div>
-        </div>
-      </section>
-      <label className='label_result'>Resultado
-        <input type="number" placeholder='Total' />
-      </label>
+          {selectedStatement && (
+            <div className="statement-detail">
+              <h3 className="statement-detail__title">Enunciado {statements.indexOf(selectedStatement) + 1}</h3>
+              <div className="statement-detail__content">
+                <p><strong>Definición:</strong> {selectedStatement.definition}</p>
+                <p><strong>Explicación:</strong> {selectedStatement.explanation || "Sin explicación."}</p>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default AuxSectionTwo
+export default AuxSectionTwo;

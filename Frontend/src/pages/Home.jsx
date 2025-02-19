@@ -55,7 +55,7 @@ function Home() {
       <Shortcuts />
       <section className="principal">
         <StudentMark />
-        <button onClick={() => navigate("/accounting-plans")}>Mostrar la lista de Accounting plans</button>
+        {/*<button onClick={() => navigate("/accounting-plans")}>Mostrar la lista de Accounting plans</button>*/}
       </section>
       <aside className="aside">
         <StudentAside />

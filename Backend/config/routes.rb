@@ -18,9 +18,17 @@ Rails.application.routes.draw do
   resources :student_entries
   resources :student_annotations
   resources :marks
-  resources :student_exercises do
-    get 'students_mark_list', on: :collection
+
+  resources :student_exercises, only: [:index, :show, :create, :update] do
+    member do
+      post 'start'
+      post 'finish'
+    end
+    collection do
+       get 'students_mark_list'
+    end
   end
+  
   resources :exercises do
     delete 'destroy_on_group', on: :collection
     get 'find_by_task_id', on: :collection

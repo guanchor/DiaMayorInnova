@@ -12,6 +12,7 @@ const StatementCreateForm = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
   const [selectedStatement, setSelectedStatement] = useState(null);
+  const [refreshStatements, setRefreshStatements] = useState(false);
   const [statements, setStatements] = useState([]);
   const [solutionToDeleteIndex, setSolutionToDeleteIndex] = useState(null);
 

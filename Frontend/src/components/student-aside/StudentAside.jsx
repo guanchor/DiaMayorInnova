@@ -51,7 +51,7 @@ const StudentAside = () => {
       try {
         const response = await exerciseService.getAll();
         if (response?.data) {
-          console.log("Ejercicios obtenidos:", response.data);
+          // console.log("Ejercicios obtenidos:", response.data); // Depuración
           setExercises(response.data);
         } else {
           console.log("No hay datos de ejercicios");

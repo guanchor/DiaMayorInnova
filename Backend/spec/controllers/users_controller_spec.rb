@@ -17,6 +17,7 @@ RSpec.describe UsersController, type: :controller do
   let(:update_attributes_with_image) { { featured_image: image } }
 
   describe "GET #index" do
+  # INDEX NO AUTORIZADOS
     context "cuando el usuario no está autorizado" do
       it "devuelve 401 Unauthorized" do
         get :index
@@ -24,16 +25,56 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
+  # INDEX ADMIN
     context "cuando el usuario es admin" do
-      before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
+      let!(:user_with_image) { create(:user, featured_image: image) }
+      before do
+        request.headers['AUTH-TOKEN'] = admin_user.authentication_token
+        student_user_2
+        student_user_3
+        student_user_2.save!
+        student_user_3.save!
+      end
 
       it "devuelve la lista de usuarios con 200 OK" do
         get :index
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)["data"]["users"]).not_to be_empty
       end
+
+      describe "filtra por nombre" do
+        it "devuelve solo los usuarios que coinciden con el nombre" do
+          get :index, params: { name: "Juan" }
+          json_response = JSON.parse(response.body)["data"]["users"]
+          expect(json_response.length).to eq(1)
+          expect(json_response.first["name"]).to eq("Juan")
+        end
+      end
+
+      describe "cuando se filtra por class_groups_id" do
+        it "devuelve solo los estudiantes del grupo de clase específico" do
+          get :index, params: { class_groups_id: student_user_2.class_groups_id }
+          json_response = JSON.parse(response.body)["data"]["users"]
+          expect(json_response).to be_an(Array)
+          expect(json_response.length).to eq(1)
+          expect(json_response.first["class_groups_id"]).to eq(student_user_2.class_groups_id)
+        end
+      end
+
+      describe "cuando los usuarios tienen imágenes adjuntas" do
+        it "incluye la URL de la imagen en la respuesta" do
+          get :index
+          json_response = JSON.parse(response.body)
+          
+          user_data = json_response["data"]["users"].find { |u| u["id"] == user_with_image.id }
+          
+          expect(user_data["featured_image"]).not_to be_nil
+          expect(user_data["featured_image"]["url"]).to be_present
+        end
+      end
     end
 
+# INDEX TEACHER
     context "cuando el usuario es teacher" do
       before { request.headers['AUTH-TOKEN'] = teacher_user.authentication_token }
 
@@ -44,39 +85,7 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
-    context "cuando se filtra por nombre" do
-      before do
-        request.headers['AUTH-TOKEN'] = admin_user.authentication_token
-        student_user_2
-        student_user_3
-      end
-
-      it "devuelve solo los usuarios que coinciden con el nombre" do
-        get :index, params: { name: "Juan" }
-        json_response = JSON.parse(response.body)["data"]["users"]
-        expect(json_response.length).to eq(1)
-        expect(json_response.first["name"]).to eq("Juan")
-      end
-    end
-
-    context "cuando se filtra por class_groups_id" do
-      before do
-        request.headers['AUTH-TOKEN'] = admin_user.authentication_token
-        student_user_2
-        student_user_3
-        student_user_2.save!
-        student_user_3.save!
-      end
-
-      it "devuelve solo los estudiantes del grupo de clase específico" do
-        get :index, params: { class_groups_id: student_user_2.class_groups_id }
-        json_response = JSON.parse(response.body)["data"]["users"]
-        expect(json_response).to be_an(Array)
-        expect(json_response.length).to eq(1)
-        expect(json_response.first["class_groups_id"]).to eq(student_user_2.class_groups_id)
-      end
-    end
-
+# INDEX STUDENT
     context "cuando el usuario no es admin ni teacher" do
       before { request.headers['AUTH-TOKEN'] = student_user.authentication_token }
   
@@ -85,25 +94,11 @@ RSpec.describe UsersController, type: :controller do
         expect(response).to have_http_status(:unauthorized)
       end
     end
-
-    context "cuando los usuarios tienen imágenes adjuntas" do
-      let!(:user_with_image) { create(:user, featured_image: image) }
-  
-      before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
-  
-      it "incluye la URL de la imagen en la respuesta" do
-        get :index
-        json_response = JSON.parse(response.body)
-        
-        user_data = json_response["data"]["users"].find { |u| u["id"] == user_with_image.id }
-        
-        expect(user_data["featured_image"]).not_to be_nil
-        expect(user_data["featured_image"]["url"]).to be_present
-      end
-    end
   end
 
-  describe "GET #show" do
+  
+describe "GET #show" do
+# GET AUTENTICADO
   context "cuando el usuario está autenticado" do
     before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
 
@@ -134,17 +129,6 @@ RSpec.describe UsersController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(json_response["featured_image"]).to be_nil
     end
-  end
-
-  context "cuando el usuario no está autenticado" do
-    it "devuelve 401 Unauthorized" do
-      get :show, params: { id: student_user.id }
-      expect(response).to have_http_status(:unauthorized)
-    end
-  end
-
-  context "cuando el usuario no existe" do
-    before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
 
     it "devuelve 404 Not Found" do
       get :show, params: { id: 9999 }
@@ -152,9 +136,20 @@ RSpec.describe UsersController, type: :controller do
       expect(JSON.parse(response.body)["messages"]).to eq("User not found")
     end
   end
+
+#GET NO AUTENTICADO
+  context "cuando el usuario no está autenticado" do
+    it "devuelve 401 Unauthorized" do
+      get :show, params: { id: student_user.id }
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end
 
-  describe "POST #create" do
+
+
+describe "POST #create" do
+# POST ADMIN
     context "cuando el usuario es admin" do
       before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
 
@@ -183,8 +178,18 @@ end
       end
     end
 
-    context "cuando el usuario no es admin" do
+# POST TEACHER/STUDENT
+    context "cuando el usuario es teacher" do
       before { request.headers['AUTH-TOKEN'] = teacher_user.authentication_token }
+
+      it "devuelve unauthorized" do
+        post :create, params: { user: valid_attributes }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context "cuando el usuario es student" do
+      before { request.headers['AUTH-TOKEN'] = student_user.authentication_token }
 
       it "devuelve unauthorized" do
         post :create, params: { user: valid_attributes }
@@ -193,7 +198,9 @@ end
     end
   end
 
-  describe "PUT #update" do
+
+describe "PUT #update" do
+# PUT ADMIN
     context "cuando el usuario es admin" do
       before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
 
@@ -218,8 +225,14 @@ end
         user = User.find(student_user.id)
         expect(user.featured_image).to be_attached
       end
+
+      it "devuelve 404 Not Found" do
+        put :update, params: { id: 9999, user: valid_update_attributes }
+        expect(response).to have_http_status(:not_found)
+      end
     end
 
+# PUT TEACHER/STUDENT
     context "cuando el usuario no es admin" do
       before { request.headers['AUTH-TOKEN'] = teacher_user.authentication_token }
 
@@ -228,18 +241,10 @@ end
         expect(response).to have_http_status(:unauthorized)
       end
     end
-
-    context "cuando el usuario no existe" do
-      before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
-
-      it "devuelve 404 Not Found" do
-        put :update, params: { id: 9999, user: valid_update_attributes }
-        expect(response).to have_http_status(:not_found)
-      end
-    end
   end
 
-  describe "DELETE #destroy" do
+describe "DELETE #destroy" do
+# DELETE ADMIN
     context "cuando el usuario es admin" do
       before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
 
@@ -248,8 +253,14 @@ end
         expect(response).to have_http_status(:ok)
         expect(User.exists?(student_user.id)).to be_falsey
       end
+
+      it "devuelve 404 Not Found" do
+        delete :destroy, params: { id: 9999 }
+        expect(response).to have_http_status(:not_found)
+      end
     end
 
+# DELETE TEACHER/STUDENT
     context "cuando el usuario no es admin" do
       before { request.headers['AUTH-TOKEN'] = teacher_user.authentication_token }
 
@@ -257,15 +268,6 @@ end
         delete :destroy, params: { id: student_user.id }
         expect(response).to have_http_status(:unauthorized)
         expect(User.exists?(student_user.id)).to be_truthy
-      end
-    end
-
-    context "cuando el usuario no existe" do
-      before { request.headers['AUTH-TOKEN'] = admin_user.authentication_token }
-
-      it "devuelve 404 Not Found" do
-        delete :destroy, params: { id: 9999 }
-        expect(response).to have_http_status(:not_found)
       end
     end
   end

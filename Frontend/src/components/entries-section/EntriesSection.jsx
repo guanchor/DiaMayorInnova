@@ -71,7 +71,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
   };
 
   const addAnnotation = (statementId, entryId) => {
-    console.log("Agregando anotación para entryId:", entryId);
+    // console.log("Agregando anotación para entryId:", entryId); // Depuración
     if (!statementData[statementId]) {
       setStatementData((prevData) => ({
         ...prevData,
@@ -108,7 +108,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
   };
 
   useEffect(() => {
-    console.log("Statement Data Actualizado:", statementData);
+    // console.log("Statement Data Actualizado:", statementData); // Depuración
   }, [statementData]);
 
   const updateAnnotation = (statementId, annotationUid, updatedAnnotation) => {
@@ -186,7 +186,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
       exerciseId: exercise.id,
     };
 
-    console.log("✅ DATA SUBMIT - Verificar antes de enviar:", dataToSubmit);
+    // console.log("✅ DATA SUBMIT - Verificar antes de enviar:", dataToSubmit); // Depuración
 
     taskSubmitService(dataToSubmit, navigate);
   };

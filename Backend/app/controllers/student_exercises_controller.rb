@@ -106,28 +106,19 @@ end
   def start
     @exercise = Exercise.find(params[:id])
 
-    # Verificar si el examen existe
-    unless @exercise
-      render json: { error: "Examen no encontrado." }, status: :not_found
-      return
-    end
+    return render json: { error: "Examen no encontrado." }, status: :not_found unless @exercise
 
-    current_time = Time.current
-    if current_time < @exercise.task.opening_date
-      render json: { error: "El examen no está disponible aún." }, status: :unprocessable_entity
-      return
-    elsif current_time > @exercise.task.closing_date
-      render json: { error: "El examen ya ha finalizado." }, status: :unprocessable_entity
-      return
-    elsif @exercise.started
-      render json: { error: "El examen ya ha comenzado." }, status: :unprocessable_entity
-      return
+    return render json: { error: "El examen no está disponible aún." }, status: :unprocessable_entity if Time.current < @exercise.task.opening_date
+    return render json: { error: "El examen ya ha finalizado." }, status: :unprocessable_entity if @exercise.time_remaining == 0
+    return render json: { error: "El examen ya ha comenzado." }, status: :unprocessable_entity if @exercise.started
+
+    if @exercise.update(started: true)
+      render json: {
+        exercise: @exercise,
+        time_remaining: @exercise.time_remaining
+      }, status: :ok
     else
-      if @exercise.update(started: true)
-        render json: @exercise, status: :ok
-      else
-        render json: { error: "Error al iniciar el examen." }, status: :unprocessable_entity
-      end
+      render json: { error: "Error al iniciar el examen." }, status: :unprocessable_entity
     end
   end
 

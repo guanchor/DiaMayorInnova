@@ -20,7 +20,7 @@ const TaskPreview = ({
   return (
     <section className="task-page__preview">
       <div className="task-page__preview--content">
-        <h2 className="task-page__header--h2">Título: {title}</h2>
+        <h2 className="task-page__header--h2">{title}</h2>
         <div className="task-page__dates-container">
           <p>
             <strong>Fecha de apertura:</strong>{" "}

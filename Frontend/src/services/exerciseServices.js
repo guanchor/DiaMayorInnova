@@ -2,7 +2,7 @@ import http from "../http-common";
 
 const getAll = async () => {
   const response = await http.get(`/student_exercises`);
-  console.log("all exercise info of user ", response)
+  // console.log("all exercise info of user ", response) // Depuración
   return response;
 };
 

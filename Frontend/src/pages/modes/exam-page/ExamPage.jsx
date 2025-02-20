@@ -30,17 +30,17 @@ const ExamPage = () => {
     const fetchExercise = async () => {
       try {
         const response = await userExerciseDataService.getById(exerciseId);
-        console.log("Response data:", response);
+        // console.log("Response data:", response); // Depuración
 
         if (!response || !response.data) {
           throw new Error("Respuesta vacía o malformada");
         }
 
         const { exercise, statements, time_remaining } = response.data;
-        console.log("Opening date:", exercise.task.opening_date);
-        console.log("Closing date:", exercise.task.closing_date);
-        console.log("Tiempo restante recibido:", time_remaining);
-        console.log("Hora actual:", new Date());
+        // console.log("Opening date:", exercise.task.opening_date); // Depuración
+        // console.log("Closing date:", exercise.task.closing_date); // Depuración
+        // console.log("Tiempo restante recibido:", time_remaining); // Depuración
+        // console.log("Hora actual:", new Date()); // Depuración
         if (exercise) {
           setExercise(exercise);
           setStatements(statements || []);
@@ -156,7 +156,7 @@ const ExamPage = () => {
   };
 
   const handleStatementComplete = (statementId, statementData) => {
-    console.log("Statement completado:", statementId, statementData);
+    // console.log("Statement completado:", statementId, statementData); // Depuración
 
     setCompletedStatements((prevData) => ({
       ...prevData,

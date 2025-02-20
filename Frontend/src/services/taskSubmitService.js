@@ -9,7 +9,7 @@ const taskSubmitService = async (data, navigate) => {
     return;
   }
 
-  const mark = 5;
+  const mark = Math.floor(Math.random() * 10) + 1;
 
   const marksAttributes = Object.entries(statementsData).map(([statementId, data]) => ({
     statement_id: statementId,

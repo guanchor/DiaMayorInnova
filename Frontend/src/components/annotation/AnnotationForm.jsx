@@ -122,7 +122,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
         <i className="fi fi-rr-trash"></i>
       </button>
 
-      <Modal ref={modalRef} title="Seleccionar Cuenta" showButton={false}>
+      <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
           {accounts.map((account) => (
             <div

@@ -62,6 +62,10 @@ const StatementsSelection = ({
               <div className="task-page__statement-container">
                 <span className="task-page__statement">{statement.definition}</span>
                 <div className="task-page__actions">
+                  <button className="task-page__button--edit hidden" type="button" onClick={() => handleEditSolutions(statement.id)}>
+                    <i className="fi fi-rr-pencil pencil"></i>
+                    <span className="task-page__button-text">{editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}</span>
+                  </button>
                   {showCheckboxes && (
                     <label>
                       <input
@@ -76,10 +80,7 @@ const StatementsSelection = ({
                     <i className="fi fi-rr-interrogation interrogation"></i>
                     <span className="task-page__button-text">Ver Soluciones</span>
                   </button>
-                  <button className="task-page__button--edit" type="button" onClick={() => handleEditSolutions(statement.id)}>
-                    <i className="fi fi-rr-pencil pencil"></i>
-                    <span className="task-page__button-text">{editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}</span>
-                  </button>
+
                 </div>
               </div>
             </li>

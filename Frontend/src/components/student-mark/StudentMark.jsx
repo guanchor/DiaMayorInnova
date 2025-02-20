@@ -12,7 +12,7 @@ const StudentMark = () => {
   useEffect(() => {
     userExerciseDataService.getAllCalification()
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data) // Depuración
         setMarks(data)
         if (data.length !== 0)
           setIncludeMark(true)

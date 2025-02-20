@@ -23,8 +23,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [editMode, setEditMode] = useState(task ? true : false);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
-  const [additionalInformation, setAdditionalInformation] = useState("");
-  const [isExam, setIsExam] = useState(false);
+  const [additionalInformation, setAdditionalInformation] = useState(task?.additional_information || "");
+  const [isExam, setIsExam] = useState(task?.is_exam || false);
   const [errors, setErrors] = useState({
     title: "",
     openingDate: "",

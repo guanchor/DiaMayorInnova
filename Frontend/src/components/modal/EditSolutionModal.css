@@ -61,11 +61,13 @@ textarea {
 .statement-page__form-modal {
   margin: 20px;
   padding: 20px;
-  width: 80%;
+  width: 90%;
   height: auto;
+  max-height: 60vh;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: var(--Color-grey-50);
+  overflow-y: auto;
 }
 
 .statement-page__description {
@@ -126,6 +128,7 @@ textarea {
 
 .statement-page__entry-expanded {
   margin-top: 15px;
+  padding-bottom: var(--gap-xs);
 }
 
 .statement-page__entry-columns {

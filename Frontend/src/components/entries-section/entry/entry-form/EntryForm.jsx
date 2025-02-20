@@ -56,14 +56,14 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log("Name:", name, "Value:", value);  // Depuración
+    //console.log("Name:", name, "Value:", value);  // Depuración
     const updatedAnnotation = { ...annotation, [name]: value };
 
     if (name === 'account_number') {
       const foundAccount = accounts.find(
         acc => acc.account_number === value
       );
-      console.log("Account seleccionada:", foundAccount);
+      //console.log("Account seleccionada:", foundAccount); // Depuración
       if (foundAccount) {
         updatedAnnotation.account_id = foundAccount.id;
         updatedAnnotation.account_name = foundAccount.name;
@@ -77,7 +77,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     } else if (name === 'credit' && value) {
       updatedAnnotation.debit = '';
     }
-    console.log("Updated Annotation:", updatedAnnotation);  // Depuración
+    // console.log("Updated Annotation:", updatedAnnotation);  // Depuración
     updateAnnotation(updatedAnnotation);
   };
 
@@ -138,7 +138,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
         <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
       </form>
 
-      <Modal ref={modalRef} title="Seleccionar Cuenta" showButton={false}>
+      <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
           {accounts.map((account) => (
             <div

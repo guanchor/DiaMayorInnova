@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 
 
 const Shortcuts = () => {
-  const { rol } = useContext(navContext);
+  const { currentRole } = useContext(navContext);
   const navigate = useNavigate();
   const auth = useAuth();
 
@@ -17,7 +17,7 @@ const Shortcuts = () => {
       <h2 className="shortcut__subtitle">Accesos Rápidos</h2>
       <div className="shortcut__wrapper ">
         {scRoutes.map((route) => {
-          if (route.rol.includes(rol)) {
+          if (route.rol.includes(currentRole)) {
             const onClick =
               route.to === "/tasks"
                 ? () => navigate("/tasks", { state: { createTask: true } })

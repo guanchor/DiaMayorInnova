@@ -1,0 +1,33 @@
+.navBar__text {
+  text-transform: capitalize;
+}
+
+.nav_link {
+  display: inline-flex;
+  gap: var(--gap-s, );
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+#my-tooltip {
+  text-transform: capitalize;
+  background-color: var(--Color-Principal);
+  border-radius: var(--r-xxs);
+  color: var(--Color-White);
+  font-size: var(--text-desktop-small);
+  opacity: 95%;
+}
+
+@media (width > 1024px) {
+  .navBar__text {
+    display: none;
+  }
+
+  .nav_link {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+  }
+}

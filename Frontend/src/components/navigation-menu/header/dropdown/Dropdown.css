@@ -1,0 +1,71 @@
+.userMenu {
+  background-color: var(--Color-Neutral-Dark);
+  width: 240px;
+  padding: 20px 24px;
+  position: absolute;
+  right: var(--gap-xxs);
+  top: 74px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--M, 20px) var(--L, 24px);
+  gap: var(--M, 20px);
+  color: var(--Color-grey-200);
+  border-radius: var(--xxs, 8px);
+  box-shadow: var(--box-shadow-btn);
+}
+
+.userMenu_item {
+  list-style: none;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: capitalize;
+  transition: background-color 200ms ease-in-out;
+
+  &:hover .fi,
+  :hover {
+    background-color: rgba(26, 26, 26, 0.158);
+    color: #fff;
+  }
+
+  & a {
+    display: flex;
+    gap: var(--xs, 12px);
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    border-radius: var(--xxs, 8px);
+    padding: var(--xs, 12px) var(--xxs, 8px);
+    cursor: pointer;
+
+    &>.fi {
+      font-size: medium;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.avatar-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.userZone_userFoto>.fi,
+.text__user {
+  background-color: var(--background-color);
+  color: var(--Color-letra-claro);
+  width: 50px;
+  height: 50px;
+  border-radius: 40px;
+  font-size: 28px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fi-rr-angle-small-down {
+  color: var(--Color-letra-claro);
+  font-size: x-large;
+}

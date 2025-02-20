@@ -1,0 +1,56 @@
+/* ConfirmDeleteModal.css */
+.modalConfirmDelete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalConfirmDelete-content {
+  background: var(--Color-Neutral-White);
+  padding: var(--gap-m);
+  border-radius: var(--r-xs);
+  max-width: 500px;
+  width: 400px;
+  text-align: center;
+
+  & p {
+    padding: var(--gap-xxs);
+  }
+
+  & strong {
+    font-size: large;
+  }
+}
+
+.modalConfirmDelete-buttons button {
+  margin: var(--gap-xxs);
+  box-shadow: var(--box-shadow-btn);
+}
+
+.btn-cancel {
+  background-color: var(--Color-red-700);
+  color: var(--Color-Neutral-White);
+  border: none;
+  padding: var(--gap-xxs) var(--gap-s);
+  border-radius: 5px;
+}
+
+.btn-confirm {
+  background-color: var(--Color-green-900);
+  color: var(--Color-Neutral-White);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.btn-cancel:hover,
+.btn-confirm:hover {
+  opacity: 0.8;
+}

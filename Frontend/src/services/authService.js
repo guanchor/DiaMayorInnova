@@ -14,13 +14,6 @@ const authService = {
         throw error;
       }),
 
-  signUp: (formData) =>
-    http.post(`${API_BASE_URL}/users`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }),
-
   signIn: (credentials, token = "") => {
     if (!credentials && !token) {
       throw new Error("Se requiere credentials o token para autenticarse.");

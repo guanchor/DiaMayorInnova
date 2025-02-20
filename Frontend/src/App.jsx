@@ -10,9 +10,8 @@ import SchoolsCenters from './components/schoolCenters/SchoolCenters'
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import SignIn from "./components/user/SignIn";
-import SignUp from "./components/user/SignUp";
 import NavStateProvider from "./context/nav-menu/NavStateProvider";
-import NavegationMenu from "./components/navegation-menu/NavegationMenu";
+import NavigationMenu from "./components/navigation-menu/NavigationMenu";
 import Account from './components/account/Account';
 // import AccountList from './components/account/ListAccount';
 // import AddAccount from './components/account/AddAccount';
@@ -20,6 +19,7 @@ import HelpExample from './components/help-example/HelpExample';
 import HelpExampleList from './components/help-example/ListHelpExample';
 import AddHelpExample from './components/help-example/AddHelpExample';
 import TaskListAndDetails from './components/task/taskListAndDetails';
+import ExerciseMarksList from './components/task/ExerciseMarksList';
 import StatementsList from './components/statements/StatementList';
 import Modes from './pages/modes/Modes';
 import AccountingPlans from './pages/accounting-plan/AccountingPlans';
@@ -32,6 +32,7 @@ import StatementCreateForm from './components/statements/StatementCreateForm';
 import 'react-tooltip/dist/react-tooltip.css'
 import './App.css';
 import './assets/Styles/Global.css';
+import UserManagement from './components/user/UserManagement';
 
 function App() {
 
@@ -40,7 +41,7 @@ function App() {
       <Router>
         <AuthProvider>
           <NavStateProvider>
-            <NavegationMenu />
+            <NavigationMenu />
             <div className='app-main'>
               <Routes>
                 <Route path="/sign_in" element={<SignIn />} />
@@ -52,7 +53,7 @@ function App() {
                   <Route path="/modes" element={<Modes />} >
                     <Route path='tarea/' element={<TaskPage />} />
                     <Route path='practica/' element={<PracticePage />} />
-                    <Route path='examen/' element={<ExamPage />} />
+                    <Route path='examen/:exerciseId' element={<ExamPage />} />
                   </Route>
                   <Route path="/help-examples" element={<HelpExampleList />} />
                   <Route path="/help-examples/:id" element={<HelpExample />} />
@@ -64,6 +65,7 @@ function App() {
                     <Route path="/accounts/:id" element={<Account />} />
                     <Route path="/tasks" element={<TaskListAndDetails />} />
                     <Route path="/task-edit" element={<TaskCreateForm />} />
+                    <Route path="/student-marks" element={<ExerciseMarksList/>}/>
                     <Route path="/statements" element={<StatementsList />} />
                     <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
@@ -72,10 +74,10 @@ function App() {
                     <Route path="/add-class-list" element={<AddClassGroup />} />
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-                      <Route path="/sign_up" element={<SignUp />} />
+                      <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />
-                        <Route path='usuarios/' element={<SignUp />} />
+                        <Route path='usuarios/' element={<UserManagement />} />
                       </Route >
 
                     </Route>
@@ -91,5 +93,3 @@ function App() {
 }
 
 export default App;
-
-// # A

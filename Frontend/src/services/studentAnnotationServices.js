@@ -4,7 +4,7 @@ const getAll = (id) => {
   try {
     console.log(id)
     const response = http.get(`/student_annotations?student_entry_id=${id}`);
-    console.log(response, "repsuesta annota")
+    console.log(response, "respuesta anotación")
     return response;
   } catch (error) {
     console.error("Error en la petición:", error);
@@ -22,13 +22,12 @@ const create = async (data) => {
 };
 
 
-const update = async (id, data) => {
+const update = async (updatedAnnotation) => {
   try {
-    const response = await http.put(`/student_annotations/${id}`, data);
-    return response;
+    const response = await http.put(`/student_annotations/${updatedAnnotation.id}`, updatedAnnotation);
+    console.log("Annotation updated:", response);
   } catch (error) {
-    console.error("Error en la actualización:", error);
-    return null;
+    console.error("Error updating annotation:", error);
   }
 };
 
@@ -47,4 +46,5 @@ const remove = async (id) => {
 export default {
   getAll,
   create,
+  update,
 };

@@ -9,6 +9,9 @@ class Ability
     if user.admin?
       can :manage, :all
     elsif user.teacher?
+      can :manage, Exercise
+      can :find_by_task_id, Exercise
+      can :destroy_on_group, Exercise
       can :manage, Account
       can :find_by_account_number, Account
       can :find_by_account_id, HelpExample
@@ -30,12 +33,16 @@ class Ability
       cannot :manage, Solution
       cannot :manage, Entry
       cannot :manage, Annotation
+      can :index, Account
+      can :show, Account
       can :index, AccountingPlan
       can :show, AccountingPlan
       # Asume que los estudiantes pueden gestionar sus propias anotaciones
       can :manage, StudentAnnotation, user_id: user.id
       can :find_by_account_number, Account
       can :find_by_account_id, HelpExample
+      can :index, Exercise
+      can :show, Exercise
     else
       # Usuarios invitados no pueden hacer nada con los class_groups
       cannot :manage, :all

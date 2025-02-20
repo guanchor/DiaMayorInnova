@@ -15,7 +15,7 @@ routes.push({
 })
 
 routes.push({
-  to: "/task",
+  to: "/tasks",
   icon: "fi fi-rr-graduation-cap",
   name: "tareas",
   rol: ["teacher", "admin"],

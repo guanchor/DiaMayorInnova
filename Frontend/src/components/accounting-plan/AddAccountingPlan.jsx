@@ -118,7 +118,7 @@ const AddAccountingPlan = ({ setNewPGC }) => {
               </div>
             </div>
 
-            <div className="accountingPlan__form--actions">
+            <div className="accountingPlan__form--add">
               <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus" />Añadir plan</button>
             </div>
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import taskService from "../../services/taskService";
 import TaskCreateForm from "./TaskCreateForm";
 import { useAuth } from "../../context/AuthContext";
 import TaskModal from "../modal/TaskModal";
 import TaskDetails from "./TaskDetails";
 import "./TaskPage.css";
+import "./TaskList.css"
 
 const TaskListAndDetails = () => {
   const location = useLocation();
@@ -114,6 +115,10 @@ const TaskListAndDetails = () => {
     setSelectedTask(null);
   };
 
+  const handleEditTask = () => {
+    navigate("/task-edit", { state: { task: selectedTask } });
+  };
+
   if (!user) return <p>Cargando usuario...</p>;
   if (loading) return <p>Cargando tareas... Por favor espera.</p>;
   if (error) return <p>{error}</p>;
@@ -125,18 +130,10 @@ const TaskListAndDetails = () => {
       ) : (
         <>
           <section className="task-list">
-            <div className="task-list__header">
-              <h2 className="task-list__title">Tareas Activas</h2>
-              <button
-                onClick={() => setIsSearching((prev) => !prev)}
-                className="task-list__filter-button"
-                aria-label="Filtrar por nombre de tarea"
-              >
-                <i className="fi fi-rr-filter"></i>
-              </button>
-            </div>
-
-            {isSearching && (
+            <header>
+              <div className="task-list__header">
+                <h2 className="task-list__title">Tareas Activas</h2>
+              </div>
               <div className="task-list__search-container">
                 <input
                   type="text"
@@ -144,27 +141,31 @@ const TaskListAndDetails = () => {
                   onChange={handleSearchChange}
                   placeholder="Buscar por Título"
                   className="task-list__search-input"
+                  aria-label="Búsqueda por Título"
                 />
                 <i className="fi fi-rr-search task-list__search-icon"></i>
               </div>
-            )}
+            </header>
 
             <ul className="task-list__items">
               {filteredTasks.map((task) => (
-                <li key={`${task.id}-${task.created_at}`} className="task-list__item">
-                  <div className="task-list__item-content">
-                    <div className="task-list__square">
-                      <i className="fi fi-rr-pencil pencil"></i>
-                    </div>
-                    <div className="task-list__info">
+                <li key={`${task.id}-${task.created_at}`} className="task-list__item" onClick={() => fetchTaskDetails(task.id)}>
+                  <div className="task-list__info">
+                    <div className="task-list__info-header">
                       <p className="task-list__item-title">{task.title}</p>
-                      <p className="task-list__closing-date">
-                        <strong>Cierre:</strong> {new Date(task.closing_date).toLocaleString()}
-                      </p>
-                      <button onClick={() => fetchTaskDetails(task.id)}
-                        className="task-list__button">
-                        Ver Información
-                      </button>
+                      <div className="task-list__square">
+                        <i className="fi fi-rr-book-alt"></i>
+                      </div>
+                    </div>
+                    <div className="task-list__info-body">
+                      <div className="task-list__date">
+                        <i className="fi fi-rr-calendar"></i>
+                        <strong>Apertura: </strong> {new Date(task.opening_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
+                      </div>
+                      <div className="task-list__date">
+                        <i className="fi fi-rr-calendar"></i>
+                        <strong>Cierre: </strong> {new Date(task.closing_date).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
+                      </div>
                     </div>
                   </div>
                 </li>

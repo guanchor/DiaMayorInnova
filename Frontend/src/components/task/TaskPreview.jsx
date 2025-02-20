@@ -1,8 +1,17 @@
 import React from "react";
 import "./TaskPage.css";
 
-const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStatements, handleRemoveStatement }) => {
-  
+const TaskPreview = ({ 
+  title, 
+  openingDate, 
+  closingDate, 
+  statements, 
+  selectedStatements, 
+  handleRemoveStatement,
+  additionalInformation,
+  isExam
+}) => {
+
   const validSelectedStatements = selectedStatements.filter((statementId) =>
     statements.some((s) => s.id === statementId)
   );
@@ -11,16 +20,18 @@ const TaskPreview = ({ title, openingDate, closingDate, statements, selectedStat
   return (
     <section className="task-page__preview">
       <div className="task-page__preview--content">
-        <h4 className="task-page__header--h4">Título: {title}</h4>
+        <h2 className="task-page__header--h2">{title}</h2>
         <div className="task-page__dates-container">
           <p>
             <strong>Fecha de apertura:</strong>{" "}
-            {new Date(openingDate).toLocaleDateString()}
+            {new Date(openingDate).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
           </p>
           <p>
             <strong>Fecha de cierre:</strong>{" "}
-            {new Date(closingDate).toLocaleString()}
+            {new Date(closingDate).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', })}
           </p>
+          <p><strong>Información adicional:</strong> {additionalInformation || "No se ha añadido información adicional."}</p>
+          <p><strong>¿Es un examen?</strong> {isExam ? "Sí" : "No"}</p>
         </div>
         {validSelectedStatements.length > 0 ? (
           <ul className="task-page__list">

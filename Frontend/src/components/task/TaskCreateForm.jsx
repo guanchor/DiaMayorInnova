@@ -7,6 +7,7 @@ import TaskPreview from "./TaskPreview.jsx";
 import StatementsSelection from "./StatementsSelection.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./TaskPage.css";
+import exerciseServices from "../../services/exerciseServices.js";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { state } = useLocation();
@@ -20,13 +21,65 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [selectedStatements, setSelectedStatements] = useState(task?.statements?.map(s => s.id) || []);
   const [solutions, setSolutions] = useState({});
   const [editMode, setEditMode] = useState(task ? true : false);
+  const [currentUsers, setCurrentUsers] = useState([]);
+  const [assignedUsers, setAssignedUsers] = useState([]);
+  const [additionalInformation, setAdditionalInformation] = useState(task?.additional_information || "");
+  const [isExam, setIsExam] = useState(task?.is_exam || false);
   const [errors, setErrors] = useState({
     title: "",
     openingDate: "",
     closingDate: ""
   });
 
+  const usersByTaskId = (id) => {
+    exerciseServices.getByTaskId(id)
+      .then(({ data }) => {
+        console.log(data)
+        setCurrentUsers(data)
+        setAssignedUsers(data)
+      });
+  }
+
+  const assignedInclude = (id) => {
+    return currentUsers.includes(id);
+  }
+
+  const deleteUser = (id) => {
+    const filteredUsers = assignedUsers.filter(user => !currentUsers.includes(user));
+    if (filteredUsers.length !== 0) {
+      const data = {
+        "task_id": id,
+        "user_id": filteredUsers
+      }
+      exerciseServices.deleteOnGroup(data)
+        .then((response) => {
+          console.log(response);
+        })
+    }
+  }
+
+  const addUsers = (id) => {
+    const filteredUsers = currentUsers.filter(user => !assignedUsers.includes(user));
+    if (filteredUsers.length !== 0) {
+
+      const data = {
+        "exercise": {
+          "task_id": id,
+          "user_id": filteredUsers
+        }
+      }
+      exerciseServices.create(data)
+        .then((response) => {
+          console.log(response);
+        })
+    }
+  }
+
   useEffect(() => {
+    if (task && task.id) {
+      usersByTaskId(task.id)
+    }
+
     const fetchStatements = async () => {
       try {
         const response = await statementService.getAllStatements();
@@ -84,7 +137,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     if (openingDate && closingDate) {
       const opening = new Date(openingDate);
       const closing = new Date(closingDate);
-  
+
       if (opening >= closing) {
         valid = false;
         errors.title = "La fecha de apertura debe ser anterior a la fecha de cierre.";
@@ -105,6 +158,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       title,
       opening_date: openingDate,
       closing_date: closingDate,
+      additional_information: additionalInformation,
+      is_exam: isExam,
       statement_ids: selectedStatements,
       created_by: user.id,
     };
@@ -112,12 +167,13 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     try {
       if (task?.id) {
         await taskService.updateTask(task.id, taskData);
-        //alert("Tarea actualizada con éxito");
+        addUsers(task.id);
+        deleteUser(task.id);
         navigate("/");
       } else {
         const response = await taskService.createTask(taskData);
         const createdTask = await taskService.getTaskWithStatements(response.data.id);
-        //alert("Tarea creada con éxito");
+        addUsers(response.data.id);
         onTaskCreated(createdTask.data);
       }
     } catch (error) {
@@ -128,10 +184,10 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   return (
     <main className="task-page">
       <header className="task-page__header--header">
-        <button className="back-button" onClick={() => navigate("/home")}>
+        <button className="btn light" onClick={() => navigate("/home")}>
           <i className="fi fi-rr-arrow-small-left"></i>
           Volver
-          </button>
+        </button>
         <div className="task-title">
           <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
         </div>
@@ -143,8 +199,16 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         setOpeningDate={setOpeningDate}
         closingDate={closingDate}
         setClosingDate={setClosingDate}
+        additionalInformation={additionalInformation}
+        setAdditionalInformation={setAdditionalInformation}
+        isExam={isExam}
+        setIsExam={setIsExam}
         handleSubmit={handleSubmit}
         errors={errors}
+        id={task && task.id}
+        assignedInclude={assignedInclude}
+        setCurrentUsers={setCurrentUsers}
+        currentUsers={currentUsers}
       />
       <StatementsSelection
         statements={statements}
@@ -162,6 +226,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         statements={statements}
         selectedStatements={selectedStatements}
         handleRemoveStatement={handleRemoveStatement}
+        additionalInformation={additionalInformation}
+        isExam={isExam}
       />
     </main>
   );

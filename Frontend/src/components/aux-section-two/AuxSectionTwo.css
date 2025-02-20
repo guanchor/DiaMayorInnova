@@ -71,20 +71,23 @@
 
 .statement-grid {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--gap-xs);
 
-  & .statement-button{
+  & .statement-button {
+    width: 64px;
     background-color: var(--Color-grey-100);
     border-radius: var(--r-xs);
     cursor: pointer;
     box-shadow: var(--box-shadow-btn);
   }
-  & .statement-button.selected{
+
+  & .statement-button.selected {
     background-color: var(--Color-green-600);
     border: solid 1px var(--Color-green-800);
   }
 
-  & .statement-button.visited{
+  & .statement-button.visited {
     background-color: var(--Color-green-300);
   }
 }
@@ -92,7 +95,7 @@
 .statement-detail {
   padding: var(--gap-xs) var(--gap-xs) var(--gap-xs) 0;
 
-  & .statement-detail__title{
+  & .statement-detail__title {
     font-size: var(--text-mobile-subtitles-1);
     padding-bottom: var(--gap-xs);
   }

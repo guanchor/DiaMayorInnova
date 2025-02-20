@@ -1,19 +1,15 @@
-import React, { useContext } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Outlet } from "react-router-dom";
 import { navContext } from '../context/nav-menu/navMenuContext';
 import Shortcuts from "../components/shortcuts/Shortcuts";
 import StudentMark from "../components/student-mark/StudentMark";
 import StudentAside from "../components/student-aside/StudentAside";
 import TaskListAndDetails from "../components/task/taskListAndDetails";
 import StatementsSelection from "../components/task/StatementsSelection";
-import useStatements from "../hooks/useStatements";
 
 
 function Home() {
-  const navigate = useNavigate();
   const { currentRole } = useContext(navContext);
-
-  const { statements, solutions, editMode, loading, handleEditSolutions } = useStatements();
 
   if (currentRole === 'admin') {
     return (
@@ -37,10 +33,6 @@ function Home() {
           <Shortcuts />
           <section className="principal">
             <StatementsSelection
-              statements={statements}
-              handleEditSolutions={handleEditSolutions}
-              solutions={solutions}
-              editMode={editMode}
               showCheckboxes={false}
             />
           </section>
@@ -55,7 +47,6 @@ function Home() {
       <Shortcuts />
       <section className="principal">
         <StudentMark />
-        {/*<button onClick={() => navigate("/accounting-plans")}>Mostrar la lista de Accounting plans</button>*/}
       </section>
       <aside className="aside">
         <StudentAside />

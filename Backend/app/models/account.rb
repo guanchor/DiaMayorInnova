@@ -5,6 +5,6 @@ class Account < ApplicationRecord
   has_many :student_annotations
 
   default_scope { order(account_number: :asc) }
-end
 
-# A
+  validates :name, presence: true
+end

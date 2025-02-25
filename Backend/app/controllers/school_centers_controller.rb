@@ -4,7 +4,7 @@ class SchoolCentersController < ApplicationController
 
   def index
     if params[:school_name].present?
-      @schools = SchoolCenter.where("school_name LIKE ?", "%#{params[:school_name]}%")
+      @schools = SchoolCenter.where("school_name ILIKE ?", "%#{params[:school_name]}%")
     else
       @schools = SchoolCenter.all
     end

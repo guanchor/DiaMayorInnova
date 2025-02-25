@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
-import { Link } from "react-router-dom";
 import "./AccountingPlan.css";
 
-const AccountingPlan = (props) => {
-  const { id } = useParams();
-  let navigate = useNavigate();
-
+const AccountingPlan = ({ id }) => {
   const initialAccountingPlanState = {
     id: null,
     name: "",
@@ -33,103 +28,39 @@ const AccountingPlan = (props) => {
       });
   };
 
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentAccountingPlan({ ...currentAccountingPlan, [name]: value });
   };
 
-  const validateForm = () => {
-    if (!currentAccountingPlan.name || !currentAccountingPlan.description || !currentAccountingPlan.acronym) {
-      setError("Todos los campos son obligatorios y deben tener valores válidos.");
-      return false;
-    }
-    setError("");
-    return true;
-  };
-
   const updateAccountingPlan = () => {
-    if (validateForm()) {
-      AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
-        .then(response => {
-          setMessage("El plan de cuentas fue actualizado correctamente.");
-        })
-        .catch(e => {
-          console.log(e);
-          setError("Hubo un problema al actualizar el plan de cuentas.");
-        });
+    if (!currentAccountingPlan.name || !currentAccountingPlan.description || !currentAccountingPlan.acronym) {
+      setError("Todos los campos son obligatorios.");
+      return;
     }
+    AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
+      .then(() => setMessage("Actualizado correctamente."))
+      .catch(() => setError("Error al actualizar."));
   };
-
-  // const deleteAccountingPlan = () => {
-  //   AccountingPlanDataService.remove(currentAccountingPlan.id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       navigate("/accounting-plans/");
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
 
   return (
-    <>
+    <div >
+      <h2 className="accountingPlan__header--h2">Detalles del PGC</h2>
+      <form>
+        <label>Nombre</label>
+        <input className="accountingPlan__input" name="name" value={currentAccountingPlan.name} onChange={handleInputChange} />
 
-      {currentAccountingPlan ? (
-        <div>
-          <h4 className="accountingPlan__header--h4 details">Detalles del PGC </h4>
-          <form className="accountingPlan__form">
-            <div className="accountingPlan__form--group">
-              <label className="accountingPlan__label" htmlFor="name">Nombre</label>
-              <input
-                className="accountingPlan__input"
-                id="name"
-                name="name"
-                type="text"
-                value={currentAccountingPlan.name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="accountingPlan__form--group">
-              <label className="accountingPlan__label" htmlFor="description">Descripción</label>
-              <textarea
-                className="accountingPlan__input descrip"
-                id="description"
-                name="description"
-                type="text"
-                value={currentAccountingPlan.description}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="accountingPlan__form--group">
-              <label className="accountingPlan__label" htmlFor="acronym">Acrónimo</label>
-              <input
-                className="accountingPlan__input"
-                id="acronym"
-                name="acronym"
-                type="text"
-                value={currentAccountingPlan.acronym}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </form>
-          <div className="accountingPlan__form--actions details">
-            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-            <button className="btn accountingPlan__button--edit" onClick={updateAccountingPlan}>Editar</button>
-            <button className="btn accountingPlan__button--back"><Link to={"/accounting-plans/"}>Atrás</Link></button>
-            <p>{message}</p>
-          </div>
+        <label>Descripción</label>
+        <textarea name="description" value={currentAccountingPlan.description} onChange={handleInputChange} />
 
-        </div>
-      ) : (
-        <div>
-          <p>No hay información</p>
-        </div>
-      )}
-    </>
+        <label>Acrónimo</label>
+        <input name="acronym" value={currentAccountingPlan.acronym} onChange={handleInputChange} />
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="button" onClick={updateAccountingPlan}>Guardar</button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
   );
 };
 

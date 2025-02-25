@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService"
 import { useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
+import AccountingPlan from "./AccountingPlan";
+import Modal from "../modal/Modal";
 
-// PGC LIST
 const AccountingPlansList = ({ newPGC }) => {
   const [accountingPlans, setAccountingPlans] = useState([]);
+  const [selectedAccountingPlanId, setSelectedAccountingPlanId] = useState(null); // ID del plan a editar
+  const modalRef = useRef(null); // Referencia para la modal
+  const navigate = useNavigate();
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccPlan, setSearchAccPlan] = useState("");
-  const navigate = useNavigate();
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
-
-
 
   useEffect(() => {
     retrieveAccountingPlans();
@@ -89,9 +90,13 @@ const AccountingPlansList = ({ newPGC }) => {
     sortAccountinPlans(newOrder);
   }
 
+  const openEditModal = (id) => {
+    setSelectedAccountingPlanId(id); // Guardar el ID seleccionado
+    modalRef.current?.showModal(); // Abrir la modal
+  };
+
   return (
     <>
-
       <section className="accountingPlan__pgcList">
         <div className="accountingPlan__header">
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
@@ -111,13 +116,12 @@ const AccountingPlansList = ({ newPGC }) => {
         
 
         <div className="accountingPlan__table">
-          {accountingPlans.length === 0 ? ( // Usability upgrade #3 -> Show message if there is no data
+          {accountingPlans.length === 0 ? (
             <p>No hay PGCs disponibles</p>
           ) : (
             <table className="accountingPlan_tbody">
               <thead>
                 <tr>
-                  {/*Order table by Name column */}
                   <th onClick={handleSortClick} style={{cursor: "pointer"}}>
                     Nombre PGC {sortOrder === "ascending" ? <i className="fi fi-rr-angle-small-down"/> : <i className="fi fi-rr-angle-small-up"/>}
                   </th>
@@ -127,8 +131,8 @@ const AccountingPlansList = ({ newPGC }) => {
                 </tr>
               </thead>
               <tbody>
-                {accountingPlans && accountingPlans.map((accountingPlan, index) => (
-                  <tr className="accountingPlan__pgcList-item" key={index} onClick={() => setActiveAccountingPlan(accountingPlan, index)}>
+                {accountingPlans.map((accountingPlan, index) => (
+                  <tr key={index}>
                     <td>{accountingPlan.name}</td>
                     <td>{accountingPlan.acronym}</td>
                     <td>{accountingPlan.description}</td>
@@ -136,8 +140,8 @@ const AccountingPlansList = ({ newPGC }) => {
                       <button className="accountingPlan__button--link eye" onClick={()=>navigate("/accounts")}>
                           <i className="fi-rr-eye" /> Ver cuentas
                       </button>
-                      <button className="accountingPlan__button--link pencil" onClick={()=>navigate("/accounting-plans/" + accountingPlan.id)}>
-                          <i className="fi-rr-pencil" /> Editar
+                      <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
+                        <i className="fi-rr-pencil" /> Editar
                       </button>
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {
@@ -153,9 +157,11 @@ const AccountingPlansList = ({ newPGC }) => {
             </table>
           )}
         </div>
-
       </section>
 
+      <Modal ref={modalRef} modalTitle="Editar PGC">
+        {selectedAccountingPlanId && <AccountingPlan id={selectedAccountingPlanId} />}
+      </Modal>
     </>
   );
 };

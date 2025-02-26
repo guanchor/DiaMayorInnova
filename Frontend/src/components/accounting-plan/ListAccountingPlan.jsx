@@ -66,8 +66,22 @@ const AccountingPlansList = ({ newPGC }) => {
   };
 
   const handleSearchChange = (e) => {
-    setSearchAccPlan(e.target.value);
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchAccPlan(searchTerm);
+  
+    if (!searchTerm) {
+      retrieveAccountingPlans(); // Si le champ est vide, récupérer tous les PGC
+      return;
+    }
+  
+    // Filtrage dynamique des plans comptables
+    setAccountingPlans((prevPlans) =>
+      prevPlans.filter((plan) =>
+        plan.name.toLowerCase().includes(searchTerm)
+      )
+    );
   };
+  
 
   //PGC sorted by Name column
   const sortAccountinPlans = (order) => {
@@ -96,17 +110,17 @@ const AccountingPlansList = ({ newPGC }) => {
         <div className="accountingPlan__header">
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
 
-          <form className="search-bar search-bar--pgc" onSubmit={findByName}>
-            <input
-              aria-label="Filtrar por nombre"
-              className="search-bar_search" 
-              type="text"
-              value={searchAccPlan}
-              onChange={handleSearchChange}
-              placeholder="Filtrar por nombre"
-            />
-            <i className="fi fi-rr-search" onClick={findByName}></i>
-          </form>
+          <form className="search-bar search-bar--pgc">
+  <input
+    className="search-bar_search"
+    type="text"
+    value={searchAccPlan}
+    onChange={handleSearchChange}
+    placeholder="Filtrer par nom"
+  />
+  <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
+</form>
+
         </div>
         
 

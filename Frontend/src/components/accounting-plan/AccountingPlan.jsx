@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
-import "./AccountingPlan.css";
+import "./EditFormModal.css";
 
 const AccountingPlan = ({ id }) => {
   const initialAccountingPlanState = {
@@ -44,20 +44,40 @@ const AccountingPlan = ({ id }) => {
   };
 
   return (
-    <div >
-      <h2 className="accountingPlan__header--h2">Detalles del PGC</h2>
+    <div className="editForm__container">
       <form>
-        <label>Nombre</label>
-        <input className="accountingPlan__input" name="name" value={currentAccountingPlan.name} onChange={handleInputChange} />
+        <div className="editForm__form--row">
+          <div className="editForm__form--group">
+            <label>Nombre
+            <input
+              className="editForm__input" 
+              name="name" value={currentAccountingPlan.name} 
+              onChange={handleInputChange} /></label>
+          </div>
 
-        <label>Descripción</label>
-        <textarea name="description" value={currentAccountingPlan.description} onChange={handleInputChange} />
+          <div className="editForm__form--group">
+            <label>Acrónimo
+            <input 
+              className="editForm__input" 
+              name="acronym" 
+              value={currentAccountingPlan.acronym} 
+              onChange={handleInputChange} /></label>
+          </div>
+        </div>
 
-        <label>Acrónimo</label>
-        <input name="acronym" value={currentAccountingPlan.acronym} onChange={handleInputChange} />
+        <div className="editForm__form--row">
+          <div className="editForm__form--group full-width">
+            <label>Descripción
+            <input name="description"
+              className="editForm__input"
+              value={currentAccountingPlan.description} 
+              onChange={handleInputChange} /></label>
+          </div>
+        </div>
+
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="button" onClick={updateAccountingPlan}>Guardar</button>
+        <button className="editForm__form--save" onClick={updateAccountingPlan}>Guardar</button>
       </form>
       {message && <p>{message}</p>}
     </div>

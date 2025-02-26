@@ -95,6 +95,17 @@ const AccountingPlansList = ({ newPGC }) => {
     modalRef.current?.showModal(); // Abrir la modal
   };
 
+  const closeEditModal = () => {
+    setSelectedAccountingPlanId(null);
+    modalRef.current?.close();
+  };
+
+  const handleSaveSuccess = () => {
+    retrieveAccountingPlans();
+    setMessage("");
+  };
+
+
   return (
     <>
       <section className="accountingPlan__pgcList">
@@ -160,7 +171,13 @@ const AccountingPlansList = ({ newPGC }) => {
       </section>
 
       <Modal ref={modalRef} modalTitle="Editar PGC">
-        {selectedAccountingPlanId && <AccountingPlan id={selectedAccountingPlanId} />}
+        {selectedAccountingPlanId && (
+          <AccountingPlan 
+            id={selectedAccountingPlanId} 
+            onSaveSuccess={handleSaveSuccess}
+            onCloseModal={closeEditModal}
+          />
+        )}
       </Modal>
     </>
   );

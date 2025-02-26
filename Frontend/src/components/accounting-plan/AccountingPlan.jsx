@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService";
 import "./EditFormModal.css";
 
-const AccountingPlan = ({ id }) => {
+const AccountingPlan = ({ id, onSaveSuccess, onCloseModal}) => {
   const initialAccountingPlanState = {
     id: null,
     name: "",
@@ -15,37 +15,51 @@ const AccountingPlan = ({ id }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (id) getAccountingPlan(id);
+    setMessage("");
+    setError("");
+    
+    if (id) {
+      AccountingPlanDataService.get(id)
+        .then(response => {
+          setCurrentAccountingPlan(response.data);
+          setError("");
+        })
+        .catch(e => console.log(e));
+    }
   }, [id]);
-
-  const getAccountingPlan = (id) => {
-    AccountingPlanDataService.get(id)
-      .then((response) => {
-        setCurrentAccountingPlan(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentAccountingPlan({ ...currentAccountingPlan, [name]: value });
   };
 
-  const updateAccountingPlan = () => {
+  const updateAccountingPlan = (e) => {
+    e.preventDefault(); 
+
+    setError("");
+
     if (!currentAccountingPlan.name || !currentAccountingPlan.description || !currentAccountingPlan.acronym) {
+      setMessage("");
       setError("Todos los campos son obligatorios.");
       return;
     }
+
     AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
-      .then(() => setMessage("Actualizado correctamente."))
-      .catch(() => setError("Error al actualizar."));
+      .then(() => {
+        setMessage("Actualizado correctamente.");
+        setError("");
+        onSaveSuccess();
+      })
+      .catch(() => {
+        setError("Error al actualizar.");
+        setMessage("");
+      });
+        
   };
 
   return (
     <div className="editForm__container">
-      <form>
+      <form onSubmit={updateAccountingPlan}>
         <div className="editForm__form--row">
           <div className="editForm__form--group">
             <label>Nombre
@@ -76,10 +90,11 @@ const AccountingPlan = ({ id }) => {
         </div>
 
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button className="editForm__form--save" onClick={updateAccountingPlan}>Guardar</button>
+        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        {message && <p style={{ color: 'green', textAlign: 'center'}}>{message}</p>}
+
+        <button className="editForm__form--save" type="submit">Guardar</button>
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };

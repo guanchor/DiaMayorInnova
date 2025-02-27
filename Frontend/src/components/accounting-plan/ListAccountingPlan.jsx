@@ -91,8 +91,8 @@ const AccountingPlansList = ({ newPGC }) => {
   }
 
   const openEditModal = (id) => {
-    setSelectedAccountingPlanId(id); // Guardar el ID seleccionado
-    modalRef.current?.showModal(); // Abrir la modal
+    setSelectedAccountingPlanId(id);
+    modalRef.current?.showModal(); 
   };
 
   const closeEditModal = () => {
@@ -102,8 +102,8 @@ const AccountingPlansList = ({ newPGC }) => {
 
   const handleSaveSuccess = () => {
     retrieveAccountingPlans();
-    setMessage("");
   };
+  
 
 
   return (

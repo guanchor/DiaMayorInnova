@@ -15,47 +15,55 @@ const AccountingPlan = ({ id, onSaveSuccess, onCloseModal}) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setMessage("");
+    setMessage(""); 
     setError("");
-    
+  
     if (id) {
       AccountingPlanDataService.get(id)
         .then(response => {
           setCurrentAccountingPlan(response.data);
-          setError("");
+          setError(""); 
         })
-        .catch(e => console.log(e));
+        .catch(e => {
+          console.log(e);
+          setError("Error al cargar el plan contable.");
+        });
     }
-  }, [id]);
+  
+    return () => {
+      setMessage("");
+      setError("");
+    };
+  }, [id, onCloseModal]); 
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentAccountingPlan({ ...currentAccountingPlan, [name]: value });
   };
 
-  const updateAccountingPlan = (e) => {
-    e.preventDefault(); 
-
+  const updateAccountingPlan = async (e) => {
+    e.preventDefault();
+  
     setError("");
-
+  
     if (!currentAccountingPlan.name || !currentAccountingPlan.description || !currentAccountingPlan.acronym) {
       setMessage("");
       setError("Todos los campos son obligatorios.");
       return;
     }
-
-    AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan)
-      .then(() => {
-        setMessage("Actualizado correctamente.");
-        setError("");
-        onSaveSuccess();
-      })
-      .catch(() => {
-        setError("Error al actualizar.");
-        setMessage("");
-      });
-        
+  
+    try {
+      await AccountingPlanDataService.update(currentAccountingPlan.id, currentAccountingPlan);
+      setMessage("Actualizado correctamente.");
+      setError("");
+      onSaveSuccess();
+    } catch (error) {
+      setError("Error al actualizar.");
+      setMessage("");
+    }
   };
+  
 
   return (
     <div className="editForm__container">

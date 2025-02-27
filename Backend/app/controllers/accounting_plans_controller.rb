@@ -42,9 +42,21 @@ class AccountingPlansController < ApplicationController
         render json: @accountingPlans
     end
 
+    # 🚀 Ajoute la méthode `accounts` **ICI**, avant `private`
+    def accounts_by_PGC
+        accounting_plan = AccountingPlan.find_by(id: params[:id])
+      
+        if accounting_plan
+          render json: accounting_plan.accounts, status: :ok
+        else
+          render json: { error: "Plan comptable non trouvé" }, status: :not_found
+        end
+    end
+
     private
 
     def accounting_plan_params
         params.require(:accounting_plan).permit(:name, :description, :acronym)
     end
+
 end

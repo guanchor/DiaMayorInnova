@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     get 'find_by_account_id', on: :collection
   end
   
+resources :accounting_plans do
+  get 'accounts_by_PGC', on: :member
+end
+  
   resources :teacher_class_groups
   resources :annotations
   resources :entries
@@ -65,3 +69,4 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root to: 'sessions#create'
 end
+

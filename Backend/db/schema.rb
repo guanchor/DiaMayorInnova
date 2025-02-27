@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_18_113031) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -218,11 +218,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_18_113031) do
     t.string "first_lastName"
     t.string "second_lastName"
     t.string "role", default: "student"
-    t.bigint "class_groups_id"
+    t.bigint "class_group_id"
+    t.bigint "school_center_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-    t.index ["class_groups_id"], name: "index_users_on_class_groups_id"
+    t.index ["class_group_id"], name: "index_users_on_class_group_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["school_center_id"], name: "index_users_on_school_center_id"
   end
 
   add_foreign_key "accounts", "accounting_plans"
@@ -244,5 +246,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_18_113031) do
   add_foreign_key "task_statements", "tasks"
   add_foreign_key "teacher_class_groups", "class_groups"
   add_foreign_key "teacher_class_groups", "users"
-  add_foreign_key "users", "class_groups", column: "class_groups_id"
+  add_foreign_key "users", "class_groups"
+  add_foreign_key "users", "school_centers"
 end

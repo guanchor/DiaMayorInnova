@@ -8,6 +8,12 @@ class Ability
 
     if user.admin?
       can :manage, :all
+    elsif user.center_admin?
+      if user.school_center.present?
+        can :manage, User, school_center_id: user.school_center.id
+        can :manage, ClassGroup, school_center_id: user.school_center.id
+        can :read, SchoolCenter, id: user.school_center.id
+      end
     elsif user.teacher?
       can :manage, Exercise
       can :find_by_task_id, Exercise

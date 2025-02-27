@@ -46,7 +46,7 @@ function App() {
               <Routes>
                 <Route path="/sign_in" element={<SignIn />} />
                 <Route path="*" element={<Home />} />
-                <Route element={<PrivateRoute allowedRoles={['admin', 'teacher', 'student']} />}>
+                <Route element={<PrivateRoute allowedRoles={['admin', 'center_admin', 'teacher', 'student']} />}>
                   <Route path="/home" element={<Home />} />
                   <Route path="/accounting-plans-test" element={<AccountingPlanList />} />
                   <Route path="/accounting-plans-test/:id" element={<AccountingPlan />} />
@@ -58,7 +58,7 @@ function App() {
                   <Route path="/help-examples" element={<HelpExampleList />} />
                   <Route path="/help-examples/:id" element={<HelpExample />} />
                   <Route path="/add-help-example" element={<AddHelpExample />} />
-                  <Route element={<PrivateRoute allowedRoles={['admin', 'teacher']} />}>
+                  <Route element={<PrivateRoute allowedRoles={['admin', 'center_admin', 'teacher']} />}>
                     <Route path="/accounting-plans" element={<AccountingPlans />} />
                     <Route path="/accounting-plans/:id" element={<AccountingPlan />} />
                     <Route path="/accounts" element={<Accounts />} />
@@ -73,7 +73,7 @@ function App() {
                     <Route path="/class-list" element={<ClassGroupsList />} />
                     <Route path="/add-class-list" element={<AddClassGroup />} />
                     <Route path="/class-list/:id" element={<ClassGroup />} />
-                    <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+                    <Route element={<PrivateRoute allowedRoles={['admin', 'center_admin']} />}>
                       <Route path="/users" element={<UserManagement/>} />
                       <Route path="/home" element={<Home />} >
                         <Route path='escuelas/' element={<SchoolsCenters />} />

@@ -1,5 +1,5 @@
 class SchoolCenter < ApplicationRecord
-    has_many :user
+    has_many :users
 
     validates :school_name, :address, :phone, :email, :website, :province, presence: true
 end

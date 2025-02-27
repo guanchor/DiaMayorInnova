@@ -32,14 +32,14 @@ scRoutes.push({
   to: "/home/escuelas",
   icon: "fi fi-rr-school",
   name: "Colegios",
-  rol: ["admin"],
+  rol: ["center_admin", "admin"],
 })
 
 scRoutes.push({
   to: "/accounting-plans",
   icon: "fi fi-rr-book",
   name: "PGC",
-  rol: ["teacher", "admin"],
+  rol: ["teacher", "center_admin", "admin"],
 })
 
 scRoutes.push({
@@ -47,7 +47,7 @@ scRoutes.push({
   icon: "fi fi-rr-book",
   name: "Lista Grupos",
   student: false,
-  rol: ["teacher", "admin"],
+  rol: ["teacher", "center_admin", "admin"],
 })
 
 scRoutes.push({
@@ -55,5 +55,5 @@ scRoutes.push({
   icon: "fi fi-rr-user-add",
   name: "Crear Usuario",
   student: false,
-  rol: ["admin"],
+  rol: ["center_admin", "admin"],
 })

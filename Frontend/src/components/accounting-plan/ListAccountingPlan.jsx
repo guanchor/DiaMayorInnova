@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService"
 import { useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
+import AccountsModal from "../modal/AccountModal";
+
 
 // PGC LIST
 const AccountingPlansList = ({ newPGC }) => {
@@ -11,6 +13,9 @@ const AccountingPlansList = ({ newPGC }) => {
   const [searchAccPlan, setSearchAccPlan] = useState("");
   const navigate = useNavigate();
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
+  const [accounts, setAccounts] = useState([]); // Stocker les comptes récupérés
+  const [isModalOpen, setIsModalOpen] = useState(false); // Gérer l'affichage de la modale
+
 
 
 
@@ -103,6 +108,17 @@ const AccountingPlansList = ({ newPGC }) => {
     sortAccountinPlans(newOrder);
   }
 
+  const fetchAccountsByPGC = (pgcId) => {
+    AccountingPlanDataService.getAccountsByPGC(pgcId)
+      .then(response => {
+        setAccounts(response.data);
+        setIsModalOpen(true); // Ouvrir la modale après récupération des comptes
+      })
+      .catch(error => {
+        console.error("Erreur lors de la récupération des comptes :", error);
+      });
+  };
+
   return (
     <>
 
@@ -147,12 +163,11 @@ const AccountingPlansList = ({ newPGC }) => {
                     <td>{accountingPlan.acronym}</td>
                     <td>{accountingPlan.description}</td>
                     <td className="accountingPlan__form--actions">
-                      <button className="accountingPlan__button--link eye" onClick={()=>navigate("/accounts")}>
-                          <i className="fi-rr-eye" /> Ver cuentas
-                      </button>
-                      <button className="accountingPlan__button--link pencil" onClick={()=>navigate("/accounting-plans/" + accountingPlan.id)}>
-                          <i className="fi-rr-pencil" /> Editar
-                      </button>
+                   
+                    <button className="accountingPlan__button--link eye" onClick={() => fetchAccountsByPGC(accountingPlan.id)}>
+                      <i className="fi-rr-eye" /> Ver cuentas
+                    </button>
+
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -169,6 +184,7 @@ const AccountingPlansList = ({ newPGC }) => {
         </div>
 
       </section>
+      <AccountsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} accounts={accounts} />
 
     </>
   );

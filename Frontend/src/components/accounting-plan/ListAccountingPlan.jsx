@@ -34,24 +34,24 @@ const AccountingPlansList = ({ newPGC }) => {
       });
   };
 
-  const findByName = (e) => {
-    e.preventDefault();
-    if (searchAccPlan) {
-      const searchTerm = searchAccPlan.toLowerCase(); //Convert search parameter to lowercase
-      AccountingPlanDataService.getAll() //Get all plans
-        .then(response => {
-          const filteredPlans = response.data.filter(plan => 
-            plan.name.toLowerCase().includes(searchTerm) //Compare pgc name and search parameters
-          );
-          setAccountingPlans(filteredPlans); //Get plans filter by search param
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
-      retrieveAccountingPlans();
-    }
-  };
+  // const findByName = (e) => {
+  //   e.preventDefault();
+  //   if (searchAccPlan) {
+  //     const searchTerm = searchAccPlan.toLowerCase(); //Convert search parameter to lowercase
+  //     AccountingPlanDataService.getAll() //Get all plans
+  //       .then(response => {
+  //         const filteredPlans = response.data.filter(plan => 
+  //           plan.name.toLowerCase().includes(searchTerm) //Compare pgc name and search parameters
+  //         );
+  //         setAccountingPlans(filteredPlans); //Get plans filter by search param
+  //       })
+  //       .catch(e => {
+  //         console.log(e);
+  //       });
+  //   } else {
+  //     retrieveAccountingPlans();
+  //   }
+  // };
 
   const setActiveAccountingPlan = (accountingPlan, index) => {
     setCurrentAccountingPlan(accountingPlan);
@@ -143,15 +143,15 @@ const AccountingPlansList = ({ newPGC }) => {
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
 
           <form className="search-bar search-bar--pgc">
-  <input
-    className="search-bar_search"
-    type="text"
-    value={searchAccPlan}
-    onChange={handleSearchChange}
-    placeholder="Filtrer par nom"
-  />
-  <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
-</form>
+            <input
+              className="search-bar_search"
+              type="text"
+              value={searchAccPlan}
+              onChange={handleSearchChange}
+              placeholder="Buscar por nombre"
+            />
+            <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
+          </form>
 
         </div>
         

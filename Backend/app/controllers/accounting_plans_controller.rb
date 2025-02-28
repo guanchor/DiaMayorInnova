@@ -89,6 +89,8 @@ class AccountingPlansController < ApplicationController
 
         rescue
             render json: @accountingPlan.errors, status: :unprocessable_entity
+        end
+    end
 
 
     # Filter accounts by Accounting Plan

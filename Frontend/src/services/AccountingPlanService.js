@@ -70,6 +70,8 @@ const findByName = async (name) => {
         return null;
     }
 };
+
+
 const getAccountsByPGC = (id) => {
     return http.get(`/accounting_plans/${id}/accounts_by_PGC`);
   };

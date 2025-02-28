@@ -104,7 +104,7 @@ const AccountingPlansList = ({ newPGC }) => {
     retrieveAccountingPlans();
   };
   
-
+  // Download CSV
 
   return (
     <>
@@ -153,6 +153,9 @@ const AccountingPlansList = ({ newPGC }) => {
                       </button>
                       <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
                         <i className="fi-rr-pencil" /> Editar
+                      </button>
+                      <button className="accountingPlan__button--link download" onClick={() => exportToCSV(accountingPlan.id)}>
+                        <i className="fi-rr-download" /> CSV
                       </button>
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {

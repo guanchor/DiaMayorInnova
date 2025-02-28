@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   resources :class_groups
-  resources :accounting_plans
+  resources :accounting_plans do
+      get "export_csv", on: :member
+      post "import_csv", on: :collection
+  end
   resources :school_centers
   resources :accounts do
     get 'find_by_account_number', on: :collection

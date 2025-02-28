@@ -70,6 +70,18 @@ const findByName = async (name) => {
     }
 };
 
+const exportCSV = (id) => {
+    try {
+        const response = http.get(`/accounting_plans/${id}/export_csv`, { 
+            responseType: "blob" 
+        }); //Binary Large Object for csv files, pdf, etc...
+        return response;
+    } catch (error) {
+        console.error("Error al exportar CSV:", error);
+        return null;
+    }
+}
+
 const AccountingPlanService = {
     getAll,
     get,
@@ -77,7 +89,8 @@ const AccountingPlanService = {
     update,
     remove,
     removeAll,
-    findByName
+    findByName,
+    exportCSV
 };
 
 export default AccountingPlanService;

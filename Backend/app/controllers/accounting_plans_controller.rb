@@ -89,6 +89,16 @@ class AccountingPlansController < ApplicationController
 
         rescue
             render json: @accountingPlan.errors, status: :unprocessable_entity
+
+
+    # Filter accounts by Accounting Plan
+    def accounts_by_PGC
+        accounting_plan = AccountingPlan.find_by(id: params[:id])
+      
+        if accounting_plan
+          render json: accounting_plan.accounts, status: :ok
+        else
+          render json: { error: "PGC no encontrado" }, status: :not_found
         end
     end
 
@@ -97,4 +107,5 @@ class AccountingPlansController < ApplicationController
     def accounting_plan_params
         params.require(:accounting_plan).permit(:name, :description, :acronym)
     end
+
 end

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
 import AccountingPlan from "./AccountingPlan";
 import Modal from "../modal/Modal";
+import AccountsModal from "../modal/AccountModal";
+
 
 const AccountingPlansList = ({ newPGC }) => {
   const [accountingPlans, setAccountingPlans] = useState([]);
@@ -14,6 +16,9 @@ const AccountingPlansList = ({ newPGC }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccPlan, setSearchAccPlan] = useState("");
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
+  const [accounts, setAccounts] = useState([]); // Stocker les comptes récupérés
+  const [isModalOpen, setIsModalOpen] = useState(false); // Gérer l'affichage de la modale
+
 
   useEffect(() => {
     retrieveAccountingPlans();
@@ -67,8 +72,22 @@ const AccountingPlansList = ({ newPGC }) => {
   };
 
   const handleSearchChange = (e) => {
-    setSearchAccPlan(e.target.value);
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchAccPlan(searchTerm);
+  
+    if (!searchTerm) {
+      retrieveAccountingPlans(); // Si le champ est vide, récupérer tous les PGC
+      return;
+    }
+  
+    // Filtrage dynamique des plans comptables
+    setAccountingPlans((prevPlans) =>
+      prevPlans.filter((plan) =>
+        plan.name.toLowerCase().includes(searchTerm)
+      )
+    );
   };
+  
 
   //PGC sorted by Name column
   const sortAccountinPlans = (order) => {
@@ -106,23 +125,34 @@ const AccountingPlansList = ({ newPGC }) => {
   
   // Download CSV
 
+  const fetchAccountsByPGC = (pgcId) => {
+    AccountingPlanDataService.getAccountsByPGC(pgcId)
+      .then(response => {
+        setAccounts(response.data);
+        setIsModalOpen(true); // Ouvrir la modale après récupération des comptes
+      })
+      .catch(error => {
+        console.error("Erreur lors de la récupération des comptes :", error);
+      });
+  };
+
   return (
     <>
       <section className="accountingPlan__pgcList">
         <div className="accountingPlan__header">
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
 
-          <form className="search-bar search-bar--pgc" onSubmit={findByName}>
-            <input
-              aria-label="Filtrar por nombre"
-              className="search-bar_search" 
-              type="text"
-              value={searchAccPlan}
-              onChange={handleSearchChange}
-              placeholder="Filtrar por nombre"
-            />
-            <i className="fi fi-rr-search" onClick={findByName}></i>
-          </form>
+          <form className="search-bar search-bar--pgc">
+  <input
+    className="search-bar_search"
+    type="text"
+    value={searchAccPlan}
+    onChange={handleSearchChange}
+    placeholder="Filtrer par nom"
+  />
+  <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
+</form>
+
         </div>
         
 
@@ -148,8 +178,8 @@ const AccountingPlansList = ({ newPGC }) => {
                     <td>{accountingPlan.acronym}</td>
                     <td>{accountingPlan.description}</td>
                     <td className="accountingPlan__form--actions">
-                      <button className="accountingPlan__button--link eye" onClick={()=>navigate("/accounts")}>
-                          <i className="fi-rr-eye" /> Ver cuentas
+                      <button className="accountingPlan__button--link eye" onClick={() => fetchAccountsByPGC(accountingPlan.id)}>
+                        <i className="fi-rr-eye" /> Ver cuentas
                       </button>
                       <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
                         <i className="fi-rr-pencil" /> Editar
@@ -172,6 +202,7 @@ const AccountingPlansList = ({ newPGC }) => {
           )}
         </div>
       </section>
+      <AccountsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} accounts={accounts} />
 
       <Modal ref={modalRef} modalTitle="Editar PGC">
         {selectedAccountingPlanId && (

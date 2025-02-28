@@ -20,6 +20,7 @@ const get = async (id) => {
     }
 };
 
+  
 const create = async (data) => {
     try {
         const response = await http.post("/accounting_plans", data);
@@ -69,6 +70,9 @@ const findByName = async (name) => {
         return null;
     }
 };
+const getAccountsByPGC = (id) => {
+    return http.get(`/accounting_plans/${id}/accounts_by_PGC`);
+  };
 
 const exportCSV = (id) => {
     try {
@@ -90,7 +94,9 @@ const AccountingPlanService = {
     remove,
     removeAll,
     findByName,
-    exportCSV
+    exportCSV,
+    getAccountsByPGC
 };
+
 
 export default AccountingPlanService;

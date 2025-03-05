@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_151601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
     t.integer "weekly_hours"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "school_center_id", default: 1, null: false
+    t.index ["school_center_id"], name: "index_class_groups_on_school_center_id"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -167,6 +169,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
     t.index ["student_entry_id"], name: "index_student_annotations_on_student_entry_id"
   end
 
+  create_table "student_class_groups", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "class_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_group_id"], name: "index_student_class_groups_on_class_group_id"
+    t.index ["user_id"], name: "index_student_class_groups_on_user_id"
+  end
+
   create_table "student_entries", force: :cascade do |t|
     t.integer "entry_number"
     t.date "entry_date"
@@ -218,10 +229,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
     t.string "first_lastName"
     t.string "second_lastName"
     t.string "role", default: "student"
-    t.bigint "class_group_id"
     t.bigint "school_center_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-    t.index ["class_group_id"], name: "index_users_on_class_group_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_center_id"], name: "index_users_on_school_center_id"
@@ -232,6 +241,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "accounts"
   add_foreign_key "annotations", "entries"
+  add_foreign_key "class_groups", "school_centers"
   add_foreign_key "entries", "solutions"
   add_foreign_key "exercises", "tasks"
   add_foreign_key "exercises", "users"
@@ -241,11 +251,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_110055) do
   add_foreign_key "statements", "users"
   add_foreign_key "student_annotations", "accounts"
   add_foreign_key "student_annotations", "student_entries"
+  add_foreign_key "student_class_groups", "class_groups"
+  add_foreign_key "student_class_groups", "users"
   add_foreign_key "student_entries", "marks"
   add_foreign_key "task_statements", "statements"
   add_foreign_key "task_statements", "tasks"
   add_foreign_key "teacher_class_groups", "class_groups"
   add_foreign_key "teacher_class_groups", "users"
-  add_foreign_key "users", "class_groups"
   add_foreign_key "users", "school_centers"
 end

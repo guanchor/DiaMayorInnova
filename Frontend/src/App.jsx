@@ -4,7 +4,7 @@ import AccountingPlan from './components/accounting-plan/AccountingPlan';
 import AccountingPlanList from './components/accounting-plan/ListAccountingPlan';
 import AddAccountingPlan from './components/accounting-plan/AddAccountingPlan';
 import ClassGroup from "./components/class-group/ClassGroup";
-import ClassGroupsList from "./pages/class-group/ClassGroupList";
+import ClassGroups from "./pages/class-group/ClassGroup";
 import AddClassGroup from "./components/class-group/AddClassGroup";
 import SchoolsCenters from './components/schoolCenters/SchoolCenters'
 import { AuthProvider } from "./context/AuthContext";
@@ -70,7 +70,7 @@ function App() {
                     <Route path="/add-statements" element={<StatementCreateForm />} />
                     <Route path="/add-accounting-plan" element={<AddAccountingPlan />} />
                     <Route path="/schools" element={<SchoolsCenters />} />
-                    <Route path="/class-list" element={<ClassGroupsList />} />
+                    <Route path="/class-list" element={<ClassGroups />} />
                     <Route path="/add-class-list" element={<AddClassGroup />} />
                     <Route path="/class-list/:id" element={<ClassGroup />} />
                     <Route element={<PrivateRoute allowedRoles={['admin', 'center_admin']} />}>

@@ -29,6 +29,11 @@ class Ability
       can :manage, Solution
       # Asume que los maestros también pueden gestionar anotaciones
       can :manage, StudentAnnotation
+      can :manage_users, ClassGroup do |class_group|
+        user.admin? || 
+        (user.teacher? && class_group.teachers.include?(user)) ||
+        (user.center_admin? && class_group.school_center == user.school_center)
+      end
     elsif user.student?
       cannot :manage, SchoolCenter
       cannot :manage, ClassGroup

@@ -84,3 +84,9 @@
   background-color: black;
   opacity: 0.55;
 }
+
+.role-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+}

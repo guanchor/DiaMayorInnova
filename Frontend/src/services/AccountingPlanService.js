@@ -1,5 +1,4 @@
 import http from "../http-common";
-import axios from "axios";
 
 const getAll = async () => {
     try {
@@ -77,45 +76,54 @@ const getAccountsByPGC = (id) => {
     return http.get(`/accounting_plans/${id}/accounts_by_PGC`);
   };
 
-
-  const exportToCSV = async (id) => {
+  
+const exportToCSV = async (id) => {
     try {
-        const token = localStorage.getItem("site"); // O la clave donde guardes el token
-        if (!token) {
-            console.error("No hay token disponible en localStorage");
-            return;
-        }
-
-        const response = await axios.get(`/accounting_plans/${id}/export_csv`, {
-            headers: { "AUTH-TOKEN": token }, // Asegurar que se envía el token
-            responseType: "blob",
+        const response = await http.get(`/accounting_plans/${id}/export_csv`, {
+            headers: {
+                "Accept": "text/csv" // csv response
+            },
+            responseType: "blob", // as file
         });
 
-        console.log("✅ Headers de respuesta:", response.headers);
-
-        // Verifica si es un CSV
-        if (response.headers["content-type"] !== "text/csv") {
-            console.error("La respuesta no es un CSV. Revisar backend.");
+        // Verify csv
+        const contentType = response.headers["content-type"];
+        if (!contentType || !contentType.includes("text/csv")) {
+            console.error("El archivo no es un csv");
             return;
         }
 
-        const url = window.URL.createObjectURL(new Blob([response.data], { type: "text/csv" }));
+        // Create url and download file
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", `pgc_${id}.csv`);
         document.body.appendChild(link);
         link.click();
-        link.remove();
+        document.body.removeChild(link);
     } catch (error) {
         console.error("Error exportando CSV:", error);
-
-        if (error.response) {
-            console.error("Código de estado:", error.response.status);
-            console.error("Headers:", error.response.headers);
-            console.error("Cuerpo de la respuesta:", await error.response.data.text());
-        }
     }
 };
+
+const importCSV = async (file) => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await http.post("/accounting_plans/import_csv", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log("PGC importado correctamente:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error importando CSV:", error.response?.data || error.message);
+        return null;
+    }
+};
+
 
 
 const AccountingPlanService = {
@@ -127,7 +135,8 @@ const AccountingPlanService = {
     removeAll,
     findByName,
     getAccountsByPGC,
-    exportToCSV
+    exportToCSV,
+    importCSV
 };
 
 

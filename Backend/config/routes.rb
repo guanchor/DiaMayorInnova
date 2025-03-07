@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     member do
       get 'export_csv'
     end
+    collection do
+      post 'import_csv'
+    end
   end
+  
   resources :school_centers
   resources :accounts do
     get 'find_by_account_number', on: :collection

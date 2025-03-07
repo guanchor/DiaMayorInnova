@@ -67,11 +67,14 @@ class AccountingPlansController < ApplicationController
                 end
             end
 
-            # Show temp file and data
-            # Rails.logger.info "Archivo generado en: #{temp_file.path}"
-            # Rails.logger.info "Contenido del archivo: #{File.read(temp_file.path)}"
+            # Avoid redirection
+            response.headers["Content-Disposition"] = "attachment; filename=pgc_#{accounting_plan.acronym}.csv"
+            response.headers["Content-Type"] = "text/csv; charset=utf-8"
+            response.headers["Content-Transfer-Encoding"] = "binary"
+            response.headers["Cache-Control"] = "no-cache"
+            response.headers["Pragma"] = "no-cache"
 
-            send_file temp_file.path, type: "text/csv; charset=utf-8", disposition: "attachment" # Download file from browser
+            send_data File.read(temp_file.path), type: "text/csv; charset=utf-8", disposition: "attachment" # Download file from browser
 
         ensure # Always run, no matter what
             temp_file.close
@@ -81,27 +84,32 @@ class AccountingPlansController < ApplicationController
 
 
     def import_csv
-        file = params[:file]
+        if params[:file].present?
+            begin
+                csv_data = CSV.read(params[:file].path, headers: true)
+                last_id = AccountingPlan.maximum(:id) || 0 # Get last ID
+                row = csv_data.first # Get first line
 
-        if file.blank?
-            render json: @accountingPlan.errors, status: :unprocessable_entity
-        end
-
-        begin
-            CSV.foreach(file.path, headers: true, col_sep: ";") do |pgc|
-                AccountingPlan.create(
-                    name: pgc["Nombre"],
-                    acronym: pgc["Acronimo"],
-                    description: pgc["Descripcion"]
+                accounting_plan = AccountingPlan.new(
+                    id: last_id + 1, # Assign Id
+                    name: row["Nombre"].strip,
+                    acronym: row["Acronimo"].strip,
+                    description: row["Descripcion"].strip
                 )
+        
+                if accounting_plan.save
+                    render json: @accountingPlan, status: :ok
+                else
+                    render json: @accountingPlan.errors, status: :unprocessable_entity
+                end
+      
+            rescue => e
+                render json: @accountingPlan.errors, status: :unprocessable_entity
             end
-
-            render json: { message: "Archivo importado con éxito"}, status: :ok
-
-        rescue
-            render json: @accountingPlan.errors, status: :unprocessable_entity
+        else
+            render json: @accountingPlan.errors, status: :bad_request
         end
-    end
+      end  
 
 
     # Filter accounts by Accounting Plan

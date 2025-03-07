@@ -190,7 +190,7 @@ const AccountingPlansList = ({ newPGC }) => {
       </section>
       <AccountsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} accounts={accounts} />
 
-      <Modal ref={modalRef} modalTitle="Editar PGC">
+      <Modal ref={modalRef} modalTitle="Editar PGC" showButton = {false}>
         {selectedAccountingPlanId && (
           <AccountingPlan 
             id={selectedAccountingPlanId} 

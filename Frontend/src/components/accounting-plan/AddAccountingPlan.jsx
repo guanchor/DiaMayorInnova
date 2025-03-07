@@ -13,6 +13,7 @@ const AddAccountingPlan = ({ setNewPGC }) => {
   const [accountingPlan, setAccountingPlan] = useState(initialAccountingPlanState);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -58,6 +59,36 @@ const AddAccountingPlan = ({ setNewPGC }) => {
     setSubmitted(false);
     setError("");
   };
+
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.name.endsWith(".csv")) {
+      setSelectedFile(file);
+      setError("");
+    } else {
+      setError("El archivo debe ser un .csv válido");
+      setSelectedFile(null);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile) {
+      setError("Debes seleccionar un archivo CSV.");
+      return;
+    }
+
+    setError("");
+
+    const result = await AccountingPlanDataService.importCSV(selectedFile);
+    if (result) {
+      setNewPGC(true);
+      setSelectedFile(null);
+    } else {
+      setError("Hubo un problema al importar el CSV.");
+    }
+  };
+
 
   return (
     <>
@@ -124,6 +155,20 @@ const AddAccountingPlan = ({ setNewPGC }) => {
 
             {error && <div className="accountingPlan__error">{error}</div>}
 
+            {/* Sección de Importación de CSV */}
+            <div className="accountingPlan__import">
+              <input
+                type="file"
+                accept=".csv"
+                onChange={handleFileChange}
+                className="accountingPlan__file-input"
+              />
+              <button 
+                className="btn accountingPlan__button" 
+                onClick={handleUpload} 
+                disabled={!selectedFile}
+              > Cargar archivo </button>
+            </div>
           </div>
         </div>
       )}

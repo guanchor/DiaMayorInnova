@@ -56,11 +56,22 @@ class AccountingPlansController < ApplicationController
             temp_file = Tempfile.new(["pgc_#{accounting_plan.acronym}", ".csv"])
 
             CSV.open(temp_file.path, "w", col_sep: ";") do |csv|
-                csv << ["ID", "Nombre", "Acronimo", "Descripcion"] #Headers
+                csv << ["ID", "Nombre", "Acronimo", "Descripcion"] # PGC headers
                 csv << [accounting_plan.id, accounting_plan.name, accounting_plan.acronym, accounting_plan.description]
+
+                csv << [] # Space
+
+                csv << ["Numero cuenta", "Nombre", "Descripcion"] # Accounts headers
+                accounting_plan.accounts.each do |account|
+                    csv << [account.account_number, account.name, account.description]
+                end
             end
 
-            send_file temp_file.path, type: "text/csv", disposition: "attachment" # Download file from browser 
+            # Show temp file and data
+            # Rails.logger.info "Archivo generado en: #{temp_file.path}"
+            # Rails.logger.info "Contenido del archivo: #{File.read(temp_file.path)}"
+
+            send_file temp_file.path, type: "text/csv; charset=utf-8", disposition: "attachment" # Download file from browser
 
         ensure # Always run, no matter what
             temp_file.close

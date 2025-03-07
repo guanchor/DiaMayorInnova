@@ -1,4 +1,5 @@
 import http from "../http-common";
+import axios from "axios";
 
 const getAll = async () => {
     try {
@@ -76,17 +77,46 @@ const getAccountsByPGC = (id) => {
     return http.get(`/accounting_plans/${id}/accounts_by_PGC`);
   };
 
-const exportCSV = (id) => {
+
+  const exportToCSV = async (id) => {
     try {
-        const response = http.get(`/accounting_plans/${id}/export_csv`, { 
-            responseType: "blob" 
-        }); //Binary Large Object for csv files, pdf, etc...
-        return response;
+        const token = localStorage.getItem("site"); // O la clave donde guardes el token
+        if (!token) {
+            console.error("No hay token disponible en localStorage");
+            return;
+        }
+
+        const response = await axios.get(`/accounting_plans/${id}/export_csv`, {
+            headers: { "AUTH-TOKEN": token }, // Asegurar que se envía el token
+            responseType: "blob",
+        });
+
+        console.log("✅ Headers de respuesta:", response.headers);
+
+        // Verifica si es un CSV
+        if (response.headers["content-type"] !== "text/csv") {
+            console.error("La respuesta no es un CSV. Revisar backend.");
+            return;
+        }
+
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: "text/csv" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `pgc_${id}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
     } catch (error) {
-        console.error("Error al exportar CSV:", error);
-        return null;
+        console.error("Error exportando CSV:", error);
+
+        if (error.response) {
+            console.error("Código de estado:", error.response.status);
+            console.error("Headers:", error.response.headers);
+            console.error("Cuerpo de la respuesta:", await error.response.data.text());
+        }
     }
-}
+};
+
 
 const AccountingPlanService = {
     getAll,
@@ -96,8 +126,8 @@ const AccountingPlanService = {
     remove,
     removeAll,
     findByName,
-    exportCSV,
-    getAccountsByPGC
+    getAccountsByPGC,
+    exportToCSV
 };
 
 

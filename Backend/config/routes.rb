@@ -2,8 +2,9 @@ Rails.application.routes.draw do
 
   resources :class_groups
   resources :accounting_plans do
-      get "export_csv", on: :member
-      post "import_csv", on: :collection
+    member do
+      get 'export_csv'
+    end
   end
   resources :school_centers
   resources :accounts do

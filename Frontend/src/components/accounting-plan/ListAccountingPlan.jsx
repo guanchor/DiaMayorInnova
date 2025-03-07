@@ -34,25 +34,6 @@ const AccountingPlansList = ({ newPGC }) => {
       });
   };
 
-  // const findByName = (e) => {
-  //   e.preventDefault();
-  //   if (searchAccPlan) {
-  //     const searchTerm = searchAccPlan.toLowerCase(); //Convert search parameter to lowercase
-  //     AccountingPlanDataService.getAll() //Get all plans
-  //       .then(response => {
-  //         const filteredPlans = response.data.filter(plan => 
-  //           plan.name.toLowerCase().includes(searchTerm) //Compare pgc name and search parameters
-  //         );
-  //         setAccountingPlans(filteredPlans); //Get plans filter by search param
-  //       })
-  //       .catch(e => {
-  //         console.log(e);
-  //       });
-  //   } else {
-  //     retrieveAccountingPlans();
-  //   }
-  // };
-
   const setActiveAccountingPlan = (accountingPlan, index) => {
     setCurrentAccountingPlan(accountingPlan);
     setCurrentIndex(index);
@@ -124,6 +105,11 @@ const AccountingPlansList = ({ newPGC }) => {
   };
   
   // Download CSV
+  const handleExportToCSV = (id) => {
+    AccountingPlanDataService.exportToCSV(id);
+  };
+  
+  
 
   const fetchAccountsByPGC = (pgcId) => {
     AccountingPlanDataService.getAccountsByPGC(pgcId)
@@ -184,7 +170,7 @@ const AccountingPlansList = ({ newPGC }) => {
                       <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
                         <i className="fi-rr-pencil" /> Editar
                       </button>
-                      <button className="accountingPlan__button--link download" onClick={() => exportToCSV(accountingPlan.id)}>
+                      <button className="accountingPlan__button--link download" onClick={() => handleExportToCSV(accountingPlan.id)}>
                         <i className="fi-rr-download" /> CSV
                       </button>
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"

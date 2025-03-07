@@ -3,7 +3,7 @@ import userService from "../../services/userService";
 import Modal from "../modal/Modal";
 import ClassGroupService from "../../services/ClassGroupService";
 import { useAuth } from "../../context/AuthContext";
-import "../assignTaskUser/AssignTaskUser.css";
+import "./AssignUserToClass.css"
 
 const AssignUserToClass = ({
   assignedInclude,
@@ -12,6 +12,8 @@ const AssignUserToClass = ({
   classGroupId,
   onSave,
   disabled,
+  onStudentCountChange,
+  maxStudents,
 }) => {
   const { user } = useAuth();
   const [allUsers, setAllUsers] = useState([]);
@@ -31,13 +33,21 @@ const AssignUserToClass = ({
 
   const rolesOrder = ['teacher', 'student'];
 
-  const toggleUser = (userId) => {
+/*   const toggleUser = (userId) => {
     setSelectedUsers(prev => {
       if (prev.includes(userId)) {
         return prev.filter(id => id !== userId);
       } else {
         return [...prev, userId];
       }
+    });
+  }; */
+  const toggleUser = (userId) => {
+    setSelectedUsers(prev => {
+      const newSelected = prev.includes(userId)
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId];
+      return newSelected;
     });
   };
 
@@ -116,64 +126,61 @@ const AssignUserToClass = ({
         <div className="list__container">
           <h3>Lista de Usuarios</h3>
           <div className="list__items">
-          {loading ? (
+            {loading ? (
               <div>Cargando usuarios...</div>
             ) : (
-            (user.role === 'admin' || user.role === 'center_admin') ? (
-              rolesOrder.map(role => {
-                if (!groupedUsers[role]) return null;
-                return (
-                  <div key={role} className="role-group">
-                    <h4 className="role-header">
-                      {role === 'teacher' ? 'Profesores' :
-                        role === 'student' ? 'Estudiantes' :
-                          role}
-                    </h4>
-                    {groupedUsers[role].map(user => (
-                      <label
-                        key={user.id}
-                        className={`user__item ${selectedUsers.includes(user.id)
+              (user.role === 'admin' || user.role === 'center_admin') ? (
+                rolesOrder.map(role => {
+                  if (!groupedUsers[role]) return null;
+                  return (
+                    <div key={role} className="role-group">
+                      <h4 className="role-header">
+                        {role === 'teacher' ? 'Profesores' :
+                          role === 'student' ? 'Estudiantes' :
+                            role}
+                      </h4>
+                      {groupedUsers[role].map(user => (
+                        <label
+                          key={user.id}
+                          className={`user__item ${selectedUsers.includes(user.id)
                             ? "user__item--selected"
                             : "light"
-                          }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedUsers.includes(user.id)}
-                          onChange={() => toggleUser(user.id)}
-                        />
-                        {user.name} {user.first_lastName} {user.second_lastName}
-                      </label>
-                    ))}
-                  </div>
-                );
-              })
-            ) : (
-              allUsers.map(user => (
-                <label
-                  key={user.id}
-                  className={`user__item ${selectedUsers.includes(user.id)
+                            }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedUsers.includes(user.id)}
+                            onChange={() => toggleUser(user.id)}
+                          />
+                          {user.name} {user.first_lastName} {user.second_lastName}
+                        </label>
+                      ))}
+                    </div>
+                  );
+                })
+              ) : (
+                allUsers.map(user => (
+                  <label
+                    key={user.id}
+                    className={`user__item ${selectedUsers.includes(user.id)
                       ? "user__item--selected"
                       : "light"
-                    }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedUsers.includes(user.id)}
-                    onChange={() => toggleUser(user.id)}
-                  />
-                  {user.name} {user.first_lastName} {user.second_lastName}
-                </label>
-              ))
-            )
-          )}
+                      }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedUsers.includes(user.id)}
+                      onChange={() => toggleUser(user.id)}
+                    />
+                    {user.name} {user.first_lastName} {user.second_lastName}
+                  </label>
+                ))
+              )
+            )}
           </div>
         </div>
       </div>
       <div className="modal-footer">
-        <button className="btn light" onClick={closeModal}>
-          Cancelar
-        </button>
         <button
           className="btn btn--tasks-assigned"
           onClick={() => {
@@ -182,6 +189,9 @@ const AssignUserToClass = ({
           }}
         >
           Guardar
+        </button>
+        <button className="btn light" onClick={() => { onSave(classGroupId, selectedUsers); }}>
+          Cancelar
         </button>
       </div>
     </Modal>

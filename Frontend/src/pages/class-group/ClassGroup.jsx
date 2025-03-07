@@ -12,7 +12,7 @@ const ClassGroup = () => {
   const initialClassGroupState = () => ({
     id: null,
     course: 0,
-    module: "",
+    course_module: "",
     modality: "",
     number_students: 0,
     max_students: 0,
@@ -24,6 +24,7 @@ const ClassGroup = () => {
   const [errors, setErrors] = useState({});
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [successMessage, setSuccessMessage] = useState("");
+  const [studentCounts, setStudentCounts] = useState({});
 
   const handleEditClassGroup = (group) => {
     const editedGroup = auth.user.role !== "admin" 
@@ -40,7 +41,7 @@ const ClassGroup = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.course) newErrors.course = "El curso es obligatorio.";
-    if (!formData.module) newErrors.module = "El módulo es obligatorio.";
+    if (!formData.course_module) newErrors.course_module = "El módulo es obligatorio.";
     if (!formData.course) newErrors.course = "El curso es obligatorio.";
     return newErrors;
   };
@@ -107,6 +108,7 @@ const ClassGroup = () => {
       <ClassGroupsList
         refreshTrigger={refreshTrigger}
         onEdit={handleEditClassGroup}
+        maxStudents={formData.max_students}
       />
     </main>
 

@@ -17,7 +17,7 @@ class ClassGroupsController < ApplicationController
       end
     end
 
-    @classGroups = @classGroups.where("module LIKE ?", "%#{params[:module]}%") if params[:module].present?
+    @classGroups = @classGroups.where("course_module LIKE ?", "%#{params[:course_module]}%") if params[:course_module].present?
 
     if params[:user_id].present?
       @classGroups = @classGroups.joins(:teacher_class_groups).where(teacher_class_groups: { user_id: params[:user_id] })
@@ -31,7 +31,7 @@ class ClassGroupsController < ApplicationController
       render json: @classGroup
   end
 
-  def users # NUEVO MÉTODO
+  def users
     @class_group = ClassGroup.find(params[:id])
     students = @class_group.students
     teachers = @class_group.teachers
@@ -91,6 +91,8 @@ class ClassGroupsController < ApplicationController
       @class_group.student_class_groups.create!(user_id: user_id)
     end
 
+    @class_group.update!(number_students: student_ids.size)
+
     @class_group.teacher_class_groups.where.not(user_id: teacher_ids).destroy_all
     existing_teacher_ids = @class_group.teachers.pluck(:id)
     new_teachers = teacher_ids - existing_teacher_ids
@@ -131,6 +133,6 @@ class ClassGroupsController < ApplicationController
 
     # Método para manejar los parámetros permitidos usando strong parameters
     def class_group_params
-        params.require(:class_group).permit(:course, :module, :modality, :number_students, :max_students, :location, :weekly_hours, :school_center_id)
+        params.require(:class_group).permit(:course, :course_module, :modality, :number_students, :max_students, :location, :weekly_hours, :school_center_id)
     end
 

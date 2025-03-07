@@ -4,7 +4,7 @@ import userService from "../../services/userService";
 import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 import AssignUserToClass from "../assignUsersToClass/AssignUserToClass";
 
-const ClassGroupsList = ({ refreshTrigger, onEdit }) => {
+const ClassGroupsList = ({ refreshTrigger, onEdit, onStudentCountChange, maxStudents }) => {
   const [classGroups, setClassGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
@@ -126,7 +126,7 @@ const ClassGroupsList = ({ refreshTrigger, onEdit }) => {
               <li key={group.id} className="class-group-page-item">
                 <div className="class-group-page_section">
                   <p> {group.course}</p>
-                  <p> {group.module}</p>
+                  <p> {group.course_module}</p>
                   <p> {group.modality}</p>
                   <p> {group.number_students}</p>
                   <p> {group.max_students}</p>
@@ -145,6 +145,8 @@ const ClassGroupsList = ({ refreshTrigger, onEdit }) => {
                     classGroupId={group.id}
                     onSave={handleSaveAssignment}
                     disabled={isButtonDisabled(group)}
+                    onStudentCountChange={onStudentCountChange}
+                    maxStudents={group.max_students}
                   />
                   <button
                     className="edit-btn btn"
@@ -169,19 +171,10 @@ const ClassGroupsList = ({ refreshTrigger, onEdit }) => {
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         title="¿Estás seguro de eliminar este grupo de clase?"
-        message={`El grupo de clase con curso ${groupToDelete?.course} y módulo ${groupToDelete?.module} será eliminado permanentemente.`}
+        message={`El grupo de clase con curso ${groupToDelete?.course} y módulo ${groupToDelete?.course_module} será eliminado permanentemente.`}
         onDelete={handleDelete}
         onClose={() => setIsDeleteModalOpen(false)}
       />
-      {/*       {isAssignModalOpen && selectedGroup && (
-        <AssignUserToClass
-          assignedInclude={(id) => assignedUsers.includes(id)}
-          setCurrentUsers={setAssignedUsers}
-          currentUsers={assignedUsers}
-          classGroupId={selectedGroup?.id}
-          onSave={handleSaveAssignment}
-        />
-      )} */}
     </div>
   );
 };

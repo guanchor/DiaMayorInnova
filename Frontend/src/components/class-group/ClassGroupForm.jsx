@@ -27,7 +27,7 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
       </header>
       <form className="class-group-page__form--form" onSubmit={handleSubmit}>
       <div className="class-group-page__form--row">
-        <div>
+        <div className="class-group-page__first-row">
           <label className="class-group-page__label" htmlFor="course">Curso</label>
           <input
             type="number"
@@ -41,20 +41,20 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           {errors.course && <p className="error-message">{errors.course}</p>}
         </div>
 
-        <div>
-          <label className="class-group-page__label" htmlFor="module">Módulo</label>
+        <div className="class-group-page__first-row">
+          <label className="class-group-page__label" htmlFor="course_module">Módulo</label>
           <input
             type="text"
-            id="module"
+            id="course_module"
             className="class-group-page__input input-medium"
             required
-            value={formData.module}
+            value={formData.course_module}
             onChange={handleInputChange}
-            name="module"
+            name="course_module"
           />
         </div>
 
-        <div>
+        <div className="class-group-page__first-row">
           <label className="class-group-page__label" htmlFor="modality">Modalidad</label>
           <input
             type="text"
@@ -65,9 +65,9 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
             onChange={handleInputChange}
             name="modality"
           />
-          {errors.module && <p className="error-message">{errors.module}</p>}
+          {errors.course_module && <p className="error-message">{errors.course_module}</p>}
         </div>
-        <div>
+        <div className="class-group-page__first-row">
           <label className="class-group-page__label" htmlFor="location">Aula</label>
           <input
             type="text"
@@ -81,7 +81,7 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
         </div>
         </div>
         <div className="class-group-page__form--row">
-        <div>
+        <div className="class-group-page__second-row">
           <label className="class-group-page__label" htmlFor="number_students">Nº Estudiantes</label>
           <input
             type="number"
@@ -94,7 +94,7 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
 
-        <div>
+        <div className="class-group-page__second-row">
           <label className="class-group-page__label" htmlFor="max_students">Máx. estudiantes</label>
           <input
             type="number"
@@ -107,7 +107,7 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
 
-        <div>
+        <div className="class-group-page__second-row"> 
           <label className="class-group-page__label" htmlFor="weekly_hours">Hrs/semana</label>
           <input
             type="number"

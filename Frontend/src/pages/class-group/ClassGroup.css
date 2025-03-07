@@ -54,8 +54,12 @@
   gap: var(--gap-m);
 }
 
-.class-group-page__form--row > div {
+.class-group-page__first-row {
   flex: 1;
+}
+
+.class-group-page__second-row {
+  width: 25%;
 }
 
 .class-group-page__input {

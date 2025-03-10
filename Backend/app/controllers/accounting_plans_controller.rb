@@ -13,7 +13,11 @@ class AccountingPlansController < ApplicationController
 
     def show
         @accountingPlan = AccountingPlan.find(params[:id])
-        render json: @accountingPlan
+        if @accountingPlan
+            render json: @accountingPlan
+        else
+            render json: @accountingPlan.errors, status: :not_found
+        end
     end
 
     def create
@@ -87,12 +91,17 @@ class AccountingPlansController < ApplicationController
         if params[:file].present?
             begin
                 csv_data = CSV.read(params[:file].path).map(&:to_a)
-                last_id = AccountingPlan.maximum(:id) || 0 # Get last ID
+                last_id = (AccountingPlan.maximum(:id) || 0).to_i # Get last ID
 
                 pgc_index = csv_data.index { |row| row[0] == "Nombre" } # Find PGC
                 accounts_index = csv_data.index { |row| row[0] == "NombreC" } # Find Accounts
 
+                if pgc_index.nil? || accounts_index.nil?
+                    return render json: @accountingPlan.errors, status: :unprocessable_entity
+                end
+            
                 pgc_row = csv_data[pgc_index + 1]
+                return render json: @accountingPlan.errors, status: :unprocessable_entity if pgc_row.nil?
 
                 # Create PGC
                 accounting_plan = AccountingPlan.create!(

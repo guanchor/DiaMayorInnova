@@ -7,5 +7,6 @@ FactoryBot.define do
     max_students { 30 }
     location { "Room 101" }
     weekly_hours { 5 }
+    association :school_center
   end
 end

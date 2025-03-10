@@ -20,7 +20,6 @@ function Home() {
           </section>
           <aside className="aside"></aside>
           <Shortcuts />
-
         </main>
       </>
     )

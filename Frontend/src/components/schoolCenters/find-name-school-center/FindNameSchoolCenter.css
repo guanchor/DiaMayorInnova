@@ -19,3 +19,30 @@
 .search-school_label #searchSchoolName{
   margin-bottom: 0;
 }
+
+@media (max-width: 1024px) {
+  .search-school_container {
+      padding: var(--gap-m);
+  }
+
+  .search-school_form {
+      height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-school_container {
+      border-left: none;
+      border-bottom: none;
+  }
+
+  .search-school_form {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap-xs);
+  }
+
+  .search-school_label #searchSchoolName {
+      width: 100%;
+  }
+}

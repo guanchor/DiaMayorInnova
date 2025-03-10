@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-rows: 3% 42% 55%;
   grid-template-areas:
     "class-group-header class-group-header"
@@ -39,6 +39,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  transition: width 0.3s ease-in-out;
 }
 
 .class-group-page__form--form {
@@ -74,6 +75,31 @@
 .class-group-page__form--button-container {
   margin-top: var(--gap-m);
   align-self: flex-start;
+  display: flex;
+  gap: var(--gap-s);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--gap-m);
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group--small {
+  flex: 1 1 15%;
+}
+
+.form-group--medium {
+  flex: 1 1 25%;
+}
+
+.form-group--full {
+  flex: 1 1 100%;
 }
 
 /* LISTA */
@@ -148,10 +174,7 @@
   align-items: center;
 }
 
-
-/*FIN*/
-
-/* No lo quites porque modifica el input del sign_in*/
+/*Afecta a los inputs de sign_in */
 input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -160,4 +183,194 @@ input {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+  .class-group-page {
+    grid-template-rows: auto auto auto;
+    gap: var(--gap-m);
+    padding: var(--gap-s);
+    overflow: auto;
+    height: 100vh;
+  }
+
+  .class-group-page__form--form {
+    padding: var(--gap-xs);
+  }
+
+  .class-group-page_section:first-child {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-xs);
+  }
+
+  .class-group-page_section:last-child {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .form-group--small,
+  .form-group--medium {
+    flex: 1 1 45%;
+  }
+
+  .class-group-page-item {
+    align-items: flex-start;
+    padding: var(--gap-xs) 0;
+  }
+
+  .class-group-page_section p {
+    font-size: var(--text-mobile-small);
+    line-height: 1.4;
+  }
+
+  .class-group-page__list {
+    height: auto;
+    min-height: 400px;
+    overflow: visible;
+  }
+
+  .class-group-page__list-content {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .class-group-page {
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .class-group-page__list {
+    height: 100%;
+    min-height: unset;
+  }
+
+  .class-group-page__list-content {
+    max-height: none;
+    height: 100%;
+  }
+  
+  .class-group-page__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-xxs);
+  }
+
+  .class-group-page__title h1 {
+    font-size: var(--text-mobile-lead);
+  }
+
+  .class-group-page__form--form {
+    gap: var(--gap-s);
+  }
+
+  .form-row {
+    gap: var(--gap-s);
+  }
+}
+
+@media (max-width: 480px) { 
+  .class-group-page {
+    grid-template-areas:
+      "class-group-header"
+      "class-group-form"
+      "class-group-list";
+    grid-template-rows: auto auto 1fr;
+    overflow: auto;
+    padding: var(--gap-xs);
+  }
+
+  .class-group-page__form {
+    padding: var(--gap-xs);
+    border-radius: var(--r-xs);
+  }
+
+  .class-group-page__list {
+    height: 100%;
+    overflow: visible;
+  }
+
+  .class-group-page__list-content {
+    max-height: none;
+    overflow-y: visible;
+    height: auto;
+  }
+
+  .class-group-page-item {
+    flex-direction: column;
+    gap: var(--gap-xs);
+    padding: var(--gap-s) 0;
+    overflow: visible;
+  }
+
+  .class-group-page_section:first-child {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: var(--gap-xxs);
+  }
+
+  .class-group-page_section:last-child {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: var(--gap-xs);
+  }
+
+  .class-group-page_section p {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-group--small,
+  .form-group--medium {
+    flex: 1 1 100%;
+  }
+
+  .class-group-page__form--button-container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .class-group-page__form--button-container button {
+    width: 100%;
+  }
+
+  .class-group-page-item.header .class-group-page_section p {
+    display: none;
+  }
+
+  .class-group-page-item.header .class-group-page_section p:first-child,
+  .class-group-page-item.header .class-group-page_section p:nth-child(2) {
+    display: block;
+  }
+}
+
+@media (max-width: 360px) {
+  .class-group-page__list-content {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .class-group-page_section:first-child {
+    grid-template-columns: 1fr;
+  }
+
+  .class-group-page__list {
+    padding: var(--gap-xs);
+  }
+
+  .class-group-page_section:last-child {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .class-group-page__input {
+    padding: var(--gap-xxs);
+    font-size: var(--text-mobile-small);
+  }
+  
+  .class-group-page__form--form label {
+    font-size: var(--text-mobile-caption);
+  }
 }

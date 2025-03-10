@@ -18,7 +18,7 @@ const FindNameSchoolCenter = ({ searchSchoolName, setSeachSchoolName }) => {
             value={searchSchoolName}
             onChange={(e) => setSeachSchoolName(e.target.value)}
           />
-          <i className='fi fi-rr-search'></i>
+          <i className='fi fi-rr-search' data-testid="fi-fi-rr-search"></i>
         </div>
       </div>
     </section>

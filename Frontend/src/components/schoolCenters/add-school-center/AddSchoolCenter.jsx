@@ -58,6 +58,10 @@ const AddSchoolCenter = ({ setSchools, selectedSchool, setSelectedSchool }) => {
       }
       setSchools((prevSchools) => [...prevSchools, response.data]);
       setSelectedSchool(null);
+      setInput(initialSchoolState);
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
 
     } catch (err) {
       setError(err.response?.data?.message || "Hubo un problema al procesar la solicitud.");

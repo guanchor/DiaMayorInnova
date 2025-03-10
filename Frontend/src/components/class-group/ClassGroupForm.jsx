@@ -26,13 +26,13 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
         <h2 className="class-group-page__header">{formData.id ? "Editar Grupo de Clase" : "Crear Grupo de Clase"}</h2>
       </header>
       <form className="class-group-page__form--form" onSubmit={handleSubmit}>
-      <div className="class-group-page__form--row">
-        <div className="class-group-page__first-row">
-          <label className="class-group-page__label" htmlFor="course">Curso</label>
+      <div className="form-row">
+        <div className="form-group form-group--small">
+          <label htmlFor="course">Curso</label>
           <input
             type="number"
             id="course"
-            className="class-group-page__input input-small"
+            className="class-group-page__input"
             required
             value={formData.course}
             onChange={handleInputChange}
@@ -41,12 +41,12 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           {errors.course && <p className="error-message">{errors.course}</p>}
         </div>
 
-        <div className="class-group-page__first-row">
-          <label className="class-group-page__label" htmlFor="course_module">Módulo</label>
+        <div className="form-group form-group--medium">
+          <label htmlFor="course_module">Módulo</label>
           <input
             type="text"
             id="course_module"
-            className="class-group-page__input input-medium"
+            className="class-group-page__input"
             required
             value={formData.course_module}
             onChange={handleInputChange}
@@ -54,12 +54,12 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
 
-        <div className="class-group-page__first-row">
-          <label className="class-group-page__label" htmlFor="modality">Modalidad</label>
+        <div className="form-group form-group--medium">
+          <label htmlFor="modality">Modalidad</label>
           <input
             type="text"
             id="modality"
-            className="class-group-page__input input-medium"
+            className="class-group-page__input"
             required
             value={formData.modality}
             onChange={handleInputChange}
@@ -67,12 +67,12 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
           {errors.course_module && <p className="error-message">{errors.course_module}</p>}
         </div>
-        <div className="class-group-page__first-row">
-          <label className="class-group-page__label" htmlFor="location">Aula</label>
+        <div className="form-group form-group--medium">
+          <label htmlFor="location">Aula</label>
           <input
             type="text"
             id="location"
-            className="class-group-page__input input-medium"
+            className="class-group-page__input"
             required
             value={formData.location}
             onChange={handleInputChange}
@@ -80,13 +80,13 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
         </div>
-        <div className="class-group-page__form--row">
-        <div className="class-group-page__second-row">
-          <label className="class-group-page__label" htmlFor="number_students">Nº Estudiantes</label>
+        <div className="form-row">
+        <div className="form-group form-group--small">
+          <label className="long-label" htmlFor="number_students">Nº Estudiantes</label>
           <input
             type="number"
             id="number_students"
-            className="class-group-page__input input-small"
+            className="class-group-page__input"
             required
             value={formData.number_students}
             onChange={handleInputChange}
@@ -94,12 +94,12 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
 
-        <div className="class-group-page__second-row">
-          <label className="class-group-page__label" htmlFor="max_students">Máx. estudiantes</label>
+        <div className="form-group form-group--small">
+          <label className="long-label" htmlFor="max_students">Máx. estudiantes</label>
           <input
             type="number"
             id="max_students"
-            className="class-group-page__input input-small"
+            className="class-group-page__input"
             required
             value={formData.max_students}
             onChange={handleInputChange}
@@ -107,12 +107,12 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
 
-        <div className="class-group-page__second-row"> 
-          <label className="class-group-page__label" htmlFor="weekly_hours">Hrs/semana</label>
+        <div className="form-group form-group--small"> 
+          <label htmlFor="weekly_hours">Hrs/semana</label>
           <input
             type="number"
             id="weekly_hours"
-            className="class-group-page__input input-small"
+            className="class-group-page__input"
             required
             value={formData.weekly_hours}
             onChange={handleInputChange}
@@ -120,10 +120,9 @@ const ClassGroupForm = ({ formData, handleInputChange, handleSubmit, errors, suc
           />
         </div>
         {user.role === "admin" ? (
-          <div className="class-group-page__form--row">
-          <div>
+          <div className="form-row">
+          <div className="form-group form-group--full">
             <label
-              className="class-group-page__label"
               htmlFor="school_center_id"
             >
               Centro Escolar

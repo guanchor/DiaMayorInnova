@@ -13,7 +13,9 @@ class SchoolCentersController < ApplicationController
 
   def show
     @school = SchoolCenter.find(params[:id])
-    render @school
+    render json: @school, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Centro escolar no encontrado" }, status: :not_found
   end
 
   def create

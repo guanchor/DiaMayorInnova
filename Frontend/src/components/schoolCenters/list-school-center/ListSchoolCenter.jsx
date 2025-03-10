@@ -3,12 +3,12 @@ import SchoolsServices from '../../../services/SchoolsServices';
 import ConfirmDeleteModal from '../../modal/ConfirmDeleteModal';
 import "./ListSchoolCenter.css"
 
-const ListSchoolCenter = ({schools, setSchools, setSelectedSchool}) => {
+const ListSchoolCenter = ({ schools, setSchools, setSelectedSchool }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [schoolToDelete, setSchoolToDelete] = useState(null);
 
-const deleteSchool = (schoolId) => {
-  SchoolsServices.remove(schoolId)
+  const deleteSchool = (schoolId) => {
+    SchoolsServices.remove(schoolId)
       .then(() => {
         setSchools(prev => prev.filter(school => school.id !== schoolId));
         setIsModalOpen(false);

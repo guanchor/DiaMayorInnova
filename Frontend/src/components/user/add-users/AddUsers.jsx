@@ -253,7 +253,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
             </select>
           </label>
 
-          {auth.user.role !== "center_admin" && (
+          {auth?.user?.role !== "center_admin" && (
           <label htmlFor="school_center_id" className="user_label">Centro Escolar
             <select id="school_center_id" name="school_center_id" className="user_item" value={input.school_center_id} onChange={handleInput}>
               <option value="">Seleccione un centro</option>

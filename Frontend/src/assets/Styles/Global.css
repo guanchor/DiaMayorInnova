@@ -364,6 +364,16 @@ a {
   }
 }
 
+.status__container {
+  border-radius: var(--r-xs);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: small;
+}
+
 .statement-grid {
   display: flex;
   flex-wrap: wrap;
@@ -486,6 +496,18 @@ input::placeholder {
   font-size: var(--text-desktop-body-large);
   color: var(--Color-red-400);
   text-align: center;
+}
+
+
+.btn__table {
+  background-color: transparent;
+  color: var(--Color-Principal);
+  font-size: var(--text-mobile-body-large);
+  font-weight: 600;
+
+  & :hover {
+    color: var(--Color-Principal-claro);
+  }
 }
 
 @media (width > 1025px) {

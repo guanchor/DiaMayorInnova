@@ -5,6 +5,7 @@ import "./MarkList.css"
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 import Table from "../table/Table";
+import { renderToString } from "react-dom/server";
 
 const ExerciseMarksList = () => {
     const { id } = useParams();
@@ -14,17 +15,15 @@ const ExerciseMarksList = () => {
 
     DataTable.use(DT);
 
-    //Get task_id
     const taskId = location.state?.task_id;
 
     useEffect(() => {
-        if (!taskId) return; // No ID, no request
+        if (!taskId) return;
 
         const fetchMarkList = async () => {
             try {
-                const { data } = await getStudentsMarkList(taskId); // ID as param
+                const { data } = await getStudentsMarkList(taskId);
                 setExerciseMarksList(data);
-                console.log(data)
             } catch (error) {
                 console.error("Error devolviendo la lista", error);
             }
@@ -34,44 +33,60 @@ const ExerciseMarksList = () => {
     }, [taskId]);
 
     const columns = [
-        { title: 'Fecha', data: 'date', className: 'left-align' },
+        { title: 'Fecha', data: 'date', className: 'left-align statement__date--header' },
         { title: 'Nombre', data: 'student', className: 'left-align' },
         {
-            title: 'Estado',
+            title: '% Correcto',
             data: 'mark',
-            className: 'right-align',
-            render: function (data, type, row) {
-                return `<p>${data * 10} %</p><progress value=${data * 0.1} ></progress>`;
+            className: 'left-align',
+            render: function (data) {
+                return renderToString(
+                    <>
+                        <p>{data * 10}%</p>
+                        <progress value={data * 0.1}></progress>
+                    </>
+                );
             }
         },
         { title: 'Nota', data: 'mark', className: 'right-align' },
+        {
+            title: 'Estado',
+            data: 'mark',
+            className: 'right-align statement__state--header',
+            render: function (data, type, row) {
+                let statusClass = "status__container";
+                let statusIcon = "fi";
+                (data >= 5)
+                    ? (statusClass = "status__container green", statusIcon = "fi fi fi-rr-check")
+                    : (statusClass = "status__container red", statusIcon = "fi fi fi-rr-x");
 
+                return `<div class="statement__state" ><div class="${statusClass}"><i class="${statusIcon}"></i></div ></div >`;
+            }
+        },
         {
             title: 'Acciones',
             data: 'exercise_id',
-            className: 'right-align',
+            className: 'right-align statement__action--header',
             render: function (data, type, row) {
-                return `<button class="btn view-result" data-id="${row.exercise_id}">
-                  <i class="fi fi-rr-eye"></i>
-                </button>`;
+                return `<button class="btn__table view-result" data-id="${row.exercise_id}"><i class="fi fi-rr-eye"></i></button>`;
             }
         },
     ];
     <progress value={0.5}></progress>
 
     return (
-        <div className="markList__page">
-            <div className="mark_list__Header">
+        <div className="mark_list__page">
+            <div className="mark_list__header">
                 <button className="btn light " onClick={() => navigate(-1)}>
                     <i className="fi fi-rr-arrow-small-left" />
                 </button>
-                <h1 className="markList__page--title">Notas de Examen</h1>
+                <h1 className="mark_list__page--title">Notas de los estudiantes</h1>
             </div>
 
             {exerciseMarksList.length > 0 && (
-                <h2 className="markList__page--task">{exerciseMarksList[0].task_tittle}</h2>
+                <h2 className="mark_list__page--task">{exerciseMarksList[0].task_tittle}</h2>
             )}
-            <div className="maskList_table__container">
+            <div className="mask_list_table__container">
                 <Table
                     data={exerciseMarksList}
                     columns={columns}

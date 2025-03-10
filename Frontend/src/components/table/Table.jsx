@@ -18,13 +18,13 @@ const Table = ({ data, columns, id }) => {
   const tableRef = useRef(null);
 
   const options = {
-    responsive: true, // habilita la extensión "Responsive"
+    responsive: true,
     paging: true,
     searching: true,
     pageLength: 10,
     language: {
-      search: '', // Oculta el texto "Search:"
-      searchPlaceholder: 'Buscar en la tabla...', // Cambia el placeholder del buscador
+      search: '',
+      searchPlaceholder: 'Buscar en la tabla...',
       lengthMenu: 'Mostrar _MENU_ registros por página',
       zeroRecords: 'No se encontraron resultados',
       info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',

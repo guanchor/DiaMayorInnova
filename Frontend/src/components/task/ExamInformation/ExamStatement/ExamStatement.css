@@ -23,8 +23,8 @@
     font-weight: 600;
   }
 
-  & input {
-    width: 54px;
+  & .exam_statement__input {
+    width: 64px;
     height: 32px;
   }
 }
@@ -42,16 +42,6 @@
   gap: var(--gap-s);
 }
 
-.status__container {
-  border-radius: var(--r-xs);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: small;
-}
-
 .statement__text-area {
   margin-top: var(--gap-xl);
 }
@@ -66,8 +56,6 @@
     justify-content: flex-start;
   }
 }
-
-.statement__entry_column {}
 
 .statement__entry {
 

@@ -97,14 +97,11 @@ const ExamInformation = () => {
   };
 
   const updateExercise = () => {
-
     const formateData = statements.map((statement) => ({
       id: statement.id,
       mark: statement.mark,
       comment: statement.comment
     }))
-
-    console.log("FormateData", statements)
 
     marksServices.manual_update_mark(formateData)
       .then(response => {
@@ -114,21 +111,17 @@ const ExamInformation = () => {
           console.error("Error al actualizar las marcas.");
         }
       });
-
-    console.log("Updating exercise", studentExercise.marks, "Statement actualizados ", statements);
   }
 
   useEffect(() => {
     exerciseServices.getByExerciseId(exerciseId)
       .then(({ data }) => {
-        console.log(data)
         setName(data[0].user.name)
         setStatements(data[0].marks)
         setStudentExercise(data[0])
-        console.log(data[0].marks, "statements ")
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
       })
   }, [exerciseId])
 
@@ -147,7 +140,7 @@ const ExamInformation = () => {
         <h1 className="exam_statements__title">{name}</h1>
       </header>
       <main className="exam_statements__main">
-        <h2>Enunciados</h2>
+        <h2 className="exam_statement__statement">Enunciados</h2>
         <div className="exam_statements__container">
 
           <div className="exam_statement__list">
@@ -165,6 +158,7 @@ const ExamInformation = () => {
                     open_statement={selectedStatement}
                     handleMarkChange={handleMarkChange}
                     modified={isModifiedMark}
+                    setIsModifiedMark={setIsModifiedMark}
                     handleCommentChange={handleCommentChange}
                   />
                 )
@@ -173,7 +167,6 @@ const ExamInformation = () => {
           </div>
 
           <div className="exam-statement__information">
-            {/* componente eche */}
             <div className="statement-grid">
               {statements.map((statement, index) => {
                 let buttonClass = "statement-button";
@@ -197,7 +190,7 @@ const ExamInformation = () => {
               <div className="exam_information__data">
                 <p>Enunciados Correctos: {correctStatements}</p>
                 <p>Enunciados Incorrectos: {incorrectStatements}</p>
-                <p>Enunciados Sin Completar: {incompleteStatements}</p>
+                <p>Enunciados Incompletos: {incompleteStatements}</p>
               </div>
 
               <h4>Nota Examen: {studentExercise.total_mark}</h4>

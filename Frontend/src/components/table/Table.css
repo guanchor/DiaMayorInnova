@@ -1,0 +1,45 @@
+.dataTable {
+  border-collapse: collapse;
+
+  & td,
+  th {
+    padding: var(--gap-s) var(--gap-xxs);
+  }
+}
+
+.dt-paging-button {
+  background-color: var(--Color-White);
+  color: var(--Color-principal-700);
+
+  &:hover {
+    background-color: var(--Color-Neutral-White);
+    color: var(--Color-Principal-oscuro);
+  }
+}
+
+.dt-info {
+  border-top: 1px solid var(--Color-grey-200);
+  padding: var(--gap-s) 0;
+
+}
+
+.dt-input::placeholder {
+  color: var(--Color-grey-200);
+}
+
+.dt-layout-start {
+  margin-bottom: var(--gap-xxs);
+
+  & select {
+    border-radius: var(--r-xs);
+    height: 38px;
+    width: 48px;
+    border: none;
+    background-color: var(--Color-White);
+    box-shadow: var(--box-shadow-btn);
+  }
+}
+
+.dt-paging-button {
+  margin-right: var(--gap-xxxs);
+}

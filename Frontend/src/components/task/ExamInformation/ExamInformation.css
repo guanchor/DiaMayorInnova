@@ -1,0 +1,109 @@
+.exam_statements {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.exam_statements__header {
+  grid-area: header;
+  display: flex;
+  gap: var(--gap-s);
+  justify-content: start;
+  align-items: center;
+  padding: var(--gap-xxl) 0 0 var(--gap-xxl);
+
+}
+
+.exam_statements__main {
+  margin-top: var(--gap-m);
+  height: 90%;
+
+  & h2 {
+    font-size: var(--text-desktop-body-large);
+    font-weight: 600;
+    color: var(--color-Principal);
+    padding: var(--gap-xs) var(--gap-xxl);
+  }
+}
+
+.exam_statements__container {
+  border-top: 1px solid var(--Color-grey-200);
+  height: 85%;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: 1fr;
+  grid-template-areas: "main side";
+  overflow-y: hidden;
+  gap: var(--gap-s);
+  border-bottom: 1px solid var(--Color-grey-200);
+}
+
+.exam_statement__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+  overflow-y: auto;
+  padding: var(--gap-s) var(--gap-s) var(--gap-s) var(--gap-xxl);
+  border-right: 1px solid var(--Color-grey-200);
+}
+
+.exam_statements__title {
+  font-size: var(--text-desktop-lead);
+
+}
+
+.btn__container {
+  display: flex;
+  gap: var(--gap-s);
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: var(--gap-s);
+  padding-right: var(--gap-xxl);
+}
+
+.exam_information {
+  margin-top: var(--gap-m);
+
+  & h3 {
+    font-size: var(--text-desktop-lead);
+    font-weight: 700;
+    color: var(--Color-Principal);
+  }
+
+  & h4 {
+    font-size: var(--text-desktop-large);
+    font-weight: 600;
+    color: var(--Color-Principal);
+    margin-bottom: var(--gap-xxs);
+  }
+}
+
+.exam_information__data {
+  font-size: var(--text-desktop-small);
+  font-weight: 500;
+  color: var(--Color-Principal);
+  margin-top: var(--gap-s);
+  margin-bottom: var(--gap-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxs);
+}
+
+
+.exam-statement__information {
+  padding: var(--gap-s) var(--gap-xxl) 0 0;
+
+  & .statement-grid {
+    background-color: var(--Color-White);
+    padding: var(--gap-s);
+    border-radius: var(--r-s);
+    box-shadow: var(--box-shadow-btn);
+
+  }
+
+
+}
+
+.selected_mark {
+  filter: contrast(0.6);
+}

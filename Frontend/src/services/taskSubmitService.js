@@ -39,7 +39,7 @@ const taskSubmitService = async (data, navigate) => {
 
   try {
     console.log("🔍 Intentando actualizar con exerciseId:", exerciseId);
-    await userExerciseDataService.update(exerciseId, exerciseData);
+    await userExerciseDataService.update_student_exercise(exerciseId, exerciseData);
     navigate("/home");
   } catch (err) {
     console.error("Error al enviar los datos:", err);

@@ -86,22 +86,38 @@ class AccountingPlansController < ApplicationController
     def import_csv
         if params[:file].present?
             begin
-                csv_data = CSV.read(params[:file].path, headers: true)
+                csv_data = CSV.read(params[:file].path).map(&:to_a)
                 last_id = AccountingPlan.maximum(:id) || 0 # Get last ID
-                row = csv_data.first # Get first line
 
-                accounting_plan = AccountingPlan.new(
+                pgc_index = csv_data.index { |row| row[0] == "Nombre" } # Find PGC
+                accounts_index = csv_data.index { |row| row[0] == "NombreC" } # Find Accounts
+
+                pgc_row = csv_data[pgc_index + 1]
+
+                # Create PGC
+                accounting_plan = AccountingPlan.create!(
                     id: last_id + 1, # Assign Id
-                    name: row["Nombre"].strip,
-                    acronym: row["Acronimo"].strip,
-                    description: row["Descripcion"].strip
+                    name: pgc_row[0].strip,
+                    acronym: pgc_row[1].strip,
+                    description: pgc_row[2].strip
                 )
         
-                if accounting_plan.save
-                    render json: @accountingPlan, status: :ok
-                else
-                    render json: @accountingPlan.errors, status: :unprocessable_entity
+                # Create Accounts
+                accounts = []
+                csv_data[(accounts_index + 1)..].each do |row| # Ignore accounts headers
+                    next if row[1].nil? || row[1].strip.empty? # skip empty lines
+
+                    account = Account.create!(
+                        name: row[0].strip,
+                        account_number: row[1].strip,
+                        description: row[2].strip,
+                        accounting_plan_id: accounting_plan.id
+                    )
+
+                    accounts << account
                 end
+
+                render json: { success: true, accounting_plan: accounting_plan, accounts: accounts }, status: :ok
       
             rescue => e
                 render json: @accountingPlan.errors, status: :unprocessable_entity

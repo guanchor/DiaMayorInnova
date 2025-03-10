@@ -116,8 +116,11 @@ const importCSV = async (file) => {
             headers: { "Content-Type": "multipart/form-data" },
         });
 
-        console.log("PGC importado correctamente:", response.data);
-        return response.data;
+        if (response.data.success) {
+            console.log("PGC importado correctamente:", response.data);
+            return response.data;
+        }
+
     } catch (error) {
         console.error("Error importando CSV:", error.response?.data || error.message);
         return null;

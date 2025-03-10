@@ -163,12 +163,12 @@ const AccountingPlansList = ({ newPGC }) => {
                     <td>{accountingPlan.name}</td>
                     <td>{accountingPlan.acronym}</td>
                     <td>{accountingPlan.description}</td>
-                    <td className="accountingPlan__form--actions">
+                    <td className="accountingPlan__table--actions">
                       <button className="accountingPlan__button--link eye" onClick={() => fetchAccountsByPGC(accountingPlan.id)}>
-                        <i className="fi-rr-eye" /> Ver cuentas
+                        <i className="fi-rr-eye" />
                       </button>
                       <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
-                        <i className="fi-rr-pencil" /> Editar
+                        <i className="fi-rr-pencil" />
                       </button>
                       <button className="accountingPlan__button--link download" onClick={() => handleExportToCSV(accountingPlan.id)}>
                         <i className="fi-rr-download" /> CSV

@@ -8,13 +8,99 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-  class_group1 = ClassGroup.create(course: 1, module: "TUM", modality: "Presencial", number_students: 24, max_students: 30, location: "Taller 12", weekly_hours: 6)
-  class_group2 = ClassGroup.create(course: 2, module: "PNG", modality: "Distancia", number_students: 12, max_students: 20, location: "Aula 106", weekly_hours: 6)
-  accPlanPyme = AccountingPlan.create(name: "PGC para PYMES", description: "El plan más utilizado por el alumnado", acronym: "PGC PYMES")
-  accPlan2 = AccountingPlan.create(name: "PGC prueba1", description: "Plan para probar el Crud 1", acronym: "PGC prueba1")
-  accPlan3 = AccountingPlan.create(name: "PGC prueba2", description: "Plan para probar el Crud 2", acronym: "PGC prueba2")
-  school1 = SchoolCenter.create(school_name: "El rincon",address: "calle de prueba 1",phone: "123456789",email: "elrincon@ies.elrincon.es",website: "www.ieselrincon.es",province: "Las Palmas")
-  school1 = SchoolCenter.create(school_name: "IES Siete Palmas",address: "calle de siete palmas 1",phone: "987654321",email: "sietePalmas@ies.elrincon.es",website: "www.sietePalmas.es",province: "Las Palmas")
+school1 = SchoolCenter.create!(
+  school_name: "IES El Rincón",
+  address: "Calle de prueba 1",
+  phone: "123456789",
+  email: "elrincon@ies.elrincon.es",
+  website: "www.ieselrincon.es",
+  province: "Las Palmas"
+)
+
+school2 = SchoolCenter.create!(
+  school_name: "IES Santa Brígida",
+  address: "Carretera a los Olivos, 41",
+  phone: "987654321",
+  email: "santabrigida@ies.santabrigida.es",
+  website: "https://www3.gobiernodecanarias.org/medusa/edublog/iessantabrigida/",
+  province: "Las Palmas"
+)
+
+class_group1 = ClassGroup.create!(
+  course: 1,
+  course_module: "TEB",
+  modality: "Presencial",
+  number_students: 0,
+  max_students: 30,
+  location: "Taller 12",
+  weekly_hours: 6,
+  school_center_id: school1.id
+)
+
+class_group2 = ClassGroup.create!(
+  course: 2,
+  course_module: "TUM",
+  modality: "Presencial",
+  number_students: 0,
+  max_students: 30,
+  location: "Taller 15",
+  weekly_hours: 8,
+  school_center_id: school1.id
+)
+
+class_group3 = ClassGroup.create!(
+  course: 2,
+  course_module: "EPE",
+  modality: "Presencial",
+  number_students: 0,
+  max_students: 30,
+  location: "Taller 10",
+  weekly_hours: 6,
+  school_center_id: school1.id
+)
+
+class_group4 = ClassGroup.create!(
+  course: 1,
+  course_module: "PNG",
+  modality: "Distancia",
+  number_students: 0,
+  max_students: 20,
+  location: "Aula 106",
+  weekly_hours: 6,
+  school_center_id: school2.id
+)
+
+class_group5 = ClassGroup.create!(
+  course: 2,
+  course_module: "COB",
+  modality: "Distancia",
+  number_students: 0,
+  max_students: 20,
+  location: "Aula 108",
+  weekly_hours: 11,
+  school_center_id: school2.id
+)
+
+accPlanPyme = AccountingPlan.create!(
+  name: "PGC para PYMES",
+  description: "El plan más utilizado por el alumnado",
+  acronym: "PGC PYMES"
+)
+
+accPlan2 = AccountingPlan.create!(
+  name: "PGC prueba1",
+  description: "Plan para probar el Crud 1",
+  acronym: "PGC prueba1"
+)
+
+accPlan3 = AccountingPlan.create!(
+  name: "PGC prueba2",
+  description: "Plan para probar el Crud 2",
+  acronym: "PGC prueba2"
+)
+
+school_center = SchoolCenter.find_or_create_by(school_name: "IES El Rincón")
+school_center_2 = SchoolCenter.find_or_create_by(school_name: "IES Santa Brígida")
 
   # Usuario Admin
   user = User.find_or_create_by(email: 'admin@admin.es') do |u|
@@ -25,7 +111,7 @@
     u.password_confirmation = 'elrincon'
     u.role = 'admin'
   end
-puts "Usuario admin creado: #{user.email} con rol #{user.role}"
+puts "Usuario #{user.name} creado: #{user.email} con rol #{user.role}"
 
   # Usuarios con rol Teacher
   user2 = User.find_or_create_by(email: 'tiburcio@ieselrincon.es') do |u|
@@ -36,7 +122,7 @@ puts "Usuario admin creado: #{user.email} con rol #{user.role}"
     u.password_confirmation = 'elrincon'
     u.role = 'teacher'
   end
-puts "Usuario admin creado: #{user2.email} con rol #{user2.role}"
+puts "Usuario #{user2.name} creado: #{user2.email} con rol #{user2.role}"
 
   user3 = User.find_or_create_by(email: 'miguel@ieselrincon.es') do |u|
     u.name = "Miguel Ángel"
@@ -46,7 +132,7 @@ puts "Usuario admin creado: #{user2.email} con rol #{user2.role}"
     u.password_confirmation = 'elrincon'
     u.role = 'teacher'
   end
-puts "Usuario admin creado: #{user3.email} con rol #{user3.role}"
+puts "Usuario #{user3.name} creado: #{user3.email} con rol #{user3.role}"
 
 user7 = User.find_or_create_by(email: 'nira@ieselrincon.es') do |u|
   u.name = "Nira"
@@ -56,7 +142,7 @@ user7 = User.find_or_create_by(email: 'nira@ieselrincon.es') do |u|
   u.password_confirmation = 'elrincon'
   u.role = 'teacher'
 end
-puts "Usuario admin creado: #{user7.email} con rol #{user7.role}"
+puts "Usuario #{user7.name} creado: #{user7.email} con rol #{user7.role}"
 
 user8 = User.find_or_create_by(email: 'mirian@ieselrincon.es') do |u|
   u.name = "Mirian de la Peña"
@@ -66,7 +152,7 @@ user8 = User.find_or_create_by(email: 'mirian@ieselrincon.es') do |u|
   u.password_confirmation = 'elrincon'
   u.role = 'teacher'
 end
-puts "Usuario admin creado: #{user8.email} con rol #{user8.role}"
+puts "Usuario #{user8.name} creado: #{user8.email} con rol #{user8.role}"
 
  # Usuarios con rol Student
   user4 = User.find_or_create_by(email: 'echedey@ieselrincon.es') do |u|
@@ -78,7 +164,7 @@ puts "Usuario admin creado: #{user8.email} con rol #{user8.role}"
     u.role = 'student'
     u.class_groups_id = 2
   end
-puts "Usuario admin creado: #{user4.email} con rol #{user4.role}"
+puts "Usuario #{user4.name} creado: #{user4.email} con rol #{user4.role}"
 
   user5 = User.find_or_create_by(email: 'mayer@ieselrincon.es') do |u|
     u.name = "Mayer Alberto"
@@ -89,7 +175,7 @@ puts "Usuario admin creado: #{user4.email} con rol #{user4.role}"
     u.role = 'student'
     u.class_groups_id = 1
   end
-puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
+puts "Usuario #{user5.name} creado: #{user5.email} con rol #{user5.role}"
 
   user6 = User.find_or_create_by(email: 'juancarlos@ieselrincon.es') do |u|
     u.name = "Juan Carlos"
@@ -100,7 +186,7 @@ puts "Usuario admin creado: #{user5.email} con rol #{user5.role}"
     u.role = 'student'
     u.class_groups_id = 2
   end
-puts "Usuario admin creado: #{user6.email} con rol #{user6.role}"
+puts "Usuario #{user6.name} creado: #{user6.email} con rol #{user6.role}"
 
 user9 = User.find_or_create_by(email: 'diago@ieselrincon.es') do |u|
   u.name = "Diago"
@@ -111,7 +197,100 @@ user9 = User.find_or_create_by(email: 'diago@ieselrincon.es') do |u|
   u.role = 'student'
   u.class_groups_id = 1
 end
-puts "Usuario admin creado: #{user9.email} con rol #{user9.role}"
+puts "Usuario #{user9.name} creado: #{user9.email} con rol #{user9.role}"
+
+class_group = ClassGroup.find(1)
+user9.student_class_groups.find_or_create_by(class_group: class_group)
+
+puts "Usuario creado: #{user9.email} con rol #{user9.role} en el grupo #{class_group.id}"
+
+user10 = User.find_or_create_by(email: 'ieselrincon@ieselrincon.es') do |u|
+  u.name = "Administrador"
+  u.first_lastName = "del Centro"
+  u.second_lastName = "Ieselrincon"
+  u.password = 'elrincon'
+  u.password_confirmation = 'elrincon'
+  u.role = 'center_admin'
+  u.school_center = school_center
+end
+puts "Usuario #{user10.name} del Centro ER creado: #{user10.email} con rol #{user10.role}"
+
+user11 = User.find_or_create_by(email: 'santabrigida@iessantabrigida.es') do |u|
+  u.name = "Administrador"
+  u.first_lastName = "del Centro"
+  u.second_lastName = "IesSantaBrígida"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'center_admin'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user11.name} del Centro SB creado: #{user11.email} con rol #{user11.role}"
+
+user12 = User.find_or_create_by(email: 'maria@iessantabrigida.es') do |u|
+  u.name = "María"
+  u.first_lastName = "Lozano"
+  u.second_lastName = "López"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'student'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user12.name}  creado: #{user12.email} con rol #{user12.role}"
+
+user13 = User.find_or_create_by(email: 'ignacio@iessantabrigida.es') do |u|
+  u.name = "Ignacio"
+  u.first_lastName = "Gómez"
+  u.second_lastName = "Nieto"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'student'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user13.name}  creado: #{user13.email} con rol #{user13.role}"
+
+user14 = User.find_or_create_by(email: 'yaiza@iessantabrigida.es') do |u|
+  u.name = "Yaiza"
+  u.first_lastName = "Castillo"
+  u.second_lastName = "Calvo"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'student'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user14.name} creado: #{user14.email} con rol #{user14.role}"
+
+user15 = User.find_or_create_by(email: 'almudena@iessantabrigida.es') do |u|
+  u.name = "Almudena"
+  u.first_lastName = "Jiménez"
+  u.second_lastName = "Roman"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'student'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user15.name} creado: #{user15.email} con rol #{user15.role}"
+
+user16 = User.find_or_create_by(email: 'miguelangel@iessantabrigida.es') do |u|
+  u.name = "Miguel Ángel"
+  u.first_lastName = "Quesada"
+  u.second_lastName = "Quesada"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'teacher'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user16.name} creado: #{user16.email} con rol #{user16.role}"
+
+user17 = User.find_or_create_by(email: 'juanpedro@iessantabrigida.es') do |u|
+  u.name = "Juan Pedro"
+  u.first_lastName = "Romero"
+  u.second_lastName = "Navarro"
+  u.password = 'santabrigida'
+  u.password_confirmation = 'santabrigida'
+  u.role = 'teacher'
+  u.school_center = school_center_2
+end
+puts "Usuario #{user17.name} creado: #{user17.email} con rol #{user17.role}"
 
   
   task1 = Task.create(title: "Tarea 1 - Ficticia S.L.", opening_date: DateTime.new(2024, 11, 27 ,04, 00, 0), closing_date: DateTime.new(2024, 12, 1, 23, 59, 0), created_by: 2)

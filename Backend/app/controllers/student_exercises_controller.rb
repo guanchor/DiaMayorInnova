@@ -135,9 +135,6 @@ end
   end
 
   def update_student_exercise
-    if current_user.student?
-      render json: { error: "No autorizado" }, status: :forbidden
-    else
       
       @exercise = Exercise.find(params[:id])
     
@@ -172,7 +169,6 @@ end
       else
         render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
       end
-    end
   end
   
   private
@@ -217,11 +213,11 @@ end
             param_annotations = matching_entry[:student_annotations_attributes] || []
             solution_entry.annotations.each do |annotation|
               matching_annotation = param_annotations.find do |param_annotation|
-                param_annotation[:account_id].to_i == annotation.account_id &&
-                param_annotation[:credit].to_f == annotation.credit.to_f &&
-                param_annotation[:debit].to_f == annotation.debit.to_f
-
-              grade = 0 unless matching_annotation
+                valid = param_annotation[:account_id].to_i == annotation.account_id &&
+                        param_annotation[:credit].to_f == annotation.credit.to_f &&
+                        param_annotation[:debit].to_f == annotation.debit.to_f
+              
+                valid
               end
             end
           else

@@ -10,37 +10,19 @@ const AccountsList = ({ newAcc }) => {
   const [searchAccount, setSearchAccount] = useState("");
   const navigate = useNavigate();
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
+  const [currentPage, setCurrentPage] = useState(1); //Pagination
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    retrieveAccounts();
-  }, [newAcc]);
+    retrieveAccounts(currentPage, searchAccount);
+  }, [newAcc, currentPage, searchAccount]);
 
-  const retrieveAccounts = () => {
-    AccountService.getAll()
-      .then(response => {
-        setAccounts(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const findByName = (e) => {
-    e.preventDefault();
-    if (searchAccount) {
-      const searchTerm = searchAccount.toLowerCase();
-      AccountService.getAll()
-        .then(response => {
-          const filteredAccounts = response.data.filter (acc =>
-            acc.name.toLowerCase().includes(searchTerm)
-          );
-          setAccounts(filteredAccounts);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
-      retrieveAccounts();
+  const retrieveAccounts = async (page, name) => {
+    const data = await AccountService.getAll(page, 10, name);
+    if (data) {
+      setAccounts(data.accounts);
+      setCurrentPage(data.meta.current_page);
+      setTotalPages(data.meta.total_pages);
     }
   };
 
@@ -73,9 +55,10 @@ const AccountsList = ({ newAcc }) => {
   
     // Filtrage dynamique des comptes
     setAccounts((prevAccounts) =>
-      prevAccounts.filter((acc) =>
-        acc.name.toLowerCase().includes(searchTerm)
-      )
+      prevAccounts.filter((acc) => {
+        acc.name.toLowerCase().includes(searchTerm);
+        setCurrentPage(1);
+      })
     );
   };
   
@@ -107,16 +90,29 @@ const AccountsList = ({ newAcc }) => {
         <div className='account__header'>
           <h2 className='account__header--h2'>Todas las cuentas</h2>
 
-          <form className='search-bar search-bar--acc'>
-  <input
-    className='search-bar_search'
-    type='text'
-    value={searchAccount}
-    onChange={handleSearchChange}
-    placeholder='Filtrer par nom de compte'
-  />
-  <i className='fi fi-rr-search'></i> {/* Icône juste décorative */}
-</form>
+          <div className='account__form--row'>
+            <form className='search-bar search-bar--acc'>
+              <input
+                className='search-bar_search'
+                type='text'
+                value={searchAccount}
+                onChange={handleSearchChange}
+                placeholder='Filtrer par nom de compte'
+              />
+              <i className='fi fi-rr-search'></i> {/* Icône juste décorative */}
+            </form>
+
+            <div className="account__pagination">
+              <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+                <i className='fi fi-rr-angle-small-left'/>
+              </button>
+              <span>Página {currentPage} de {totalPages}</span>
+              <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
+                <i className='fi fi-rr-angle-small-right'/>
+              </button>
+            </div>
+          </div>
+          
 
         </div>
 
@@ -133,6 +129,7 @@ const AccountsList = ({ newAcc }) => {
                 <th>Nº Cuenta</th>
                 <th>Descripción</th>
                 <th>PGC</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -142,12 +139,12 @@ const AccountsList = ({ newAcc }) => {
                   <td>{account.account_number}</td>
                   <td>{account.description}</td>
                   <td>{account.accounting_plan_id}</td>
-                  <td className='account__form--actions'>
+                  <td className='account__table--actions'>
                     <button className='account__button--link inter' onClick={() => navigate("/help-examples")}>
-                      <i className='fi-rr-interrogation'/> Ayuda
+                      <i className='fi-rr-interrogation'/>
                     </button>
                     <button className='account__button--link pencil' onClick={() => navigate("/accounts/" + account.id)}>
-                      <i className='fi-rr-pencil' /> Editar
+                      <i className='fi-rr-pencil' />
                     </button>
                     <button aria-label="Eliminar cuenta" className='account__button--remove trash'
                       onClick={(e) => {
@@ -162,6 +159,7 @@ const AccountsList = ({ newAcc }) => {
             </tbody>
           </table>
           )}
+
         </div>
 
       </section>

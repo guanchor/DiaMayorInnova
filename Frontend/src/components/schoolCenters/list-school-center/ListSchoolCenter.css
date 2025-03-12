@@ -39,3 +39,11 @@
   display: flex;
   justify-content: space-between;
 }
+
+.school-list__pagination {
+  padding-top: var(--gap-s);
+  & span {
+    padding: var(--gap-s);
+    color: var(--Color-Principal);
+  }
+}

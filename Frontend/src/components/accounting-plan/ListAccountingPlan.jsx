@@ -36,7 +36,7 @@ const AccountingPlansList = ({ newPGC }) => {
         setTotalPages(data.meta.total_pages);
       }
     }
-    catch (error) {
+    catch (e) {
       console.log(e);
     }
     finally {

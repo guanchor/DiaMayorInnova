@@ -3,21 +3,31 @@ import SchoolsServices from '../../../services/SchoolsServices';
 import "./ListSchoolCenter.css"
 
 const ListSchoolCenter = ({ newSchool }) => {
-  const [schools, setSchools] = useState([]);
+  const [schools, setSchools] = useState([]);  
+  const [currentPage, setCurrentPage] = useState(1); //Pagination
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const allSchools = () => {
-    SchoolsServices.getAll()
-      .then(response => {
-        setSchools(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
+  const allSchools = async(page, school_name) => {
+    setIsLoading(true);
+    try {
+      const data = await SchoolsServices.getAll(page, 10, school_name);
+      if (data) {
+        setSchools(data.schools);
+        setTotalPages(data.meta.total_pages)
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+    finally {
+      setIsLoading(false)
+    }
+  };
 
   useEffect(() => {
     allSchools();
-  }, [newSchool]);
+  }, [newSchool, currentPage]);
 
 
   return (
@@ -38,6 +48,16 @@ const ListSchoolCenter = ({ newSchool }) => {
             </li>
           </ul>
         ))}
+
+        <div className="school-list__pagination">
+          <button className="btn" disabled={currentPage === 1 || isLoading} onClick={() => setCurrentPage((prev) => prev - 1)}>
+            <i className='fi fi-rr-angle-small-left'/>
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button className="btn" disabled={currentPage === totalPages || isLoading} onClick={() => setCurrentPage((prev) => prev + 1)}>
+            <i className='fi fi-rr-angle-small-right'/>
+          </button>
+        </div>
       </section>
     </>
   )

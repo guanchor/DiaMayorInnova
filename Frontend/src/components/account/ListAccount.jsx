@@ -12,17 +12,24 @@ const AccountsList = ({ newAcc }) => {
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
   const [currentPage, setCurrentPage] = useState(1); //Pagination
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     retrieveAccounts(currentPage, searchAccount);
   }, [newAcc, currentPage, searchAccount]);
 
   const retrieveAccounts = async (page, name) => {
-    const data = await AccountService.getAll(page, 10, name);
-    if (data) {
-      setAccounts(data.accounts);
-      setCurrentPage(data.meta.current_page);
-      setTotalPages(data.meta.total_pages);
+    setIsLoading(true);
+    try {
+      const data = await AccountService.getAll(page, 10, name);
+      if (data) {
+        setAccounts(data.accounts);
+        setTotalPages(data.meta.total_pages);
+      }
+    } catch (error) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,11 +110,11 @@ const AccountsList = ({ newAcc }) => {
             </form>
 
             <div className="account__pagination">
-              <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+              <button className="btn" disabled={currentPage === 1 || isLoading} onClick={() => setCurrentPage((prev) => prev - 1)}>
                 <i className='fi fi-rr-angle-small-left'/>
               </button>
               <span>Página {currentPage} de {totalPages}</span>
-              <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
+              <button className="btn" disabled={currentPage === totalPages || isLoading} onClick={() => setCurrentPage((prev) => prev + 1)}>
                 <i className='fi fi-rr-angle-small-right'/>
               </button>
             </div>

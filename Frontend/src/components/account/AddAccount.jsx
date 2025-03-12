@@ -72,10 +72,19 @@ const AddAccount = ({ setNewAcc }) => {
 
   useEffect(() => {
     AccountingPlanService.getAll()
-      .then(({ data }) => {
-        setPlans(data);
+      .then((response) => {
+        if (response && response.accountingPlans) {
+          setPlans(response.accountingPlans);
+        } else {
+          setPlans([]); // Avoid undefined
+        }
       })
-  }, [])
+      .catch((error) => {
+        console.error("Error al obtener los planes contables:", error);
+        setPlans([]);
+      });
+  }, []);
+  
 
   return (
     <>

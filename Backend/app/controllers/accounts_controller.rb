@@ -2,15 +2,6 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
-  # def index
-  #   if params[:name].present?
-  #     @accounts = Account.where("name LIKE ?", "%#{params[:name]}%")
-  #   else
-  #     @accounts = Account.all
-  #   end 
-  #   render json: @accounts
-  # end
-
   def index
     accounts = Account.all
     accounts = accounts.where("name LIKE ?", "%#{params[:name]}%") if params[:name].present?

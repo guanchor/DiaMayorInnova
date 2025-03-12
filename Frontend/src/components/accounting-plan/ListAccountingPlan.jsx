@@ -18,20 +18,30 @@ const AccountingPlansList = ({ newPGC }) => {
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
   const [accounts, setAccounts] = useState([]); // Stocker les comptes récupérés
   const [isModalOpen, setIsModalOpen] = useState(false); // Gérer l'affichage de la modale
+  const [currentPage, setCurrentPage] = useState(1); //Pagination
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
-    retrieveAccountingPlans();
-  }, [newPGC]);
+    retrieveAccountingPlans(currentPage, searchAccPlan);
+  }, [newPGC, currentPage, searchAccPlan]);
 
-  const retrieveAccountingPlans = () => {
-    AccountingPlanDataService.getAll()
-      .then(response => {
-        setAccountingPlans(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const retrieveAccountingPlans = async(page, name) => {
+    setIsLoading(true);
+    try {
+      const data = await AccountingPlanDataService.getAll(page, 10, name);
+      if (data) {
+        setAccountingPlans(data.accountingPlans);
+        setTotalPages(data.meta.total_pages);
+      }
+    }
+    catch (error) {
+      console.log(e);
+    }
+    finally {
+      setIsLoading(false);
+    }
   };
 
   const setActiveAccountingPlan = (accountingPlan, index) => {
@@ -63,9 +73,10 @@ const AccountingPlansList = ({ newPGC }) => {
   
     // Filtrage dynamique des plans comptables
     setAccountingPlans((prevPlans) =>
-      prevPlans.filter((plan) =>
-        plan.name.toLowerCase().includes(searchTerm)
-      )
+      prevPlans.filter((plan) => {
+        plan.name.toLowerCase().includes(searchTerm);
+        setCurrentPage(1);
+      })
     );
   };
   
@@ -127,18 +138,28 @@ const AccountingPlansList = ({ newPGC }) => {
       <section className="accountingPlan__pgcList">
         <div className="accountingPlan__header">
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
+            <div className="accountingPlan__form--row">
+              <form className="search-bar search-bar--pgc">
+                <input
+                  className="search-bar_search"
+                  type="text"
+                  value={searchAccPlan}
+                  onChange={handleSearchChange}
+                  placeholder="Buscar por nombre"
+                />
+                <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
+              </form>
 
-          <form className="search-bar search-bar--pgc">
-            <input
-              className="search-bar_search"
-              type="text"
-              value={searchAccPlan}
-              onChange={handleSearchChange}
-              placeholder="Buscar por nombre"
-            />
-            <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
-          </form>
-
+              <div className="accountingPlan__pagination">
+                  <button className="btn" disabled={currentPage === 1 || isLoading} onClick={() => setCurrentPage((prev) => prev - 1)}>
+                    <i className='fi fi-rr-angle-small-left'/>
+                  </button>
+                  <span>Página {currentPage} de {totalPages}</span>
+                  <button className="btn" disabled={currentPage === totalPages || isLoading} onClick={() => setCurrentPage((prev) => prev + 1)}>
+                    <i className='fi fi-rr-angle-small-right'/>
+                  </button>
+              </div>
+            </div>
         </div>
         
 

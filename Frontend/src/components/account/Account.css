@@ -79,9 +79,14 @@
 }
 
 th {
-  border-bottom: solid 1px var(--Color-grey-200);
+  color: var(--Color-Principal);
+  border-bottom: solid 1px var(--Color-Principal);
   padding: var(--gap-xs) 0;
   margin: var(--gap-xs);
+
+  & i {
+    font-size: x-large;
+  }
 }
 
 .account__button {

@@ -1,15 +1,5 @@
 import http from "../http-common";
 
-// const getAll = async () => {
-//   try {
-//     const response = http.get("/accounts");
-//     return response;
-//   } catch (error) {
-//     console.error("Error en la petición getAll: ", error);
-//     return null;
-//   }
-// };
-
 const getAll = async (page = 1, perPage = 10, name = "") => {
   try {
     const response = await http.get("/accounts", {

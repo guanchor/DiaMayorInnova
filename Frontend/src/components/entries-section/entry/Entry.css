@@ -85,6 +85,10 @@
   }
 }
 
+.entry_add_annotation {
+  margin-top: var(--gap-xs);
+}
+
 .header_container {
   display: flex;
   gap: var(--gap-xxl);

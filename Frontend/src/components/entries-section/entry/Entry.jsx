@@ -3,7 +3,6 @@ import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
 const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement }) => {
-  console.log("Annotations recibidos en Entry:", annotations);
   const [entryStatus, setEntryStatus] = useState(false);
   const [entrydate, setDate] = useState("2024-10-10");
   const formattedDate = new Date(`${entrydate}T00:00:00`).toLocaleDateString("es-ES");
@@ -16,7 +15,9 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
   const handleChangeDate = (e) => {
     const newDate = e.target.value;
     setDate(newDate);
-    updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    if (selectedStatement) {
+      updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    }
   }
 
   const calculateTotal = () => {
@@ -79,7 +80,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
                   aptNumber={index + 1}
                   annotation={annotation}
                   onDelete={() => deleteAnnotation(annotation.uid)}
-                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement.id, annotation.uid, updatedAnnotation)}
+                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement?.id ?? 0, annotation.uid, updatedAnnotation)}
                 />
               );
             })}

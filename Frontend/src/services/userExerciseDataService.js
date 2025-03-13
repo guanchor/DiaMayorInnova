@@ -10,7 +10,7 @@ const getById = async (exerciseId) => {
   try {
     const response = await http.get(`/student_exercises/${exerciseId}`);
     // console.log("Response data:", response.data); // Depuración
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Error obteniendo el ejercicio:", error);
     return null;

@@ -15,11 +15,18 @@ const StudentAside = () => {
 
   const handleClick = (exerciseId) => {
     const selectedExercise = exercises.find((ex) => ex.id === exerciseId);
-    if (selectedExercise && selectedExercise.started) {
+
+    /* if (selectedExercise.task?.is_exam && selectedExercise.started) {
       modalRef.current?.showModal();
       return;
-    }
-    navigate(`/modes/examen/${exerciseId}`);
+    } */
+    if (!selectedExercise?.task) return;
+
+    const route = selectedExercise.task.is_exam 
+      ? `/modes/examen/${exerciseId}`
+      : `/modes/tarea/${exerciseId}`;
+
+    navigate(route);
   };
 
   useEffect(() => {

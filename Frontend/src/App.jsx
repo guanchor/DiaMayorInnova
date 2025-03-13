@@ -51,7 +51,7 @@ function App() {
                   <Route path="/accounting-plans-test" element={<AccountingPlanList />} />
                   <Route path="/accounting-plans-test/:id" element={<AccountingPlan />} />
                   <Route path="/modes" element={<Modes />} >
-                    <Route path='tarea/' element={<TaskPage />} />
+                    <Route path="tarea/:exerciseId" element={<TaskPage />} />
                     <Route path='practica/' element={<PracticePage />} />
                     <Route path='examen/:exerciseId' element={<ExamPage />} />
                   </Route>

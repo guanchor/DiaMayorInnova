@@ -5,7 +5,7 @@ class StudentExercisesController < ApplicationController
     @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
     render json: @exercises.as_json(
       include: {
-        task: { only: [:id, :title, :opening_date, :closing_date] },
+        task: { only: [:id, :title, :opening_date, :closing_date, :is_exam] },
         marks: {
             include: {
               student_entries: {
@@ -36,7 +36,10 @@ class StudentExercisesController < ApplicationController
     render json: {
       exercise: @exercise.as_json(
         include: {
-          task: { only: [:id, :title, :opening_date, :closing_date, :is_exam] },
+          task: { 
+            only: [:id, :title, :opening_date, :closing_date, :is_exam],
+            include: :statements
+          },
           marks: {
             include: {
               student_entries: {
@@ -46,7 +49,7 @@ class StudentExercisesController < ApplicationController
           }
         }
       ),
-      statements: @exercise.task.statements,
+      #statements: @exercise.task.statements,
       time_remaining: time_remaining
     }
   end
@@ -105,20 +108,25 @@ end
 
   def start
     @exercise = Exercise.find(params[:id])
+    task = @exercise.task
 
-    return render json: { error: "Examen no encontrado." }, status: :not_found unless @exercise
-
-    return render json: { error: "El examen no está disponible aún." }, status: :unprocessable_entity if Time.current < @exercise.task.opening_date
-    return render json: { error: "El examen ya ha finalizado." }, status: :unprocessable_entity if @exercise.time_remaining == 0
-    return render json: { error: "El examen ya ha comenzado." }, status: :unprocessable_entity if @exercise.started
-
+    if task.is_exam?
+      return render json: { error: "Examen no encontrado." }, status: :not_found unless @exercise
+      return render json: { error: "El examen no está disponible aún." }, status: :unprocessable_entity if Time.current < task.opening_date
+      return render json: { error: "El examen ya ha finalizado." }, status: :unprocessable_entity if Time.current > task.closing_date
+      return render json: { error: "El examen ya ha comenzado." }, status: :unprocessable_entity if @exercise.started
+    else
+      return render json: { error: "Tarea no disponible aún." }, status: :unprocessable_entity if Time.current < task.opening_date
+      return render json: { error: "Tarea ya cerrada." }, status: :unprocessable_entity if Time.current > task.closing_date
+    end
+  
     if @exercise.update(started: true)
       render json: {
         exercise: @exercise,
-        time_remaining: @exercise.time_remaining
+        time_remaining: task.is_exam? ? (task.closing_date - Time.current).to_i : nil
       }, status: :ok
     else
-      render json: { error: "Error al iniciar el examen." }, status: :unprocessable_entity
+      render json: { error: "Error al iniciar." }, status: :unprocessable_entity
     end
   end
 

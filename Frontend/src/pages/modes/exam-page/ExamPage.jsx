@@ -32,26 +32,24 @@ const ExamPage = () => {
         const response = await userExerciseDataService.getById(exerciseId);
         // console.log("Response data:", response); // Depuración
 
-        if (!response || !response.data) {
+        if (!response || !response.exercise) {
           throw new Error("Respuesta vacía o malformada");
         }
 
-        const { exercise, statements, time_remaining } = response.data;
+        // const { exercise, statements, time_remaining } = response.data;
         // console.log("Opening date:", exercise.task.opening_date); // Depuración
         // console.log("Closing date:", exercise.task.closing_date); // Depuración
         // console.log("Tiempo restante recibido:", time_remaining); // Depuración
         // console.log("Hora actual:", new Date()); // Depuración
-        if (exercise) {
-          setExercise(exercise);
-          setStatements(statements || []);
+        // if (exercise) {
+        // setExercise(exercise);
+        // setStatements(statements || []);
+        setExercise(response.exercise);
+        setStatements(response.exercise.task.statements || []);
 
-          if (exercise.task?.is_exam && exercise.started) {
-            setExamStarted(true);
-            setTimeRemaining(time_remaining);
-          } else {
-            setExamStarted(false);
-            setTimeRemaining(0);
-          }
+        if (response.exercise.task.is_exam && response.exercise.started) {
+          setExamStarted(true);
+          setTimeRemaining(response.time_remaining);
         }
       } catch (err) {
         console.error("Error fetching exercise:", err);
@@ -131,6 +129,7 @@ const ExamPage = () => {
   }, [timeRemaining, examStarted, navigate]);
 
   const startExam = async () => {
+    if (!exercise?.task) return;
     const now = new Date();
     const openingDate = new Date(exercise.task.opening_date);
     if (now < openingDate) {
@@ -142,9 +141,12 @@ const ExamPage = () => {
       const response = await userExerciseDataService.start(exerciseId);
       if (response && response.status === 200) {
         console.log("Examen iniciado con éxito");
-        setExamStarted(true);
+        
         const closingDate = new Date(exercise.task.closing_date);
-        const remaining = Math.floor((closingDate - new Date()) / 1000);
+        const now = new Date();
+        const remaining = Math.floor((closingDate - now) / 1000);
+        
+        setExamStarted(true);
         setTimeRemaining(remaining);
         setExercise({ ...exercise, started: true });
       } else {
@@ -203,7 +205,7 @@ const ExamPage = () => {
       />
       <HelpSection />
       <AuxSectionTwo
-        statements={statements}
+        statements={exercise.task.statements}
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
       />

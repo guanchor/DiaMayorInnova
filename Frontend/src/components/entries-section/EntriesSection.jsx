@@ -163,8 +163,9 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
       ...prevData,
       [selectedStatement.id]: prevData[selectedStatement.id] || { entries: [], annotations: [] },
     }));
-
-    onStatementComplete(selectedStatement.id, { entries, annotations });
+    if (onStatementComplete) {
+      onStatementComplete(selectedStatement.id, { entries, annotations });
+    }
   };
 
   const handleFinalSubmit = () => {
@@ -228,18 +229,18 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
       </section>
       <div className='modes-entries-container--buttons'>
         <button onClick={handleSubmitStatement} className='btn light' disabled={!examStarted}>
-          Guardar y Continuar
+          {exercise?.task?.is_exam ? "Guardar y Continuar" : "Guardar Progreso"}
         </button>
         <button onClick={() => confirmModalRef.current?.showModal()} className='btn' disabled={!examStarted}>
-          Enviar Examen
+          {exercise?.task?.is_exam ? "Enviar Examen" : "Finalizar Tarea"}
         </button>
       </div>
 
       <Modal ref={confirmModalRef} modalTitle="Confirmar envío" showButton={false}>
         <p>¿Está seguro de enviar el examen?</p>
         <div className="modal__buttons">
-          <button 
-            className="btn" 
+          <button
+            className="btn"
             onClick={() => {
               confirmModalRef.current?.close();
               handleFinalSubmit();
@@ -247,15 +248,15 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
           >
             Sí
           </button>
-          <button 
-            className="btn light" 
+          <button
+            className="btn light"
             onClick={() => confirmModalRef.current?.close()}
           >
             No
           </button>
         </div>
       </Modal>
-      
+
     </div >
   )
 }

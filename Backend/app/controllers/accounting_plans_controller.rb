@@ -16,12 +16,6 @@ class AccountingPlansController < ApplicationController
                 total_count: paginated_pgc.total_count
             }
         }
-        # INDEX ANTIGUO if params[:name].present?
-        #     @accountingPlans = AccountingPlan.where("name LIKE ?", "%#{params[:name]}%")
-        # else
-        #     @accountingPlans = AccountingPlan.all
-        # end
-        # render json: @accountingPlans
     end
 
     def show

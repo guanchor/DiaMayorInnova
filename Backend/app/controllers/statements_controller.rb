@@ -6,24 +6,38 @@ class StatementsController < ApplicationController
   def index
     return render json: { error: "No autorizado" }, status: :forbidden if current_user.student?
     
-    @statements = Statement.includes(solutions: { entries: :annotations })
-    @statements = @statements.where("is_public = ? OR user_id = ?", true, current_user.id) unless current_user.admin?
+    begin
+      statements = Statement. includes(solutions: {entries: :annotations})
 
-    render json: @statements.as_json(
-      include: {
-        solutions: {
-          include: {
-            entries: {
-              include: {
-                annotations: {
-                  order: :number
+      unless current_user.admin?
+        statements = statements.where("is_public = ? OR user_id = ?", true, current_user.id)
+      end
+
+      paginated_statements = statements.page(params[:page]).per(params[:per_page] || 10)
+
+      render json: {
+      statements: paginated_statements.as_json(
+        include: {
+          solutions: {
+            include: {
+              entries: {
+                include: {
+                  annotations: {
+                    order: :number
+                  }
                 }
               }
             }
           }
         }
+      ),
+      meta: {
+        current_page: paginated_statements.current_page,
+        total_pages: paginated_statements.total_pages,
+        total_count: paginated_statements.total_count
       }
-    )
+    }
+    end
   end
 
   def show

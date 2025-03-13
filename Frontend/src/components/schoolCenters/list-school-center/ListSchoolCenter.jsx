@@ -57,7 +57,7 @@ const ListSchoolCenter = ({ newSchool }) => {
           <button className="btn" disabled={currentPage === totalPages || isLoading} onClick={() => setCurrentPage((prev) => prev + 1)}>
             <i className='fi fi-rr-angle-small-right'/>
           </button>
-        </div>
+         </div>
       </section>
     </>
   )

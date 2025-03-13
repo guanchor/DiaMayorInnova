@@ -1,15 +1,18 @@
 .account__page {
-  padding: 24px;
+  padding: 60px 24px 24px 24px;
   width: 100%;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
+  /* Full viewport height */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto 1fr; /* Dynamic height for form & fixed scroll for list */
+  grid-template-rows: auto auto 1fr;
+  /* Dynamic height for form & fixed scroll for list */
   grid-template-areas:
     "btn title empty"
     "form form form"
     "list list list";
-  overflow: hidden; /* Prevent full page scrolling */
+  overflow: hidden;
+  /* Prevent full page scrolling */
 }
 
 /* Button Back */

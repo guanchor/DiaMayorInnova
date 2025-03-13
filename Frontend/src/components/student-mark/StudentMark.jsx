@@ -80,8 +80,8 @@ const StudentMark = () => {
                                         <tr key={index + annotation.account_number}>
                                           <td>{index + 1}</td>
                                           <td>{annotation.account_number}</td>
-                                          <td>{annotation.credit}</td>
                                           <td>{annotation.debit}</td>
+                                          <td>{annotation.credit}</td>
                                         </tr>
                                       ))
                                     }

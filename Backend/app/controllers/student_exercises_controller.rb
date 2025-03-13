@@ -213,11 +213,13 @@ end
             param_annotations = matching_entry[:student_annotations_attributes] || []
             solution_entry.annotations.each do |annotation|
               matching_annotation = param_annotations.find do |param_annotation|
-                valid = param_annotation[:account_id].to_i == annotation.account_id &&
-                        param_annotation[:credit].to_f == annotation.credit.to_f &&
-                        param_annotation[:debit].to_f == annotation.debit.to_f
-              
-                valid
+                param_annotation[:account_id].to_i == annotation.account_id &&
+                param_annotation[:credit].to_f == annotation.credit.to_f &&
+                param_annotation[:debit].to_f == annotation.debit.to_f
+              end
+              if matching_annotation.nil?
+                grade = 0
+
               end
             end
           else

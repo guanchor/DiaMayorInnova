@@ -21,7 +21,16 @@ const AccountingPlans = () => {
         </div>
         
 
+<<<<<<< HEAD
         <section className="accountingPlan__addPGC">
+=======
+        <button className="accountingPlan__btnHome" onClick={() => navigate("/home")}>
+          <i className="fi-rr-arrow-small-left" /> Volver
+        </button>
+        <h1 className="accountingPlan__page--title">Creación PGC</h1>
+
+        <section className="accountingPlan__addPGC" >
+>>>>>>> ef9116d (Correction suggestion and page for listing notes and the result of the grade.)
           <AddAccountingPlan setNewPGC={setNewPGC} />
         </section>
         <section className="accountingPlan__listPGC">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_06_131450) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_10_001003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -124,6 +124,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_06_131450) do
     t.datetime "updated_at", null: false
     t.bigint "exercise_id", null: false
     t.integer "statement_id"
+    t.string "comment"
     t.index ["exercise_id"], name: "index_marks_on_exercise_id"
   end
 

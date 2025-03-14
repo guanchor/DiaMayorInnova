@@ -6,12 +6,16 @@ const useStatements = () => {
   const [solutions, setSolutions] = useState({});
   const [editMode, setEditMode] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchStatements = async () => {
       try {
-        const response = await statementService.getAllStatements();
-        setStatements(response.data || []);
+        setLoading(true);
+        const response = await statementService.getAllStatements(currentPage, 10);
+        setStatements(response.data.statements);
+        setTotalPages(response.data?.meta?.total_pages || 1);
       } catch (error) {
         console.error("Error al cargar los enunciados:", error);
       } finally {
@@ -19,7 +23,7 @@ const useStatements = () => {
       }
     };
     fetchStatements();
-  }, []);
+  }, [currentPage]);
 
   const handleEditSolutions = (statementId) => {
     if (editMode === statementId) {
@@ -34,6 +38,9 @@ const useStatements = () => {
     solutions,
     editMode,
     loading,
+    currentPage,
+    totalPages,
+    setCurrentPage,
     handleEditSolutions,
   };
 };

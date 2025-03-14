@@ -14,7 +14,7 @@ const StatementsSelection = ({
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatementId, setSelectedStatementId] = useState(null);
-  const { statements, solutions, editMode, handleEditSolutions } = useStatements();
+  const { statements, solutions, editMode, handleEditSolutions, currentPage, totalPages, setCurrentPage  } = useStatements();
 
   const viewSolutions = (statementId) => {
     console.log("ID del enunciado:", statementId);
@@ -56,6 +56,21 @@ const StatementsSelection = ({
     <section className="task-page__selection">
       <div className="task-page__selection--content">
         <h2 className="task-page__header">Enunciados</h2>
+        <div className="statements__pagination">
+          <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
+            <i className='fi fi-rr-angle-double-small-left'/>
+          </button>
+          <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+            <i className='fi fi-rr-angle-small-left'/>
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
+            <i className='fi fi-rr-angle-small-right'/>
+          </button>
+          <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
+            <i className='fi fi-rr-angle-double-small-right'/>
+          </button>
+        </div>
         <ul className="task-page__list">
           {statements.map((statement) => (
             <li className="task-page__list-item" key={statement.id}>

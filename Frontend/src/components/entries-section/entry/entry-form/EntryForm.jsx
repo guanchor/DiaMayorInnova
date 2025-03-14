@@ -4,7 +4,6 @@ import http from "../../../../http-common";
 import "./EntryForm.css"
 
 const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
-  console.log("Annotation recibido en EntryForm:", annotation);
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -56,14 +55,12 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    //console.log("Name:", name, "Value:", value);  // Depuración
     const updatedAnnotation = { ...annotation, [name]: value };
 
     if (name === 'account_number') {
       const foundAccount = accounts.find(
         acc => acc.account_number === value
       );
-      //console.log("Account seleccionada:", foundAccount); // Depuración
       if (foundAccount) {
         updatedAnnotation.account_id = foundAccount.id;
         updatedAnnotation.account_name = foundAccount.name;
@@ -77,7 +74,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     } else if (name === 'credit' && value) {
       updatedAnnotation.debit = '';
     }
-    // console.log("Updated Annotation:", updatedAnnotation);  // Depuración
     updateAnnotation(updatedAnnotation);
   };
 

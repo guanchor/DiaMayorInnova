@@ -12,7 +12,6 @@ const StudentMark = () => {
   useEffect(() => {
     userExerciseDataService.getAllCalification()
       .then(({ data }) => {
-        // console.log(data) // Depuración
         setMarks(data)
         if (data.length !== 0)
           setIncludeMark(true)
@@ -29,8 +28,8 @@ const StudentMark = () => {
             <Modal
               key={"modal" + task.id}
               btnText={
-                <div className="mark_container">
-                  <p className='mark_mark'>{task.total_mark ? (task.total_mark).toFixed(2) : " - "}</p>
+                <div className="mark_container" data-testid={`mark-${task.id}`}>
+                  <p className='mark_mark'>{task.total_mark ? (task.total_mark).toFixed(1) : " - "}</p>
                   <p className='mark-text_title'>{task.task.title}</p>
                 </div>
               }
@@ -42,7 +41,7 @@ const StudentMark = () => {
                   data-tooltip-id="modal-tooltip"
                   data-tooltip-content="La nota se calcula haciendo la media de las notas de los apartados"
                 >
-                  Nota de la tarea {(task.total_mark).toFixed(2)}
+                  Nota de la tarea {(task.total_mark).toFixed(1)}
                 </h3>
 
                 <Tooltip
@@ -81,8 +80,8 @@ const StudentMark = () => {
                                         <tr key={index + annotation.account_number}>
                                           <td>{index + 1}</td>
                                           <td>{annotation.account_number}</td>
-                                          <td>{annotation.credit}</td>
                                           <td>{annotation.debit}</td>
+                                          <td>{annotation.credit}</td>
                                         </tr>
                                       ))
                                     }

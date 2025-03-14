@@ -217,12 +217,18 @@ const TaskListAndDetails = () => {
             </ul>
 
             <div className="task-list__pagination">
-              <button className="btn" disabled={currentPage === 1 || loading} onClick={() => setCurrentPage((prev) => prev - 1)}>
+              <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
+                <i className='fi fi-rr-angle-double-small-left'/>
+              </button>
+              <button className="btn" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
                 <i className='fi fi-rr-angle-small-left'/>
               </button>
               <span>Página {currentPage} de {totalPages}</span>
-               <button className="btn" disabled={currentPage === totalPages || loading} onClick={() => setCurrentPage((prev) => prev + 1)}> 
+              <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
                 <i className='fi fi-rr-angle-small-right'/>
+              </button>
+              <button className="btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
+                <i className='fi fi-rr-angle-double-small-right'/>
               </button>
             </div>
           </section>

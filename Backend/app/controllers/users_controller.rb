@@ -20,7 +20,9 @@ class UsersController < ApplicationController
       end
     end
 
-    users_data = users.map do |user|
+    paginated_users  = users.page(params[:page]).per(params[:per_page] || 10)
+
+    users_data = paginated_users.map do |user|
       user_data = user.as_json
       if user.featured_image.attached?
         user_data[:featured_image] = { url: rails_blob_url(user.featured_image, only_path: true) }
@@ -29,7 +31,16 @@ class UsersController < ApplicationController
       end
       user_data
     end
-    json_response "Users retrieved successfully", true, { users: users_data }, :ok
+    json_response "Users retrieved successfully", true, {
+      data: {
+        users: users_data,
+        meta: {
+          current_page: paginated_users.current_page,
+          total_pages: paginated_users.total_pages,
+          total_count: paginated_users.total_count
+        }
+      }
+    }, :ok
   end
 
   def show

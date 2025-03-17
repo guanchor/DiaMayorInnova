@@ -37,7 +37,7 @@ const getTeacherClassGroups = async (userId) => {
 
 const getCurrentUser = async () => {
   try {
-    const response = await http.get('/users/current');
+    const response = await http.get('/users/current_user');
     return response.data.user; // Asumiendo que el endpoint devuelve { user: { ... } }
   } catch (error) {
     console.error("Error al obtener el usuario actual:", error);

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SchoolsServices from '../../../services/SchoolsServices';
 import ConfirmDeleteModal from '../../modal/ConfirmDeleteModal';
 import "./ListSchoolCenter.css"
 
-const ListSchoolCenter = ({ newSchool,  schools, setSchools, setSelectedSchool }) => {
-  const [schools, setSchools] = useState([]);  
+const ListSchoolCenter = ({ schools, setSchools, setSelectedSchool }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [schoolToDelete, setSchoolToDelete] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); //Pagination
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [schoolToDelete, setSchoolToDelete] = useState(null);
 
   const allSchools = async(page, school_name) => {
     setIsLoading(true);
@@ -30,7 +29,7 @@ const ListSchoolCenter = ({ newSchool,  schools, setSchools, setSelectedSchool }
 
   useEffect(() => {
     allSchools();
-  }, [newSchool, currentPage]);
+  }, [currentPage]);
 
   const deleteSchool = (schoolId) => {
     SchoolsServices.remove(schoolId)

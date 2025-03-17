@@ -20,9 +20,9 @@ const StatementsList = ({ onSelectStatement }) => {
         setLoading(true);
         const response = await statementService.getAllStatements();
 
-        console.log("Datos de enunciados obtenidos:", response.data);
-        if (Array.isArray(response.data)) {
-          const filteredStatements = response.data.filter(
+        console.log("Datos de enunciados obtenidos:", response.data.statements);
+        if (Array.isArray(response.data.statements)) {
+          const filteredStatements = response.data.statements.filter(
             (statement) => statement.is_public || statement.user_id === user?.id
           );
           setStatements(filteredStatements);

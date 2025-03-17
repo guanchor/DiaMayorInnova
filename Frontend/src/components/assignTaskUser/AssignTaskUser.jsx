@@ -30,22 +30,6 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
     }
   };
 
-  const getAllUsers = () => {
-    userService.getAllUsers()
-      .then(({ data }) => {
-        console.log("all users ", data.data.users)
-        setUsers(data.data.users);
-      });
-  }
-
-  const getAllClass = () => {
-    ClassGroupService.findByTeacherId(user.id)
-      .then(({ data }) => {
-        console.log("all class ", data)
-        setTeacherClass(data);
-      });
-  }
-
   const handleSelectClass = (e, id) => {
     e.preventDefault()
     setCurrentClass(id);
@@ -56,15 +40,15 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
 
     userService.getUserByClassId(currentClass)
       .then(({ data }) => {
-        console.log("all users ", data)
-        setUsers(data.data.users);
+        console.log("all users ", data.data.data.users)
+        setUsers(data.data.data.users);
       });
 
 
     ClassGroupService.findByTeacherId(user.id)
-      .then(({ data }) => {
-        console.log("all class ", data)
-        setTeacherClass(data);
+      .then((response) => {
+        console.log("all class ", response.data)
+        setTeacherClass(response.data);
       });
   }, [currentClass])
 
@@ -89,7 +73,7 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
           <div className="list__container">
             <h3>Lista de estudiantes</h3>
             <div className="list__items">
-              {(users.length !== 0) ? users.map((user) => (
+              {users ? users.map((user) => (
                 <label className={assignedInclude(user.id) ? "user__item user__item--selected" : "user__item light"} key={user.id}>
                   <input
                     type="checkbox"

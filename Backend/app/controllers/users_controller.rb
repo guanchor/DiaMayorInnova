@@ -20,20 +20,20 @@ class UsersController < ApplicationController
       end
     end
 
-    paginated_users  = users.page(params[:page]).per(params[:per_page] || 10)
-
-    users_data = paginated_users.map do |user|
     if params[:name].present?
       users = users.where("name ILIKE ?", "%#{params[:name]}%")
     elsif params[:class_groups_id].present?
       users = users.joins(:student_class_groups).where(student_class_groups: { class_group_id: params[:class_groups_id] })
     end
 
-    users_data = users.map do |user|
+    paginated_users  = users.page(params[:page]).per(params[:per_page] || 10)
+
+    users_data = paginated_users.map do |user|
       user_data = user.as_json
       user_data[:featured_image] = user.featured_image.attached? ? { url: rails_blob_url(user.featured_image, only_path: true) } : nil
       user_data
     end
+
     json_response "Users retrieved successfully", true, {
       data: {
         users: users_data,

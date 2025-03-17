@@ -17,7 +17,7 @@ const ListUsers = ({ setSelectedUser }) => {
       try {
         const response = await userService.getAllUsers(currentPage, 10);
 
-        if (response?.data?.data?.users) { 
+        if (response) { 
           setUsers(response.data.data.users);
           setTotalPages(response.data.data.meta?.total_pages || 1);
         }

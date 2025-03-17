@@ -71,7 +71,6 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
   };
 
   const addAnnotation = (statementId, entryId) => {
-    // console.log("Agregando anotación para entryId:", entryId); // Depuración
     if (!statementData[statementId]) {
       setStatementData((prevData) => ({
         ...prevData,
@@ -80,7 +79,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
           annotations: [...(prevData[statementId]?.annotations || []), {
             uid: `annotation-${Date.now()}`,
             student_entry_id: entryId,
-            account_id: 9999,
+            account_id: "",
             account_number: "",
             debit: 0,
             credit: 0,
@@ -92,7 +91,7 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     const newAnnotation = {
       uid: `annotation-${Date.now()}`,
       student_entry_id: entryId,
-      account_id: 9999,
+      account_id: "",
       account_number: "",
       debit: 0,
       credit: 0,
@@ -107,21 +106,16 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     }));
   };
 
-  useEffect(() => {
-    // console.log("Statement Data Actualizado:", statementData); // Depuración
-  }, [statementData]);
-
   const updateAnnotation = (statementId, annotationUid, updatedAnnotation) => {
     if (!statementId || !statementData[statementId]) return;
 
+    console.log("Actualizar ", updatedAnnotation.account_id)
+
     if (updatedAnnotation.account_number !== undefined) {
-      const foundAccount = accounts.find(
-        acc => acc.account_number === updatedAnnotation.account_number
-      );
+      const foundAccount = updatedAnnotation.account_id
 
       updatedAnnotation.account_id = foundAccount
-        ? foundAccount.id
-        : 9999;
+
     }
 
     setStatementData((prevData) => ({
@@ -186,8 +180,6 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
       taskId: exercise.task.id,
       exerciseId: exercise.id,
     };
-
-    // console.log("✅ DATA SUBMIT - Verificar antes de enviar:", dataToSubmit); // Depuración
 
     taskSubmitService(dataToSubmit, navigate);
   };

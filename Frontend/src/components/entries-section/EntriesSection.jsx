@@ -6,102 +6,140 @@ import Modal from '../modal/Modal';
 import { useNavigate } from 'react-router-dom'
 import "./EntriesSection.css"
 
-const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exercise, examStarted }) => {
+const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComplete, exercise, examStarted }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
   const accounts = exercise?.chartOfAccounts || [];
   const confirmModalRef = useRef(null);
   const navigate = useNavigate();
+  const [entriesData, setEntriesData] = useState([]);
 
   const currentStatementData = selectedStatement ? statementData[selectedStatement.id] : null;
   const entries = currentStatementData?.entries || [];
   const annotations = currentStatementData?.annotations || [];
 
   useEffect(() => {
-    if (selectedStatement && !statementData[selectedStatement.id]) {
-      setStatementData((prevData) => ({
-        ...prevData,
-        [selectedStatement.id]: { entries: [], annotations: [] },
-      }));
+    if (savedMarks && savedMarks.length > 0) {
+      const newStatementData = {};
+      
+      savedMarks.forEach((mark) => {
+        const entriesMap = {};
+        const entries = mark.student_entries?.map(entry => {
+          entriesMap[entry.id] = entry.entry_number;
+          return {
+            id: entry.id,
+            entry_number: entry.entry_number,
+            entry_date: entry.entry_date
+          };
+        }) || [];
+        
+        const annotations = mark.student_entries?.flatMap(entry => 
+          entry.student_annotations?.map(anno => ({
+            ...anno,
+            id: anno.id,
+            uid: `anno-${anno.id}`,
+            student_entry_id: entriesMap[entry.id]
+          })) || []
+        );
+        
+        newStatementData[mark.statement_id] = { entries, annotations };
+      });
+      
+      setStatementData(newStatementData);
     }
-  }, [selectedStatement]);
+  }, [savedMarks]);
+
+  useEffect(() => {
+    if (exercise?.marks) {
+      const newStatementData = {};
+      
+      exercise.marks.forEach((mark) => {
+        const entries = mark.student_entries?.map(entry => ({
+          id: entry.id,
+          entry_number: entry.entry_number,
+          entry_date: entry.entry_date
+        })) || [];
+  
+        const annotations = mark.student_entries?.flatMap(entry => 
+          entry.student_annotations?.map(anno => ({
+            id: anno.id,
+            uid: `anno-${anno.id}`,
+            student_entry_id: entry.entry_number,
+            account_number: anno.account_number,
+            debit: anno.debit,
+            credit: anno.credit
+          })) || []
+        );
+  
+        newStatementData[mark.statement_id] = {
+          entries,
+          annotations
+        };
+      });
+  
+      setStatementData(newStatementData);
+    }
+  }, [exercise]);
 
   const addEntry = (statementId) => {
-    if (!statementData[statementId]) {
-
-      setStatementData((prevData) => ({
-        ...prevData,
-        [statementId]: {
-          ...prevData[statementId],
-          entries: [...(prevData[statementId]?.entries || []), {
-            entry_number: (prevData[statementId]?.entries?.length || 0) + 1,
-            entry_date: "2024-10-10",
-          }],
-        },
-      }));
-    }
-
+    const currentEntries = statementData[statementId]?.entries || [];
+    const newEntryNumber = currentEntries.length > 0 
+      ? Math.max(...currentEntries.map(e => e.entry_number)) + 1 
+      : 1;
+  
     const newEntry = {
-      entry_number: statementData[statementId].entries.length + 1,
+      entry_number: newEntryNumber,
       entry_date: "2024-10-10",
     };
-
-    setStatementData((prevData) => ({
-      ...prevData,
+  
+    setStatementData(prev => ({
+      ...prev,
       [statementId]: {
-        ...prevData[statementId],
-        entries: [...prevData[statementId].entries, newEntry],
+        ...prev[statementId],
+        entries: [...(prev[statementId]?.entries || []), newEntry],
       },
     }));
   };
 
   const removeEntry = (entryNumber) => {
     if (!selectedStatement) return;
-
-    const updatedEntries = entries.filter(entry => entry.entry_number !== entryNumber);
-    const updatedAnnotations = annotations.filter((annotation) => annotation.student_entry_id !== entryNumber);
-
+  
+    // Marcar entrada para eliminación en lugar de borrar directamente
     setStatementData((prevData) => ({
       ...prevData,
       [selectedStatement.id]: {
-        entries: updatedEntries,
-        annotations: updatedAnnotations,
+        entries: prevData[selectedStatement.id].entries.map(entry => 
+          entry.entry_number === entryNumber 
+            ? { ...entry, _destroy: true } 
+            : entry
+        ),
+        annotations: prevData[selectedStatement.id].annotations.map(anno => 
+          anno.student_entry_id === entryNumber
+            ? { ...anno, _destroy: true } // Marcar anotaciones relacionadas
+            : anno
+        )
       },
     }));
   };
 
   const addAnnotation = (statementId, entryId) => {
-    if (!statementData[statementId]) {
-      setStatementData((prevData) => ({
-        ...prevData,
-        [statementId]: {
-          ...prevData[statementId],
-          annotations: [...(prevData[statementId]?.annotations || []), {
-            uid: `annotation-${Date.now()}`,
-            student_entry_id: entryId,
-            account_id: "",
-            account_number: "",
-            debit: 0,
-            credit: 0,
-          }],
-        },
-      }));
-    }
-
     const newAnnotation = {
-      uid: `annotation-${Date.now()}`,
+      uid: `annotation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       student_entry_id: entryId,
       account_id: "",
       account_number: "",
       debit: 0,
       credit: 0,
     };
-
+  
     setStatementData((prevData) => ({
       ...prevData,
       [statementId]: {
         ...prevData[statementId],
-        annotations: [...prevData[statementId].annotations, newAnnotation],
+        annotations: [
+          ...(prevData[statementId]?.annotations || []),
+          newAnnotation,
+        ],
       },
     }));
   };
@@ -131,16 +169,16 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
 
   const handleDeleteAnnotation = (annotationUid) => {
     if (!selectedStatement) return;
-
-    const updatedAnnotations = annotations.filter(
-      (annotation) => annotation.uid !== annotationUid
-    );
-
+  
     setStatementData((prevData) => ({
       ...prevData,
       [selectedStatement.id]: {
         entries: entries,
-        annotations: updatedAnnotations,
+        annotations: prevData[selectedStatement.id].annotations.map(annotation => 
+          annotation.uid === annotationUid 
+            ? { ...annotation, _destroy: true } // Marcar para eliminación
+            : annotation
+        )
       },
     }));
   };
@@ -196,15 +234,18 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
     }));
   };
 
+
   return (
     <div className='entry_container'>
+      {console.log("selectedStatement:", selectedStatement)}
+      {console.log("statementData[selectedStatement.id]:", selectedStatement ? statementData[selectedStatement.id] : null)}
       <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} />
       <section className='modes-entries-containner scroll-style'>
-        {entries.map((entry, index) => (
+        {entries.sort((a, b) => a.entry_number - b.entry_number).map((entry) => (
           <Entry
             key={entry.entry_number}
             entryIndex={entry.entry_number}
-            number={index + 1}
+            number={entry.entry_number}
             date={entry.entry_date}
             // markId={entry.mark_id}
             annotations={annotations.filter(

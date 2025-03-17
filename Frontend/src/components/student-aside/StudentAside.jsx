@@ -16,10 +16,6 @@ const StudentAside = () => {
   const handleClick = (exerciseId) => {
     const selectedExercise = exercises.find((ex) => ex.id === exerciseId);
 
-    /* if (selectedExercise.task?.is_exam && selectedExercise.started) {
-      modalRef.current?.showModal();
-      return;
-    } */
     if (!selectedExercise?.task) return;
 
     const route = selectedExercise.task.is_exam 
@@ -31,29 +27,6 @@ const StudentAside = () => {
 
   useEffect(() => {
     if (!user?.id) return;
-    /*
-        const fetchExercises = async () => {
-          try {
-            const response = await exerciseService.getAll();
-            if (response?.data) {
-              console.log("Ejercicios obtenidos:", response.data);
-              const currentDate = new Date();
-              const filteredExercises = response.data.filter((exercise) => {
-                const closingDate = new Date(exercise.task.closing_date);
-                return closingDate > currentDate;
-              });
-              setExercises(filteredExercises);
-            } else {
-              console.log("No hay datos de ejercicios");
-              setExercises([]);
-            }
-          } catch (error) {
-            console.error("Error obteniendo los ejercicios:", error);
-            setExercises([]);
-          } finally {
-            setLoading(false);
-          }
-    */
     const fetchExercises = async () => {
       try {
         const response = await exerciseService.getAll();

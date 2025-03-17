@@ -45,6 +45,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const handleAccountSelect = (account) => {
     const updated = {
       ...annotation,
+      id: annotation.id,
       account_number: account.account_number,
       account_name: account.name,
       account_id: account.id
@@ -138,7 +139,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
         <div className="account-list">
           {accounts.map((account) => (
             <div
-              key={account.account_number}
+              key={account.account_id}
               className="account-item"
               onClick={() => handleAccountSelect(account)}
             >

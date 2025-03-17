@@ -8,7 +8,10 @@ import HelpSection from '../../../components/help-section/HelpSection'
 
 const TaskPage = () => {
   const { exerciseId } = useParams();
-  const [exercise, setExercise] = useState(null);
+  const [exercise, setExercise] = useState({
+    marks: [],
+    task: {}
+  });
   const [taskStarted, setTaskStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [submitTask, setSubmitTask] = useState(false);
@@ -42,11 +45,18 @@ const TaskPage = () => {
 
           setIsTaskClosed(isClosed);
           setCanStartTask(isAvailable);
-          setCanEditTask(isAvailable && !isClosed);
+          setCanEditTask(isAvailable && response.exercise.started);
 
           if (response.exercise.started && isAvailable) {
             setTaskStarted(true);
           }
+
+          const firstMarkedStatement = response.exercise.marks?.[0]?.statement_id;
+          const targetStatement = firstMarkedStatement
+            ? response.exercise.task.statements.find(s => s.id === firstMarkedStatement)
+            : response.exercise.task.statements[0];
+
+          setSelectedStatement(targetStatement);
         }
       } catch (error) {
         console.error("Error fetching exercise:", error);
@@ -55,6 +65,16 @@ const TaskPage = () => {
 
     if (exerciseId) fetchExercise();
   }, [exerciseId]);
+
+  useEffect(() => {
+    if (exercise?.marks?.length > 0 && exercise.task?.statements) {
+      const firstMark = exercise.marks[0];
+      const targetStatement = exercise.task.statements.find(
+        s => s.id === firstMark.statement_id
+      );
+      setSelectedStatement(targetStatement || exercise.task.statements[0]);
+    }
+  }, [exercise]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -86,36 +106,86 @@ const TaskPage = () => {
   let availabilityMessage = '';
   if (!canStartTask) {
     availabilityMessage = currentTime < openDate
-      ? `La tarea estará disponible el ${openDate.toLocaleString()}`
-      : `La tarea cerró el ${closeDate.toLocaleString()}`;
+    ? `La tarea estará disponible el ${openDate?.toLocaleString?.() || "fecha no disponible"}`
+    : `La tarea cerró el ${closeDate?.toLocaleString?.() || "fecha no disponible"}`;
   }
 
   const handleSaveProgress = async (statementId, data) => {
     try {
-      const response = await userExerciseDataService.update(exercise.id, {
+      const existingMark = exercise.marks.find(
+        (mark) => mark.statement_id === parseInt(statementId)
+      );
+  
+      const payload = {
         exercise: {
           marks_attributes: [
             {
+              id: existingMark?.id,
               statement_id: statementId,
-              student_entries_attributes: data.entries.map(entry => ({
+              student_entries_attributes: data.entries.map((entry) => ({
+                id: entry.id,
                 entry_number: entry.entry_number,
                 entry_date: entry.entry_date,
+                _destroy: entry._destroy,
                 student_annotations_attributes: data.annotations
-                  .filter(a => a.student_entry_id === entry.entry_number)
-                  .map(a => ({
-                    account_number: a.account_number,
-                    debit: a.debit,
-                    credit: a.credit
-                  }))
+                  .filter((a) => a.student_entry_id === entry.entry_number)
+                  .map((anno) => ({
+                    id: anno.id,
+                    account_number: anno.account_number,
+                    debit: anno.debit,
+                    credit: anno.credit,
+                    _destroy: anno._destroy
+                  })),
+              })),
+            },
+          ],
+        },
+      };
+  
+      const response = await userExerciseDataService.updateTask(exercise.id, payload);
+  
+      if (response?.status === 200) {
+        setExercise(prev => {
+          // Verificación en profundidad de la respuesta
+          const serverData = response.data?.exercise || {};
+          const serverMarks = serverData.marks || [];
+          
+          // Procesar marcas del servidor
+          const processedMarks = serverMarks.map(mark => ({
+            ...mark,
+            student_entries: (mark.student_entries || [])
+              .filter(entry => !entry._destroy)
+              .map(entry => ({
+                ...entry,
+                student_annotations: (entry.student_annotations || [])
+                  .filter(anno => !anno._destroy)
               }))
+          }));
+  
+          // Crear nuevo estado
+          const newState = { 
+            ...prev,
+            marks: prev.marks.map(prevMark => {
+              // Buscar si existe en la respuesta
+              const updatedMark = processedMarks.find(
+                m => m.statement_id === prevMark.statement_id
+              );
+              return updatedMark || prevMark;
+            })
+          };
+  
+          // Añadir nuevas marcas si no existían
+          processedMarks.forEach(mark => {
+            if (!newState.marks.some(m => m.statement_id === mark.statement_id)) {
+              newState.marks.push(mark);
             }
-          ]
-        }
-      });
-      
-      setSaveStatus("Progreso guardado exitosamente");
-      setTimeout(() => setSaveStatus(""), 3000);
+          });
+  
+          return newState;
+        });
+      }
     } catch (error) {
+      console.error("Error al guardar:", error);
       setSaveStatus("Error al guardar el progreso");
     }
   };
@@ -145,6 +215,7 @@ const TaskPage = () => {
               examStarted={canEditTask}
               selectedStatement={selectedStatement}
               onStatementComplete={handleSaveProgress}
+              savedMarks={exercise?.marks || []}
             />
           )}
           <AuxSectionTwo

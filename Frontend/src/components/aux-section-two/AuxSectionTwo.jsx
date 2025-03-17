@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./AuxSectionTwo.css"
 
 const AuxSectionTwo = ({ statements, examStarted, onSelectStatement, isTaskActive }) => {
@@ -7,6 +7,14 @@ const AuxSectionTwo = ({ statements, examStarted, onSelectStatement, isTaskActiv
 
   const isExamMode = typeof examStarted !== 'undefined';
 
+  useEffect(() => {
+    if (statements?.length > 0 && !selectedStatement) {
+      setSelectedStatement(statements[0]);
+      onSelectStatement(statements[0]);
+      setVisitedStatements([statements[0].id]);
+    }
+  }, [statements]);
+  
   const handleStatementClick = (statement) => {
     if ((isExamMode && !examStarted) || (!isExamMode && !isTaskActive)) return;
 

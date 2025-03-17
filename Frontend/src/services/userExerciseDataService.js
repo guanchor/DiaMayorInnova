@@ -68,6 +68,38 @@ const update_student_exercise = async (exerciseId, data) => {
   }
 };
 
+const updateTask = async (exerciseId, data) => {
+  try {
+    const response = await http.put(`/student_exercises/${exerciseId}/update_student_task`, data);
+    
+    // Normalizar respuesta
+    const normalizedData = {
+      exercise: {
+        marks: [],
+        ...response.data?.exercise,
+        marks: (response.data?.exercise?.marks || []).map(mark => ({
+          ...mark,
+          student_entries: (mark.student_entries || []).map(entry => ({
+            ...entry,
+            student_annotations: entry.student_annotations || []
+          }))
+        }))
+      }
+    };
+
+    return {
+      ...response,
+      data: normalizedData
+    };
+  } catch (error) {
+    console.error("Error en la actualización:", error);
+    return {
+      data: { exercise: { marks: [] } },
+      status: error.response?.status || 500
+    };
+  }
+};
+
 const remove = async (id) => {
   try {
     const response = await http.delete(`/student_entries/${id}`);
@@ -89,6 +121,7 @@ export default {
   getAll,
   getAllCalification,
   update_student_exercise,
+  updateTask,
   getById,
   create,
   update,

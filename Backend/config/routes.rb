@@ -44,6 +44,7 @@ end
       post 'start'
       post 'finish'
       put 'update_student_exercise'
+      put 'update_student_task'
     end
     collection do
       get 'students_mark_list'

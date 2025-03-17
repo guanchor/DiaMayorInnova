@@ -178,6 +178,40 @@ end
         render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
       end
   end
+
+  def update_student_task
+    @exercise = Exercise.find(params[:id])
+
+    params[:exercise][:marks_attributes].each do |mark|
+      mark[:student_entries_attributes].each do |entry|
+        entry[:student_annotations_attributes] ||= []
+        entry[:student_annotations_attributes].each do |anno|
+          anno[:_destroy] = true if anno[:deleted]
+        end
+      end
+    end
+
+    if @exercise.update(exercise_params)
+      # Limpiar registros marcados para destrucción
+      @exercise.reload
+      render json: @exercise.as_json(
+      include: {
+        marks: {
+          include: {
+            student_entries: {
+              include: :student_annotations,
+              where: { _destroy: false }
+            }
+          },
+          # Excluir marcas eliminadas
+          where: { _destroy: false }
+        }
+      }.merge(marks: @exercise.marks.where(_destroy: false))
+    ), status: :ok
+  else
+      render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
   
   private
 
@@ -196,6 +230,7 @@ end
           :_destroy,
           student_annotations_attributes: [
             :id,
+            :uid,
             :account_id,
             :number,
             :account_number,
@@ -206,6 +241,17 @@ end
         ]
       ]
     )
+  end
+
+  def task_params
+    params.require(:exercise).permit(marks_attributes: [
+      :statement_id,
+      student_entries_attributes: [
+        :entry_number,
+        :entry_date,
+        student_annotations_attributes: [:account_number, :debit, :credit]
+      ]
+    ])
   end
 
   def compute_grade(statement, param_entries)

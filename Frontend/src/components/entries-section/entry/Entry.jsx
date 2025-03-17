@@ -3,10 +3,9 @@ import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
 const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement }) => {
-  console.log("Annotations recibidos en Entry:", annotations);
   const [entryStatus, setEntryStatus] = useState(false);
-  const [entrydate, setDate] = useState("2024-10-10");
-  const formattedDate = new Date(`${entrydate}T00:00:00`).toLocaleDateString("es-ES");
+  const [entryDate, setDate] = useState("2024-10-10");
+  const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
   const [total, setTotal] = useState(0);
 
   const changeStatus = () => {
@@ -42,7 +41,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
         </div>
         <div className="head_data">
           {entryStatus ? (
-            <input aria-label='Fecha del asiento' type='date' className='date_input' value={entrydate} onChange={handleChangeDate} />
+            <input aria-label='Fecha del asiento' type='date' className='date_input' value={entryDate} onChange={handleChangeDate} />
           ) : (<p >Fecha: <span>{formattedDate}</span></p>
           )}
           <p className='entry_total'>Total: <span>{total}</span></p>

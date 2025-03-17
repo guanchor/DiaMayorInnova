@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 import SchoolsServices from '../../../services/SchoolsServices';
+import ConfirmDeleteModal from '../../modal/ConfirmDeleteModal';
 import "./ListSchoolCenter.css"
 
-const ListSchoolCenter = ({ newSchool }) => {
+const ListSchoolCenter = ({ newSchool,  schools, setSchools, setSelectedSchool }) => {
   const [schools, setSchools] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1); //Pagination
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [schoolToDelete, setSchoolToDelete] = useState(null);
 
   const allSchools = async(page, school_name) => {
     setIsLoading(true);
@@ -29,12 +32,25 @@ const ListSchoolCenter = ({ newSchool }) => {
     allSchools();
   }, [newSchool, currentPage]);
 
+  const deleteSchool = (schoolId) => {
+    SchoolsServices.remove(schoolId)
+      .then(() => {
+        setSchools(prev => prev.filter(school => school.id !== schoolId));
+        setIsModalOpen(false);
+      })
+      .catch(e => console.log(e));
+  };
+
+  const handleDeleteClick = (school) => {
+    setSchoolToDelete(school);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
       <section className='school-center-list__container scroll-style'>
-        {schools.map((school, index) => (
-          <ul className="school-center_list" key={index}>
+        {schools.map(school => (
+          <ul className="school-center_list" key={school.id}>
             <li className='school-list_item'>
               <div className="school-list_section">
                 <p>{school.school_name}</p>
@@ -44,6 +60,10 @@ const ListSchoolCenter = ({ newSchool }) => {
               <div className="school-list_section">
                 <p>{school.address}</p>
                 <p>{school.website}</p>
+              </div>
+              <div className="user-list_section">
+                <button className="edit-btn btn" onClick={() => setSelectedSchool(school)} >Editar</button>
+                <button className="delete-btn btn" onClick={() => handleDeleteClick(school)}>Eliminar</button>
               </div>
             </li>
           </ul>
@@ -65,8 +85,16 @@ const ListSchoolCenter = ({ newSchool }) => {
           </button>
          </div>
       </section>
-    </>
-  )
-}
 
-export default ListSchoolCenter
+      <ConfirmDeleteModal
+        isOpen={isModalOpen}
+        title="¿Estás seguro de que deseas eliminar este centro?"
+        message={`El centro"${schoolToDelete?.school_name}" será eliminado permanentemente.`}
+        onDelete={() => deleteSchool(schoolToDelete.id)}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
+  );
+};
+
+export default ListSchoolCenter;

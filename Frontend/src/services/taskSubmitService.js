@@ -1,7 +1,6 @@
 import userExerciseDataService from "./userExerciseDataService";
 
 const taskSubmitService = async (data, navigate) => {
-  console.log("🟢 Datos recibidos en taskSubmitService:", data);
   const { statementsData, taskId, exerciseId } = data;
 
   if (!exerciseId) {
@@ -35,11 +34,8 @@ const taskSubmitService = async (data, navigate) => {
     },
   };
 
-  console.log("✅ Datos preparados:", JSON.stringify(exerciseData, null, 2));
-
   try {
-    console.log("🔍 Intentando actualizar con exerciseId:", exerciseId);
-    await userExerciseDataService.update(exerciseId, exerciseData);
+    await userExerciseDataService.update_student_exercise(exerciseId, exerciseData);
     navigate("/home");
   } catch (err) {
     console.error("Error al enviar los datos:", err);

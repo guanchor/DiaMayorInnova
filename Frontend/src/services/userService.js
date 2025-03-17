@@ -33,6 +33,30 @@ const findByName = (userName) => http.get(`/users?name=${userName}`);
 
 const getUserByClassId = (id) => http.get(`/users?class_groups_id=${id}`);
 
+const getTeacherClassGroups = async (userId) => {
+  try {
+    const response = await http.get(`/teacher_class_groups?user_id=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los grupos de clase del profesor:", error);
+    return [];
+  }
+};
+
+const getCurrentUser = async () => {
+  try {
+    const response = await http.get('/users/current_user');
+    return response.data.user; // Asumiendo que el endpoint devuelve { user: { ... } }
+  } catch (error) {
+    console.error("Error al obtener el usuario actual:", error);
+    return null;
+  }
+};
+
+const getUsersBySchoolCenter = (schoolCenterId) => {
+  return http.get(`/users?school_center_id=${schoolCenterId}`);
+};
+
 export default {
   getAllUsers,
   createUser,
@@ -40,4 +64,7 @@ export default {
   deleteUser,
   findByName,
   getUserByClassId,
+  getTeacherClassGroups,
+  getCurrentUser,
+  getUsersBySchoolCenter,
 };

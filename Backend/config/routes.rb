@@ -80,7 +80,7 @@ end
 
   resources :users, only: [:index, :show, :create, :update, :destroy] do
     collection do
-      get 'current'
+      get 'current_user', to: 'users#current'
       get '/users/by_class/:id', to: 'users#by_class'
     end
   end

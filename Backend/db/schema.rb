@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_10_001003) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_13_123429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -124,7 +124,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_10_001003) do
     t.datetime "updated_at", null: false
     t.bigint "exercise_id", null: false
     t.integer "statement_id"
-    t.string "comment"
+    t.string "comment", default: ""
     t.index ["exercise_id"], name: "index_marks_on_exercise_id"
   end
 
@@ -161,8 +161,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_10_001003) do
     t.bigint "account_id"
     t.integer "number"
     t.integer "account_number"
-    t.integer "credit"
-    t.integer "debit"
+    t.decimal "credit"
+    t.decimal "debit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "student_entry_id", null: false

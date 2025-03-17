@@ -58,6 +58,16 @@ const update = async (exerciseId, data) => {
   }
 };
 
+const update_student_exercise = async (exerciseId, data) => {
+  try {
+    const response = await http.put(`/student_exercises/${exerciseId}/update_student_exercise`, data);
+    return response;
+  } catch (error) {
+    console.error("Error en la actualización:", error);
+    return null;
+  }
+};
+
 const remove = async (id) => {
   try {
     const response = await http.delete(`/student_entries/${id}`);
@@ -78,6 +88,7 @@ const getAllCalification = async () => {
 export default {
   getAll,
   getAllCalification,
+  update_student_exercise,
   getById,
   create,
   update,

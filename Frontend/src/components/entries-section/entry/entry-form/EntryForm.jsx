@@ -74,7 +74,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     } else if (name === 'credit' && value) {
       updatedAnnotation.debit = '';
     }
-    // console.log("Updated Annotation:", updatedAnnotation);  // Depuración
     updateAnnotation(updatedAnnotation);
   };
 

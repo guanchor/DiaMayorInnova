@@ -12,6 +12,8 @@ const ExerciseMarksList = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [exerciseMarksList, setExerciseMarksList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     DataTable.use(DT);
 
@@ -22,15 +24,21 @@ const ExerciseMarksList = () => {
 
         const fetchMarkList = async () => {
             try {
-                const { data } = await getStudentsMarkList(taskId);
-                setExerciseMarksList(data);
+                const response = await getStudentsMarkList(taskId, currentPage, 10);
+                setExerciseMarksList(response.data.students);
             } catch (error) {
                 console.error("Error devolviendo la lista", error);
             }
         };
 
         fetchMarkList();
-    }, [taskId]);
+    }, [taskId, currentPage]);
+
+    const handlePageChange = (newPage) => {
+        if (newPage > 0 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
 
     const columns = [
         { title: 'Fecha', data: 'date', className: 'left-align statement__date--header' },
@@ -92,6 +100,21 @@ const ExerciseMarksList = () => {
                     columns={columns}
                     id={id}
                 />
+            </div>
+            <div className="mark-list__pagination">
+              <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
+                <i className='fi fi-rr-angle-double-small-left'/>
+              </button>
+              <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                <i className='fi fi-rr-angle-small-left'/>
+              </button>
+              <span>Página {currentPage} de {totalPages}</span>
+              <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                <i className='fi fi-rr-angle-small-right'/>
+              </button>
+              <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
+                <i className='fi fi-rr-angle-double-small-right'/>
+              </button>
             </div>
         </div >
     )

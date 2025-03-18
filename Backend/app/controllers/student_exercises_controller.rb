@@ -64,6 +64,8 @@ class StudentExercisesController < ApplicationController
 
   def students_mark_list
     task_id = params[:task_id] # Get ID by param
+    per_page = params[:per_page] || 10
+    page = params[:page] || 1
 
     @students_marks = Exercise
       .includes(:marks, :task, :user)     # Get relations
@@ -71,6 +73,7 @@ class StudentExercisesController < ApplicationController
       .where(users: { role: "student" })  # Only students
       .joins(:user)                       # Join all student users
       .distinct                           # Avoid dupes
+      .page(page).per(per_page)
     
     result = @students_marks.map do |exercise|
       {
@@ -80,10 +83,17 @@ class StudentExercisesController < ApplicationController
         mark: exercise.total_mark.round(1),
         date: exercise.updated_at.strftime("%d/%m/%Y, %H:%M:%S")
       }
-  end
+    end
 
-  render json: result
-end
+    render json: {
+      students: result,
+      meta: {
+        current_page: @students_marks.current_page,
+        total_pages: @students_marks.total_pages,
+        total_count: @students_marks.total_count
+      }
+    }
+  end
 
 
   def find_mark_exercise_by_user

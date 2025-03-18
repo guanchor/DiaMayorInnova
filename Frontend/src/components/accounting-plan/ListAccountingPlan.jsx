@@ -119,6 +119,31 @@ const AccountingPlansList = ({ newPGC }) => {
       });
   };
 
+  const handleDownloadXLSX = async (pgcId, pgcAcronym) => {
+    try {
+        const response = await AccountingPlanDataService.exportXLSXByPGC(pgcId);
+
+        if (!response || response.status !== 200) {
+            throw new Error("Échec du téléchargement du fichier.");
+        }
+
+        // 📥 Télécharger le fichier
+        const blob = new Blob([response.data], { type: response.headers["content-type"] });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `comptes_${pgcAcronym}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } catch (error) {
+        console.error("❌ Erreur lors du téléchargement :", error);
+        alert("⛔ Impossible de télécharger le fichier.");
+    }
+};
+
+
   return (
     <>
 
@@ -167,6 +192,10 @@ const AccountingPlansList = ({ newPGC }) => {
                     <button className="accountingPlan__button--link eye" onClick={() => fetchAccountsByPGC(accountingPlan.id)}>
                       <i className="fi-rr-eye" /> Ver cuentas
                     </button>
+
+                    <button className="accountingPlan__button--download"onClick={() => handleDownloadXLSX(accountingPlan.id, accountingPlan.acronym)}>
+                        <i className="fi-rr-download" /> CSV
+               </button>
 
                       <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
                         onClick={(e) => {

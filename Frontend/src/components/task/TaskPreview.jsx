@@ -12,9 +12,9 @@ const TaskPreview = ({
   isExam
 }) => {
 
-  const validSelectedStatements = selectedStatements.filter((statementId) =>
+  const validSelectedStatements = Array.isArray(statements) ? selectedStatements.filter((statementId) =>
     statements.some((s) => s.id === statementId)
-  );
+  ) : [];
 
 
   return (

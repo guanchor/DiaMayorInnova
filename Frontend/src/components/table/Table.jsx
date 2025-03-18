@@ -19,7 +19,7 @@ const Table = ({ data, columns, id }) => {
 
   const options = {
     responsive: true,
-    paging: true,
+    paging: false,
     searching: true,
     pageLength: 10,
     language: {

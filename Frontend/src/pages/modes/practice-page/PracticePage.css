@@ -8,12 +8,3 @@
   font-size: var(--text-desktop-tiny);
   font-weight: 400;
 }
-
-.practice__section_2 {
-  grid-area: auxSection;
-  background-color: red;
-  background-color: var(--Color-White);
-  border-radius: var(--r-xs);
-  box-shadow: var(--box-shadow-btn);
-  height: 100%;
-}

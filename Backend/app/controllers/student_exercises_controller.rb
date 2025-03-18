@@ -206,7 +206,7 @@ end
           # Excluir marcas eliminadas
           where: { _destroy: false }
         }
-      }.merge(marks: @exercise.marks.where(_destroy: false))
+      }
     ), status: :ok
   else
       render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
@@ -241,17 +241,6 @@ end
         ]
       ]
     )
-  end
-
-  def task_params
-    params.require(:exercise).permit(marks_attributes: [
-      :statement_id,
-      student_entries_attributes: [
-        :entry_number,
-        :entry_date,
-        student_annotations_attributes: [:account_number, :debit, :credit]
-      ]
-    ])
   end
 
   def compute_grade(statement, param_entries)

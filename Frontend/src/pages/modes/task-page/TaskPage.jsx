@@ -131,7 +131,8 @@ const TaskPage = () => {
                   .filter((a) => a.student_entry_id === entry.entry_number)
                   .map((anno) => ({
                     id: anno.id,
-                    account_number: anno.account_number,
+                    account_id: anno.account_id,
+                    //account_number: anno.account_number,
                     debit: anno.debit,
                     credit: anno.credit,
                     _destroy: anno._destroy

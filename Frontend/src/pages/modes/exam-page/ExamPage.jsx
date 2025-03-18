@@ -200,6 +200,7 @@ const ExamPage = () => {
         statements={statements}
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
+        helpAvailable={exercise.task.help_available}
       />
 
       <Modal

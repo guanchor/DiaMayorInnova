@@ -28,6 +28,7 @@ const TaskPage = () => {
         isTaskActive={canEditTask}
         onSelectStatement={handleSelectStatement}
         examStarted={undefined}
+        helpAvailable={exercise.task.help_available}
       />
     </main>
   )

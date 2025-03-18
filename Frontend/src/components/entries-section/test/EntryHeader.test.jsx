@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import EntryHeader from '../entry-header/EntryHeader';
 
-// Mock para HTMLDialogElement.prototype.showModal
 beforeEach(() => {
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();

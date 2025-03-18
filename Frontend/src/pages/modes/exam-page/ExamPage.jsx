@@ -201,12 +201,6 @@ const ExamPage = () => {
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
       />
-      {/* <HelpSection />
-      <AuxSectionTwo
-        statements={statements}
-        examStarted={examStarted}
-        onSelectStatement={setSelectedStatement}
-      /> */}
 
       <Modal
         ref={modalNotAvailableRef}

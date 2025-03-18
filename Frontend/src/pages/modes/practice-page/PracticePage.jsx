@@ -40,7 +40,9 @@ const PracticePage = () => {
           }
         </section>
       </div>
-      <AuxSection />
+      <AuxSection
+        helpAvailable={true}
+      />
     </div>
   )
 }

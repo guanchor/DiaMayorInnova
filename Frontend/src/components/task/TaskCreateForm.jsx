@@ -23,6 +23,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [editMode, setEditMode] = useState(task ? true : false);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [additionalInformation, setAdditionalInformation] = useState(task?.additional_information || "");
+  const [isExam, setIsExam] = useState(task?.is_exam || false);
   const [errors, setErrors] = useState({
     title: "",
     openingDate: "",
@@ -156,6 +158,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       title,
       opening_date: openingDate,
       closing_date: closingDate,
+      additional_information: additionalInformation,
+      is_exam: isExam,
       statement_ids: selectedStatements,
       created_by: user.id,
     };
@@ -165,13 +169,11 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         await taskService.updateTask(task.id, taskData);
         addUsers(task.id);
         deleteUser(task.id);
-        //alert("Tarea actualizada con éxito");
         navigate("/");
       } else {
         const response = await taskService.createTask(taskData);
         const createdTask = await taskService.getTaskWithStatements(response.data.id);
         addUsers(response.data.id);
-        //alert("Tarea creada con éxito");
         onTaskCreated(createdTask.data);
       }
     } catch (error) {
@@ -182,9 +184,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   return (
     <main className="task-page">
       <header className="task-page__header--header">
-        <button className="back-button" onClick={() => navigate("/home")}>
+        <button className="btn light" onClick={() => navigate("/home")}>
           <i className="fi fi-rr-arrow-small-left"></i>
-          Volver
         </button>
         <div className="task-title">
           <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
@@ -197,6 +198,10 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         setOpeningDate={setOpeningDate}
         closingDate={closingDate}
         setClosingDate={setClosingDate}
+        additionalInformation={additionalInformation}
+        setAdditionalInformation={setAdditionalInformation}
+        isExam={isExam}
+        setIsExam={setIsExam}
         handleSubmit={handleSubmit}
         errors={errors}
         id={task && task.id}
@@ -220,6 +225,8 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         statements={statements}
         selectedStatements={selectedStatements}
         handleRemoveStatement={handleRemoveStatement}
+        additionalInformation={additionalInformation}
+        isExam={isExam}
       />
     </main>
   );

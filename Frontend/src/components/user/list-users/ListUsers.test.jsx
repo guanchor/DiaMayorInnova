@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ListUsers from "./ListUsers";
-import ModalConfirmDelete from "../../modal/ModalConfirmDelete";
+import ConfirmDeleteModal from "../../modal/ConfirmDeleteModal";
 import { faker } from '@faker-js/faker';
 
 const fakeEmail1 = faker.internet.email();
@@ -37,11 +37,11 @@ it("Debe abrir la modal cuando se hace clic en eliminar", () => {
   render(
     <>
       <ListUsers users={mockUsers} setUsers={() => { }} setSelectedUser={() => { }} />
-      <ModalConfirmDelete isOpen={true} user={mockUsers[0]} onDelete={() => { }} onClose={() => { }} />
+      <ConfirmDeleteModal isOpen={true} user={mockUsers[0]} onDelete={() => { }} onClose={() => { }} />
     </>
   );
 
-  expect(screen.getByText(/Estás seguro de que deseas eliminar al usuario:/i)).toBeInTheDocument();
+  expect(screen.getByText(/Esta acción no se puede deshacer./i)).toBeInTheDocument();
 })
 
 it("Debe llamar a handleDeleteClick cuando se hace clic en eliminar", async () => {

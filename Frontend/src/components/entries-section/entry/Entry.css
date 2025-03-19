@@ -112,7 +112,7 @@
 }
 
 .entry_item_container {
-  height: 326px;
+  height: 280px;
   border-bottom: solid 1px var(--Color-grey-50);
   overflow-y: scroll;
   overflow-x: hidden;

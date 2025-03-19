@@ -17,14 +17,13 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @account = Account.create(
-      account_number: params[:account_number],
-      description: params[:description],
-      name: params[:name],
-      accounting_plan_id: params[:accounting_plan_id], #accounting plan id
-      
-    )
-    render json: @account
+    @account = Account.new(account_params)
+    
+    if @account.save
+      render json: @account, status: :created
+    else
+      render json: { error: "Error en la creación" }, status: :unprocessable_entity
+    end
   end
 
    # Método de Strong Parameters
@@ -39,14 +38,11 @@ class AccountsController < ApplicationController
 
   def update
     @account = Account.find(params[:id])
-    @account.update(
-      account_number: params[:account_number],
-      description: params[:description],
-      name: params[:name],
-      accounting_plan_id: params[:accounting_plan_id], #accounting plan id
-      
-    )
-    render json: @account
+    if @account.update(account_params)
+      render json: @account
+    else
+      render json: { error: "Error actualizando la información"}, status: :unprocessable_entity
+    end
   end
 
   def destroy

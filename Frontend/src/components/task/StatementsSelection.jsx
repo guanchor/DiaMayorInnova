@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import SolutionsViewer from "../solution/SolutionsViewer";
 import statementService from "../../services/statementService";
 import "./TaskPage.css";
+import useStatements from "../../hooks/useStatements";
 
 const StatementsSelection = ({
-  statements,
   selectedStatements,
   handleStatementSelection,
-  handleEditSolutions,
-  solutions,
-  editMode,
   showCheckboxes = true,
 }) => {
   const [currentSolutions, setCurrentSolutions] = useState([]);
@@ -17,6 +14,7 @@ const StatementsSelection = ({
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatementId, setSelectedStatementId] = useState(null);
+  const { statements, solutions, editMode, handleEditSolutions } = useStatements();
 
   const viewSolutions = (statementId) => {
     console.log("ID del enunciado:", statementId);
@@ -64,6 +62,10 @@ const StatementsSelection = ({
               <div className="task-page__statement-container">
                 <span className="task-page__statement">{statement.definition}</span>
                 <div className="task-page__actions">
+                  <button className="task-page__button--edit hidden" type="button" onClick={() => handleEditSolutions(statement.id)}>
+                    <i className="fi fi-rr-pencil pencil"></i>
+                    <span className="task-page__button-text">{editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}</span>
+                  </button>
                   {showCheckboxes && (
                     <label>
                       <input
@@ -78,29 +80,27 @@ const StatementsSelection = ({
                     <i className="fi fi-rr-interrogation interrogation"></i>
                     <span className="task-page__button-text">Ver Soluciones</span>
                   </button>
-                  <button className="task-page__button--edit" type="button" onClick={() => handleEditSolutions(statement.id)}>
-                    <i className="fi fi-rr-pencil pencil"></i>
-                    <span className="task-page__button-text">{editMode === statement.id ? "Cancelar Edición" : "Editar Soluciones"}</span>
-                  </button>
+
                 </div>
               </div>
             </li>
           ))}
         </ul>
 
-        {/* Modal para ver soluciones */}
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
               <section className="modal-solutionViewer__container">
                 <div className="modal-solutionViewer__statement-content">
-                  <h3 className="modal-solutionViewer__statement-title">Enunciado</h3>
-                  <span className="modal-solutionViewer__statement-info">{statements.find(statement => statement.id === selectedStatementId)?.definition}</span>
+                  <div className="modal-solutionViewer__head">
+                    <h3 className="modal-solutionViewer__statement-title">Enunciado</h3>
+                    <button className="btn light" onClick={hideSolutions}>X</button>
+                  </div>
+                  <div className="modal-solutionViewer__statement-info">
+                    <span>{statements.find(statement => statement.id === selectedStatementId)?.definition}</span>
+                  </div>
                 </div>
                 <SolutionsViewer solutions={currentSolutions} />
-                <div className="modal-solutionViewer__statement-button">
-                  <button className="modal-solutionViewer__statement-info--close" onClick={hideSolutions}>Cerrar</button>
-                </div>
               </section>
             </div>
           </div>

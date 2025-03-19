@@ -3,6 +3,8 @@ class Account < ApplicationRecord
   has_many :help_examples, dependent: :destroy
   has_many :annotations, dependent: :destroy
   has_many :student_annotations
-end
 
-# A
+  default_scope { order(account_number: :asc) }
+
+  validates :name, presence: true
+end

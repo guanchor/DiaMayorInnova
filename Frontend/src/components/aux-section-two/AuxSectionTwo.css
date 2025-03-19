@@ -1,5 +1,5 @@
 .aux-section_two__container {
-  grid-area: section2;
+  grid-area: section1;
   background-color: var(--Color-White);
   border-radius: var(--r-xxs);
   box-shadow: var(--box-shadow-M3);
@@ -66,5 +66,18 @@
     width: 100px;
     height: 40px;
     margin: 0;
+  }
+}
+
+.statement-detail {
+  padding: var(--gap-xs) var(--gap-xs) var(--gap-xs) 0;
+
+  & .statement-detail__title {
+    font-size: var(--text-mobile-subtitles-1);
+    padding-bottom: var(--gap-xs);
+  }
+
+  & p {
+    padding-bottom: var(--gap-xxs);
   }
 }

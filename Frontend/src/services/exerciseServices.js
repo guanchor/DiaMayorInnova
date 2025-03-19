@@ -2,7 +2,7 @@ import http from "../http-common";
 
 const getAll = async () => {
   const response = await http.get(`/student_exercises`);
-  console.log("all exercise info of user ", response)
+  // console.log("all exercise info of user ", response) // Depuración
   return response;
 };
 
@@ -16,6 +16,14 @@ const getByTaskId = async (id) => {
   }
 };
 
+const getByExerciseId = async (id) => {
+  try {
+    const response = await http.get(`/exercises/find_by_exercise_id?exercise_id=${id}`);
+    return response;
+  } catch (error) {
+    return null;
+  }
+};
 
 const create = async (data) => {
   console.log(data)
@@ -45,5 +53,6 @@ export default {
   getAll,
   create,
   getByTaskId,
+  getByExerciseId,
   deleteOnGroup,
 };

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef} from 'react'
 import {useNavigate } from 'react-router-dom';
 import AccountService from '../../services/AccountService';
 import "./Account.css";
+import Account from "./Account";
+import Modal from '../modal/Modal';
 
 const AccountsList = ({ newAcc }) => {
   const [accounts, setAccounts] = useState([]);
+  const [selectedAccountId, setSelectedAccountId] = useState([]);
+  const modalRef = useRef(null); // Referencia para la modal
   const [currentAccount, setCurrentAccount] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccount, setSearchAccount] = useState("");
@@ -90,6 +94,20 @@ const AccountsList = ({ newAcc }) => {
     sortAccounts(newOrder);
   }
 
+  const openEditModal = (id) => {
+    setSelectedAccountId(id);
+    modalRef.current?.showModal();
+  }
+
+  const closeEditModal = () => {
+    setSelectedAccountId(null);
+    modalRef.current?.close();
+  };
+
+  const handleSaveSuccess = () => {
+    retrieveAccounts();
+  };
+
   return (
     <>
 
@@ -104,9 +122,9 @@ const AccountsList = ({ newAcc }) => {
                 type='text'
                 value={searchAccount}
                 onChange={handleSearchChange}
-                placeholder='Filtrer par nom de compte'
+                placeholder='Buscar por nombre de cuenta'
               />
-              <i className='fi fi-rr-search'></i> {/* Icône juste décorative */}
+              <i className='fi fi-rr-search'></i>
             </form>
 
             <div className="account__pagination">
@@ -156,7 +174,7 @@ const AccountsList = ({ newAcc }) => {
                     <button className='account__button--link inter' onClick={() => navigate("/help-examples")}>
                       <i className='fi-rr-interrogation'/>
                     </button>
-                    <button className='account__button--link pencil' onClick={() => navigate("/accounts/" + account.id)}>
+                    <button className='account__button--link pencil' onClick={() => openEditModal(account.id)}>
                       <i className='fi-rr-pencil' />
                     </button>
                     <button aria-label="Eliminar cuenta" className='account__button--remove trash'
@@ -176,6 +194,16 @@ const AccountsList = ({ newAcc }) => {
         </div>
 
       </section>
+
+      <Modal ref={modalRef} modalTitle="Editar Cuenta" showButton = {false}>
+        {selectedAccountId && (
+          <Account
+            id={selectedAccountId} 
+            onSaveSuccess={handleSaveSuccess}
+            onCloseModal={closeEditModal}
+          />
+        )}
+      </Modal>
     </>
   );
 };

@@ -8,13 +8,13 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
   const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    setDate(date);
-  }, [date]);
+  // useEffect(() => {
+  //   setDate(date);
+  // }, [date]);
 
-  useEffect(() => {
-    setEntryStatus(annotations?.length > 0 || false);
-  }, [annotations]);
+  // useEffect(() => {
+  //   setEntryStatus(annotations?.length > 0 || false);
+  // }, [annotations]);
 
   const handleChangeDate = (e) => {
     const newDate = e.target.value;

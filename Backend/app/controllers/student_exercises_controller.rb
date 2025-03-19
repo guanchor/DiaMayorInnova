@@ -206,7 +206,7 @@ end
           # Excluir marcas eliminadas
           where: { _destroy: false }
         }
-      }
+      }.merge(marks: @exercise.marks.where(_destroy: false))
     ), status: :ok
   else
       render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity

@@ -23,6 +23,7 @@ const TaskPage = () => {
   const [isTaskClosed, setIsTaskClosed] = useState(false);
   const [canStartTask, setCanStartTask] = useState(false);
   const [canEditTask, setCanEditTask] = useState(false);
+  const [handleSave, setHandleSave] = useState(false);
 
   const handleSelectStatement = (statement) => {
     setSelectedStatement(statement);
@@ -64,7 +65,7 @@ const TaskPage = () => {
     };
 
     if (exerciseId) fetchExercise();
-  }, [exerciseId]);
+  }, [exerciseId, handleSave]);
 
   useEffect(() => {
     if (exercise?.marks?.length > 0 && exercise.task?.statements) {
@@ -133,8 +134,8 @@ const TaskPage = () => {
                     id: anno.id,
                     account_id: anno.account_id,
                     //account_number: anno.account_number,
-                    debit: anno.debit,
-                    credit: anno.credit,
+                    debit: anno.debit || 0,
+                    credit: anno.credit || 0,
                     _destroy: anno._destroy
                   })),
               })),
@@ -194,7 +195,7 @@ const TaskPage = () => {
   return (
     <div className='modes_page_container task-color'>
       {saveStatus && <div className="save-status">{saveStatus}</div>}
-      {!taskStarted ? (
+      {taskStarted && (
         <div className='modes_page_container--button'>
           <button className="btn" onClick={startTask} disabled={!canStartTask}>
             Comenzar tarea
@@ -203,7 +204,7 @@ const TaskPage = () => {
             <p className='exam-available'><strong>{availabilityMessage}</strong></p>
           )}
         </div>
-      ) : (
+      ) }
         <>
           <div className="task-page_header">
             <h1 className='head-task_tittle'>Modo Tarea - {exercise?.task?.title}</h1>
@@ -214,9 +215,11 @@ const TaskPage = () => {
               taskId={exercise.task.id}
               existingExerciseId={exercise.id}
               examStarted={canEditTask}
+              exercise={exercise}
               selectedStatement={selectedStatement}
               onStatementComplete={handleSaveProgress}
               savedMarks={exercise?.marks || []}
+              handleSave={setHandleSave}
             />
           )}
           <AuxSectionTwo
@@ -226,7 +229,6 @@ const TaskPage = () => {
             examStarted={undefined}
           />
         </>
-      )}
       <HelpSection />
     </div>
   )

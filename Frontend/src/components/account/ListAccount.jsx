@@ -154,10 +154,10 @@ const AccountsList = ({ newAcc }) => {
           <table className='account_tbody'>
             <thead>
               <tr>
+                <th>Nº Cuenta</th>
                 <th onClick={handleSortClick} style={{cursor: "pointer"}}>
                   Nombre {sortOrder === "ascending" ? <i className='fi fi-rr-angle-small-down'/> : <i className='fi fi-rr-angle-small-up'/>}
                 </th>
-                <th>Nº Cuenta</th>
                 <th>Descripción</th>
                 <th>PGC</th>
                 <th>Acciones</th>
@@ -166,8 +166,8 @@ const AccountsList = ({ newAcc }) => {
             <tbody>
               {accounts && accounts.map((account, index) => (
                 <tr className='account__accList--item' key={index} onClick={() => setActiveAccount(account, index)}>
-                  <td>{account.name}</td>
                   <td>{account.account_number}</td>
+                  <td>{account.name}</td>
                   <td>{account.description}</td>
                   <td>{account.accounting_plan_id}</td>
                   <td className='account__table--actions'>

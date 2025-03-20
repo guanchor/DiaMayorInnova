@@ -32,7 +32,7 @@ const AuxSectionTwo = ({ statements, examStarted, onSelectStatement, isTaskActiv
         <div className={`aux-section ${isExamMode ? (examStarted ? '' : 'disabled') : (isTaskActive ? '' : 'disabled')}`}>
           <section>
             <div className="statement-grid">
-              {statements.map((statement, index) => {
+              {statements && statements.map((statement, index) => {
                 const isDisabled = isExamMode ? !examStarted : !isTaskActive;
                 let buttonClass = "statement-button";
 

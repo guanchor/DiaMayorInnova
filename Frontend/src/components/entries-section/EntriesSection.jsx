@@ -248,7 +248,6 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
             entryIndex={entry.entry_number}
             number={entry.entry_number}
             date={entry.entry_date}
-            // markId={entry.mark_id}
             annotations={annotations.filter(
               (annotation) => annotation.student_entry_id === entry.entry_number
             )}
@@ -271,7 +270,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
       </div>
 
       <Modal ref={confirmModalRef} modalTitle="Confirmar envío" showButton={false}>
-        <p>¿Está seguro de enviar el examen?</p>
+        <p>{exercise?.task?.is_exam ? "¿Está seguro de enviar el examen?" : "¿Está seguro de enviar la tarea?"}</p>
         <div className="modal__buttons">
           <button
             className="btn"

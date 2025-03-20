@@ -195,7 +195,7 @@ const TaskPage = () => {
   return (
     <div className='modes_page_container task-color'>
       {saveStatus && <div className="save-status">{saveStatus}</div>}
-      {taskStarted && (
+      {!taskStarted && (
         <div className='modes_page_container--button'>
           <button className="btn" onClick={startTask} disabled={!canStartTask}>
             Comenzar tarea
@@ -226,7 +226,7 @@ const TaskPage = () => {
             statements={exercise?.task.statements}
             isTaskActive={canEditTask}
             onSelectStatement={handleSelectStatement}
-            examStarted={undefined}
+            examStarted={taskStarted}
           />
         </>
       <HelpSection />

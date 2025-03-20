@@ -36,7 +36,7 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
   }
 
   useEffect(() => {
-    console.log(teacherClass)
+    console.log("claaaaaaaaaase", teacherClass)
 
     userService.getUserByClassId(currentClass)
       .then(({ data }) => {
@@ -46,9 +46,9 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
 
 
     ClassGroupService.findByTeacherId(user.id)
-      .then((response) => {
-        console.log("all class ", response.data)
-        setTeacherClass(response.data);
+      .then(({data}) => {
+        console.log("all class ", data.data.class_groups)
+        setTeacherClass(data.data.class_groups);
       });
   }, [currentClass])
 
@@ -63,7 +63,7 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
             <h3>Lista de clases</h3>
             <div className="list__items">
               {
-                teacherClass && teacherClass.map((module) => (
+                Array.isArray(teacherClass) && teacherClass.map((module) => (
                   <button className={(currentClass === module.id) ? "btn " : "btn light"} onClick={(e) => handleSelectClass(e, module.id)} key={`class_btn_${module.id}`}>{module.course_module}</button>
                 ))
               }
@@ -73,7 +73,7 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
           <div className="list__container">
             <h3>Lista de estudiantes</h3>
             <div className="list__items">
-              {users ? users.map((user) => (
+              {Array.isArray(users) ? users.map((user) => (
                 <label className={assignedInclude(user.id) ? "user__item user__item--selected" : "user__item light"} key={user.id}>
                   <input
                     type="checkbox"

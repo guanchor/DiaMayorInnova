@@ -18,6 +18,7 @@ const PracticePage = () => {
         <EntryHeader
           addEntry={addEntry}
           selectedStatement={true}
+          examStarted={true}
         />
         <section className='modes-entries-container scroll-style'>
           {
@@ -34,6 +35,7 @@ const PracticePage = () => {
                   deleteAnnotation={deleteAnnotation}
                   addAnnotation={addAnnotation}
                   deleteEntry={removeEntry}
+                  exercise={undefined}
                 />
               )
             })

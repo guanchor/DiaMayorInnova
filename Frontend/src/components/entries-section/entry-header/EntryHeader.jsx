@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Modal from "../../modal/Modal";
 import "./EntryHeader.css"
 
-const EntryHeader = ({ addEntry, selectedStatement, exerciseStarted = true }) => {
+const EntryHeader = ({ addEntry, selectedStatement, examStarted, exercise }) => {
 
   const modalRef = useRef(null);
 
@@ -11,7 +11,7 @@ const EntryHeader = ({ addEntry, selectedStatement, exerciseStarted = true }) =>
       <h2>Asientos Contables</h2>
       <section className="entry_buttons">
 
-        <button className='btn' disabled={!exerciseStarted} onClick={() => {
+        <button className='btn' disabled={!examStarted || exercise?.finished} onClick={() => {
           if (selectedStatement) {
             addEntry(selectedStatement?.id ?? 0);
           } else {

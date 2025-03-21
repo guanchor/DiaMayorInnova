@@ -3,7 +3,7 @@ import Modal from "../../../modal/Modal";
 import http from "../../../../http-common";
 import "./EntryForm.css"
 
-const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
+const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise }) => {
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -45,6 +45,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const handleAccountSelect = (account) => {
     const updated = {
       ...annotation,
+      id: annotation.id,
+      number: aptNumber,
       account_number: account.account_number,
       account_name: account.name,
       account_id: account.id
@@ -97,7 +99,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
               onChange={handleChange}
               value={annotation.account_number || ''}
               min={0}
-              ref={accountNumberInputRef} />
+              ref={accountNumberInputRef} 
+              disabled={exercise?.finished} />
           </div>
           <div className="form_group tittle_account-name--no-visible">
             <input
@@ -108,6 +111,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
               name='account_name'
               onChange={handleChange}
               value={annotation.account_name || ''}
+              disabled={exercise?.finished}
               readOnly />
           </div>
           <div className="form_group">
@@ -119,7 +123,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
               placeholder='1000'
               onChange={handleChange}
               value={annotation.debit || ''}
-              disabled={annotation.credit} />
+              disabled={annotation.credit || exercise?.finished} />
           </div>
           <div className="form_group">
             <input
@@ -130,17 +134,17 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
               placeholder='1000'
               onChange={handleChange}
               value={annotation.credit || ''}
-              disabled={annotation.debit} />
+              disabled={annotation.debit || exercise?.finished} />
           </div>
         </div>
-        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
+        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete} disabled={exercise?.finished}><i className='fi fi-rr-trash'></i></button>
       </form>
 
       <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
           {accounts.map((account) => (
             <div
-              key={account.account_number}
+              key={account.id}
               className="account-item"
               onClick={() => handleAccountSelect(account)}
             >

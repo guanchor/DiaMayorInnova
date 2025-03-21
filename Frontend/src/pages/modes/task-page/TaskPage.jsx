@@ -134,8 +134,8 @@ const TaskPage = () => {
                     id: anno.id,
                     account_id: anno.account_id,
                     number: index + 1,
-                    debit: anno.debit || 0,
-                    credit: anno.credit || 0,
+                    debit: anno.debit,
+                    credit: anno.credit,
                     _destroy: anno._destroy
                   })),
               })),

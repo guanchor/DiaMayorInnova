@@ -168,10 +168,10 @@ end
         statements = Statement.includes(solutions: { entries: :annotations }).where(id: statement_ids)
     
         marks_params.each do |mark_param|
-
-          @exercise.marks.where(statement_id: mark_param[:statement_id]).destroy_all
+          statement_id = mark_param[:statement_id].to_i
+          @exercise.marks.where(statement_id: statement_id).destroy_all
           
-          mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0))
+          mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0, statement_id: statement_id))
           
           param_entries = mark_param[:student_entries_attributes] || []
           statement = statements.find { |s| s.id == mark_param[:statement_id].to_i }
@@ -256,14 +256,6 @@ end
         ]
       ]
     )
-  end
-
-  def filtered_student_entries
-    student_entries.reject(&:marked_for_destruction?).map do |entry|
-      entry.as_json.merge(
-        "student_annotations" => entry.student_annotations.reject(&:marked_for_destruction?)
-      )
-    end
   end
 
   def compute_grade(statement, param_entries)

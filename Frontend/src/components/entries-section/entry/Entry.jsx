@@ -41,7 +41,8 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
             type='date' 
             className='date_input' 
             value={entryDate} 
-            onChange={handleChangeDate} 
+            onChange={handleChangeDate}
+            disabled={exercise.finished}
           />
           <p className='entry_total'>Total: <span>{total}</span></p>
         </div>
@@ -83,7 +84,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
             .map((annotation, index) => {
               return (
                 <EntryForm
-                  key={annotation.id}
+                  key={annotation.uid}
                   aptNumber={index + 1}
                   annotation={annotation}
                   onDelete={() => deleteAnnotation(annotation.uid)}

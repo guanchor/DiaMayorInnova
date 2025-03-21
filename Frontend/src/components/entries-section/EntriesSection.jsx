@@ -37,7 +37,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
           entry.student_annotations?.map(anno => ({
             ...anno,
             id: anno.id,
-            uid: `anno-${anno.id}`,
+            uid: anno.uid || `anno-${anno.id || Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             student_entry_id: entriesMap[entry.id]
           })) || []
         );
@@ -63,6 +63,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
         const annotations = mark.student_entries?.flatMap(entry => 
           entry.student_annotations?.map(anno => ({
             id: anno.id,
+            uid: anno.uid || `anno-${anno.id || Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             number: anno.number,
             student_entry_id: entry.entry_number,
             account_number: anno.account_number,

@@ -62,7 +62,7 @@ const StudentAside = () => {
               <div className="student-aside__list-info">
                 <div className="student-aside__info-header">
                   <p><strong>Tarea:</strong> {exercise.task.title || "Sin título"}</p>
-                  <div className="student-aside__square">
+                  <div className={`student-aside__square ${exercise.task.is_exam ? 'exam' : 'task'}`}>
                     <i className="fi fi-rr-book-alt"></i>
                   </div>
                 </div>

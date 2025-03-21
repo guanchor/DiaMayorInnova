@@ -98,7 +98,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
             onChange={handleChange}
             value={annotation.account_number || ''}
             min={0}
-            ref={accountNumberInputRef} />
+            ref={accountNumberInputRef}
+            disabled={exercise.finished} />
         </div>
         <div className="form_group">
           <input
@@ -109,6 +110,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
             name='account_name'
             onChange={handleChange}
             value={annotation.account_name || ''}
+            disabled={exercise.finished}
             readOnly />
         </div>
         <div className="form_group">
@@ -120,7 +122,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
             placeholder='1000'
             onChange={handleChange}
             value={annotation.debit || ''}
-            disabled={annotation.credit} />
+            disabled={annotation.credit || exercise.finished} />
         </div>
         <div className="form_group">
           <input
@@ -131,7 +133,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
             placeholder='1000'
             onChange={handleChange}
             value={annotation.credit || ''}
-            disabled={annotation.debit} />
+            disabled={annotation.debit || exercise.finished} />
         </div>
         <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete} disabled={exercise.finished}><i className='fi fi-rr-trash'></i></button>
       </form>
@@ -140,7 +142,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
         <div className="account-list">
           {accounts.map((account) => (
             <div
-              key={account.account_id}
+              key={account.id}
               className="account-item"
               onClick={() => handleAccountSelect(account)}
             >

@@ -196,9 +196,13 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
   };
 
   return (
-    <div className='entry_container'>
-      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} />
-      <section className='modes-entries-containner scroll-style'>
+    <div className='entry__container'>
+      <EntryHeader
+        addEntry={() => addEntry(selectedStatement.id)}
+        selectedStatement={selectedStatement}
+        exerciseStarted={examStarted}
+      />
+      <section className='modes-entries-container scroll-style'>
         {entries.map((entry, index) => (
           <Entry
             key={entry.entry_number}
@@ -230,8 +234,8 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
       <Modal ref={confirmModalRef} modalTitle="Confirmar envío" showButton={false}>
         <p>¿Está seguro de enviar el examen?</p>
         <div className="modal__buttons">
-          <button 
-            className="btn" 
+          <button
+            className="btn"
             onClick={() => {
               confirmModalRef.current?.close();
               handleFinalSubmit();
@@ -239,15 +243,14 @@ const EntriesSection = ({ selectedStatement, taskId, onStatementComplete, exerci
           >
             Sí
           </button>
-          <button 
-            className="btn light" 
+          <button
+            className="btn light"
             onClick={() => confirmModalRef.current?.close()}
           >
             No
           </button>
         </div>
       </Modal>
-      
     </div >
   )
 }

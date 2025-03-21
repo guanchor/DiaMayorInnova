@@ -15,7 +15,7 @@ const AuxSectionTwo = ({ statements, examStarted, onSelectStatement }) => {
 
   return (
     <div className='aux-section_two__container'>
-      <h2 className='help_secction_tittle'>Enunciados</h2>
+      <h2 className='help_section_title'>Enunciados</h2>
 
       {examStarted && (
         <section>

@@ -15,7 +15,9 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
   const handleChangeDate = (e) => {
     const newDate = e.target.value;
     setDate(newDate);
-    updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    if (selectedStatement) {
+      updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    }
   }
 
   const calculateTotal = () => {
@@ -34,7 +36,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
 
   return (
     <div className='entry_wrapper'>
-      <header className="entry_head" tabIndex={0} onKeyDown={changeStatus}>
+      <div className="entry_head" tabIndex={0} onKeyDown={changeStatus}>
         <div className="head_tittle" onClick={changeStatus} >
           <p>Asiento {number}</p>
           <i className={entryStatus ? 'fi fi-rr-angle-small-up' : 'fi fi-rr-angle-small-down'}></i>
@@ -45,9 +47,9 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
           ) : (<p >Fecha: <span>{formattedDate}</span></p>
           )}
           <p className='entry_total'>Total: <span>{total}</span></p>
+          <button className='btn-trash' aria-label='Eliminar asiento' onClick={() => deleteEntry(entryIndex)}><i className='fi fi-rr-trash'></i></button>
         </div>
-        <button className='btn-trash' aria-label='Eliminar asiento' onClick={() => deleteEntry(entryIndex)}><i className='fi fi-rr-trash'></i></button>
-      </header >
+      </div >
 
       {selectedStatement && (
         <div className="statement-info">
@@ -63,7 +65,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
               <p className='apt_number'>Apt</p>
               <div className="tittles_wrapper">
                 <p className='tittle_account-number' id='tittle_account-number'>Nº Cuenta</p>
-                <p className='tittle_account-name' id='tittle_account-name'>Nombre Cuenta</p>
+                <p className='tittle_account-name tittle_account-name--no-visible' id='tittle_account-name'>Nombre Cuenta</p>
                 <p className='tittle_debit' id='tittle_debit'>Debe</p>
                 <p className='tittle_credit' id='tittle_credit'>Haber</p>
               </div>
@@ -78,7 +80,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
                   aptNumber={index + 1}
                   annotation={annotation}
                   onDelete={() => deleteAnnotation(annotation.uid)}
-                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement.id, annotation.uid, updatedAnnotation)}
+                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement?.id ?? 0, annotation.uid, updatedAnnotation)}
                 />
               );
             })}

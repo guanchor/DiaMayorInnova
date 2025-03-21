@@ -6,6 +6,7 @@ import HelpSection from '../../../components/help-section/HelpSection';
 import userExerciseDataService from "../../../services/userExerciseDataService";
 import Modal from "../../../components/modal/Modal"
 import "./ExamPage.css";
+import { AuxSection } from '../../../components/aux-section/AuxSection';
 
 const ExamPage = () => {
   const { exerciseId } = useParams();
@@ -30,17 +31,12 @@ const ExamPage = () => {
     const fetchExercise = async () => {
       try {
         const response = await userExerciseDataService.getById(exerciseId);
-        // console.log("Response data:", response); // Depuración
 
         if (!response || !response.data) {
           throw new Error("Respuesta vacía o malformada");
         }
 
         const { exercise, statements, time_remaining } = response.data;
-        // console.log("Opening date:", exercise.task.opening_date); // Depuración
-        // console.log("Closing date:", exercise.task.closing_date); // Depuración
-        // console.log("Tiempo restante recibido:", time_remaining); // Depuración
-        // console.log("Hora actual:", new Date()); // Depuración
         if (exercise) {
           setExercise(exercise);
           setStatements(statements || []);
@@ -156,7 +152,6 @@ const ExamPage = () => {
   };
 
   const handleStatementComplete = (statementId, statementData) => {
-    // console.log("Statement completado:", statementId, statementData); // Depuración
 
     setCompletedStatements((prevData) => ({
       ...prevData,
@@ -201,11 +196,11 @@ const ExamPage = () => {
         exercise={exercise}
         examStarted={examStarted}
       />
-      <HelpSection />
-      <AuxSectionTwo
+      <AuxSection
         statements={statements}
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
+        helpAvailable={exercise.task.help_available}
       />
 
       <Modal

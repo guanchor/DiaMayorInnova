@@ -3,7 +3,7 @@ import Modal from "../../../modal/Modal";
 import http from "../../../../http-common";
 import "./EntryForm.css"
 
-const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
+const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise }) => {
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -49,6 +49,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const handleAccountSelect = (account) => {
     const updated = {
       ...annotation,
+      id: annotation.id,
+      number: aptNumber,
       account_number: account.account_number,
       account_name: account.name,
       account_id: account.id
@@ -96,59 +98,63 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     <div className='entry_form_wrapper'>
       <p className='entry_apt'>{aptNumber}</p>
       <form action="" className='entry_form'>
-        <div className="form_group">
-          <input
-            type="number"
-            id='account_number'
-            aria-labelledby="tittle_account-number"
-            name='account_number'
-            placeholder='12345'
-            onChange={handleChange}
-            value={annotation.account_number || ''}
-            min={0}
-            ref={accountNumberInputRef} />
+        <div className="entry_form_inputs__wrapper">
+          <div className="form_group">
+            <input
+              type="number"
+              id='account_number'
+              aria-labelledby="tittle_account-number"
+              name='account_number'
+              placeholder='477'
+              onChange={handleChange}
+              value={annotation.account_number || ''}
+              min={0}
+              ref={accountNumberInputRef} 
+              disabled={exercise?.finished} />
+          </div>
+          <div className="form_group tittle_account-name--no-visible">
+            <input
+              type="text"
+              id='account_name'
+              aria-labelledby="tittle_account-name"
+              placeholder='Hacienda Pública, IGIC soportado'
+              name='account_name'
+              onChange={handleChange}
+              value={annotation.account_name || ''}
+              disabled={exercise?.finished}
+              readOnly />
+          </div>
+          <div className="form_group">
+            <input
+              type="number"
+              id='debit'
+              aria-labelledby="tittle_debit"
+              name='debit'
+              placeholder='1000'
+              onChange={handleChange}
+              value={annotation.debit || ''}
+              disabled={annotation.credit || exercise?.finished} />
+          </div>
+          <div className="form_group">
+            <input
+              type="number"
+              id='credit'
+              aria-labelledby="tittle_credit"
+              name='credit'
+              placeholder='1000'
+              onChange={handleChange}
+              value={annotation.credit || ''}
+              disabled={annotation.debit || exercise?.finished} />
+          </div>
         </div>
-        <div className="form_group">
-          <input
-            type="text"
-            id='account_name'
-            aria-labelledby="tittle_account-name"
-            placeholder='Cuenta carne'
-            name='account_name'
-            onChange={handleChange}
-            value={annotation.account_name || ''}
-            readOnly />
-        </div>
-        <div className="form_group">
-          <input
-            type="number"
-            id='debit'
-            aria-labelledby="tittle_debit"
-            name='debit'
-            placeholder='1000'
-            onChange={handleChange}
-            value={annotation.debit || ''}
-            disabled={annotation.credit} />
-        </div>
-        <div className="form_group">
-          <input
-            type="number"
-            id='credit'
-            aria-labelledby="tittle_credit"
-            name='credit'
-            placeholder='1000'
-            onChange={handleChange}
-            value={annotation.credit || ''}
-            disabled={annotation.debit} />
-        </div>
-        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
+        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete} disabled={exercise?.finished}><i className='fi fi-rr-trash'></i></button>
       </form>
 
       <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
           {accounts.map((account) => (
             <div
-              key={account.account_number}
+              key={account.id}
               className="account-item"
               onClick={() => handleAccountSelect(account)}
             >

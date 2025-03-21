@@ -127,7 +127,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :opening_date, :closing_date, :additional_information, :is_exam, statement_ids: [])
+    params.require(:task).permit(:title, :opening_date, :closing_date, :additional_information, :is_exam, :help_available , statement_ids: [])
   end
 
   def set_task

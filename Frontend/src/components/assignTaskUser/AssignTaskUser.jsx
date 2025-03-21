@@ -36,7 +36,6 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
   }
 
   useEffect(() => {
-    console.log("claaaaaaaaaase", teacherClass)
 
     userService.getUserByClassId(currentClass)
       .then(({ data }) => {
@@ -47,7 +46,6 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
 
     ClassGroupService.findByTeacherId(user.id)
       .then(({data}) => {
-        console.log("all class ", data.data.class_groups)
         setTeacherClass(data.data.class_groups);
       });
   }, [currentClass])

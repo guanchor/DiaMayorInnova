@@ -27,7 +27,6 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
     setTotal(calculateTotal())
   }, [annotations])
 
-
   return (
     <div className='entry_wrapper'>
       <header className="entry_head" tabIndex={0}>

@@ -43,7 +43,9 @@ class StudentExercisesController < ApplicationController
           marks: {
             include: {
               student_entries: {
-                include: :student_annotations
+                include: {
+                  student_annotations: { include: {account: {only: [:name]}}}
+                }
               }
             }
           }

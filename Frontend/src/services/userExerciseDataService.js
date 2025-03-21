@@ -40,7 +40,7 @@ const start = async (exerciseId) => {
 
 const finish = async (exerciseId) => {
   try {
-    const response = await http.post(`/student_exercises/${exerciseId}/finish`);
+    const response = await http.put(`/student_exercises/${exerciseId}/finish`);
     return response;
   } catch (error) {
     console.error("Error al finalizar el examen:", error);

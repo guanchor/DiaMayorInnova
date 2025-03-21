@@ -63,7 +63,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
         const annotations = mark.student_entries?.flatMap(entry => 
           entry.student_annotations?.map(anno => ({
             id: anno.id,
-            uid: `anno-${anno.id}`,
+            number: anno.number,
             student_entry_id: entry.entry_number,
             account_number: anno.account_number,
             account_id: anno.account_id,
@@ -148,8 +148,6 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
   const updateAnnotation = (statementId, annotationUid, updatedAnnotation) => {
     if (!statementId || !statementData[statementId]) return;
 
-    console.log("Actualizar ", updatedAnnotation.account_id)
-
     if (updatedAnnotation.account_number !== undefined) {
       const foundAccount = updatedAnnotation.account_id
 
@@ -186,7 +184,9 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
 
   const handleSubmitStatement = () => {
     if (!selectedStatement) return;
-    handleSave(true);
+    if(exercise?.task?.is_exam === false){
+      handleSave(true);
+    }
     setAllStatementsData((prevData) => ({
       ...prevData,
       [selectedStatement.id]: { entries, annotations },
@@ -238,9 +238,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
 
   return (
     <div className='entry_container'>
-      {console.log("selectedStatement:", selectedStatement)}
-      {console.log("statementData[selectedStatement.id]:", selectedStatement ? statementData[selectedStatement.id] : null)}
-      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} />
+      <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} exercise={exercise}/>
       <section className='modes-entries-containner scroll-style'>
         {entries.sort((a, b) => a.entry_number - b.entry_number).map((entry) => (
           <Entry
@@ -257,14 +255,15 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
             deleteEntry={removeEntry}
             selectedStatement={selectedStatement}
             updateEntryDate={updateEntryDate}
+            exercise={exercise}
           />
         ))}
       </section>
       <div className='modes-entries-container--buttons'>
-        <button onClick={handleSubmitStatement} className='btn light' disabled={!examStarted}>
+        <button onClick={handleSubmitStatement} className='btn light' disabled={!examStarted || exercise.finished}>
           {exercise?.task?.is_exam ? "Guardar y Continuar" : "Guardar Progreso"}
         </button>
-        <button onClick={() => confirmModalRef.current?.showModal()} className='btn' disabled={!examStarted}>
+        <button onClick={() => confirmModalRef.current?.showModal()} className='btn' disabled={!examStarted || exercise.finished}>
           {exercise?.task?.is_exam ? "Enviar Examen" : "Finalizar Tarea"}
         </button>
       </div>

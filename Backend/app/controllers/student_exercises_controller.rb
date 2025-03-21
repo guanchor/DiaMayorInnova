@@ -49,7 +49,6 @@ class StudentExercisesController < ApplicationController
           }
         }
       ),
-      #statements: @exercise.task.statements,
       time_remaining: time_remaining
     }
   end
@@ -142,9 +141,26 @@ end
     end
   end
 
+  def finish
+    @exercise = Exercise.find(params[:id])
+    
+    if @exercise.update(finished: true)
+      render json: { success: true }
+    else
+      render json: { error: @exercise.errors.full_messages }, 
+             status: :unprocessable_entity
+    end
+  end
+
   def update_student_exercise
       
-      @exercise = Exercise.find(params[:id])
+    @exercise = Exercise.find(params[:id])
+
+    if @exercise.finished
+      render json: { error: "El examen ya ha sido enviado y no puede ser modificado" }, 
+             status: :unprocessable_entity
+      return
+    end
     
       if @exercise.update(exercise_params)
         marks_params = exercise_params[:marks_attributes] || []
@@ -194,19 +210,19 @@ end
     if @exercise.update(exercise_params)
       # Limpiar registros marcados para destrucción
       @exercise.reload
+      marks = @exercise.marks.reject(&:marked_for_destruction?)
+      marks.each do |mark|
+        mark.student_entries = mark.student_entries.reject(&:marked_for_destruction?)
+        mark.student_entries.each do |entry|
+          entry.student_annotations = entry.student_annotations.reject(&:marked_for_destruction?)
+        end
+      end
       render json: @exercise.as_json(
       include: {
         marks: {
-          include: {
-            student_entries: {
-              include: :student_annotations,
-              where: { _destroy: false }
-            }
-          },
-          # Excluir marcas eliminadas
-          where: { _destroy: false }
+          methods: [:filtered_student_entries]
         }
-      }.merge(marks: @exercise.marks.where(_destroy: false))
+      }
     ), status: :ok
   else
       render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
@@ -230,7 +246,6 @@ end
           :_destroy,
           student_annotations_attributes: [
             :id,
-            :uid,
             :account_id,
             :number,
             :account_number,
@@ -241,6 +256,14 @@ end
         ]
       ]
     )
+  end
+
+  def filtered_student_entries
+    student_entries.reject(&:marked_for_destruction?).map do |entry|
+      entry.as_json.merge(
+        "student_annotations" => entry.student_annotations.reject(&:marked_for_destruction?)
+      )
+    end
   end
 
   def compute_grade(statement, param_entries)

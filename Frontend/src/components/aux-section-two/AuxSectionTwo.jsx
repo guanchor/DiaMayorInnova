@@ -14,7 +14,7 @@ const AuxSectionTwo = ({ statements, examStarted, onSelectStatement, isTaskActiv
       setVisitedStatements([statements[0].id]);
     }
   }, [statements]);
-  
+
   const handleStatementClick = (statement) => {
     if ((isExamMode && !examStarted) || (!isExamMode && !isTaskActive)) return;
 

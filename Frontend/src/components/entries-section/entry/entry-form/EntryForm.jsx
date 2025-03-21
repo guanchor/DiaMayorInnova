@@ -3,7 +3,7 @@ import Modal from "../../../modal/Modal";
 import http from "../../../../http-common";
 import "./EntryForm.css"
 
-const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
+const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise }) => {
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -46,6 +46,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     const updated = {
       ...annotation,
       id: annotation.id,
+      number: aptNumber,
       account_number: account.account_number,
       account_name: account.name,
       account_id: account.id
@@ -132,7 +133,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             value={annotation.credit || ''}
             disabled={annotation.debit} />
         </div>
-        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete}><i className='fi fi-rr-trash'></i></button>
+        <button className='btn-trash' aria-label="Eliminar Apunte" onClick={handleDelete} disabled={exercise.finished}><i className='fi fi-rr-trash'></i></button>
       </form>
 
       <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>

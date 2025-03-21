@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
-const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement, date }) => {
+const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement, date, exercise }) => {
   const [entryStatus, setEntryStatus] = useState(false);
   const [entryDate, setDate] = useState(date || "2024-10-10");
   const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
@@ -50,6 +50,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
           className='btn-trash' 
           aria-label='Eliminar asiento' 
           onClick={() => deleteEntry(entryIndex)}
+          disabled={exercise.finished}
         >
           <i className='fi fi-rr-trash'></i>
         </button>
@@ -87,6 +88,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
                   annotation={annotation}
                   onDelete={() => deleteAnnotation(annotation.uid)}
                   updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement.id, annotation.uid, updatedAnnotation)}
+                  exercise={exercise}
                 />
               );
             })}
@@ -95,7 +97,9 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
           {entryStatus &&
             <button
               className='btn entry_add_annotation'
-              onClick={() => addAnnotation(entryIndex)}>
+              onClick={() => addAnnotation(entryIndex)}
+              disabled={exercise.finished}
+              >
               <i className='fi fi-rr-plus'></i>
               Apunte
             </button>

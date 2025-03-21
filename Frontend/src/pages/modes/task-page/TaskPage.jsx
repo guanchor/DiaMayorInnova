@@ -129,11 +129,11 @@ const TaskPage = () => {
                 entry_date: entry.entry_date,
                 _destroy: entry._destroy,
                 student_annotations_attributes: data.annotations
-                  .filter((a) => a.student_entry_id === entry.entry_number)
-                  .map((anno) => ({
+                  .filter((a) => a.student_entry_id === entry.entry_number && !a._destroy)
+                  .map((anno, index) => ({
                     id: anno.id,
                     account_id: anno.account_id,
-                    //account_number: anno.account_number,
+                    number: index + 1,
                     debit: anno.debit || 0,
                     credit: anno.credit || 0,
                     _destroy: anno._destroy

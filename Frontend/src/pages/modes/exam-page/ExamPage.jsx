@@ -55,9 +55,6 @@ const ExamPage = () => {
         setStatements(response.exercise.task.statements || []);
 
         const { exercise, statements, time_remaining } = response;
-        if (exercise) {
-          setExercise(exercise);
-          setStatements(statements || []);
 
           if (exercise.task?.is_exam && exercise.started) {
             setExamStarted(true);
@@ -66,7 +63,6 @@ const ExamPage = () => {
             setExamStarted(false);
             setTimeRemaining(0);
           }
-        }
       } catch (err) {
         console.error("Error fetching exercise:", err);
       }
@@ -198,6 +194,8 @@ const ExamPage = () => {
       : `La tarea cerró el ${closingDate?.toLocaleString?.() || "fecha no disponible"}`;
   }
 
+  console.log("EXAAAM_STARTED:", examStarted);
+  console.log("LOS STATEMENTS", statements)
   return (
     <div className='modes_page_container exam-color'>
       <p className='head_task'>Modo Examen - {exercise.task.title}</p>

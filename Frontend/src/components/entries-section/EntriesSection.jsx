@@ -239,7 +239,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
 
 
   return (
-    <div className='entry_container'>
+    <div className='entry__container'>
       <EntryHeader addEntry={() => addEntry(selectedStatement.id)} selectedStatement={selectedStatement} examStarted={examStarted} exercise={exercise}/>
       <section className='modes-entries-containner scroll-style'>
         {entries.sort((a, b) => a.entry_number - b.entry_number).map((entry) => (

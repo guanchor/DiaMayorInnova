@@ -28,7 +28,7 @@ const AuxSectionTwo = ({ statements, examStarted, onSelectStatement, isTaskActiv
   return (
     <div className='aux-section_two__container'>
       <h2 className='help_secction_tittle'>Enunciados</h2>
-      {examStarted &&
+      {!examStarted &&
         <div className={`aux-section ${isExamMode ? (examStarted ? '' : 'disabled') : (isTaskActive ? '' : 'disabled')}`}>
           <section>
             <div className="statement-grid">

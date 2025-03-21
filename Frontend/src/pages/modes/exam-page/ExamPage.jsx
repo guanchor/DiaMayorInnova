@@ -6,6 +6,7 @@ import HelpSection from '../../../components/help-section/HelpSection';
 import userExerciseDataService from "../../../services/userExerciseDataService";
 import Modal from "../../../components/modal/Modal"
 import "./ExamPage.css";
+import { AuxSection } from '../../../components/aux-section/AuxSection';
 
 const ExamPage = () => {
   const { exerciseId } = useParams();
@@ -53,9 +54,18 @@ const ExamPage = () => {
         setExercise(response.exercise);
         setStatements(response.exercise.task.statements || []);
 
-        if (response.exercise.task.is_exam && response.exercise.started) {
-          setExamStarted(true);
-          setTimeRemaining(response.time_remaining);
+        const { exercise, statements, time_remaining } = response;
+        if (exercise) {
+          setExercise(exercise);
+          setStatements(statements || []);
+
+          if (exercise.task?.is_exam && exercise.started) {
+            setExamStarted(true);
+            setTimeRemaining(time_remaining);
+          } else {
+            setExamStarted(false);
+            setTimeRemaining(0);
+          }
         }
       } catch (err) {
         console.error("Error fetching exercise:", err);
@@ -191,28 +201,32 @@ const ExamPage = () => {
   return (
     <div className='modes_page_container exam-color'>
       <p className='head_task'>Modo Examen - {exercise.task.title}</p>
-      {!examStarted && (
-        <div className='modes_page_container--button'>
-          <button className="btn" onClick={startExam} disabled={!examAvailable}>
-            {exercise.finished ? "Examen enviado" : "Comenzar examen"}
-          </button>
-          {!examAvailable && (
-            <p className='exam-available'>
-              <strong>{availabilityMessage}</strong>
-            </p>
-          )}
-          {exercise.finished && (
-            <p className='exam-available'>
-              <strong>El examen ya fue enviado el: {new Date(exercise.updated_at).toLocaleString()}</strong>
-            </p>
-          )}
-        </div>
-      )}
-      {examStarted && (
-        <div className="timer">
-          <p>Tiempo restante: {formatTime(timeRemaining)}</p>
-        </div>
-      )}
+      <div className='modes_page_container--button'>
+        {!examStarted && (
+          <>
+            <button className="btn" onClick={startExam} disabled={!examAvailable}>
+              {exercise.finished ? "Examen enviado" : "Comenzar examen"}
+            </button>
+            {!examAvailable && (
+              <p className='exam-available'>
+                <strong>{availabilityMessage}</strong>
+              </p>
+            )}
+
+            {exercise.finished && (
+              <p className='exam-available'>
+                <strong>El examen ya fue enviado el: {new Date(exercise.updated_at).toLocaleString()}</strong>
+              </p>
+            )}
+          </>
+        )}
+
+        {examStarted && (
+          <div className="timer">
+            <p>Tiempo restante: {formatTime(timeRemaining)}</p>
+          </div>
+        )}
+      </div>
       <EntriesSection
         selectedStatement={selectedStatement}
         taskId={exercise.task.id}
@@ -222,11 +236,11 @@ const ExamPage = () => {
         exercise={exercise}
         examStarted={examStarted}
       />
-      <HelpSection />
-      <AuxSectionTwo
-        statements={exercise.task.statements}
+      <AuxSection
+        statements={statements}
         examStarted={examStarted}
         onSelectStatement={setSelectedStatement}
+        helpAvailable={exercise.task.help_available}
       />
 
       <Modal

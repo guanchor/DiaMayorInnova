@@ -1,8 +1,7 @@
 .aux-section_two__container {
   grid-area: section1;
   background-color: var(--Color-White);
-  border-radius: var(--r-xxs);
-  box-shadow: var(--box-shadow-M3);
+  border-radius: 0 var(--r-xs) var(--r-xs) var(--r-xs);
   width: 100%;
   padding: var(--gap-m);
   display: flex;
@@ -40,7 +39,7 @@
   width: 25%;
 }
 
-.help_secction_tittle {
+.help_section_title {
   font-size: var(--text-mobile-subtitles-2);
 }
 

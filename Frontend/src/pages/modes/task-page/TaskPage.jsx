@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import userExerciseDataService from "../../../services/userExerciseDataService";
 import EntriesSection from '../../../components/entries-section/EntriesSection'
-import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo'
+import { AuxSection } from '../../../components/aux-section/AuxSection'
 import "./TaskPage.css"
-import HelpSection from '../../../components/help-section/HelpSection'
 
 const TaskPage = () => {
   const { exerciseId } = useParams();
@@ -15,14 +14,13 @@ const TaskPage = () => {
   const [taskStarted, setTaskStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [submitTask, setSubmitTask] = useState(false);
+  const [canEditTask, setCanEditTask] = useState(false);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [saveStatus, setSaveStatus] = useState("");
-
   const [openDate, setOpenDate] = useState(null);
   const [closeDate, setCloseDate] = useState(null);
   const [isTaskClosed, setIsTaskClosed] = useState(false);
   const [canStartTask, setCanStartTask] = useState(false);
-  const [canEditTask, setCanEditTask] = useState(false);
   const [handleSave, setHandleSave] = useState(false);
 
   const handleSelectStatement = (statement) => {
@@ -222,14 +220,14 @@ const TaskPage = () => {
               handleSave={setHandleSave}
             />
           )}
-          <AuxSectionTwo
+          <AuxSection
             statements={exercise?.task.statements}
             isTaskActive={canEditTask}
             onSelectStatement={handleSelectStatement}
             examStarted={taskStarted}
+            helpAvailable={exercise.task.help_available}
           />
         </>
-      <HelpSection />
     </div>
   )
 }

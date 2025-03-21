@@ -37,7 +37,7 @@ class StudentExercisesController < ApplicationController
       exercise: @exercise.as_json(
         include: {
           task: { 
-            only: [:id, :title, :opening_date, :closing_date, :is_exam],
+            only: [:id, :title, :opening_date, :closing_date, :is_exam, :help_available],
             include: :statements
           },
           marks: {

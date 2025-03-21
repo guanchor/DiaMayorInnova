@@ -52,18 +52,15 @@ const AssignTaskUser = ({ assignedInclude, setCurrentUsers, currentUsers }) => {
   }
 
   useEffect(() => {
-    console.log(teacherClass)
 
     userService.getUserByClassId(currentClass)
       .then(({ data }) => {
-        console.log("all users ", data)
         setUsers(data.data.users);
       });
 
 
     ClassGroupService.findByTeacherId(user.id)
       .then(({ data }) => {
-        console.log("all class ", data)
         setTeacherClass(data);
       });
   }, [currentClass])

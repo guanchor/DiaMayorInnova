@@ -8,10 +8,16 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
   const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
   const [total, setTotal] = useState(0);
 
+  const changeStatus = () => {
+    setEntryStatus(!entryStatus)
+  }
+
   const handleChangeDate = (e) => {
     const newDate = e.target.value;
     setDate(newDate);
-    updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    if (selectedStatement) {
+      updateEntryDate(selectedStatement.id, entryIndex, newDate);
+    }
   }
 
   const calculateTotal = () => {
@@ -29,7 +35,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
 
   return (
     <div className='entry_wrapper'>
-      <header className="entry_head" tabIndex={0}>
+      <div className="entry_head" tabIndex={0} onKeyDown={changeStatus}>
         <div className="head_tittle" onClick={() => setEntryStatus(!entryStatus)} >
           <p>Asiento {number}</p>
           <i className={entryStatus ? 'fi fi-rr-angle-small-up' : 'fi fi-rr-angle-small-down'}></i>
@@ -41,7 +47,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
             className='date_input' 
             value={entryDate} 
             onChange={handleChangeDate}
-            disabled={exercise.finished}
+            disabled={exercise?.finished || false}
           />
           <p className='entry_total'>Total: <span>{total}</span></p>
         </div>
@@ -50,11 +56,11 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
           className='btn-trash' 
           aria-label='Eliminar asiento' 
           onClick={() => deleteEntry(entryIndex)}
-          disabled={exercise.finished}
+          disabled={exercise?.finished || false}
         >
           <i className='fi fi-rr-trash'></i>
         </button>
-      </header>
+      </div>
 
       {selectedStatement && (
         <div className="statement-info">
@@ -70,7 +76,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
               <p className='apt_number'>Apt</p>
               <div className="tittles_wrapper">
                 <p className='tittle_account-number' id='tittle_account-number'>Nº Cuenta</p>
-                <p className='tittle_account-name' id='tittle_account-name'>Nombre Cuenta</p>
+                <p className='tittle_account-name tittle_account-name--no-visible' id='tittle_account-name'>Nombre Cuenta</p>
                 <p className='tittle_debit' id='tittle_debit'>Debe</p>
                 <p className='tittle_credit' id='tittle_credit'>Haber</p>
               </div>
@@ -87,7 +93,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
                   aptNumber={index + 1}
                   annotation={annotation}
                   onDelete={() => deleteAnnotation(annotation.uid)}
-                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement.id, annotation.uid, updatedAnnotation)}
+                  updateAnnotation={(updatedAnnotation) => updateAnnotation(selectedStatement?.id ?? 0, annotation.uid, updatedAnnotation)}
                   exercise={exercise}
                 />
               );
@@ -98,7 +104,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
             <button
               className='btn entry_add_annotation'
               onClick={() => addAnnotation(entryIndex)}
-              disabled={exercise.finished}
+              disabled={exercise?.finished || false}
               >
               <i className='fi fi-rr-plus'></i>
               Apunte

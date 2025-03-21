@@ -2,15 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import AccountingPlanDataService from "../../services/AccountingPlanService"
 import { useNavigate } from "react-router-dom";
 import "./AccountingPlan.css";
+import "../modal/AccountModal.css";
 import AccountingPlan from "./AccountingPlan";
 import Modal from "../modal/Modal";
-import AccountsModal from "../modal/AccountModal";
 
 
 const AccountingPlansList = ({ newPGC }) => {
   const [accountingPlans, setAccountingPlans] = useState([]);
   const [selectedAccountingPlanId, setSelectedAccountingPlanId] = useState(null); // ID del plan a editar
   const modalRef = useRef(null); // Referencia para la modal
+  const accountsModalRef = useRef(null)
   const navigate = useNavigate();
   const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -126,7 +127,8 @@ const AccountingPlansList = ({ newPGC }) => {
     AccountingPlanDataService.getAccountsByPGC(pgcId)
       .then(response => {
         setAccounts(response.data);
-        setIsModalOpen(true); // Ouvrir la modale après récupération des comptes
+        setIsModalOpen(true);
+        accountsModalRef.current?.showModal(); 
       })
       .catch(error => {
         console.error("Erreur lors de la récupération des comptes :", error);
@@ -215,7 +217,31 @@ const AccountingPlansList = ({ newPGC }) => {
           )}
         </div>
       </section>
-      <AccountsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} accounts={accounts} />
+
+      <Modal ref={accountsModalRef} modalTitle="Cuentas del PGC" showButton = {false}>
+        {accounts.length > 0 ? (
+          <table className="modal-table">
+            <thead>
+              <tr>
+                <th>Nº Cuenta</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {accounts.map((account) => (
+                <tr key={account.id}>
+                  <td>{account.account_number}</td>
+                  <td>{account.name}</td>
+                  <td>{account.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No hay cuentas disponibles.</p>
+        )}
+      </Modal>
 
       <Modal ref={modalRef} modalTitle="Editar PGC" showButton = {false}>
         {selectedAccountingPlanId && (

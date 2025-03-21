@@ -4,7 +4,6 @@
 }
 
 .statements__pagination {
-  padding-top: var(--gap-m);
   & span {
     padding: var(--gap-s);
     color: var(--Color-Principal);

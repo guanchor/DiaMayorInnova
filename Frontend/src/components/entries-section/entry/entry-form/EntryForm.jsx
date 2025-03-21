@@ -7,28 +7,32 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1); //Pagination
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const loadAccounts = async () => {
       try {
-        const response = await http.get("/accounts");
-        setAccounts(response.data);
+        const response = await http.get(`/accounts?page=${currentPage}&limit=${5}`);
+
+        setAccounts(response.data.accounts);
+        setTotalPages(response.data.meta.total_pages || 1)
       } catch (error) {
         console.error("Error al cargar las cuentas:", error);
       }
     };
     loadAccounts();
-  }, []);
+  }, [currentPage, totalPages]);
 
   const openAccountModal = async () => {
     try {
-      const response = await http.get("/accounts");
-      setAccounts(response.data);
+      const response = await http.get(`/accounts`);
       modalRef.current?.showModal();
     } catch (error) {
       console.error("Error al cargar las cuentas:", error);
     }
   };
+  
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -81,6 +85,12 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
     event.preventDefault();
     onDelete();
   }
+
+  const changePage = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return; // Evita páginas fuera de rango
+    setCurrentPage(newPage);
+  };
+  
 
   return (
     <div className='entry_form_wrapper'>
@@ -147,6 +157,23 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete }) => {
             </div>
           ))}
         </div>
+
+        <div className="account-list__pagination">
+          <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => changePage(1)}>
+            <i className='fi fi-rr-angle-double-small-left' />
+          </button>
+          <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)}>
+            <i className='fi fi-rr-angle-small-left' />
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => changePage(currentPage + 1)}>
+            <i className='fi fi-rr-angle-small-right' />
+          </button>
+          <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => changePage(totalPages)}>
+            <i className='fi fi-rr-angle-double-small-right' />
+          </button>
+        </div>
+
       </Modal>
     </div>
   )

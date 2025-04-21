@@ -6,7 +6,7 @@ import Modal from '../modal/Modal';
 import { useNavigate } from 'react-router-dom'
 import "./EntriesSection.css"
 
-const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComplete, exercise, examStarted, handleSave }) => {
+const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComplete, exercise, examStarted, handleSave, onEntriesChange }) => {
   const [statementData, setStatementData] = useState({});
   const [allStatementsData, setAllStatementsData] = useState({});
   const accounts = exercise?.chartOfAccounts || [];
@@ -236,6 +236,16 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
       },
     }));
   };
+
+  useEffect(() => {
+    if (onEntriesChange) {
+      const formattedEntries = entries.map(entry => ({
+        ...entry,
+        annotations: annotations.filter(anno => anno.student_entry_id === entry.entry_number && !anno._destroy)
+      }));
+      onEntriesChange(formattedEntries);
+    }
+  }, [entries, annotations, onEntriesChange]);
 
 
   return (

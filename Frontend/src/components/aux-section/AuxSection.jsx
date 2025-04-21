@@ -1,43 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AuxSectionTwo from '../aux-section-two/AuxSectionTwo.jsx'
 import HelpSection from '../help-section/HelpSection'
+import RealTimeTrialBalance from '../trial-balance/RealTimeTrialBalance'
 import "./AuxSection.css"
 import "../../components/entries-section/EntriesSection.css"
 import "../../pages/modes/practice-page/PracticePage.css"
 import { useLocation } from 'react-router-dom'
 
-export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAvailable = false }) => {
+export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAvailable = false, entries = [] }) => {
   const route = useLocation().pathname
   const [auxSection, setAuxSection] = useState("balance")
-  let [sectionAux, setSectionAux] = useState(<div>Balance</div>);
+  const [sectionAux, setSectionAux] = useState(<RealTimeTrialBalance entries={entries} />);
+
+  useEffect(() => {
+    const updateSection = () => {
+      switch (auxSection) {
+        case "statements":
+          setSectionAux(
+            <AuxSectionTwo
+              statements={statements}
+              examStarted={examStarted}
+              onSelectStatement={onSelectStatement}
+            />)
+          break;
+
+        case "help_example":
+          setSectionAux(<HelpSection />)
+          break;
+
+        case "balance":
+          setSectionAux(<RealTimeTrialBalance entries={entries} />)
+          break;
+
+        default:
+          setSectionAux(<div>Pestaña Diario Mayor</div>)
+          break;
+      }
+    };
+
+    updateSection();
+  }, [auxSection, statements, examStarted, onSelectStatement, entries]);
 
   const changeAuxSection = (section) => {
-    switch (section) {
-      case "statements":
-        setSectionAux(
-          <AuxSectionTwo
-            statements={statements}
-            examStarted={examStarted}
-            onSelectStatement={onSelectStatement}
-          />)
-        setAuxSection("statements")
-        break;
-
-      case "help_example":
-        setSectionAux(<HelpSection />)
-        setAuxSection("help_example")
-        break;
-
-      case "balance":
-        setSectionAux(<div>Pestaña Balance</div>)
-        setAuxSection("balance")
-        break;
-
-      default:
-        setSectionAux(<div>Pestaña Diario Mayor</div>)
-        setAuxSection("mayor")
-        break;
-    }
+    setAuxSection(section);
   }
 
   return (
@@ -54,9 +59,7 @@ export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAva
         <button className={auxSection === "mayor" ? 'btn__tabs btn__tabs--active' : 'btn__tabs'} onClick={() => changeAuxSection("mayor")}>Diario Mayor</button>
         <button className={auxSection === "balance" ? 'btn__tabs btn__tabs--active' : 'btn__tabs'} onClick={() => changeAuxSection("balance")}>Balance</button>
       </div>
-      {
-        sectionAux
-      }
-    </div >
+      {sectionAux}
+    </div>
   )
 }

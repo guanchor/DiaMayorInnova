@@ -16,6 +16,7 @@ const ExamPage = () => {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [completedStatements, setCompletedStatements] = useState({});
+  const [statementData, setStatementData] = useState({});
   const modalNotAvailableRef = useRef(null);
   const modalTimeExpiredRef = useRef(null);
   const modalFinishedRef = useRef(null);
@@ -33,8 +34,13 @@ const ExamPage = () => {
       try {
         const response = await userExerciseDataService.getById(exerciseId);
         if (response?.exercise?.finished) {
-          modalTestSentRef.current?.showModal();
-          return;
+          const now = new Date();
+          const closingDate = new Date(response.exercise.task.closing_date);
+          
+          if (now < closingDate) {
+            modalTestSentRef.current?.showModal();
+            return;
+          }
         }
       } catch (error) {
         console.error("Error verificando estado del examen:", error);
@@ -56,13 +62,35 @@ const ExamPage = () => {
 
         const { exercise, statements, time_remaining } = response;
 
-          if (exercise.task?.is_exam && exercise.started) {
-            setExamStarted(true);
-            setTimeRemaining(time_remaining);
-          } else {
-            setExamStarted(false);
-            setTimeRemaining(0);
-          }
+        if (exercise.task?.is_exam && exercise.started) {
+          setExamStarted(true);
+          setTimeRemaining(time_remaining);
+        } else {
+          setExamStarted(false);
+          setTimeRemaining(0);
+        }
+
+        if (exercise.finished) {
+          const marks = exercise.marks || [];
+          const formattedData = {};
+          
+          marks.forEach(mark => {
+            formattedData[mark.statement_id] = {
+              entries: mark.student_entries?.map(entry => ({
+                entry_number: entry.entry_number,
+                entry_date: entry.entry_date
+              })) || [],
+              annotations: mark.student_entries?.flatMap(entry => 
+                entry.student_annotations?.map(anno => ({
+                  ...anno,
+                  student_entry_id: entry.entry_number
+                })) || []
+              ) || []
+            };
+          });
+          
+          setStatementData(formattedData);
+        }
       } catch (err) {
         console.error("Error fetching exercise:", err);
       }
@@ -98,7 +126,7 @@ const ExamPage = () => {
   };
 
   useEffect(() => {
-    if (examStarted) {
+    if (examStarted && !exercise?.finished) {
       const handleVisibilityChange = async () => {
         if (document.visibilityState === "hidden") {
           const confirmation = window.confirm(
@@ -115,7 +143,7 @@ const ExamPage = () => {
       document.addEventListener("visibilitychange", handleVisibilityChange);
       return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
     }
-  }, [examStarted, navigate, exerciseId]);
+  }, [examStarted, navigate, exercise?.finished]);
 
   useEffect(() => {
     if (examStarted) {
@@ -170,15 +198,14 @@ const ExamPage = () => {
   };
 
   const handleStatementComplete = (statementId, statementData) => {
-    setCompletedStatements((prevData) => ({
-      ...prevData,
-      [statementId]: statementData,
+    setCompletedStatements(prev => ({
+      ...prev,
+      [statementId]: true
     }));
-
-    const currentIndex = statements.findIndex((stmt) => stmt.id === statementId);
-    if (currentIndex < statements.length - 1) {
-      setSelectedStatement(statements[currentIndex + 1]);
-    }
+    setStatementData(prev => ({
+      ...prev,
+      [statementId]: statementData
+    }));
   };
 
   if (!exercise) return <p>Cargando...</p>;
@@ -236,9 +263,17 @@ const ExamPage = () => {
       />
       <AuxSection
         statements={statements}
-        examStarted={examStarted}
+        examStarted={examStarted || exercise?.finished}
         onSelectStatement={setSelectedStatement}
         helpAvailable={exercise.task.help_available}
+        entries={Object.values(statementData).flatMap(data => 
+          data.entries?.map(entry => ({
+            ...entry,
+            annotations: data.annotations?.filter(
+              anno => anno.student_entry_id === entry.entry_number && !anno._destroy
+            ) || []
+          })) || []
+        )}
       />
 
       <Modal
@@ -248,35 +283,29 @@ const ExamPage = () => {
       >
         <p>Examen terminado.</p>
         <button className="btn light" onClick={() => modalNotAvailableRef.current?.close()}>
-          Cerrar
-        </button>
-      </Modal>
-
-      <Modal
-        ref={modalNotAvailableRef}
-        modalTitle="Examen no disponible"
-        showButton={false}
-      >
-        <p>El examen aún no está disponible.</p>
-        <button className="btn light" onClick={() => modalNotAvailableRef.current?.close()}>
-          Cerrar
+          Aceptar
         </button>
       </Modal>
 
       <Modal
         ref={modalTimeExpiredRef}
-        modalTitle="Tiempo Expirado"
+        modalTitle="Tiempo agotado"
         showButton={false}
       >
-        <p>Se ha agotado el tiempo. El examen ha terminado.</p>
-        <button
-          className="btn light"
-          onClick={() => {
-            modalTimeExpiredRef.current?.close();
-            navigate("/home");
-          }}
-        >
-          Cerrar
+        <p>El tiempo del examen ha expirado.</p>
+        <button className="btn light" onClick={() => modalTimeExpiredRef.current?.close()}>
+          Aceptar
+        </button>
+      </Modal>
+
+      <Modal
+        ref={modalFinishedRef}
+        modalTitle="Examen completado"
+        showButton={false}
+      >
+        <p>Has completado todos los enunciados del examen.</p>
+        <button className="btn light" onClick={() => modalFinishedRef.current?.close()}>
+          Aceptar
         </button>
       </Modal>
 
@@ -285,15 +314,15 @@ const ExamPage = () => {
         modalTitle="Examen enviado"
         showButton={false}
       >
-        <p>El examen ya fue enviado el: {exercise?.updated_at && new Date(exercise.updated_at).toLocaleString()}</p>
-        <button
-          className="btn light"
+        <p>Este examen ya fue enviado anteriormente.</p>
+        <button 
+          className="btn light" 
           onClick={() => {
             modalTestSentRef.current?.close();
             navigate("/home");
           }}
         >
-          Cerrar
+          Aceptar
         </button>
       </Modal>
     </div>

@@ -7,42 +7,44 @@ const RealTimeTrialBalance = ({ entries }) => {
     const grouped = {};
 
     entries.forEach(entry => {
-      entry.annotations
-        .filter(anno => !anno._destroy)
-        .forEach(anno => {
-          const accountId = anno.account_id;
-          if (!accountId) return; // Saltamos apuntes incompletos
+      const validAnnotations = entry.annotations?.filter(anno => !anno._destroy) || [];
+      
+      validAnnotations.forEach(anno => {
+        const accountId = anno.account_id || anno.account_number;
+        if (!accountId) return; // Saltamos apuntes incompletos
 
-          if (!grouped[accountId]) {
-            grouped[accountId] = {
-              account_number: anno.account_number,
-              account_name: anno.account_name,
-              debe: 0,
-              haber: 0,
-            };
-          }
+        if (!grouped[accountId]) {
+          grouped[accountId] = {
+            account_number: anno.account_number,
+            account_name: anno.account_name || anno.account?.name || '',
+            debe: 0,
+            haber: 0,
+          };
+        }
 
-          const debit = parseFloat(anno.debit) || 0;
-          const credit = parseFloat(anno.credit) || 0;
+        const debit = parseFloat(anno.debit) || 0;
+        const credit = parseFloat(anno.credit) || 0;
 
-          grouped[accountId].debe += debit;
-          grouped[accountId].haber += credit;
-        });
+        grouped[accountId].debe += debit;
+        grouped[accountId].haber += credit;
+      });
     });
 
     // Convertimos a array con saldos
-    return Object.values(grouped).map((acc, idx) => {
-      const saldo = acc.debe - acc.haber;
-      return {
-        orden: idx + 1,
-        account_number: acc.account_number,
-        account_name: acc.account_name,
-        debe: acc.debe,
-        haber: acc.haber,
-        deudor: saldo > 0 ? saldo : '',
-        acreedor: saldo < 0 ? -saldo : '',
-      };
-    });
+    return Object.values(grouped)
+      .filter(acc => acc.debe !== 0 || acc.haber !== 0) // Solo incluimos cuentas con movimientos
+      .map((acc, idx) => {
+        const saldo = acc.debe - acc.haber;
+        return {
+          orden: idx + 1,
+          account_number: acc.account_number,
+          account_name: acc.account_name,
+          debe: acc.debe,
+          haber: acc.haber,
+          deudor: saldo > 0 ? saldo : '',
+          acreedor: saldo < 0 ? -saldo : '',
+        };
+      });
   }, [entries]);
 
   // Calcular totales

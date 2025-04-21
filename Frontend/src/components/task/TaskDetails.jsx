@@ -4,7 +4,7 @@ import taskService from "../../services/taskService";
 import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 import "./TaskPage.css";
 
-const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseModal }) => {
+const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseModal, onDuplicateTask }) => {
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
@@ -79,6 +79,9 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
       <footer className="task-details__footer">
         <button onClick={handleEditTask} className="task-details__footer--edit-btn">
           Editar tarea
+        </button>
+        <button onClick={(e) => onDuplicateTask(e, selectedTask)} className="task-details__footer--edit-btn">
+          Duplicar tarea
         </button>
         <button onClick={handleDeleteTask} className="task-details__footer--delete-btn">
           Eliminar tarea

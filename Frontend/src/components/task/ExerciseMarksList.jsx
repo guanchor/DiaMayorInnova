@@ -6,6 +6,7 @@ import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 import Table from "../table/Table";
 import { renderToString } from "react-dom/server";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 const ExerciseMarksList = () => {
     const { id } = useParams();
@@ -88,17 +89,20 @@ const ExerciseMarksList = () => {
                 <button className="btn light " onClick={() => navigate(-1)}>
                     <i className="fi fi-rr-arrow-small-left" />
                 </button>
-                <h1 className="mark_list__page--title">Notas de los estudiantes</h1>
+                <h1 className="mark_list__page--title"><Breadcrumbs /></h1>
             </div>
 
-            {exerciseMarksList.length > 0 && (
-                <h2 className="mark_list__page--task">{exerciseMarksList[0].task_tittle}</h2>
-            )}
+            {
+                exerciseMarksList.length > 0 && (
+                    <h2 className="mark_list__page--task">{exerciseMarksList[0].task_tittle}</h2>
+                )
+            }
             <div className="mask_list_table__container">
                 <Table
                     data={exerciseMarksList}
                     columns={columns}
                     id={id}
+                    isMarkTable={true}
                 />
             </div>
             <div className="mark-list__pagination">

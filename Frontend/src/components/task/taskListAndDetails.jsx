@@ -29,23 +29,23 @@ const TaskListAndDetails = () => {
     if (location.state?.createTask) {
       setIsCreatingTask(true);
     }
-  
+
     const fetchTasks = async () => {
       setLoading(true);
       try {
         const response = await taskService.getAllTasks(currentPage, 10, searchTerm || "");
-    
+
         if (!response) {
           throw new Error("No se recibió ninguna respuesta del servidor.");
         }
-    
+
         if (!response.tasks) {
           throw new Error("La respuesta no tiene la estructura esperada.");
         }
-    
+
         // Filtrar tareas del usuario actual
         const filteredTasks = response.tasks.filter((task) => task.created_by === user.id);
-    
+
         setTasks(filteredTasks);
         setTotalPages(response.meta?.total_pages || 1);
       } catch (err) {
@@ -55,8 +55,7 @@ const TaskListAndDetails = () => {
         setLoading(false);
       }
     };
-    
-  
+
     if (user?.id) {
       fetchTasks();
     } else {
@@ -64,7 +63,7 @@ const TaskListAndDetails = () => {
       setTasks([]);
     }
   }, [user, location.state, currentPage, searchTerm]);
-  
+
 
   // useEffect(() => {
   //   if (location.state?.createTask) {
@@ -218,22 +217,22 @@ const TaskListAndDetails = () => {
 
             <div className="task-list__pagination">
               <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
-                <i className='fi fi-rr-angle-double-small-left'/>
+                <i className='fi fi-rr-angle-double-small-left' />
               </button>
               <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                <i className='fi fi-rr-angle-small-left'/>
+                <i className='fi fi-rr-angle-small-left' />
               </button>
               <span>Página {currentPage} de {totalPages}</span>
               <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                <i className='fi fi-rr-angle-small-right'/>
+                <i className='fi fi-rr-angle-small-right' />
               </button>
               <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
-                <i className='fi fi-rr-angle-double-small-right'/>
+                <i className='fi fi-rr-angle-double-small-right' />
               </button>
             </div>
           </section>
 
-          <TaskModal show={modalVisible} onClose={handleCloseModal}>
+          <TaskModal show={modalVisible} onClose={handleCloseModal} modalTitle={selectedTask?.title}>
             <TaskDetails
               selectedTask={selectedTask}
               onDeleteStatement={handleDeleteStatement}

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import "../../aux-section-two/AuxSectionTwo.css"
 import exerciseServices from "../../../services/exerciseServices";
 import marksServices from "../../../services/marksServices";
+import ButtonBack from "../../button-back/ButtonBack";
+import Breadcrumbs from "../../breadcrumbs/Breadcrumbs";
 
 const ExamInformation = () => {
   const navigate = useNavigate();
@@ -136,8 +138,8 @@ const ExamInformation = () => {
   return (
     <div className="exam_statements">
       <header className="exam_statements__header">
-        <button className="btn light" onClick={() => navigate(-1)}> <i className="fi fi-rr-arrow-small-left"></i> </button>
-        <h1 className="exam_statements__title">{name}</h1>
+        <ButtonBack />
+        <Breadcrumbs />
       </header>
       <main className="exam_statements__main">
         <h2 className="exam_statement__statement">Enunciados</h2>
@@ -146,6 +148,7 @@ const ExamInformation = () => {
           <div className="exam_statement__list">
             {(statements.length > 0) ?
               statements.map((mark, index) => {
+                console.log("mark", mark)
                 return (
                   <ExamStatement
                     key={mark.id}

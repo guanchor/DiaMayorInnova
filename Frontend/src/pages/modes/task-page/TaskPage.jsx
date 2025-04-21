@@ -39,6 +39,7 @@ const TaskPage = () => {
           setCloseDate(clDate);
 
           const now = new Date();
+          console.log("Current time:", now);
           const isClosed = now > clDate;
           const isAvailable = now >= opDate && now <= clDate;
 
@@ -105,8 +106,8 @@ const TaskPage = () => {
   let availabilityMessage = '';
   if (!canStartTask) {
     availabilityMessage = currentTime < openDate
-    ? `La tarea estará disponible el ${openDate?.toLocaleString?.() || "fecha no disponible"}`
-    : `La tarea cerró el ${closeDate?.toLocaleString?.() || "fecha no disponible"}`;
+      ? `La tarea estará disponible el ${openDate?.toLocaleString?.() || "fecha no disponible"}`
+      : `La tarea cerró el ${closeDate?.toLocaleString?.() || "fecha no disponible"}`;
   }
 
   const handleSaveProgress = async (statementId, data) => {
@@ -114,7 +115,7 @@ const TaskPage = () => {
       const existingMark = exercise.marks.find(
         (mark) => mark.statement_id === parseInt(statementId)
       );
-  
+
       const payload = {
         exercise: {
           marks_attributes: [
@@ -202,32 +203,32 @@ const TaskPage = () => {
             <p className='exam-available'><strong>{availabilityMessage}</strong></p>
           )}
         </div>
-      ) }
-        <>
-          <div className="task-page_header">
-            <h1 className='head-task_tittle'>Modo Tarea - {exercise?.task?.title}</h1>
-          </div>
-          {exercise && (
-            <EntriesSection
-              taskSubmit={submitTask}
-              taskId={exercise.task.id}
-              existingExerciseId={exercise.id}
-              examStarted={canEditTask}
-              exercise={exercise}
-              selectedStatement={selectedStatement}
-              onStatementComplete={handleSaveProgress}
-              savedMarks={exercise?.marks || []}
-              handleSave={setHandleSave}
-            />
-          )}
-          <AuxSection
-            statements={exercise?.task.statements}
-            isTaskActive={canEditTask}
-            onSelectStatement={handleSelectStatement}
-            examStarted={taskStarted}
-            helpAvailable={exercise.task.help_available}
+      )}
+      <>
+        <div className="task-page_header">
+          <h1 className='head-task_tittle'>Modo Tarea - {exercise?.task?.title}</h1>
+        </div>
+        {exercise && (
+          <EntriesSection
+            taskSubmit={submitTask}
+            taskId={exercise.task.id}
+            existingExerciseId={exercise.id}
+            examStarted={canEditTask}
+            exercise={exercise}
+            selectedStatement={selectedStatement}
+            onStatementComplete={handleSaveProgress}
+            savedMarks={exercise?.marks || []}
+            handleSave={setHandleSave}
           />
-        </>
+        )}
+        <AuxSection
+          statements={exercise?.task.statements}
+          isTaskActive={canEditTask}
+          onSelectStatement={handleSelectStatement}
+          examStarted={taskStarted}
+          helpAvailable={exercise.task.help_available}
+        />
+      </>
     </div>
   )
 }

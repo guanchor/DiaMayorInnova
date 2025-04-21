@@ -80,10 +80,72 @@ const StatementsSelection = ({
     return <div>Error: No se recibieron enunciados válidos</div>;
   }
 
+  const columns = [
+    { title: "ID", data: "id" },
+    { title: "Enunciado", data: "definition" },
+    {
+      title: "Acciones",
+      data: "id",
+      render: function (data, type, row) {
+        return `
+          <div class="task-page__actions">
+            ${showCheckboxes ? `
+              <label>
+                <input type="checkbox" class="statement-checkbox" data-id="${data}" />
+                <span class="task-page__button-text">Añadir</span>
+              </label>
+            ` : ""}
+            <button class="task-page__button--view" type="button" data-id="${data}">
+              <i class="fi fi-rr-eye interrogation"></i>
+            </button>
+          </div>
+        `;
+      }
+    }
+  ];
+
+  const options = {
+    responsive: true,
+    paging: true,
+    searching: true,
+    pageLength: 10,
+    language: {
+      search: '',
+      searchPlaceholder: 'Buscar en la tabla...',
+      lengthMenu: 'Mostrar _MENU_ registros por página',
+      zeroRecords: 'No se encontraron resultados',
+      info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+      infoEmpty: 'No hay registros disponibles',
+      infoFiltered: '(filtrado de _MAX_ registros totales)',
+      loadingRecords: 'Cargando...',
+      processing: 'Procesando...',
+      emptyTable: 'No hay datos disponibles en la tabla',
+    },
+    createdRow: function (row, data) {
+      const viewButton = row.querySelector(".task-page__button--view");
+      const editButton = row.querySelector(".task-page__button--edit");
+      const checkbox = row.querySelector(".statement-checkbox");
+
+      if (viewButton) {
+        viewButton.addEventListener("click", () => viewSolutions(data.id));
+      }
+      if (editButton) {
+        editButton.addEventListener("click", () => handleEditSolutions(data.id));
+      }
+      if (checkbox && showCheckboxes) {
+        checkbox.checked = selectedStatements.includes(data.id);
+        checkbox.addEventListener("change", () => handleStatementSelection(data));
+      } else if (checkbox) {
+        checkbox.remove();
+      }
+    }
+
+  };
+
   return (
     <section className="task-page__selection">
       <div className="task-page__selection--content">
-        <div className="task-page__header-row">
+        {/* <div className="task-page__header-row">
           <h2 className="task-page__header">Enunciados</h2>
         </div>
         <SearchBar

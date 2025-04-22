@@ -79,23 +79,23 @@ const RealTimeTrialBalance = ({ entries }) => {
         <tbody>
           {balanceData.map((row) => (
             <tr key={row.account_number}>
-              <td>{row.orden}</td>
-              <td>{row.account_number}</td>
-              <td>{row.account_name}</td>
-              <td>{row.debe.toFixed(2)}</td>
-              <td>{row.haber.toFixed(2)}</td>
-              <td>{row.deudor !== '' ? row.deudor.toFixed(2) : ''}</td>
-              <td>{row.acreedor !== '' ? row.acreedor.toFixed(2) : ''}</td>
+              <td data-label="Orden">{row.orden}</td>
+              <td data-label="Nº de cuenta">{row.account_number}</td>
+              <td data-label="Nombre Cuenta">{row.account_name}</td>
+              <td data-label="Debe">{row.debe.toFixed(2)}</td>
+              <td data-label="Haber">{row.haber.toFixed(2)}</td>
+              <td data-label="Deudores">{row.deudor !== '' ? row.deudor.toFixed(2) : ''}</td>
+              <td data-label="Acreedores">{row.acreedor !== '' ? row.acreedor.toFixed(2) : ''}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <th colSpan={3}>Totales</th>
-            <th>{totals.debe.toFixed(2)}</th>
-            <th>{totals.haber.toFixed(2)}</th>
-            <th>{totals.deudor.toFixed(2)}</th>
-            <th>{totals.acreedor.toFixed(2)}</th>
+            <th data-label="Total Debe">{totals.debe.toFixed(2)}</th>
+            <th data-label="Total Haber">{totals.haber.toFixed(2)}</th>
+            <th data-label="Total Deudores">{totals.deudor.toFixed(2)}</th>
+            <th data-label="Total Acreedores">{totals.acreedor.toFixed(2)}</th>
           </tr>
         </tfoot>
       </table>

@@ -280,10 +280,13 @@ const ExamPage = () => {
         examStarted={examStarted || exercise?.finished}
         onSelectStatement={setSelectedStatement}
         helpAvailable={exercise.task.help_available}
-        entries={entries.map(entry => ({
-          ...entry,
-          annotations: entry.annotations?.filter(anno => !anno._destroy) || []
-        }))}
+        entries={Object.values(statementData).flatMap(data => 
+          data.entries.map(entry => ({
+            ...entry,
+            annotations: data.annotations
+              .filter(anno => anno.student_entry_id === entry.entry_number && !anno._destroy)
+          }))
+        )}
       />
 
       <Modal

@@ -22,6 +22,7 @@ const ExamPage = () => {
   const modalTimeExpiredRef = useRef(null);
   const modalFinishedRef = useRef(null);
   const modalTestSentRef = useRef(null);
+  const modalExitWarningRef = useRef(null);
   const navigate = useNavigate();
 
   const formatTime = (timeInSeconds) => {
@@ -102,7 +103,7 @@ const ExamPage = () => {
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      if (examStarted) {
+      if (examStarted && !exercise?.finished) {
         const message = "Estás en medio de un examen. Si sales, perderás tu progreso.";
         e.returnValue = message;
         return message;
@@ -111,7 +112,7 @@ const ExamPage = () => {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [examStarted]);
+  }, [examStarted, exercise?.finished]);
 
   const finishExam = async () => {
     try {
@@ -128,16 +129,9 @@ const ExamPage = () => {
 
   useEffect(() => {
     if (examStarted && !exercise?.finished) {
-      const handleVisibilityChange = async () => {
+      const handleVisibilityChange = () => {
         if (document.visibilityState === "hidden") {
-          const confirmation = window.confirm(
-            "Si sales de la pestaña, perderás tu progreso y no hay vuelta atrás. ¿Desea continuar?"
-          );
-          if (confirmation) {
-            await finishExam();
-            modalFinishedRef.current?.showModal();
-            navigate("/home");
-          }
+          modalExitWarningRef.current?.showModal();
         }
       };
 
@@ -181,7 +175,6 @@ const ExamPage = () => {
     try {
       const response = await userExerciseDataService.start(exerciseId);
       if (response && response.status === 200) {
-        console.log("Examen iniciado con éxito");
 
         const closingDate = new Date(exercise.task.closing_date);
         const now = new Date();
@@ -243,8 +236,6 @@ const ExamPage = () => {
       : `La tarea cerró el ${closingDate?.toLocaleString?.() || "fecha no disponible"}`;
   }
 
-  console.log("EXAAAM_STARTED:", examStarted);
-  console.log("LOS STATEMENTS", statements)
   return (
     <div className='modes_page_container exam-color'>
       <p className='head_task'>Modo Examen - {exercise.task.title}</p>
@@ -343,6 +334,32 @@ const ExamPage = () => {
         >
           Aceptar
         </button>
+      </Modal>
+
+      <Modal
+        ref={modalExitWarningRef}
+        modalTitle="Atención"
+        showButton={false}
+      >
+        <p>Si sales de la pestaña, perderás tu progreso y no hay vuelta atrás. ¿Desea continuar?</p>
+        <div className="modal__buttons">
+          <button
+            className="btn"
+            onClick={async () => {
+              await finishExam();
+              modalExitWarningRef.current?.close();
+              navigate("/home");
+            }}
+          >
+            Sí, salir
+          </button>
+          <button
+            className="btn light"
+            onClick={() => modalExitWarningRef.current?.close()}
+          >
+            No, continuar
+          </button>
+        </div>
       </Modal>
     </div>
   )

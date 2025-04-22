@@ -107,7 +107,6 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
   const removeEntry = (entryNumber) => {
     if (!selectedStatement) return;
   
-    // Marcar entrada para eliminación en lugar de borrar directamente
     setStatementData((prevData) => ({
       ...prevData,
       [selectedStatement.id]: {
@@ -118,7 +117,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
         ),
         annotations: prevData[selectedStatement.id].annotations.map(anno => 
           anno.student_entry_id === entryNumber
-            ? { ...anno, _destroy: true } // Marcar anotaciones relacionadas
+            ? { ...anno, _destroy: true } 
             : anno
         )
       },
@@ -177,7 +176,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
         entries: entries,
         annotations: prevData[selectedStatement.id].annotations.map(annotation => 
           annotation.uid === annotationUid 
-            ? { ...annotation, _destroy: true } // Marcar para eliminación
+            ? { ...annotation, _destroy: true }
             : annotation
         )
       },
@@ -211,13 +210,21 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
 
     const updatedStatementsData = { ...allStatementsData, ...statementData };
 
-    if (Object.keys(updatedStatementsData).length === 0) {
-      console.error("❌ Error: No hay datos en updatedStatementsData", updatedStatementsData);
+    const filteredStatementsData = Object.entries(updatedStatementsData).reduce((acc, [statementId, data]) => {
+      acc[statementId] = {
+        entries: data.entries,
+        annotations: data.annotations.filter(anno => !anno._destroy)
+      };
+      return acc;
+    }, {});
+
+    if (Object.keys(filteredStatementsData).length === 0) {
+      console.error("❌ Error: No hay datos en updatedStatementsData", filteredStatementsData);
       return;
     }
 
     const dataToSubmit = {
-      statementsData: updatedStatementsData,
+      statementsData: filteredStatementsData,
       taskId: exercise.task.id,
       exerciseId: exercise.id,
     };
@@ -241,7 +248,12 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
     if (onEntriesChange) {
       const formattedEntries = entries.map(entry => ({
         ...entry,
-        annotations: annotations.filter(anno => anno.student_entry_id === entry.entry_number && !anno._destroy)
+        annotations: annotations
+          .filter(anno => anno.student_entry_id === entry.entry_number)
+          .map(anno => ({
+            ...anno,
+            _destroy: anno._destroy || false
+          }))
       }));
       onEntriesChange(formattedEntries);
     }

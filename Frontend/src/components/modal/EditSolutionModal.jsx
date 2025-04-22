@@ -4,6 +4,7 @@ import "./EditSolutionModal.css";
 
 const EditSolutionModal = ({ solution, solutionIndex, solutions, setSolutions, onClose }) => {
   const [editedSolution, setEditedSolution] = useState(solution);
+  console.log("editsolutionmodal", solutionIndex)
 
   // Si la solución recibida cambia, actualizamos el estado de editedSolution
   useEffect(() => {

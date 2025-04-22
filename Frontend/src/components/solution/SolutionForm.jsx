@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import EntryForm from "../entry/EntryForm.jsx";
-import Modal from "../modal/Modal.jsx";
 
 const SolutionForm = ({ solution, solutionIndex, solutions, setSolutions }) => {
 

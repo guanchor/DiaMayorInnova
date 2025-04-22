@@ -91,11 +91,11 @@ const RealTimeTrialBalance = ({ entries }) => {
         </tbody>
         <tfoot>
           <tr>
-            <th colSpan={3}>Totales</th>
-            <th data-label="Total Debe">{totals.debe.toFixed(2)}</th>
-            <th data-label="Total Haber">{totals.haber.toFixed(2)}</th>
-            <th data-label="Total Deudores">{totals.deudor.toFixed(2)}</th>
-            <th data-label="Total Acreedores">{totals.acreedor.toFixed(2)}</th>
+            <th colSpan="3">Totales</th>
+            <th data-testid="total-debe">{totals.debe.toFixed(2)}</th>
+            <th data-testid="total-haber">{totals.haber.toFixed(2)}</th>
+            <th data-testid="total-deudores">{totals.deudor.toFixed(2)}</th>
+            <th data-testid="total-acreedores">{totals.acreedor.toFixed(2)}</th>
           </tr>
         </tfoot>
       </table>

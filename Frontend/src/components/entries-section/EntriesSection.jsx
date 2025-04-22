@@ -245,7 +245,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
   };
 
   useEffect(() => {
-    if (onEntriesChange) {
+    if (onEntriesChange && selectedStatement) {
       const formattedEntries = entries.map(entry => ({
         ...entry,
         annotations: annotations
@@ -257,7 +257,7 @@ const EntriesSection = ({ savedMarks, selectedStatement, taskId, onStatementComp
       }));
       onEntriesChange(formattedEntries);
     }
-  }, [entries, annotations, onEntriesChange]);
+  }, [entries, annotations, onEntriesChange, selectedStatement]);
 
 
   return (

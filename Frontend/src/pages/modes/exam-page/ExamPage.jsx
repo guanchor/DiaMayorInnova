@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import EntriesSection from '../../../components/entries-section/EntriesSection';
 import AuxSectionTwo from '../../../components/aux-section-two/AuxSectionTwo';
@@ -202,26 +202,28 @@ const ExamPage = () => {
     }));
   };
 
-  const handleEntriesChange = (newEntries) => {
+  const handleEntriesChange = useCallback((newEntries) => {
     if (selectedStatement) {
-      setStatementData(prev => ({
-        ...prev,
-        [selectedStatement.id]: {
-          entries: newEntries.map(entry => ({
-            entry_number: entry.entry_number,
-            entry_date: entry.entry_date
-          })),
-          annotations: newEntries.flatMap(entry => 
-            entry.annotations.map(anno => ({
-              ...anno,
-              student_entry_id: entry.entry_number
-            }))
-          )
-        }
-      }));
-      setEntries(newEntries);
+      setStatementData(prev => {
+        const newData = {
+          ...prev,
+          [selectedStatement.id]: {
+            entries: newEntries.map(entry => ({
+              entry_number: entry.entry_number,
+              entry_date: entry.entry_date
+            })),
+            annotations: newEntries.flatMap(entry => 
+              entry.annotations.map(anno => ({
+                ...anno,
+                student_entry_id: entry.entry_number
+              }))
+            )
+          }
+        };
+        return newData;
+      });
     }
-  };
+  }, [selectedStatement]);
 
   if (!exercise) return <p>Cargando...</p>;
   const now = new Date();

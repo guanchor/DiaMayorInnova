@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
@@ -6,7 +6,12 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
   const [entryStatus, setEntryStatus] = useState(exercise?.finished || false);
   const [entryDate, setDate] = useState(date || "2024-10-10");
   const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
-  const [total, setTotal] = useState(0);
+
+  const total = useMemo(() => {
+    return annotations.reduce((acc, annotation) => {
+      return acc + (annotation.debit || 0) - (annotation.credit || 0);
+    }, 0);
+  }, [annotations]);
 
   const changeStatus = () => {
     setEntryStatus(!entryStatus)
@@ -19,19 +24,6 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
       updateEntryDate(selectedStatement.id, entryIndex, newDate);
     }
   }
-
-  const calculateTotal = () => {
-    let total = 0;
-    annotations.map((annotation) => {
-      total += annotation.debit;
-      total -= annotation.credit;
-    })
-    return total;
-  }
-
-  useEffect(() => {
-    setTotal(calculateTotal())
-  }, [annotations])
 
   return (
     <div className='entry_wrapper'>

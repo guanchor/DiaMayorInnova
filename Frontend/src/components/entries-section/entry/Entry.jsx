@@ -3,7 +3,7 @@ import "./Entry.css"
 import EntryForm from './entry-form/EntryForm'
 
 const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteAnnotation, addAnnotation, deleteEntry, entryIndex, selectedStatement, date, exercise }) => {
-  const [entryStatus, setEntryStatus] = useState(false);
+  const [entryStatus, setEntryStatus] = useState(exercise?.finished || false);
   const [entryDate, setDate] = useState(date || "2024-10-10");
   const formattedDate = new Date(`${entryDate}T00:00:00`).toLocaleDateString("es-ES");
   const [total, setTotal] = useState(0);

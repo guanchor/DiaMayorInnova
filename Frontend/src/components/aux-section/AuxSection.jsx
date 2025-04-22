@@ -11,6 +11,7 @@ export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAva
   const route = useLocation().pathname
   const [auxSection, setAuxSection] = useState("balance")
   const [sectionAux, setSectionAux] = useState(<RealTimeTrialBalance entries={entries} />);
+  const isExam = route.includes("/modes/examen/");
 
   useEffect(() => {
     const updateSection = () => {
@@ -19,7 +20,7 @@ export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAva
           setSectionAux(
             <AuxSectionTwo
               statements={statements}
-              examStarted={examStarted}
+              examStarted={isExam ? examStarted : true}
               onSelectStatement={onSelectStatement}
             />)
           break;
@@ -39,7 +40,7 @@ export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAva
     };
 
     updateSection();
-  }, [auxSection, statements, examStarted, onSelectStatement, entries]);
+  }, [auxSection, statements, examStarted, onSelectStatement, entries, isExam]);
 
   const changeAuxSection = (section) => {
     setAuxSection(section);
@@ -49,7 +50,7 @@ export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAva
     <div className="practice__section_2">
       <div className="section_2__tab_buttons">
         {
-          (!route.includes("/modes/examen/") && helpAvailable) &&
+          (!isExam && helpAvailable) &&
           (<button className={auxSection === "help_example" ? 'btn__tabs--radius btn__tabs  btn__tabs--active' : 'btn__tabs btn__tabs--radius'} onClick={() => changeAuxSection("help_example")}>Ayuda</button>)
         }
         {

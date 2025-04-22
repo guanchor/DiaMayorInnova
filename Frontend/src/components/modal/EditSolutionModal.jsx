@@ -4,26 +4,13 @@ import "./EditSolutionModal.css";
 
 const EditSolutionModal = ({ solution, solutionIndex, solutions, setSolutions, onClose }) => {
   const [editedSolution, setEditedSolution] = useState(solution);
+  console.log("editsolutionmodal", solutionIndex)
 
   // Si la solución recibida cambia, actualizamos el estado de editedSolution
   useEffect(() => {
     setEditedSolution(solution);
   }, [solution]);
 
-  const handleSave = () => {
-    setSolutions((prevSolutions) => {
-      const updatedSolutions = [...prevSolutions];
-      updatedSolutions[solutionIndex] = editedSolution;
-      console.log('BBBB', updatedSolutions);
-      return updatedSolutions;
-    });
-    onClose();
-  };
-
-  console.log("Solución editada:", editedSolution);
-  console.log("Índice de la solución editada:", solutionIndex);
-  console.log("Soluciones antes de guardar:", solutions);
-  console.log("Soluciones después de guardar:", solutions);
 
   return (
     <SolutionForm

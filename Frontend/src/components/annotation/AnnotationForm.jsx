@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Modal from "../modal/Modal";
 import http from "../../http-common";
 
-const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions, setSolutions }) => {
-  
+const AnnotationForm = ({ solutionIndex = 0, entryIndex, annotationIndex, solutions, setSolutions }) => {
+  console.log("holaaaaa solutions", solutions, "index: ", solutionIndex)
   const annotation = solutions[solutionIndex].entries[entryIndex].annotations[annotationIndex];
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);

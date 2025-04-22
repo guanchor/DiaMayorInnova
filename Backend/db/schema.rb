@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_18_125758) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_20_102356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,6 +115,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_125758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.integer "solution_id"
     t.index ["account_id"], name: "index_help_examples_on_account_id"
   end
 
@@ -144,6 +145,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_125758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "statement_id", null: false
+    t.boolean "is_example", default: false
     t.index ["statement_id"], name: "index_solutions_on_statement_id"
   end
 
@@ -248,6 +250,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_125758) do
   add_foreign_key "exercises", "tasks"
   add_foreign_key "exercises", "users"
   add_foreign_key "help_examples", "accounts"
+  add_foreign_key "help_examples", "solutions"
   add_foreign_key "marks", "exercises"
   add_foreign_key "solutions", "statements"
   add_foreign_key "statements", "users"

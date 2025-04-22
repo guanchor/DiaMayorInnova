@@ -9,9 +9,15 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
 
   const total = useMemo(() => {
     return annotations.reduce((acc, annotation) => {
-      return acc + (annotation.debit || 0) - (annotation.credit || 0);
+      const debit = parseFloat(annotation.debit) || 0;
+      const credit = parseFloat(annotation.credit) || 0;
+      return acc + debit - credit;
     }, 0);
   }, [annotations]);
+
+  const formattedTotal = useMemo(() => {
+    return total.toFixed(2);
+  }, [total]);
 
   const changeStatus = () => {
     setEntryStatus(!entryStatus)
@@ -41,7 +47,7 @@ const Entry = ({ number, updateEntryDate, annotations, updateAnnotation, deleteA
             onChange={handleChangeDate}
             disabled={exercise?.finished || false}
           />
-          <p className='entry_total'>Total: <span>{total}</span></p>
+          <p className='entry_total'>Total: <span>{formattedTotal}</span></p>
         </div>
         
         <button 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import AuxSectionTwo from '../aux-section-two/AuxSectionTwo.jsx'
 import HelpSection from '../help-section/HelpSection'
 import RealTimeTrialBalance from '../trial-balance/RealTimeTrialBalance'
@@ -10,36 +10,25 @@ import { useLocation } from 'react-router-dom'
 export const AuxSection = ({ statements, examStarted, onSelectStatement, helpAvailable = false, entries = [] }) => {
   const route = useLocation().pathname
   const [auxSection, setAuxSection] = useState("balance")
-  const [sectionAux, setSectionAux] = useState(<RealTimeTrialBalance entries={entries} />);
   const isExam = route.includes("/modes/examen/");
 
-  useEffect(() => {
-    const updateSection = () => {
-      switch (auxSection) {
-        case "statements":
-          setSectionAux(
-            <AuxSectionTwo
-              statements={statements}
-              examStarted={isExam ? examStarted : true}
-              onSelectStatement={onSelectStatement}
-            />)
-          break;
-
-        case "help_example":
-          setSectionAux(<HelpSection />)
-          break;
-
-        case "balance":
-          setSectionAux(<RealTimeTrialBalance entries={entries} />)
-          break;
-
-        default:
-          setSectionAux(<div>Pestaña Diario Mayor</div>)
-          break;
-      }
-    };
-
-    updateSection();
+  const sectionAux = useMemo(() => {
+    switch (auxSection) {
+      case "statements":
+        return (
+          <AuxSectionTwo
+            statements={statements}
+            examStarted={isExam ? examStarted : true}
+            onSelectStatement={onSelectStatement}
+          />
+        );
+      case "help_example":
+        return <HelpSection />;
+      case "balance":
+        return <RealTimeTrialBalance entries={entries} />;
+      default:
+        return <div>Pestaña Diario Mayor</div>;
+    }
   }, [auxSection, statements, examStarted, onSelectStatement, entries, isExam]);
 
   const changeAuxSection = (section) => {

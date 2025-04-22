@@ -12,7 +12,7 @@ import exerciseServices from "../../services/exerciseServices.js";
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const task = state?.newTask || null;
+  const task = state?.task || state?.newTask || null;
   const { user } = useAuth();
   const [title, setTitle] = useState(task?.title || "");
   const [openingDate, setOpeningDate] = useState(task?.opening_date || "");
@@ -20,7 +20,14 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   const [statements, setStatements] = useState([]);
   const [selectedStatements, setSelectedStatements] = useState(task?.statements ? task.statements.map(s => s.id ?? s) : []);
   const [solutions, setSolutions] = useState({});
-  const [editMode, setEditMode] = useState(task?.id && !state?.newTask ? true : false);
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    if (task?.id && !state?.newTask) {
+      setEditMode(true);
+    }
+  }, [task, state]);
+
   const [currentUsers, setCurrentUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [additionalInformation, setAdditionalInformation] = useState(task?.additional_information || "");

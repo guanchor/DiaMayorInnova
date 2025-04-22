@@ -17,6 +17,7 @@ const ExamPage = () => {
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [completedStatements, setCompletedStatements] = useState({});
   const [statementData, setStatementData] = useState({});
+  const [entries, setEntries] = useState([]);
   const modalNotAvailableRef = useRef(null);
   const modalTimeExpiredRef = useRef(null);
   const modalFinishedRef = useRef(null);
@@ -208,6 +209,27 @@ const ExamPage = () => {
     }));
   };
 
+  const handleEntriesChange = (newEntries) => {
+    if (selectedStatement) {
+      setStatementData(prev => ({
+        ...prev,
+        [selectedStatement.id]: {
+          entries: newEntries.map(entry => ({
+            entry_number: entry.entry_number,
+            entry_date: entry.entry_date
+          })),
+          annotations: newEntries.flatMap(entry => 
+            entry.annotations.map(anno => ({
+              ...anno,
+              student_entry_id: entry.entry_number
+            }))
+          )
+        }
+      }));
+      setEntries(newEntries);
+    }
+  };
+
   if (!exercise) return <p>Cargando...</p>;
   const now = new Date();
   const openingDate = new Date(exercise.task.opening_date);
@@ -260,20 +282,17 @@ const ExamPage = () => {
         completedStatements={completedStatements}
         exercise={exercise}
         examStarted={examStarted}
+        onEntriesChange={handleEntriesChange}
       />
       <AuxSection
         statements={statements}
         examStarted={examStarted || exercise?.finished}
         onSelectStatement={setSelectedStatement}
         helpAvailable={exercise.task.help_available}
-        entries={Object.values(statementData).flatMap(data => 
-          data.entries?.map(entry => ({
-            ...entry,
-            annotations: data.annotations?.filter(
-              anno => anno.student_entry_id === entry.entry_number && !anno._destroy
-            ) || []
-          })) || []
-        )}
+        entries={entries.map(entry => ({
+          ...entry,
+          annotations: entry.annotations?.filter(anno => !anno._destroy) || []
+        }))}
       />
 
       <Modal

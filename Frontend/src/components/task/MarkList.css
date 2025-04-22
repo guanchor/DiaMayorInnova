@@ -3,6 +3,13 @@
   height: 100%;
 }
 
+.statements__pagination {
+  & span {
+    padding: var(--gap-s);
+    color: var(--Color-Principal);
+  }
+}
+
 .mark_list__btnHome {
   margin-left: var(--gap-s);
   width: 120px;
@@ -87,4 +94,12 @@
 .statement__state {
   display: flex;
   justify-content: center;
+}
+
+.mark-list__pagination {
+  padding-left: var(--gap-m);
+  & span {
+    padding: var(--gap-s);
+    color: var(--Color-Principal);
+  }
 }

@@ -19,7 +19,7 @@ const Table = ({ data, columns, id }) => {
 
   const options = {
     responsive: true,
-    paging: true,
+    paging: false,
     searching: true,
     pageLength: 10,
     language: {
@@ -27,9 +27,9 @@ const Table = ({ data, columns, id }) => {
       searchPlaceholder: 'Buscar en la tabla...',
       lengthMenu: 'Mostrar _MENU_ registros por página',
       zeroRecords: 'No se encontraron resultados',
-      info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
-      infoEmpty: 'No hay registros disponibles',
-      infoFiltered: '(filtrado de _MAX_ registros totales)',
+      info: '',
+      infoEmpty: '',
+      infoFiltered: '',
       loadingRecords: 'Cargando...',
       processing: 'Procesando...',
       emptyTable: 'No hay datos disponibles en la tabla',

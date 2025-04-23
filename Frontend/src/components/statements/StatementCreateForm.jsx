@@ -14,7 +14,25 @@ const StatementCreateForm = () => {
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [solutionToDeleteIndex, setSolutionToDeleteIndex] = useState(null);
-  const [message, setMessage] = useState(""); // Ajout d'un état pour les messages de feedback
+  const [message, setMessage] = useState("");
+
+  // Nouvelle fonction pour rafraîchir les solutions
+  const refreshSolutions = async () => {
+    if (selectedStatement?.id) {
+      try {
+        const response = await statementService.getSolutions(selectedStatement.id);
+        const fetchedSolutions = response.data.map(solution => ({
+          ...solution,
+          entries: solution.entries || [],
+        }));
+        setSolutions(fetchedSolutions);
+      } catch (error) {
+        console.error("Erreur lors du rafraîchissement des solutions:", error);
+        setMessage("Erreur lors du chargement des solutions.");
+        setTimeout(() => setMessage(""), 5000);
+      }
+    }
+  };
 
   const handleSelectStatement = (statement) => {
     setSelectedStatement(statement);
@@ -163,6 +181,7 @@ const StatementCreateForm = () => {
           onEditSolution={handleEditSolution}
           onDeleteSolution={handleDeleteSolution}
           solutionToDeleteIndex={solutionToDeleteIndex}
+          refreshSolutions={refreshSolutions} // Passe la fonction comme prop
         />
         {isModalOpen && selectedSolutionIndex !== null && (
           <EditSolutionModal

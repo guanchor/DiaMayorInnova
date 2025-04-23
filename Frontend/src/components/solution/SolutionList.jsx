@@ -1,23 +1,39 @@
-import React from "react";
+import React, { useState } from "react"; // Assurez-vous d'importer useState
 import SolutionForm from "./SolutionForm.jsx";
-import solutionService from "../../services/solutionService"; // Ajoutez cette ligne
+import solutionService from "../../services/solutionService";
 
-const SolutionList = ({ solutions, onEditSolution, onDeleteSolution, solutionToDeleteIndex }) => {
-  // Ajoutez cette fonction
-  const handleMarkAsExample = async (solutionId) => {
+const SolutionList = ({ solutions, onEditSolution, onDeleteSolution, solutionToDeleteIndex, refreshSolutions }) => {
+  const [isToggling, setIsToggling] = useState(null); // État pour suivre la solution en cours de bascule
+
+  const handleToggleExample = async (solutionId, isCurrentlyExample) => {
+    if (isToggling === solutionId) return;
+    setIsToggling(solutionId);
+  
     try {
-      await solutionService.markAsExample(solutionId, {
-        creditMoves: "Exemple crédit",
-        debitMoves: "Exemple débit",
-        account_id: 1 
-      });
-      alert("Solution marquée comme exemple avec succès!");
+      if (isCurrentlyExample) {
+        await solutionService.unmarkAsExample(solutionId);
+        alert("Ejemplo desmarcado correctamente");
+      } else {
+        // Vérifier si account_id est valide (par exemple, via une requête au backend)
+        const accountId = 1; // Remplacer par une logique dynamique si possible
+        if (!accountId) {
+          throw new Error("Aucun compte disponible pour marquer comme exemple");
+        }
+        await solutionService.markAsExample(solutionId, {
+          creditMoves: "Ejemplo crédito",
+          debitMoves: "Ejemplo débito",
+          account_id: accountId
+        });
+        alert("Solución marcada como ejemplo correctamente");
+      }
+      refreshSolutions();
     } catch (error) {
-      console.error("Erreur:", error);
-      alert("Erreur lors du marquage comme exemple");
+      console.error("Error:", error);
+      alert(error.message || error.response?.data?.message || "Ocurrió un error al procesar la solicitud");
+    } finally {
+      setIsToggling(null);
     }
   };
-
   return (
     <div className="statement-page__solutions">
       <h3 className="statement-page__solutions-header">Soluciones del Enunciado</h3>
@@ -27,20 +43,30 @@ const SolutionList = ({ solutions, onEditSolution, onDeleteSolution, solutionToD
             <div className="statement-page__statement-container">
               <h4 className="statement-page__definition-solution">
                 {`Solución ${index + 1}`}
-                {solution.help_example && <span style={{color: 'green', marginLeft: '8px'}}>(Exemple)</span>}
+                {solution.is_example && (
+                  <span className="help-example-indicator" title="Ejemplo de ayuda">
+                    ●
+                  </span>
+                )}
               </h4>
             </div>
             <div className="statement-page__actions">
-              <button onClick={() => onEditSolution(index)} className="statement-page__button-text">Editar</button>
+              <button onClick={() => onEditSolution(index)} className="statement-page__button-text">
+                Editar
+              </button>
               
-              {/* Ajoutez ce nouveau bouton */}
               <button 
-                onClick={() => handleMarkAsExample(solution.id)} 
-                className="statement-page__button-text"
-                disabled={solution.help_example}
-                style={solution.help_example ? {opacity: 0.6, cursor: 'not-allowed'} : {}}
+                onClick={() => handleToggleExample(solution.id, solution.is_example)} 
+                className={`statement-page__button-text ${solution.is_example ? 'button-example-active' : ''}`}
+                disabled={isToggling === solution.id} // Désactive le bouton pendant le traitement
               >
-                {solution.help_example ? "Este es un ejemplo" : "Marcar como ejemplo"}
+                {solution.is_example ? (
+                  <>
+                    <span className="help-example-indicator">●</span> Desmarcar ejemplo
+                  </>
+                ) : (
+                  "Marcar como ejemplo"
+                )}
               </button>
 
               <button onClick={() => onDeleteSolution(index)} className="statement-page__button-text--delete">
@@ -51,6 +77,19 @@ const SolutionList = ({ solutions, onEditSolution, onDeleteSolution, solutionToD
           </li>
         ))}
       </ul>
+
+      <style jsx>{`
+        .help-example-indicator {
+          color: #28a745;
+          margin-right: 6px;
+          font-size: 1.2em;
+          vertical-align: middle;
+        }
+        .button-example-active {
+          color: #28a745;
+          font-weight: bold;
+        }
+      `}</style>
     </div>
   );
 };

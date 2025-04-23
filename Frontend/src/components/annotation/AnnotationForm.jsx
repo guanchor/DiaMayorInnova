@@ -3,8 +3,8 @@ import Modal from "../modal/Modal";
 import http from "../../http-common";
 
 const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions, setSolutions }) => {
-  
-  const annotation = solutions[solutionIndex].entries[entryIndex].annotations[annotationIndex];
+
+  const annotation = solutions[0].entries[entryIndex].annotations[annotationIndex];
   const [accounts, setAccounts] = useState([]);
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
@@ -12,7 +12,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
   const openAccountModal = async () => {
     try {
       const response = await http.get("/accounts");
-      setAccounts(response.data);
+      setAccounts(response.data.accounts);
       modalRef.current?.showModal();
     } catch (error) {
       console.error("Error al cargar las cuentas:", error);
@@ -124,7 +124,7 @@ const AnnotationForm = ({ solutionIndex, entryIndex, annotationIndex, solutions,
 
       <Modal ref={modalRef} modalTitle="Seleccionar Cuenta" showButton={false}>
         <div className="account-list">
-          {accounts.map((account) => (
+          {Array.isArray(accounts) && accounts.map((account) => (
             <div
               key={account.account_number}
               className="account-item"

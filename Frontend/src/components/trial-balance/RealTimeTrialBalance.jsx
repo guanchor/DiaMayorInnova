@@ -10,7 +10,7 @@ const RealTimeTrialBalance = ({ entries }) => {
       const validAnnotations = entry.annotations?.filter(anno => !anno._destroy) || [];
       
       validAnnotations.forEach(anno => {
-        const accountId = anno.account_id || anno.account_number;
+        const accountId = anno.account_number;
         if (!accountId) return; // Saltamos apuntes incompletos
 
         if (!grouped[accountId]) {

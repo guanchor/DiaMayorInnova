@@ -78,6 +78,15 @@
   color: #dc3545;
 }
 
+.ledger-book-account-totals {
+  background-color: #f4f4f4;
+  font-weight: 600;
+}
+
+.ledger-book-entry-row td:first-child {
+  padding-left: 2rem;
+}
+
 @media (max-width: 768px) {
   .ledger-book {
     padding: 0.8rem;

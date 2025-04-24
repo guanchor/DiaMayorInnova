@@ -76,9 +76,18 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
         <tbody>
           {processedData.accounts.map(account => (
             <React.Fragment key={account.accountNumber}>
+              <tr className="ledger-book-account-totals">
+                <td>{account.accountNumber}</td>
+                <td></td>
+                <td>{formatCurrency(account.totalDebit)}</td>
+                <td>{formatCurrency(account.totalCredit)}</td>
+                <td className={account.balance < 0 ? 'ledger-book-negative' : ''}>
+                  {formatCurrency(account.balance)}
+                </td>
+              </tr>
               {account.entries.map((entry, index) => (
                 <tr key={`${account.accountNumber}-${entry.entryNumber}-${index}`} className="ledger-book-entry-row">
-                  <td>{index === 0 ? account.accountNumber : ''}</td>
+                  <td></td>
                   <td>{entry.entryNumber}</td>
                   <td>{formatCurrency(entry.debit)}</td>
                   <td>{formatCurrency(entry.credit)}</td>
@@ -87,14 +96,6 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
                   </td>
                 </tr>
               ))}
-              <tr className="ledger-book-account-totals">
-                <td colSpan="2">Total Cuenta</td>
-                <td>{formatCurrency(account.totalDebit)}</td>
-                <td>{formatCurrency(account.totalCredit)}</td>
-                <td className={account.balance < 0 ? 'ledger-book-negative' : ''}>
-                  {formatCurrency(account.balance)}
-                </td>
-              </tr>
             </React.Fragment>
           ))}
         </tbody>

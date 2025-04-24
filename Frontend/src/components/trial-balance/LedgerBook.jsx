@@ -1,7 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import './LedgerBook.css';
 
 const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
+  const [sortConfig, setSortConfig] = useState({
+    key: 'accountNumber',
+    direction: 'asc'
+  });
+
   const processedData = useMemo(() => {
     const accountsMap = new Map();
     
@@ -23,7 +28,7 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
     });
 
     // Calcular saldos y ordenar
-    const accounts = Array.from(accountsMap.values()).map(account => {
+    let accounts = Array.from(accountsMap.values()).map(account => {
       let totalDebit = 0;
       let totalCredit = 0;
       
@@ -41,6 +46,26 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
         balance
       };
     });
+
+    // Ordenar las cuentas
+    if (sortConfig.key === 'accountNumber') {
+      accounts.sort((a, b) => {
+        const aValue = parseInt(a.accountNumber);
+        const bValue = parseInt(b.accountNumber);
+        return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+      });
+    }
+
+    // Ordenar los asientos dentro de cada cuenta
+    accounts = accounts.map(account => ({
+      ...account,
+      entries: [...account.entries].sort((a, b) => {
+        if (sortConfig.key === 'entryNumber') {
+          return sortConfig.direction === 'asc' ? a.entryNumber - b.entryNumber : b.entryNumber - a.entryNumber;
+        }
+        return 0;
+      })
+    }));
     
     // Calcular totales generales
     const totalDebit = accounts.reduce((sum, acc) => sum + acc.totalDebit, 0);
@@ -51,7 +76,14 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
       totalDebit,
       totalCredit
     };
-  }, [entries]);
+  }, [entries, sortConfig]);
+
+  const handleSort = (key) => {
+    setSortConfig(prevConfig => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-ES', {
@@ -60,14 +92,25 @@ const LedgerBook = ({ entries, title = "Libro Mayor" }) => {
     }).format(amount);
   };
 
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) return <i className="fi fi-rr-angle-small-down sort-icon-inactive" />;
+    return sortConfig.direction === 'asc' 
+      ? <i className="fi fi-rr-angle-small-up" /> 
+      : <i className="fi fi-rr-angle-small-down" />;
+  };
+
   return (
     <div className="ledger-book">
       <h3>{title}</h3>
       <table className="ledger-book-table">
         <thead>
           <tr>
-            <th>Cuenta</th>
-            <th>Asiento</th>
+            <th onClick={() => handleSort('accountNumber')} className="sortable-header">
+              Cuenta <span className="sort-icon">{getSortIcon('accountNumber')}</span>
+            </th>
+            <th onClick={() => handleSort('entryNumber')} className="sortable-header">
+              Asiento <span className="sort-icon">{getSortIcon('entryNumber')}</span>
+            </th>
             <th>Debe</th>
             <th>Haber</th>
             <th>Saldo</th>

@@ -3,22 +3,24 @@ class AccountsController < ApplicationController
   load_and_authorize_resource
 
   def index
+    accounts = Account.all
+  
     if params[:name].present?
-      accounts = Account.where("LOWER(name) LIKE ?", "%#{params[:name].downcase}%")
-    else
-      accounts = Account.all.page(params[:page]).per(params[:per_page] || 10)
+      name = params[:name].to_s.downcase
+      accounts = accounts.where("LOWER(name) LIKE ?", "%#{name}%")
     end
   
+    paginated_accounts = accounts.page(params[:page]).per(params[:per_page] || 10)
+  
     render json: {
-      accounts: accounts,
+      accounts: paginated_accounts,
       meta: {
-        current_page: accounts.try(:current_page) || 1,
-        total_pages: accounts.try(:total_pages) || 1,
-        total_count: accounts.size
+        current_page: paginated_accounts.current_page,
+        total_pages: paginated_accounts.total_pages,
+        total_count: paginated_accounts.total_count
       }
     }
   end
-  
 
   def show
     @account = Account.find(params[:id])

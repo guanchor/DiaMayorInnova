@@ -80,11 +80,11 @@ const TaskDetails = ({ selectedTask, onDeleteStatement, onDeleteTask, onCloseMod
         <button onClick={handleEditTask} className="task-details__footer--edit-btn">
           Editar tarea
         </button>
-        <button onClick={(e) => onDuplicateTask(e, selectedTask)} className="task-details__footer--edit-btn">
-          Duplicar tarea
-        </button>
         <button onClick={handleDeleteTask} className="task-details__footer--delete-btn">
           Eliminar tarea
+        </button>
+        <button onClick={(e) => onDuplicateTask(e, selectedTask)} className="btn light">
+          Duplicar tarea
         </button>
         <button onClick={handleShowMarks} className="btn light">
           Ver notas

@@ -1,7 +1,13 @@
 import http from "../http-common";
 
-const getAll = async () => {
-  const response = await http.get(`/student_exercises`);
+const getAll = async (page = 1, per_page = 5, only_active = true) => {
+  const response = await http.get(`/student_exercises`, {
+    params: {
+      page,
+      per_page,
+      only_active
+    }
+  });
   return response;
 };
 

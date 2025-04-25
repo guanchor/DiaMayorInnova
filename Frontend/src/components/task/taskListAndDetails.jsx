@@ -33,7 +33,7 @@ const TaskListAndDetails = () => {
     const fetchTasks = async () => {
       setLoading(true);
       try {
-        const response = await taskService.getAllTasks(currentPage, 3, searchTerm || "", true);
+        const response = await taskService.getAllTasks(currentPage, 4, searchTerm || "", true); //Set value for items per page
 
         if (!response) {
           throw new Error("No se recibió ninguna respuesta del servidor.");

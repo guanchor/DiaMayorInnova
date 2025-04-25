@@ -31,10 +31,15 @@ const StudentAside = () => {
       try {
         const response = await exerciseService.getAll();
         if (response?.data) {
-          setExercises(response.data);
+          const now = new Date();
+          const filteredExercises = response.data.filter(ex => {
+            const closingDate = new Date(ex.task.closing_date);
+            return closingDate >= now;
+          });
+          setExercises(filteredExercises);
         } else {
           setExercises([]);
-        }
+        }        
       } catch (error) {
         console.error("Error obteniendo los ejercicios:", error);
         setExercises([]);

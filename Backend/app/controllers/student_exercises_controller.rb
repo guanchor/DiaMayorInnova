@@ -271,34 +271,40 @@ class StudentExercisesController < ApplicationController
   end
 
   def compute_grade(statement, param_entries)
-      grade = 1
-      statement.solutions.each do |solution|
-        solution.entries.each do |solution_entry|
+    grade = 1
+    statement.solutions.each do |solution|
+      solution.entries.each do |solution_entry|
+        # Busca una entrada del estudiante que coincida con la fecha de la solución
+        matching_entry = param_entries.find do |entry|
+          entry[:entry_date].to_s == solution_entry.entry_date.to_s
+        end
 
-          matching_entry = param_entries.find do |entry|
-            entry[:entry_date].to_s == solution_entry.entry_date.to_s
-          end
-
-          if matching_entry
-            param_annotations = matching_entry[:student_annotations_attributes] || []
-            solution_entry.annotations.each do |annotation|
-              matching_annotation = param_annotations.find do |param_annotation|
-                param_annotation[:account_id].to_i == annotation.account_id &&
-                param_annotation[:credit].to_f == annotation.credit.to_f &&
-                param_annotation[:debit].to_f == annotation.debit.to_f
-              end
-              if matching_annotation.nil?
-                grade = 0
-
-              end
+        if matching_entry
+          param_annotations = matching_entry[:student_annotations_attributes] || []
+          solution_entry.annotations.each do |annotation|
+            # Busca una anotación que coincida exactamente con la solución
+            matching_annotation = param_annotations.find do |param_annotation|
+              param_annotation[:account_id].to_i == annotation.account_id &&
+              param_annotation[:credit].to_f == annotation.credit.to_f &&
+              param_annotation[:debit].to_f == annotation.debit.to_f
             end
-          else
-
-            grade = 0
+            if matching_annotation.nil?
+              grade = 0  # Si no encuentra una anotación correcta, nota 0
+              return grade
+            end
           end
+
+          # Verifica si hay anotaciones adicionales
+          if param_annotations.size > solution_entry.annotations.size
+            grade = 0.5  # Si hay anotaciones adicionales pero todas las correctas están, nota 0.5
+          end
+        else
+          grade = 0  # Si no encuentra entrada coincidente, nota 0
+          return grade
         end
       end
-      grade
     end
+    grade
+  end
 
 end

@@ -2,10 +2,10 @@ require 'caxlsx'
 
 
 class MarksController < ApplicationController
-  before_action :authenticate_user!
+ 
   before_action :set_mark, only: [:show, :update]
-  load_and_authorize_resource
-
+  before_action :authenticate_user!, except: [:export_xlsx]
+  load_and_authorize_resource except: [:export_xlsx]
   def index
     if params[:exercise_id].present?
       @marks = Mark.where(exercise_id: params[:exercise_id])

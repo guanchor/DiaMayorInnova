@@ -61,45 +61,60 @@ class StudentExercisesController < ApplicationController
     end
   end
 
-
   def students_mark_list
-    task_id = params[:task_id] # Get ID by param
+    exercise_id = params[:exercise_id] # Utiliser exercise_id au lieu de task_id
 
-    @students_marks = Exercise
-      .includes(:marks, :task, :user)     # Get relations
-      .where(task_id: task_id)            # Filter all exercises from a specific task
-      .where(users: { role: "student" })  # Only students
-      .joins(:user)                       # Join all student users
-      .distinct                           # Avoid dupes
-    
+    unless exercise_id.present?
+      render json: { error: "exercise_id is required" }, status: :bad_request
+      return
+    end
+
+    # Récupérer l'exercice spécifique
+    @exercise = Exercise.includes(:marks, :task, :user)
+                        .where(id: exercise_id)
+                        .where(users: { role: "student" })
+                        .joins(:user)
+                        .distinct
+                        .first
+
+    unless @exercise
+      render json: { message: "Aucun exercice trouvé pour exercise_id: #{exercise_id}" }, status: :not_found
+      return
+    end
+
+    # Récupérer tous les exercices associés à la même tâche que l'exercice donné
+    @students_marks = Exercise.includes(:marks, :task, :user)
+                              .where(task_id: @exercise.task_id)
+                              .where(users: { role: "student" })
+                              .joins(:user)
+                              .distinct
+
     result = @students_marks.map do |exercise|
       {
-        exercise_id: exercise.id, 
-        task_tittle: exercise.task.title,  
-        student: exercise.user.name,
-        mark: exercise.total_mark.round(1),
-        date: exercise.updated_at.strftime("%d/%m/%Y, %H:%M:%S")
+        exercise_id: exercise.id,
+        task_tittle: exercise.task&.title || "Tâche inconnue",
+        student: exercise.user&.name || "Étudiant inconnu",
+        mark: exercise.total_mark&.round(1) || 0,
+        date: exercise.updated_at&.strftime("%d/%m/%Y, %H:%M:%S") || "Date inconnue"
       }
+    end
+
+    render json: result
   end
 
-  render json: result
-end
-
-
   def find_mark_exercise_by_user
-
     @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
   
     render json: @exercises.as_json(
       include: {
-        task: {only: [:title]},  
+        task: { only: [:title] },
         marks: {
-            include: {
-              student_entries: {
-                include: :student_annotations
-              }
+          include: {
+            student_entries: {
+              include: :student_annotations
             }
           }
+        }
       },
       methods: [:total_mark]
     )
@@ -135,40 +150,38 @@ end
   end
 
   def update_student_exercise
-      
-      @exercise = Exercise.find(params[:id])
-    
-      if @exercise.update(exercise_params)
-        marks_params = exercise_params[:marks_attributes] || []
-        statement_ids = marks_params.map { |mark| mark[:statement_id] }
-        statements = Statement.includes(solutions: { entries: :annotations }).where(id: statement_ids)
-    
-        marks_params.each do |mark_param|
-
-          @exercise.marks.where(statement_id: mark_param[:statement_id]).destroy_all
-          
-          mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0))
-          
-          param_entries = mark_param[:student_entries_attributes] || []
-          statement = statements.find { |s| s.id == mark_param[:statement_id].to_i }
-          mark_value = statement ? compute_grade(statement, param_entries) : 0
-          mark.update!(mark: mark_value)
-          
-          student_entries_params = mark_param[:student_entries_attributes] || []
-          student_entries_params.each do |entry_param|
-            entry = mark.student_entries.create!(entry_param.except(:student_annotations_attributes))
-    
-            student_annotations_params = entry_param[:student_annotations_attributes] || []
-            student_annotations_params.each do |annotation_param|
-              entry.student_annotations.create!(annotation_param)
-            end
+    @exercise = Exercise.find(params[:id])
+  
+    if @exercise.update(exercise_params)
+      marks_params = exercise_params[:marks_attributes] || []
+      statement_ids = marks_params.map { |mark| mark[:statement_id] }
+      statements = Statement.includes(solutions: { entries: :annotations }).where(id: statement_ids)
+  
+      marks_params.each do |mark_param|
+        @exercise.marks.where(statement_id: mark_param[:statement_id]).destroy_all
+        
+        mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0))
+        
+        param_entries = mark_param[:student_entries_attributes] || []
+        statement = statements.find { |s| s.id == mark_param[:statement_id].to_i }
+        mark_value = statement ? compute_grade(statement, param_entries) : 0
+        mark.update!(mark: mark_value)
+        
+        student_entries_params = mark_param[:student_entries_attributes] || []
+        student_entries_params.each do |entry_param|
+          entry = mark.student_entries.create!(entry_param.except(:student_annotations_attributes))
+  
+          student_annotations_params = entry_param[:student_annotations_attributes] || []
+          student_annotations_params.each do |annotation_param|
+            entry.student_annotations.create!(annotation_param)
           end
         end
-      
-        render json: @exercise, status: :ok
-      else
-        render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
       end
+    
+      render json: @exercise, status: :ok
+    else
+      render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
+    end
   end
   
   private
@@ -201,34 +214,30 @@ end
   end
 
   def compute_grade(statement, param_entries)
-      grade = 1
-      statement.solutions.each do |solution|
-        solution.entries.each do |solution_entry|
+    grade = 1
+    statement.solutions.each do |solution|
+      solution.entries.each do |solution_entry|
+        matching_entry = param_entries.find do |entry|
+          entry[:entry_date].to_s == solution_entry.entry_date.to_s
+        end
 
-          matching_entry = param_entries.find do |entry|
-            entry[:entry_date].to_s == solution_entry.entry_date.to_s
-          end
-
-          if matching_entry
-            param_annotations = matching_entry[:student_annotations_attributes] || []
-            solution_entry.annotations.each do |annotation|
-              matching_annotation = param_annotations.find do |param_annotation|
-                param_annotation[:account_id].to_i == annotation.account_id &&
-                param_annotation[:credit].to_f == annotation.credit.to_f &&
-                param_annotation[:debit].to_f == annotation.debit.to_f
-              end
-              if matching_annotation.nil?
-                grade = 0
-
-              end
+        if matching_entry
+          param_annotations = matching_entry[:student_annotations_attributes] || []
+          solution_entry.annotations.each do |annotation|
+            matching_annotation = param_annotations.find do |param_annotation|
+              param_annotation[:account_id].to_i == annotation.account_id &&
+              param_annotation[:credit].to_f == annotation.credit.to_f &&
+              param_annotation[:debit].to_f == annotation.debit.to_f
             end
-          else
-
-            grade = 0
+            if matching_annotation.nil?
+              grade = 0
+            end
           end
+        else
+          grade = 0
         end
       end
-      grade
     end
-
+    grade
+  end
 end

@@ -53,7 +53,6 @@ const AddAccount = ({ setNewAcc }) => {
           description: response.data.description.trim(),
           accounting_plan_id: parseInt(response.data.accounting_plan_id),
         })
-        console.log("nuevvooooooo", response.data);
         setNewAcc(true);
       })
         .catch(e => {
@@ -72,10 +71,19 @@ const AddAccount = ({ setNewAcc }) => {
 
   useEffect(() => {
     AccountingPlanService.getAll()
-      .then(({ data }) => {
-        setPlans(data);
+      .then((response) => {
+        if (response && response.accountingPlans) {
+          setPlans(response.accountingPlans);
+        } else {
+          setPlans([]); // Avoid undefined
+        }
       })
-  }, [])
+      .catch((error) => {
+        console.error("Error al obtener los planes contables:", error);
+        setPlans([]);
+      });
+  }, []);
+  
 
   return (
     <>
@@ -158,10 +166,13 @@ const AddAccount = ({ setNewAcc }) => {
                 </label>
               </div>
             </div>
-
-            <div className='account__form--add'>
-              <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus' />Añadir cuenta</button>
+            
+            <div className='account__form--actions'>
+              <div className='account__form--add'>
+                <button className="btn account__button" onClick={saveAccount}> <i className='fi-rr-plus' />Añadir cuenta</button>
+              </div>  
             </div>
+            
 
             {error && <div className="account__error">{error}</div>}
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_13_123429) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_18_125758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -206,6 +206,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_13_123429) do
     t.integer "created_by"
     t.text "additional_information"
     t.boolean "is_exam", default: false
+    t.boolean "help_available", default: false
   end
 
   create_table "teacher_class_groups", force: :cascade do |t|

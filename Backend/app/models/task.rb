@@ -10,6 +10,7 @@ class Task < ApplicationRecord
   validates :title, :opening_date, :closing_date, presence: true
   validates :additional_information, presence: true, allow_blank: true
   validates :is_exam, inclusion: { in: [true, false] }
+  validates :help_available, inclusion: { in: [true, false] }
 
   private
 

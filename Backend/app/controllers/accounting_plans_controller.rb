@@ -4,11 +4,19 @@ class AccountingPlansController < ApplicationController
     
     def index
         if params[:name].present?
-            @accountingPlans = AccountingPlan.where("name LIKE ?", "%#{params[:name]}%")
+            accountingPlans = AccountingPlan.where("LOWER(name) LIKE ?", "%#{params[:name].downcase}%")
         else
-            @accountingPlans = AccountingPlan.all
+            accountingPlans = AccountingPlan.all.page(params[:page]).per(params[:per_page] || 10)
         end
-        render json: @accountingPlans
+
+        render json: {
+            accountingPlans: accountingPlans,
+            meta: {
+                current_page: accountingPlans.try(:current_page) || 1,
+                total_pages: accountingPlans.try(:total_pages) || 1,
+                total_count: accountingPlans.size
+            }
+        }
     end
 
     def show

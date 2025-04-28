@@ -42,8 +42,9 @@ end
   resources :student_exercises, only: [:index, :show, :create, :update] do
     member do
       post 'start'
-      post 'finish'
+      put 'finish'
       put 'update_student_exercise'
+      put 'update_student_task'
     end
     collection do
       get 'students_mark_list'

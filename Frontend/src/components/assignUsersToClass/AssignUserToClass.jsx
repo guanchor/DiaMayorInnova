@@ -24,12 +24,13 @@ const AssignUserToClass = ({
   const [loading, setLoading] = useState(false);
   const modalRef = useRef(null);
 
-  const groupedUsers = allUsers.reduce((acc, user) => {
+  const groupedUsers = (Array.isArray(allUsers) ? allUsers : []).reduce((acc, user) => {
     const role = user.role;
     if (!acc[role]) acc[role] = [];
     acc[role].push(user);
     return acc;
   }, {});
+  
 
   const rolesOrder = ['teacher', 'student'];
 
@@ -97,7 +98,7 @@ const AssignUserToClass = ({
           usersResponse = await userService.getAllUsers();
         }
 
-        setAllUsers(usersResponse.data.data.users);
+        setAllUsers(usersResponse.data.data.data.users);
 
         if (user.role === "teacher") {
           const groupsResponse = await ClassGroupService.findByTeacherId(user.id);

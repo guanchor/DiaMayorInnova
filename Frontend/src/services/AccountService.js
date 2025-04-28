@@ -1,9 +1,11 @@
 import http from "../http-common";
 
-const getAll = async () => {
+const getAll = async (page = 1, perPage = 10, name = "") => {
   try {
-    const response = http.get("/accounts");
-    return response;
+    const response = await http.get("/accounts", {
+      params: { page, per_page: perPage, name }
+    });
+    return response.data;
   } catch (error) {
     console.error("Error en la petición getAll: ", error);
     return null;
@@ -15,7 +17,6 @@ const get = async (id) => {
     const response = await http.get(`/accounts/${id}`);
     return response;
   } catch (error) {
-    console.log("Error en la petición get: ", error);
     return null;
   }
 };
@@ -72,7 +73,6 @@ const  findByName =  async (name) => {
     return response;
   }
   catch (error) {
-    console.log("Error en la búsqueda por módulo", error);
     return null;
   }
 };

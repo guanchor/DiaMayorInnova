@@ -50,7 +50,7 @@ function App() {
                 <Route element={<PrivateRoute allowedRoles={['admin', 'center_admin', 'teacher', 'student']} />}>
                   <Route path="/home" element={<Home />} />
                   <Route path="/modes" element={<Modes />} >
-                    <Route path='tarea/' element={<TaskPage />} />
+                    <Route path="tarea/:exerciseId" element={<TaskPage />} />
                     <Route path='practica/' element={<PracticePage />} />
                     <Route path='examen/:exerciseId' element={<ExamPage />} />
                   </Route>

@@ -165,7 +165,6 @@ class StudentExercisesController < ApplicationController
   end
 
   def update_student_exercise
-      
     @exercise = Exercise.find(params[:id])
 
     if @exercise.finished
@@ -174,20 +173,23 @@ class StudentExercisesController < ApplicationController
       return
     end
     
-      if @exercise.update(exercise_params)
-        marks_params = exercise_params[:marks_attributes] || []
-        statement_ids = marks_params.map { |mark| mark[:statement_id] }
-        statements = Statement.includes(solutions: { entries: :annotations }).where(id: statement_ids)
-    
-        marks_params.each do |mark_param|
-          statement_id = mark_param[:statement_id].to_i
-          @exercise.marks.where(statement_id: statement_id).destroy_all
-          
-          mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0, statement_id: statement_id))
+    if @exercise.update(exercise_params)
+      # Obtener todos los enunciados del ejercicio
+      all_statements = @exercise.task.statements
+      marks_params = exercise_params[:marks_attributes] || []
+      
+      # Para cada enunciado del ejercicio
+      all_statements.each do |statement|
+        # Buscar si hay una marca para este enunciado
+        mark_param = marks_params.find { |mp| mp[:statement_id].to_i == statement.id }
+        
+        if mark_param
+          # Si hay una marca, procesarla normalmente
+          @exercise.marks.where(statement_id: statement.id).destroy_all
+          mark = @exercise.marks.create!(mark_param.except(:student_entries_attributes).merge(mark: 0, statement_id: statement.id))
           
           param_entries = mark_param[:student_entries_attributes] || []
-          statement = statements.find { |s| s.id == mark_param[:statement_id].to_i }
-          mark_value = statement ? compute_grade(statement, param_entries) : 0
+          mark_value = compute_grade(statement, param_entries)
           mark.update!(mark: mark_value)
           
           student_entries_params = mark_param[:student_entries_attributes] || []
@@ -199,12 +201,20 @@ class StudentExercisesController < ApplicationController
               entry.student_annotations.create!(annotation_param)
             end
           end
+        else
+          # Si no hay una marca para este enunciado, crear una con nota 0
+          @exercise.marks.where(statement_id: statement.id).destroy_all
+          mark = @exercise.marks.create!(
+            statement_id: statement.id,
+            mark: 0
+          )
         end
-      
-        render json: @exercise, status: :ok
-      else
-        render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
       end
+      
+      render json: @exercise, status: :ok
+    else
+      render json: { errors: @exercise.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update_student_task
@@ -271,6 +281,9 @@ class StudentExercisesController < ApplicationController
   end
 
   def compute_grade(statement, param_entries)
+    # Si no hay entradas para este enunciado, la nota es 0
+    return 0 if param_entries.empty?
+
     grade = 1
     statement.solutions.each do |solution|
       solution.entries.each do |solution_entry|

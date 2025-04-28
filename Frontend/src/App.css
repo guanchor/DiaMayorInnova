@@ -126,6 +126,15 @@
     height: auto;
   }
 
+  .home_section--admin {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-l);
+    padding: var(--gap-xxs);
+    overflow: auto;
+    height: auto;
+  }
+
   .top,
   .aside,
   .principal {

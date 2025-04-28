@@ -120,23 +120,33 @@ class StudentExercisesController < ApplicationController
 
 
   def find_mark_exercise_by_user
-
-    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
+    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations })
+                         .where(user_id: current_user.id)
+                         .page(params[:page])
+                         .per(params[:per_page] || 5)
   
-    render json: @exercises.as_json(
-      include: {
-        task: {only: [:title]},  
-        marks: {
+    render json: {
+      exercises: @exercises.as_json(
+        include: {
+          task: { only: [:title] },
+          marks: {
             include: {
               student_entries: {
                 include: :student_annotations
               }
             }
           }
-      },
-      methods: [:total_mark]
-    )
+        },
+        methods: [:total_mark]
+      ),
+      meta: {
+        current_page: @exercises.current_page,
+        total_pages: @exercises.total_pages,
+        total_count: @exercises.total_count
+      }
+    }
   end
+  
 
   def start
     @exercise = Exercise.find(params[:id])

@@ -38,7 +38,6 @@ const StudentAside = () => {
         setLoading(true);
         const response = await exerciseService.getAll(currentPage, itemsPerPage, onlyActive);
 
-        console.log("formatin",response)
         if (response?.data.exercises) {
           setExercises(response.data.exercises);
           setTotalPages(response.data.meta?.total_pages || 1);

@@ -89,7 +89,7 @@ const ExerciseMarksList = () => {
                 </button>
                 <h1 className="mark_list__page--title">Notas de los estudiantes</h1>
                 <button className="btn light" onClick={handleExportToXlsx}>
-                    <i className="fi fi-rr-download" /> Exporter en XLSX
+                    <i className="fi fi-rr-download" /> Exportar en XLSX
                 </button>
             </div>
 

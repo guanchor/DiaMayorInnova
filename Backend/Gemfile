@@ -43,6 +43,10 @@ gem 'cancancan'
 # Kaminari for an efficient pagination of data records 
 gem 'kaminari'
 
+# Gems pour l'exportation en XLSX
+gem 'caxlsx', '~> 4.1'  # Remplace axlsx par caxlsx
+gem 'caxlsx_rails', '~> 0.6.4'  # Remplace axlsx_rails par caxlsx_rails
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -71,5 +75,4 @@ group :development, :test do
 
   # SimpleCov is a code coverage analysis tool for Ruby.
   gem 'simplecov', require: false
-
 end

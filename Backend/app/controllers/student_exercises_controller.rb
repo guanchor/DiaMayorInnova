@@ -2,20 +2,42 @@ class StudentExercisesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
-    render json: @exercises.as_json(
-      include: {
-        task: { only: [:id, :title, :opening_date, :closing_date, :is_exam] },
-        marks: {
+    return render json: { error: "No autorizado" }, status: :unauthorized unless current_user.student? || current_user.teacher?
+  
+    exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations })
+  
+    if current_user.student?
+      exercises = exercises.where(user_id: current_user.id)
+    end
+  
+    if params[:only_active].present? && params[:only_active] == "true"
+      now = Time.zone.now
+      exercises = exercises.joins(:task).where("tasks.opening_date <= ? AND tasks.closing_date >= ?", now, now)
+    end
+  
+    paginated_exercises = exercises.page(params[:page]).per(params[:per_page] || 5)
+  
+    render json: {
+      exercises: paginated_exercises.as_json(
+        include: {
+          task: { only: [:id, :title, :opening_date, :closing_date, :is_exam] },
+          marks: {
             include: {
               student_entries: {
                 include: :student_annotations
               }
             }
           }
+        }
+      ),
+      meta: {
+        current_page: paginated_exercises.current_page,
+        total_pages: paginated_exercises.total_pages,
+        total_count: paginated_exercises.total_count
       }
-    )
+    }
   end
+  
 
   def show
     @exercise = Exercise.includes(:task, marks: { student_entries: :student_annotations }).find(params[:id])
@@ -65,7 +87,6 @@ class StudentExercisesController < ApplicationController
     end
   end
 
-
   def students_mark_list
     task_id = params[:task_id] # Get ID by param
     per_page = params[:per_page] || 10
@@ -99,25 +120,73 @@ class StudentExercisesController < ApplicationController
     }
   end
 
+  def export_to_xlsx
+    task_id = params[:task_id] # Get ID by param
+
+    @students_marks = Exercise
+      .includes(:marks, :task, :user)     # Get relations
+      .where(task_id: task_id)            # Filter all exercises from a specific task
+      .where(users: { role: "student" })  # Only students
+      .joins(:user)                       # Join all student users
+      .distinct                           # Avoid dupes
+    
+    # Créer un nouveau workbook avec caxlsx
+    package = Axlsx::Package.new
+    workbook = package.workbook
+    sheet = workbook.add_worksheet(name: "Notas Estudiantes")
+
+    # Ajouter les en-têtes
+    headers = ["Fecha", "Nombre", "Tarea", "Nota"]
+    sheet.add_row headers
+
+    # Ajouter les données
+    @students_marks.each do |exercise|
+      row = [
+        exercise.updated_at.strftime("%d/%m/%Y, %H:%M:%S"),
+        exercise.user.name,
+        exercise.task.title,
+        exercise.total_mark.round(1)
+      ]
+      sheet.add_row row
+    end
+
+    # Générer le fichier et l'envoyer
+    file_stream = package.to_stream
+    send_data file_stream.read, 
+              filename: "notas_tarea_#{task_id}_#{Time.current.strftime('%Y%m%d_%H%M%S')}.xlsx",
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              disposition: "attachment"
+  end
 
   def find_mark_exercise_by_user
 
-    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations }).where(user_id: current_user.id)
+    @exercises = Exercise.includes(:task, marks: { student_entries: :student_annotations })
+                          .where(user_id: current_user.id)
+                          .page(params[:page])
+                          .per(params[:per_page] || 5)
   
-    render json: @exercises.as_json(
-      include: {
-        task: {only: [:title]},  
-        marks: {
+    render json: {
+      exercises: @exercises.as_json(
+        include: {
+          task: { only: [:title] },
+          marks: {
             include: {
               student_entries: {
                 include: :student_annotations
               }
             }
           }
-      },
-      methods: [:total_mark]
-    )
+        },
+        methods: [:total_mark]
+      ),
+      meta: {
+        current_page: @exercises.current_page,
+        total_pages: @exercises.total_pages,
+        total_count: @exercises.total_count
+      }
+    }
   end
+  
 
   def start
     @exercise = Exercise.find(params[:id])
@@ -192,9 +261,9 @@ class StudentExercisesController < ApplicationController
           mark_value = compute_grade(statement, param_entries)
           mark.update!(mark: mark_value)
           
-          student_entries_params = mark_param[:student_entries_attributes] || []
-          student_entries_params.each do |entry_param|
-            entry = mark.student_entries.create!(entry_param.except(:student_annotations_attributes))
+        student_entries_params = mark_param[:student_entries_attributes] || []
+        student_entries_params.each do |entry_param|
+          entry = mark.student_entries.create!(entry_param.except(:student_annotations_attributes))
     
             student_annotations_params = entry_param[:student_annotations_attributes] || []
             student_annotations_params.each do |annotation_param|
@@ -319,5 +388,4 @@ class StudentExercisesController < ApplicationController
     end
     grade
   end
-
 end

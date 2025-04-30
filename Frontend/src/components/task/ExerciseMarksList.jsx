@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import getStudentsMarkList from "../../services/exerciseMarksList";
-import "./MarkList.css"
+import { getStudentsMarkList, exportMarksToXlsx } from "../../services/exerciseMarksList";
+import "./MarkList.css";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 import Table from "../table/Table";
@@ -37,6 +37,14 @@ const ExerciseMarksList = () => {
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
             setCurrentPage(newPage);
+        }
+    };
+
+    const handleExportToXlsx = async () => {
+        try {
+            await exportMarksToXlsx(taskId);
+        } catch (error) {
+            console.error("Error al exportar las notas:", error);
         }
     };
 
@@ -80,15 +88,17 @@ const ExerciseMarksList = () => {
             }
         },
     ];
-    <progress value={0.5}></progress>
 
     return (
         <div className="mark_list__page">
             <div className="mark_list__header">
-                <button className="btn light " onClick={() => navigate(-1)}>
+                <button className="btn light" onClick={() => navigate(-1)}>
                     <i className="fi fi-rr-arrow-small-left" />
                 </button>
                 <h1 className="mark_list__page--title">Notas de los estudiantes</h1>
+                <button className="btn light" onClick={handleExportToXlsx}>
+                    <i className="fi fi-rr-download" /> Exportar en XLSX
+                </button>
             </div>
 
             {exerciseMarksList.length > 0 && (
@@ -121,4 +131,3 @@ const ExerciseMarksList = () => {
 }
 
 export default ExerciseMarksList;
-

@@ -23,31 +23,30 @@ const TaskListAndDetails = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //Pagination
   const [totalPages, setTotalPages] = useState(1);
+  const [showActiveTasks, setShowActiveTasks] = useState(true);
 
 
   useEffect(() => {
     if (location.state?.createTask || location.state?.newTask) {
       setIsCreatingTask(true);
     }
-  
+
     const fetchTasks = async () => {
       setLoading(true);
       try {
-        const response = await taskService.getAllTasks(currentPage, 10, searchTerm || "");
-    
+        const response = await taskService.getAllTasks(currentPage, 5, searchTerm || "", showActiveTasks);
+
         if (!response) {
           throw new Error("No se recibió ninguna respuesta del servidor.");
         }
-    
+
         if (!response.tasks) {
           throw new Error("La respuesta no tiene la estructura esperada.");
         }
-    
-        // Filtrar tareas del usuario actual
-        const filteredTasks = response.tasks.filter((task) => task.created_by === user.id);
-    
-        setTasks(filteredTasks);
+
+        setTasks(response.tasks);
         setTotalPages(response.meta?.total_pages || 1);
+
       } catch (err) {
         setError(err.message);
         console.error("Error fetching tasks:", err);
@@ -55,47 +54,15 @@ const TaskListAndDetails = () => {
         setLoading(false);
       }
     };
-    
-  
+
+
     if (user?.id) {
       fetchTasks();
     } else {
       setLoading(false);
       setTasks([]);
     }
-  }, [user, location.state, currentPage, searchTerm]);
-  
-
-  // useEffect(() => {
-  //   if (location.state?.createTask) {
-  //     setIsCreatingTask(true);
-  //   }
-  //   const fetchTasks = async () => {
-  //     setLoading(true);
-  //     try {
-  //       //console.log("Solicitando tareas al servicio...");
-  //       const response = await taskService.getAllTasks();
-  //       //console.log("Tareas recibidas:", response.data);
-  //       const filteredTasks = response.data.filter((task) => task.created_by === user.id);
-  //       setTasks(filteredTasks);
-  //     } catch (err) {
-  //       setError("Error al cargar las tareas.");
-  //       console.error("Error fetching tasks:", err);
-  //     } finally {
-  //       //console.log("Finalizando la carga de tareas.");
-  //       setLoading(false);
-  //     }
-  //   };
-  //   //console.log("Usuario actual:", user);
-  //   if (user?.id) {
-  //     //console.log("Cargando tareas para el usuario:", user.id);
-  //     fetchTasks();
-  //   } else {
-  //     //console.log("Usuario no autenticado o ID faltante.");
-  //     setLoading(false);
-  //     setTasks([]);
-  //   }
-  // }, [user, location.state]);
+  }, [user, location.state, currentPage, searchTerm, showActiveTasks]);
 
   const fetchTaskDetails = async (taskId) => {
     setLoading(true);
@@ -166,24 +133,27 @@ const TaskListAndDetails = () => {
 
   const handleDuplicatedTask = async (event, originalTask) => {
     event.stopPropagation();
-  
+
     try {
       const response = await taskService.getTaskWithStatements(originalTask.id);
       const fullTask = response.data;
-  
+
       const duplicatedTaskData = {
         ...fullTask,
         title: `${fullTask.title} - copia`,
         id: undefined, // remove id
       };
-  
+
       navigate("/tasks", { state: { newTask: duplicatedTaskData } });
     } catch (error) {
       console.error("Error al duplicar la tarea:", error);
     }
   };
-  
-  
+
+  const handleFilterChange = (isActive) => {
+    setShowActiveTasks(isActive);
+    setCurrentPage(1); // Resetear a la primera página
+  };
 
   if (!user) return <p>Cargando usuario...</p>;
   if (loading) return <p>Cargando tareas... Por favor espera.</p>;
@@ -198,18 +168,38 @@ const TaskListAndDetails = () => {
           <section className="task-list">
             <header>
               <div className="task-list__header">
-                <h2 className="task-list__title">Tareas Activas</h2>
-              </div>
-              <div className="task-list__search-container">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  placeholder="Buscar por Título"
-                  className="task-list__search-input"
-                  aria-label="Búsqueda por Título"
-                />
-                <i className="fi fi-rr-search task-list__search-icon"></i>
+                <div className="task-list__title-container">
+                  <h2 className="task-list__title">
+                    {showActiveTasks ? "Tareas Activas" : "Tareas Cerradas"}
+                  </h2>
+                  <div className="task-list__filter">
+                    <button 
+                      className={`task-list__filter-button ${showActiveTasks ? 'active' : ''}`}
+                      onClick={() => handleFilterChange(true)}
+                    >
+                      <i className="fi fi-rr-clock"></i>
+                      Activas
+                    </button>
+                    <button 
+                      className={`task-list__filter-button ${!showActiveTasks ? 'active' : ''}`}
+                      onClick={() => handleFilterChange(false)}
+                    >
+                      <i className="fi fi-rr-check"></i>
+                      Cerradas
+                    </button>
+                  </div>
+                </div>
+                <div className="task-list__search-container">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    placeholder="Buscar por Título"
+                    className="task-list__search-input"
+                    aria-label="Búsqueda por Título"
+                  />
+                  <i className="fi fi-rr-search task-list__search-icon"></i>
+                </div>
               </div>
             </header>
 
@@ -224,7 +214,7 @@ const TaskListAndDetails = () => {
                       </div>
                       <div className="task-list__square">
                         <button className="task-list__duplicate" onClick={(event) => handleDuplicatedTask(event, task)}>
-                          <i className="fi fi-rr-copy"/>
+                          <i className="fi fi-rr-copy" />
                         </button>
                       </div>
                     </div>
@@ -245,17 +235,17 @@ const TaskListAndDetails = () => {
 
             <div className="task-list__pagination">
               <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
-                <i className='fi fi-rr-angle-double-small-left'/>
+                <i className='fi fi-rr-angle-double-small-left' />
               </button>
               <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                <i className='fi fi-rr-angle-small-left'/>
+                <i className='fi fi-rr-angle-small-left' />
               </button>
               <span>Página {currentPage} de {totalPages}</span>
               <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                <i className='fi fi-rr-angle-small-right'/>
+                <i className='fi fi-rr-angle-small-right' />
               </button>
               <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
-                <i className='fi fi-rr-angle-double-small-right'/>
+                <i className='fi fi-rr-angle-double-small-right' />
               </button>
             </div>
           </section>

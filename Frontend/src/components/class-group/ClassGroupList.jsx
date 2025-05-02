@@ -4,7 +4,7 @@ import userService from "../../services/userService";
 import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 import AssignUserToClass from "../assignUsersToClass/AssignUserToClass";
 
-const ClassGroupsList = ({ refreshTrigger, onEdit, onStudentCountChange, maxStudents }) => {
+const ClassGroupsList = ({ refreshTrigger, onEdit, onStudentCountChange }) => {
   const [classGroups, setClassGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
@@ -57,16 +57,6 @@ const ClassGroupsList = ({ refreshTrigger, onEdit, onStudentCountChange, maxStud
       return !teacherClassGroups.includes(group.id);
     }
     return true;
-  };
-
-  const handleAssignUsers = (group) => {
-    userService.getUserByClassId(group.id)
-      .then(({ data }) => {
-        setAssignedUsers(prev => ({
-          ...prev,
-          [group.id]: data.data.users.map(user => user.id)
-        }));
-      });
   };
 
   const handleDeleteClick = (group) => {

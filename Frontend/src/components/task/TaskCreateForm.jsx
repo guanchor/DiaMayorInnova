@@ -172,7 +172,6 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     };
 
     try {
-      console.log("Task data:", taskData);
       if (task?.id) {
         await taskService.updateTask(task.id, taskData);
         addUsers(task.id);

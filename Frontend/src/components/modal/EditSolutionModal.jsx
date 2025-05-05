@@ -19,6 +19,7 @@ const EditSolutionModal = ({ solution, solutionIndex, solutions, setSolutions, o
     onClose();
   };
 
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>

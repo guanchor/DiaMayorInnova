@@ -1,9 +1,11 @@
 .accountingPlan__pgcList {
-  padding: var(--gap-s) var(--gap-s) 0 var(--gap-s);
-  height: 100%;
+  padding: var(--gap-s);
+  overflow-y: visible;
   display: flex;
   flex-direction: column;
   justify-content: start;
+  width: 100%;
+  height: 100%;
 
   & .search-bar--pgc {
     width: 50%;
@@ -14,16 +16,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: left;
-  margin-bottom: var(--gap-m);
-  gap: var(--gap-xl);
+  align-items: start;
+  margin-bottom: var(--gap-xxs);
+  gap: var(--gap-s);
 }
 
 .accountingPlan__pgcList-item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
-  border-bottom: 1px solid var(--Color-grey-200);
-  border-radius: var(--border-radius);
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
@@ -70,12 +70,12 @@
   padding-bottom: var(--gap-s);
 }
 
-.accountingPlan__table {
+.accountingPlan__table--container {
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--gap-xs);
   overflow-y: scroll;
-  height: auto;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: start;
@@ -87,7 +87,6 @@
 }
 
 th {
-  border-bottom: solid 1px var(--Color-Principal);
   padding: var(--gap-xs) 0;
   margin: var(--gap-xs);
 
@@ -96,37 +95,9 @@ th {
   }
 }
 
-.accountingPlan__button {
-  padding: var(--gap-s) var(--gap-m);
-  background-color: var(--Color-Principal);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-}
 
-.accountingPlan__button--link {
-  padding: var(--gap-s) var(--gap-m);
-  background-color: transparent;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-}
 
-.accountingPlan__button--link.pencil:hover,
-.accountingPlan__button--link.eye:hover,
-.accountingPlan__button--link.download:hover {
-  color: var(--Color-Principal-claro);
-}
 
-.accountingPlan__button--link.pencil,
-.accountingPlan__button--link.eye,
-.accountingPlan__button--link.download,
-.accountingPlan__button--remove.trash {
-  margin-right: 8px;
-  color: var(--Color-Principal);
-  font-size: var(--text-desktop-body-small);
-}
 
 .accountingPlan__button--remove {
   display: flex;
@@ -145,17 +116,13 @@ th {
   color: var(--Color-red-400);
 }
 
-.accountingPlan__form {
-  max-width: 50%;
-  margin-top: var(--gap-s);
-  padding: var(--gap-s);
-  border-radius: var(--border-radius);
-}
+
 
 .accountingPlan__form--row {
   display: flex;
-  gap: var(--gap-m);
-  align-items: center;
+  gap: var(--gap-s);
+  align-items: start;
+  justify-content: start;
   width: 100%;
 }
 
@@ -173,27 +140,94 @@ th {
 .accountingPlan__form--actions {
   margin-top: var(--gap-m);
   display: flex;
+  justify-content: start;
+  align-items: center;
   width: 100%;
 }
 
 .accountingPlan__form--add,
 .accountingPlan__form--upload {
-    display: flex;
-    justify-content: start;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .accountingPlan__form--add {
-  width: 190px;
+  width: 135px;
+}
+
+.accountingPlan__table--name-field {
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 0;
+
+
+  & .fi {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    height: 100%;
+    width: 40px;
+  }
 }
 
 .accountingPlan__form--upload {
-  gap: var(--gap-m);
-  width: 100%;
+  gap: var(--gap-s);
   align-items: center;
+  justify-content: end;
 
-  & .btn {
-    width: 190px;
+  & .btn:nth-child(1) {
+    width: 140px;
   }
+
+  & .btn:nth-child(2) {
+    width: auto;
+  }
+}
+
+/* Ocultar el input file */
+.accountingPlan__file--input {
+  display: none;
+
+}
+
+/* Estilo del botón personalizado */
+.accountingPlan__file--label {
+  display: flex;
+  cursor: pointer;
+
+  p {
+    border-right: 1px solid var(--Color-grey-200);
+
+    width: 34px;
+    font-size: var(--text-desktop-small)
+  }
+}
+
+.accountingPlan__file--label:hover {
+  background-color: #0056b3;
+}
+
+.accountingPlan__file--name {
+  font-size: var(--text-desktop-small);
+  color: var(--Color-Principal-claro);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 140px;
+}
+
+.input_csv__container {
+  display: flex;
+  border: 1px solid var(--Color-grey-200);
+  border-radius: var(--r-xxs);
+  padding: var(--gap-xxs);
+  gap: var(--gap-xs);
+  justify-content: start;
+  align-items: center;
 }
 
 .accountingPlan__file--input {
@@ -201,14 +235,10 @@ th {
   margin-bottom: 0;
 }
 
-.accountingPlan__table--actions {
-  display: flex;
-  font-family: inherit;
-  justify-content: left;
-}
 
 .accountingPlan__pagination {
   padding-left: var(--gap-m);
+
   & span {
     padding: var(--gap-s);
     color: var(--Color-Principal);
@@ -221,30 +251,18 @@ th {
 
 .accountingPlan__error {
   color: var(--Color-red-400);
-  text-align: center;
-  margin-top: var(--gap-m);
+  text-align: start;
+  margin-top: var(--gap-xxs);
 }
 
-.accountingPlan_tbody {
-  height: 100%;
 
-  & tbody {
-    height: 100%;
-  }
 
-  & .fi-rr-angle-small-down {
-    color: var(--Color-grey-800);
-    align-items: center;
-    font-size: large;
-  }
-}
-
-.accountingPlan__table::-webkit-scrollbar {
+.accountingPlan__table--container::-webkit-scrollbar {
   width: 0px;
   height: 0px;
 }
 
-.accountingPlan__table::-webkit-scrollbar-thumb {
+.accountingPlan__table--container::-webkit-scrollbar-thumb {
   background: transparent;
 }
 
@@ -267,7 +285,7 @@ th {
     text-align: center;
   }
 
-  .accountingPlan__table {
+  .accountingPlan__table--container {
     margin-top: 16px;
   }
 
@@ -275,15 +293,10 @@ th {
     padding: var(--gap-xs);
   }
 
-  .accountingPlan_tbody {
+  .accountingPlan__table {
     font-size: var(--text-mobile-body-small);
   }
 
-  .accountingPlan__button--link.eye,
-  .accountingPlan__button--link.pencil,
-  .accountingPlan__button--remove.trash {
-    font-size: var(--text-mobile-body-small);
-  }
 }
 
 /* Para móviles (hasta 360px) */
@@ -293,11 +306,6 @@ th {
     font-size: var(--text-mobile-lead);
   }
 
-  .accountingPlan__button--link.eye,
-  .accountingPlan__button--link.pencil,
-  .accountingPlan__button--remove.trash {
-    font-size: var(--text-mobile-body-small);
-  }
 
   .accountingPlan__form {
     padding: var(--gap-xs);
@@ -310,7 +318,7 @@ th {
     width: 100%;
   }
 
-  .accountingPlan_tbody {
+  .accountingPlan__table {
     font-size: var(--text-mobile-small);
   }
 }

@@ -5,6 +5,10 @@ import "./AccountingPlan.css";
 import "../modal/AccountModal.css";
 import AccountingPlan from "./AccountingPlan";
 import Modal from "../modal/Modal";
+import { SearchBar } from "../search-bar/SearchBar";
+import Table from "../table/Table";
+import PaginationMenu from "../pagination-menu/PaginationMenu";
+import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 
 
 const AccountingPlansList = ({ newPGC }) => {
@@ -13,8 +17,6 @@ const AccountingPlansList = ({ newPGC }) => {
   const modalRef = useRef(null); // Referencia para la modal
   const accountsModalRef = useRef(null)
   const navigate = useNavigate();
-  const [currentAccountingPlan, setCurrentAccountingPlan] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchAccPlan, setSearchAccPlan] = useState("");
   const [sortOrder, setSortOrder] = useState("ascending") //Sort control state
   const [accounts, setAccounts] = useState([]); // Stocker les comptes récupérés
@@ -22,13 +24,15 @@ const AccountingPlansList = ({ newPGC }) => {
   const [currentPage, setCurrentPage] = useState(1); //Pagination
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [accountingPlanToDelete, setAccountingPlanToDelete] = useState(null);
 
 
   useEffect(() => {
     retrieveAccountingPlans(currentPage, searchAccPlan);
   }, [newPGC, currentPage, searchAccPlan]);
 
-  const retrieveAccountingPlans = async(page, name) => {
+  const retrieveAccountingPlans = async (page, name) => {
     setIsLoading(true);
     try {
       const data = await AccountingPlanDataService.getAll(page, 10, name);
@@ -45,17 +49,10 @@ const AccountingPlansList = ({ newPGC }) => {
     }
   };
 
-  const setActiveAccountingPlan = (accountingPlan, index) => {
-    setCurrentAccountingPlan(accountingPlan);
-    setCurrentIndex(index);
-  };
-
   const deleteAccountingPlan = (id) => {
     AccountingPlanDataService.remove(id)
       .then((response) => {
         retrieveAccountingPlans(); //Refresh list after remove
-        setCurrentAccountingPlan(null); //Clear state
-        setCurrentIndex(-1); //Reset index
         navigate("/accounting-plans/");
       })
       .catch((e) => {
@@ -63,12 +60,24 @@ const AccountingPlansList = ({ newPGC }) => {
       });
   };
 
-  const handleSearchChange = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
+  const handleSearchChange = (searchValue) => {
+    const searchTerm = searchValue;
     setSearchAccPlan(searchTerm);
-    setCurrentPage(1);
+
+    if (!searchTerm) {
+      retrieveAccountingPlans(); // Si le champ est vide, récupérer tous les PGC
+      return;
+    }
+
+    // Filtrage dynamique des plans comptables
+    setAccountingPlans((prevPlans) =>
+      prevPlans.filter((plan) => {
+        plan.name.toLowerCase().includes(searchTerm);
+        setCurrentPage(1);
+      })
+    );
   };
-  
+
 
   //PGC sorted by Name column
   const sortAccountinPlans = (order) => {
@@ -92,7 +101,7 @@ const AccountingPlansList = ({ newPGC }) => {
 
   const openEditModal = (id) => {
     setSelectedAccountingPlanId(id);
-    modalRef.current?.showModal(); 
+    modalRef.current?.showModal();
   };
 
   const closeEditModal = () => {
@@ -103,20 +112,25 @@ const AccountingPlansList = ({ newPGC }) => {
   const handleSaveSuccess = () => {
     retrieveAccountingPlans();
   };
-  
+
   // Download CSV
   const handleExportToCSV = (id) => {
     AccountingPlanDataService.exportToCSV(id);
   };
-  
-  
+
+  const openDeleteModal = (accountingPlanId) => {
+    const accountingPlan = accountingPlans.find(s => s.id === accountingPlanId);
+    setAccountingPlanToDelete(accountingPlan);
+    setIsDeleteModalOpen(true);
+  };
+
 
   const fetchAccountsByPGC = (pgcId) => {
     AccountingPlanDataService.getAccountsByPGC(pgcId)
       .then(response => {
         setAccounts(response.data);
         setIsModalOpen(true);
-        accountsModalRef.current?.showModal(); 
+        accountsModalRef.current?.showModal();
       })
       .catch(error => {
         console.error("Erreur lors de la récupération des comptes :", error);
@@ -128,85 +142,46 @@ const AccountingPlansList = ({ newPGC }) => {
       <section className="accountingPlan__pgcList">
         <div className="accountingPlan__header">
           <h2 className="accountingPlan__header--h2">Todos los planes</h2>
-            <div className="accountingPlan__form--row">
-              <form className="search-bar search-bar--pgc">
-                <input
-                  className="search-bar_search"
-                  type="text"
-                  value={searchAccPlan}
-                  onChange={handleSearchChange}
-                  placeholder="Buscar por nombre"
-                />
-                <i className="fi fi-rr-search"></i> {/* Icône uniquement décorative */}
-              </form>
-
-              <div className="accountingPlan__pagination">
-                <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
-                  <i className='fi fi-rr-angle-double-small-left'/>
-                </button>
-                <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                  <i className='fi fi-rr-angle-small-left'/>
-                </button>
-                <span>Página {currentPage} de {totalPages}</span>
-                <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                  <i className='fi fi-rr-angle-small-right'/>
-                </button>
-                <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
-                  <i className='fi fi-rr-angle-double-small-right'/>
-                </button>
-              </div>
-            </div>
+          <div className="accountingPlan__form--row">
+            <SearchBar
+              value={searchAccPlan}
+              handleSearchChange={handleSearchChange}
+            />
+          </div>
         </div>
-        
 
-        <div className="accountingPlan__table">
+
+        <div className="accountingPlan__table--container">
           {accountingPlans.length === 0 ? (
             <p>No hay PGCs disponibles</p>
           ) : (
-            <table className="accountingPlan_tbody">
-              <thead>
-                <tr>
-                  <th onClick={handleSortClick} style={{cursor: "pointer"}}>
-                    Nombre PGC {sortOrder === "ascending" ? <i className="fi fi-rr-angle-small-down"/> : <i className="fi fi-rr-angle-small-up"/>}
-                  </th>
-                  <th>Acrónimo</th>
-                  <th>Descripción</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {accountingPlans.map((accountingPlan, index) => (
-                  <tr key={index}>
-                    <td>{accountingPlan.name}</td>
-                    <td>{accountingPlan.acronym}</td>
-                    <td>{accountingPlan.description}</td>
-                    <td className="accountingPlan__table--actions">
-                      <button className="accountingPlan__button--link eye" onClick={() => fetchAccountsByPGC(accountingPlan.id)}>
-                        <i className="fi-rr-eye" />
-                      </button>
-                      <button className="accountingPlan__button--link pencil" onClick={() => openEditModal(accountingPlan.id)}>
-                        <i className="fi-rr-pencil" />
-                      </button>
-                      <button className="accountingPlan__button--link download" onClick={() => handleExportToCSV(accountingPlan.id)}>
-                        <i className="fi-rr-download" /> CSV
-                      </button>
-                      <button aria-label="Eliminar PGC" className="accountingPlan__button--remove trash"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteAccountingPlan(accountingPlan.id);
-                        }}>
-                        <i className="fi-rr-trash" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+            <Table
+              titles={["Nombre PGC", "Acrónimo", "Descripción", "Acciones"]}
+              data={accountingPlans}
+              actions={true}
+              show={fetchAccountsByPGC}
+              openModal={openEditModal}
+              exportCSV={handleExportToCSV}
+              deleteItem={openDeleteModal}
+              columnConfig={[
+                { field: 'name', sortable: true },
+                { field: 'acronym', sortable: true },
+                { field: 'description', sortable: true }
+              ]}
+            />
           )}
         </div>
+
+        <PaginationMenu
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
+
       </section>
 
-      <Modal ref={accountsModalRef} modalTitle="Cuentas del PGC" showButton = {false}>
+      <Modal ref={accountsModalRef} modalTitle="Cuentas del PGC" showButton={false}>
         {accounts.length > 0 ? (
           <table className="modal-table">
             <thead>
@@ -231,15 +206,23 @@ const AccountingPlansList = ({ newPGC }) => {
         )}
       </Modal>
 
-      <Modal ref={modalRef} modalTitle="Editar PGC" showButton = {false}>
+      <Modal ref={modalRef} modalTitle="Editar PGC" showButton={false}>
         {selectedAccountingPlanId && (
-          <AccountingPlan 
-            id={selectedAccountingPlanId} 
+          <AccountingPlan
+            id={selectedAccountingPlanId}
             onSaveSuccess={handleSaveSuccess}
             onCloseModal={closeEditModal}
           />
         )}
       </Modal>
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        title="¿Estás seguro de que deseas eliminar este enunciado?"
+        message={`El enunciado "${accountingPlanToDelete?.name}" será eliminado permanentemente.`}
+        onDelete={() => deleteAccountingPlan(accountingPlanToDelete?.id)}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </>
   );
 };

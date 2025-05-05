@@ -25,7 +25,7 @@ const TaskForm = ({
     <section className="task-page__form">
       <form className="task-page__form--form">
         <header className="task-page__form--header">
-          <h2 className="task-page__header">Crear Tarea</h2>
+          <h2 className="task-page__header">{id ? "Actualizar Tarea" : "Crear Tarea"}</h2>
         </header>
         <div>
           <label className="task-page__label--title" htmlFor="title">Tarea:</label>
@@ -49,6 +49,7 @@ const TaskForm = ({
               value={openingDate ? dateTimeFormat(openingDate) : ""}
               onChange={(e) => setOpeningDate(e.target.value)}
             />
+
           </div>
           <div className="task-page__date">
             <label className="task-page__label" htmlFor="closing_date">Fecha de cierre:</label>
@@ -83,7 +84,7 @@ const TaskForm = ({
               />
             </div>
             <div className="task-page__container--exam">
-              <label className="task-page__label--exam" htmlFor="isExam">Ayuda disponible</label>
+              <label className="task-page__label--exam" htmlFor="setIsHelpAvailable">Ayuda disponible</label>
               <input
                 id="setIsHelpAvailable"
                 type="checkbox"

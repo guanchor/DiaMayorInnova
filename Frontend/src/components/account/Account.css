@@ -2,20 +2,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: left;
   margin-bottom: var(--gap-m);
-  gap: var(--gap-xl);
+  gap: var(--gap-xs);
+  overflow-y: visible;
+  height: 100%;
+}
 
-  & .search-bar--acc {
-    width: 50%;
-  }
+
+.account__header .search-bar--acc {
+  width: 50%;
 }
 
 .account__accList--item {
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
   border-bottom: 1px solid var(--Color-grey-200);
-  border-radius: var(--border-radius);
   justify-content: space-between;
   align-items: center;
   gap: var(--gap-s);
@@ -78,23 +79,12 @@
   }
 }
 
-th {
-  color: var(--Color-Principal);
-  border-bottom: solid 1px var(--Color-Principal);
-  padding: var(--gap-xs) 0;
-  margin: var(--gap-xs);
-
-  & i {
-    font-size: x-large;
-  }
-}
 
 .account__button {
   padding: var(--gap-s) var(--gap-m);
   background-color: var(--Color-Principal);
   color: white;
   border: none;
-  border-radius: var(--border-radius);
   cursor: pointer;
 }
 
@@ -102,7 +92,6 @@ th {
   padding: var(--gap-s) var(--gap-m);
   background-color: transparent;
   border: none;
-  border-radius: var(--border-radius);
   cursor: pointer;
 }
 
@@ -113,8 +102,7 @@ th {
 
 .account__button--link.pencil,
 .account__button--link.inter,
-.account__button--remove.trash
-{
+.account__button--remove.trash {
   margin-right: 8px;
   color: var(--Color-Principal);
   font-size: var(--text-desktop-body-small);
@@ -147,10 +135,7 @@ th {
 }
 
 .account__form {
-  max-width: 50%;
-  margin-top: var(--gap-s);
   padding: var(--gap-s);
-  border-radius: var(--border-radius);
 }
 
 .account__form--row {
@@ -189,6 +174,7 @@ th {
 
 .account__pagination {
   padding-left: var(--gap-m);
+
   & span {
     padding: var(--gap-s);
     color: var(--Color-Principal);
@@ -219,6 +205,7 @@ th {
 
 .account__tbody {
   height: 100%;
+
   & tbody {
     height: 100%;
   }

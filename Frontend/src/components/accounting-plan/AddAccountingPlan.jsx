@@ -14,6 +14,8 @@ const AddAccountingPlan = ({ setNewPGC }) => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState("Nada seleccionado");
+
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -66,9 +68,11 @@ const AddAccountingPlan = ({ setNewPGC }) => {
     if (file && file.name.endsWith(".csv")) {
       setSelectedFile(file);
       setError("");
+      setFileName(file.name);
     } else {
       setError("El archivo debe ser un .csv válido");
       setSelectedFile(null);
+      setFileName("Nada seleccionado");
     }
   };
 
@@ -99,36 +103,36 @@ const AddAccountingPlan = ({ setNewPGC }) => {
           <button><Link to={"/accounting-plans"}>Atrás</Link></button>
         </div>
       ) : (
-        <div>
+        <>
           <div className="accountingPlan__form">
             <h2 className="accountingPlan__header--h2">Nuevo plan de contabilidad</h2>
             <div className="accountingPlan__form--row">
               <div className="accountingPlan__form--group">
                 <label>Nombre
-                <input
-                  className="accountingPlan__input"
-                  placeholder="Nombre PGC"
-                  type="text"
-                  id="name"
-                  required
-                  value={accountingPlan.name}
-                  onChange={handleInputChange}
-                  name="name">
-                </input></label>
+                  <input
+                    className="accountingPlan__input"
+                    placeholder="Nombre PGC"
+                    type="text"
+                    id="name"
+                    required
+                    value={accountingPlan.name}
+                    onChange={handleInputChange}
+                    name="name">
+                  </input></label>
               </div>
 
               <div className="accountingPlan__form--group">
                 <label>Acrónimo
-                <input
-                  className="accountingPlan__input"
-                  placeholder="Acrónimo PGC"
-                  type="text"
-                  id="acronym"
-                  required
-                  value={accountingPlan.acronym}
-                  onChange={handleInputChange}
-                  name="acronym">
-                </input></label>
+                  <input
+                    className="accountingPlan__input"
+                    placeholder="Acrónimo PGC"
+                    type="text"
+                    id="acronym"
+                    required
+                    value={accountingPlan.acronym}
+                    onChange={handleInputChange}
+                    name="acronym">
+                  </input></label>
               </div>
 
             </div>
@@ -136,46 +140,50 @@ const AddAccountingPlan = ({ setNewPGC }) => {
             <div className="accountingPlan__form--row">
               <div className="accountingPlan__form--group full-width">
                 <label>Descripción
-                <input
-                  className="accountingPlan__input"
-                  placeholder="Descripción PGC"
-                  type="text"
-                  id="description"
-                  required
-                  value={accountingPlan.description}
-                  onChange={handleInputChange}
-                  name="description">
-                </input></label>
+                  <textarea
+                    className="accountingPlan__input"
+                    placeholder="Descripción PGC"
+                    id="description"
+                    required
+                    value={accountingPlan.description}
+                    onChange={handleInputChange}
+                    name="description">
+                  </textarea></label>
               </div>
             </div>
 
             <div className="accountingPlan__form--actions">
               <div className="accountingPlan__form--row">
                 <div className="accountingPlan__form--add">
-                  <button className="btn accountingPlan__button" onClick={saveAccountingPlan}> <i className="fi-rr-plus" />Añadir plan</button>
+                  <button className="btn " onClick={saveAccountingPlan}> <i className="fi-rr-plus" />Añadir plan</button>
                 </div>
 
-                {error && <div className="accountingPlan__error">{error}</div>}
-
-                {/* Sección de Importación de CSV */}
                 <div className="accountingPlan__form--upload">
-                  <button 
-                    className="btn accountingPlan__button" 
-                    onClick={handleUpload} 
+                  <button
+                    className="btn "
+                    onClick={handleUpload}
                     disabled={!selectedFile}
                   > Cargar archivo </button>
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileChange}
-                    className="accountingPlan__file--input"
-                  />
+                  <label htmlFor="fileUpload" className="accountingPlan__file--label btn light">
+                    <input
+                      type="file"
+                      accept=".csv"
+                      id="fileUpload"
+                      onChange={handleFileChange}
+                      className="accountingPlan__file--input"
+                    />
+                    <i className="fi-rr-upload" />
+                    <p>CSV</p>
+                    <span id="file-name" className="accountingPlan__file--name">
+                      {fileName}
+                    </span>
+                  </label>
                 </div>
               </div>
             </div>
-
+            {error && <div className="accountingPlan__error">{error}</div>}
           </div>
-        </div>
+        </>
       )}
     </>
   );

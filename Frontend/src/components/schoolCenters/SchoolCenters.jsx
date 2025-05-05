@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SchoolServices from "../../services/SchoolsServices.js";
 import ListSchoolCenter from "./list-school-center/ListSchoolCenter.jsx";
 import AddSchoolCenter from "./add-school-center/AddSchoolCenter.jsx";
-import FindNameSchoolCenter from "./find-name-school-center/FindNameSchoolCenter.jsx";
 import "./SchoolCenters.css";
 
 const SchoolCenters = () => {
@@ -10,41 +9,45 @@ const SchoolCenters = () => {
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [searchSchoolName, setSeachSchoolName] = useState("");
   const [error, setError] = useState("");
+  const [handleEdit, setHandleEdit] = useState(false);
 
- useEffect(() => {
-     SchoolServices.getAll()
-       .then((response) => {
-         if (response) {
+  useEffect(() => {
+    SchoolServices.getAll()
+      .then((response) => {
+        if (response) {
           setSchools(response.schools);
-         } else {
-           console.error("No se encontraron centros en la respuesta.");
-           setError("No se encontraron centros.");
-         }
-       })
-       .catch(e => {
-         console.error("Error fetching centros", e);
-         setError("Hubo un error al obtener los centros.");
-       });
-   }, []);
- 
-   const filteredCenters = schools.filter(school =>
-     school.school_name.toLowerCase().includes(searchSchoolName.toLowerCase())
-   );
+        } else {
+          console.error("No se encontraron centros en la respuesta.");
+          setError("No se encontraron centros.");
+        }
+      })
+      .catch(e => {
+        console.error("Error fetching centros", e);
+        setError("Hubo un error al obtener los centros.");
+      });
+  }, []);
 
-    return (
-        <main className="school-center_page">
-            <ListSchoolCenter
-                schools={filteredCenters}
-                setSchools={setSchools}
-                setSelectedSchool={setSelectedSchool}
-            />
-            <AddSchoolCenter
-                setSchools={setSchools}
-                selectedSchool={selectedSchool}
-                setSelectedSchool={setSelectedSchool}
-            />
-            <FindNameSchoolCenter searchSchoolName={searchSchoolName} setSeachSchoolName={setSeachSchoolName} />
-        </main>
-    );
+  const filteredCenters = schools.filter(school =>
+    school.school_name.toLowerCase().includes(searchSchoolName.toLowerCase())
+  );
+
+  return (
+    <main className="school-center_page">
+      <ListSchoolCenter
+        schools={filteredCenters}
+        setSchools={setSchools}
+        setSelectedSchool={setSelectedSchool}
+        searchSchoolName={searchSchoolName}
+        setSeachSchoolName={setSeachSchoolName}
+        isEdited={handleEdit}
+      />
+      <AddSchoolCenter
+        setSchools={setSchools}
+        selectedSchool={selectedSchool}
+        setSelectedSchool={setSelectedSchool}
+        setHandleEdit={setHandleEdit}
+      />
+    </main>
+  );
 };
 export default SchoolCenters;

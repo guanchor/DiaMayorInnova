@@ -5,7 +5,7 @@ import SchoolsServices from "../../../services/SchoolsServices.js";
 import { API_BASE_URL } from "../../../config.js";
 import './AddUsers.css';
 
-const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
+const AddUsers = ({ selectedUser, setSelectedUser, onUserAdded }) => {
   const initialUserState = {
     email: "",
     password: "",
@@ -63,6 +63,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
       [name]: value,
     }));
   };
+
   const onImageChange = (event) => {
     setInput({ ...input, featured_image: event.target.files[0] });
   };
@@ -100,21 +101,22 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
     if (input.school_center_id) {
       formData.append("user[school_center_id]", input.school_center_id);
     }
+
     try {
       if (selectedUser) {
         const response = await userService.updateUser(selectedUser.id, formData);
 
         if (response.data?.data?.user) {
-          setUsers(prev => prev.map(user => user.id === selectedUser.id ? response.data.data.user : user));
           setSuccessMessage("El usuario se ha modificado correctamente.");
+          onUserAdded();
         }
         setSelectedUser(null);
       } else {
         const response = await userService.createUser(formData);
 
         if (response.data?.data?.user) {
-          setUsers(prev => [...prev, response.data.data.user]);
           setSuccessMessage("El usuario se ha creado correctamente.");
+          onUserAdded();
         }
       }
       setInput(initialUserState);
@@ -146,7 +148,6 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.email}
                 onChange={handleInput}
                 placeholder="ejemplo@yahoo.es"
-
               />
             </label>
             <label htmlFor='password' className='user_label'>Contraseña
@@ -185,7 +186,6 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 value={input.name}
                 onChange={handleInput}
                 placeholder="Pedro"
-
               />
             </label>
             <label htmlFor='first_lastName' className='user_label'>Primer Apellido
@@ -196,8 +196,7 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 className="user_item"
                 value={input.first_lastName}
                 onChange={handleInput}
-                placeholder="Pica"
-
+                placeholder="Leon"
               />
             </label>
             <label htmlFor='second_lastName' className='user_label'>Segundo Apellido
@@ -208,11 +207,11 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
                 className="user_item"
                 value={input.second_lastName}
                 onChange={handleInput}
-                placeholder="Piedras"
-
+                placeholder="Castillo"
               />
             </label>
           </fieldset>
+
           <label htmlFor='featured_image' className='user_label'>Introduzca una imagen de usuario
             {input.featured_image && (
               <div>
@@ -261,18 +260,17 @@ const AddUsers = ({ setUsers, selectedUser, setSelectedUser }) => {
           </label>
 
           {auth?.user?.role !== "center_admin" && (
-          <label htmlFor="school_center_id" className="user_label">Centro Escolar
-            <select id="school_center_id" name="school_center_id" className="user_item" value={input.school_center_id} onChange={handleInput}>
-              <option value="">Seleccione un centro</option>
-              {schoolCenters.map((center) => (
-                <option key={center.id} value={center.id}>
-                  {center.school_name}
-                </option>
-              ))}
-            </select>
-          </label>
+            <label htmlFor="school_center_id" className="user_label--select">Centro Escolar
+              <select id="school_center_id" name="school_center_id" className="user_item" value={input.school_center_id} onChange={handleInput}>
+                <option value="">Seleccione un centro</option>
+                {schoolCenters.map((center) => (
+                  <option key={center.id} value={center.id}>
+                    {center.school_name}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
-
           <button type="submit" className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedUser ? "Actualizar Usuario" : "Registrar Usuario"}</button>
           {selectedUser && <button type="button" className="btn light" onClick={() => setSelectedUser(null)}>Cancelar</button>}
           {error && <p role="alert" style={{ color: "red" }}>{error}</p>}

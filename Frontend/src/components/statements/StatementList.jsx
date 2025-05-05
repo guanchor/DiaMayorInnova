@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import statementService from "../../services/statementService";
 import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
+import Table from "../table/Table";
+import PaginationMenu from "../pagination-menu/PaginationMenu";
+import { SearchBar } from "../search-bar/SearchBar";
 
 const StatementsList = ({ onSelectStatement }) => {
   const { user, loading: authLoading } = useAuth();
@@ -13,22 +16,23 @@ const StatementsList = ({ onSelectStatement }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [statementToDelete, setStatementToDelete] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1); //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchStatements = async () => {
       try {
         setLoading(true);
-        const response = await statementService.getAllStatements(currentPage, 10, searchTerm);
+        const response = await statementService.getAllStatements(currentPage, itemsPerPage, searchTerm);
 
         if (Array.isArray(response.data.statements)) {
           const filteredStatements = response.data.statements.filter(
             (statement) => statement.is_public || statement.user_id === user?.id
           );
           setStatements(filteredStatements);
-          setTotalPages(response.data.meta.total_pages || 1)
+          setTotalPages(response.data.meta.total_pages || 1);
         } else {
           console.error("Error: La respuesta no es un arreglo válido.");
         }
@@ -63,7 +67,8 @@ const StatementsList = ({ onSelectStatement }) => {
     }
   };
 
-  const openDeleteModal = (statement) => {
+  const openDeleteModal = (statementId) => {
+    const statement = statements.find(s => s.id === statementId);
     setStatementToDelete(statement);
     setIsDeleteModalOpen(true);
   };
@@ -94,7 +99,8 @@ const StatementsList = ({ onSelectStatement }) => {
     }
   };
 
-  const handleStatementSelection = (statement) => {
+  const handleStatementSelection = (statementId) => {
+    const statement = statements.find(s => s.id === statementId);
     setSelectedStatement(statement);
     onSelectStatement(statement);
   };
@@ -113,96 +119,48 @@ const StatementsList = ({ onSelectStatement }) => {
   };
 
   const changePage = (newPage) => {
-    if (newPage < 1 || newPage > totalPages) return; // Evita páginas fuera de rango
+    if (newPage < 1 || newPage > totalPages) return;
     setCurrentPage(newPage);
   };
 
   const handleSearchChange = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    setSearchTerm(searchTerm);
+    setSearchTerm(e.target.value);
     setCurrentPage(1);
-  };  
+  };
 
   return (
     <div className="statement-page__selection--content">
-      <div className="statement-page__row" style={{display: "flex", gap: "var(--gap-m)", alignItems: "center", width: "100%"}}>
-        <h3 className="statement-page__list--header">Enunciados</h3>
-
-        <form className='search-bar search-bar--statement'>
-          <input
-            className='search-bar_search'
-            type='text'
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder='Buscar enunciado'
-          />
-          <i className='fi fi-rr-search'></i>
-        </form>
-
-        <div className="statement-list__pagination">
-          <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => changePage(1)}>
-            <i className='fi fi-rr-angle-double-small-left' />
-          </button>
-          <button className="dt-paging-button" disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)}>
-            <i className='fi fi-rr-angle-small-left' />
-          </button>
-          <span style={{ padding: "var(--gap-s)", color: "var(--Color-Principal)" }}>Página {currentPage} de {totalPages}</span>
-          <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => changePage(currentPage + 1)}>
-            <i className='fi fi-rr-angle-small-right' />
-          </button>
-          <button className="dt-paging-button" disabled={currentPage === totalPages} onClick={() => changePage(totalPages)}>
-            <i className='fi fi-rr-angle-double-small-right' />
-          </button>
-        </div>
+      <div className="statement-page__row" style={{ display: "flex", gap: "var(--gap-m)", alignItems: "center", width: "100%" }}>
+        <h2 className="statement-page__list--header">Enunciados</h2>
       </div>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <ul className="statement-page__list">
-        {statements.map((statement) => {
-          const isPublicAndNotOwned = statement.is_public && statement.user_id !== user.id;
 
-          return (
-            <li className="statement-page__list-item" key={statement.id}>
-              <div className="statement-page__statement-container">
-                <span className="statement-page__definition">{statement.definition}</span>
-                <div className="statement-page__actions">
-                  <button
-                    onClick={() => openDeleteModal(statement)}
-                    className={`statement-page__button--delete ${isPublicAndNotOwned ? "disabled" : ""}`}
-                    disabled={isPublicAndNotOwned}
-                  >
-                    <i className="fi-rr-trash"></i>
-                    <span className="statement-page__button-text--delete">Borrar</span>
-                  </button>
-                  <button
-                    onClick={() => handleStatementSelection(statement)}
-                    className={`statement-page__button--edit ${isPublicAndNotOwned ? "disabled" : ""}`}
-                    disabled={isPublicAndNotOwned}
-                  >
-                    <i className="fi-rr-pencil"></i>
-                    <span className="statement-page__button-text">Editar</span>
-                  </button>
-                  <div className="statement-page__toggle-visibility">
-                    <button
-                      onClick={() => toggleVisibility(statement.id, false)} // Cambiar a "Privado"
-                      className={`toggle-option ${!statement.is_public ? "active" : ""}`}
-                      disabled={isPublicAndNotOwned} // Deshabilitar si es público y no es del usuario
-                    >
-                      Privado
-                    </button>
-                    <button
-                      onClick={() => toggleVisibility(statement.id, true)}
-                      className={`toggle-option ${statement.is_public ? "active" : ""}`}
-                      disabled={isPublicAndNotOwned}
-                    >
-                      Público
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <SearchBar
+        value={searchTerm}
+        handleSearchChange={handleSearchChange}
+      />
+
+      <Table
+        titles={["Definición", "Acciones"]}
+        data={statements.map(statement => ({
+          ...statement,
+          current_user_id: user.id
+        }))}
+        actions={true}
+        openModal={handleStatementSelection}
+        deleteItem={openDeleteModal}
+        onToggleVisibility={toggleVisibility}
+        columnConfig={[
+          { field: 'definition', sortable: true }
+        ]}
+      />
+
+      <PaginationMenu
+        currentPage={currentPage}
+        setCurrentPage={changePage}
+        totalPages={totalPages}
+      />
+
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         title="¿Estás seguro de que deseas eliminar este enunciado?"
@@ -210,7 +168,6 @@ const StatementsList = ({ onSelectStatement }) => {
         onDelete={() => handleDelete(statementToDelete?.id)}
         onClose={() => setIsDeleteModalOpen(false)}
       />
-
     </div>
   );
 };

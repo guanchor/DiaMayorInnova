@@ -26,7 +26,7 @@ const AssignUserToClass = ({
     acc[role].push(user);
     return acc;
   }, {});
-  
+
 
   const rolesOrder = ['teacher', 'student'];
 
@@ -96,12 +96,13 @@ const AssignUserToClass = ({
   return (
     <Modal
       ref={modalRef}
-      btnText="Asignar Usuarios"
+      btnText={<i className='fi fi-rr-user-add' />}
       modalTitle="Asignar usuarios al grupo"
       showButton={true}
       needOpen={!disabled}
       onOpen={() => setIsModalOpen(true)}
       onClose={() => setIsModalOpen(false)}
+      btnNoBg={true}
     >
       <div className='task-assigned__container'>
         <div className="list__container">

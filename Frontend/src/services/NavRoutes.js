@@ -8,9 +8,9 @@ routes.push({
 })
 
 routes.push({
-  to: "/modes",
+  to: "/modes/practica",
   icon: "fi fi-rr-bank",
-  name: "modos",
+  name: "modo práctica",
   rol: ["teacher", "admin", "center_admin", "student"],
 })
 
@@ -19,14 +19,6 @@ routes.push({
   icon: "fi fi-rr-graduation-cap",
   name: "tareas",
   rol: ["teacher", "center_admin", "admin"],
-})
-
-
-routes.push({
-  to: "/schools",
-  icon: "fi fi-rr-school",
-  name: "gestión escuelas",
-  rol: ["center_admin", "admin"],
 })
 
 routes.push({

@@ -1,15 +1,16 @@
 .accountingPlan__page {
-  padding: var(--gap-xxl);
+  padding: var(--gap-s);
   width: 100%;
-  height: 91vh; /* Toute la hauteur de l'écran */
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 0.1fr repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto 1.2fr;
   grid-template-areas:
-    "title title title"
-    "form form form"
-    "list list list";
-  overflow: hidden; /* Empêche le défilement de toute la page */
+    "title title "
+    "form preview"
+    "list list";
+  overflow: hidden;
+  gap: var(--gap-s);
 }
 
 .accountingPlan__page--header {
@@ -38,18 +39,25 @@
 /* Formulaire */
 .accountingPlan__addPGC {
   grid-area: form;
-  padding-bottom: 24px;
-  height: 340px;
-  border-bottom: solid 1px var(--Color-grey-200);
+  padding: var(--gap-s);
+  height: auto;
+  background-color: var(--Color-White);
+  border-radius: var(--r-xs);
+  box-shadow: var(--box-shadow-btn);
 }
 
 /* Liste des PGC avec défilement */
 .accountingPlan__listPGC {
   grid-area: list;
-  height: calc(100vh - 400px); /* Ajuste la hauteur pour prendre tout l'espace restant */
-  overflow-y: auto; /* Active le scroll uniquement pour la liste */
-  padding-right: 10px; /* Ajoute un espace pour ne pas coller le bord */
+  height: auto;
+  overflow-y: hidden;
+  padding-right: 10px;
   position: relative;
+  background-color: var(--Color-White);
+  box-shadow: var(--box-shadow-btn);
+  border-radius: var(--r-xs);
+  display: flex;
+  width: 100%;
 }
 
 /* Rend le tableau plein écran avec une hauteur max */
@@ -62,22 +70,17 @@
 .accountingPlan__table thead {
   position: sticky;
   top: 0;
-  background-color: #fff; /* Assurez-vous que l'en-tête reste visible */
-  z-index: 2;
+  background-color: #fff;
+  /* Assurez-vous que l'en-tête reste visible */
 }
 
-/* Amélioration du style des titres */
-.accountingPlan__table th {
-  padding: 12px;
-  color: var(--Color-Principal);
-  font-weight: bold;
-  text-align: left;
-  border-bottom: 1px solid var(--Color-grey-400);
-  background-color:#FAFAFA
+.full-width .accountingPlan__input {
+  height: 80px;
+  resize: none;
 }
 
 /* Mobile et tablettes */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .accountingPlan__page {
     grid-template-rows: 0.1fr 0.4fr 1fr;
   }
@@ -86,4 +89,71 @@
     height: auto;
     max-height: 300px;
   }
+} */
+
+
+@media (max-width: 1024px) {
+
+  /* ----- General-Tablet -----*/
+
+
+}
+
+@media (max-width: 768px) {
+  .accountingPlan__header--h2 {
+    margin-bottom: 0;
+    font-size: var(--text-mobile-subtitles-2);
+  }
+
+  .accountingPlan__page {
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+    height: auto;
+  }
+
+  .accountingPlan__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-m);
+
+  }
+
+  .accountingPlan__form--actions {
+    margin-top: 0;
+  }
+
+  .accountingPlan__form .accountingPlan__form--row {
+    flex-direction: column;
+    gap: var(--gap-m);
+  }
+
+  .accountingPlan__form--row .search-bar--pgc {
+    width: 100%;
+  }
+
+  .accountingPlan__form--group {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-desktop-small);
+  }
+
+  .accountingPlan__input {
+    font-size: var(--text-desktop-small);
+
+    &::placeholder {
+      color: var(--Color-Principal-claro);
+      font-size: var(--text-desktop-small);
+    }
+  }
+
+  .accountingPlan__form--add {
+    align-self: flex-start;
+  }
+
+  .accountingPlan__table--container {
+    justify-content: start;
+  }
+
 }

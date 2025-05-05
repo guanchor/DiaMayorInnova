@@ -5,6 +5,8 @@ import "./Account.css"
 
 
 import React, { useState } from 'react'
+import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
+import ButtonBack from "../../components/button-back/ButtonBack";
 
 const Accounts = () => {
 
@@ -14,22 +16,20 @@ const Accounts = () => {
   return (
     <>
 
-      <main className="account__page">
+      <section className="account__page">
         <div className="account__page--header">
-          <button className="btn light account__btnHome" onClick={() => navigate("/home")}>
-            <i className="fi-rr-arrow-small-left"/>
-          </button>
-          <h1 className="account__page--title">Crear Cuenta</h1>
+          <ButtonBack />
+          <Breadcrumbs />
         </div>
 
         <section className="account__addAcc" >
-          <AddAccount setNewAcc={setNewAcc}/>
+          <AddAccount setNewAcc={setNewAcc} />
         </section>
         <section className="account__listAcc" >
-          <AccountsList newAcc={newAcc}/>
+          <AccountsList newAcc={newAcc} />
         </section>
-      </main>
-      
+      </section>
+
     </>
   )
 }

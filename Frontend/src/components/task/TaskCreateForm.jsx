@@ -8,6 +8,8 @@ import StatementsSelection from "./StatementsSelection.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./TaskPage.css";
 import exerciseServices from "../../services/exerciseServices.js";
+import ButtonBack from "../button-back/ButtonBack.jsx";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs.jsx";
 
 const TaskCreateForm = ({ onTaskCreated }) => {
   const { state } = useLocation();
@@ -60,7 +62,6 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       }
       exerciseServices.deleteOnGroup(data)
         .then((response) => {
-          console.log(response);
         })
     }
   }
@@ -77,7 +78,6 @@ const TaskCreateForm = ({ onTaskCreated }) => {
       }
       exerciseServices.create(data)
         .then((response) => {
-          console.log(response);
         })
     }
   }
@@ -160,7 +160,6 @@ const TaskCreateForm = ({ onTaskCreated }) => {
     }
 
     if (!valid) return;
-
     const taskData = {
       title,
       opening_date: openingDate,
@@ -192,11 +191,9 @@ const TaskCreateForm = ({ onTaskCreated }) => {
   return (
     <main className="task-page">
       <header className="task-page__header--header">
-        <button className="btn light" onClick={() => navigate("/home")}>
-          <i className="fi fi-rr-arrow-small-left"></i>
-        </button>
+        <ButtonBack />
         <div className="task-title">
-          <h1>{editMode ? "Edición de Tarea" : "Creación de Tarea"}</h1>
+          <Breadcrumbs />
         </div>
       </header>
       <TaskForm
@@ -237,6 +234,7 @@ const TaskCreateForm = ({ onTaskCreated }) => {
         handleRemoveStatement={handleRemoveStatement}
         additionalInformation={additionalInformation}
         isExam={isExam}
+        isHelpAvailable={isHelpAvailable}
       />
     </main>
   );

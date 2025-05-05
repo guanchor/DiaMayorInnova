@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SchoolsServices from '../../../services/SchoolsServices';
 import "./AddSchoolCenter.css"
 
-const AddSchoolCenter = ({ setSchools, selectedSchool, setSelectedSchool }) => {
+const AddSchoolCenter = ({ setSchools, selectedSchool, setSelectedSchool, setHandleEdit }) => {
   const initialSchoolState = {
     school_name: "",
     address: "",
@@ -52,11 +52,16 @@ const AddSchoolCenter = ({ setSchools, selectedSchool, setSelectedSchool }) => {
       if (selectedSchool) {
         response = await SchoolsServices.update(selectedSchool.id, input);
         setSuccessMessage("Centro escolar actualizado con éxito");
+        setSchools((prevSchools) => 
+          prevSchools.map(school => 
+            school.id === selectedSchool.id ? response.data : school
+          )
+        );
       } else {
         response = await SchoolsServices.create(input);
         setSuccessMessage("Centro escolar creado con éxito");
+        setSchools((prevSchools) => [...prevSchools, response.data]);
       }
-      setSchools((prevSchools) => [...prevSchools, response.data]);
       setSelectedSchool(null);
       setInput(initialSchoolState);
       setTimeout(() => {
@@ -137,7 +142,7 @@ const AddSchoolCenter = ({ setSchools, selectedSchool, setSelectedSchool }) => {
               value={input.website}
               onChange={handleInput} />
           </label>
-          <button type="submit" className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedSchool ? "Actualizar Centro" : "Añadir Centro"}</button>
+          <button type="submit" onClick={() => setHandleEdit(true)} className="createSchool_submit btn"><i className='fi fi-rr-plus'></i>{selectedSchool ? "Actualizar Centro" : "Añadir Centro"}</button>
           {selectedSchool && <button type='button' className='btn light' onClick={() => setSelectedSchool(null)}>Cancelar</button>}
           {error && <p role="alert" style={{ color: "red" }}>{error}</p>}
           {successMessage && <p role="alert" style={{ color: "green" }}>{successMessage}</p>}

@@ -17,27 +17,21 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
   useEffect(() => {
     const loadAccounts = async () => {
       try {
+        const response = await http.get(`/accounts?page=${currentPage}&limit=${5}`);
+        let fetchedAccounts = response.data.accounts;
+
+        // Filter accounts client-side based on searchQuery
         if (searchQuery) {
-          // Perform server-side search across all accounts
-          const isNumber = !isNaN(searchQuery) && searchQuery.trim() !== "";
-          let response;
-          if (isNumber) {
-            response = await AccountService.findByNumber(searchQuery);
-            setAccounts(response.data ? [response.data] : []);
-          } else {
-            response = await AccountService.findByName(searchQuery);
-            setAccounts(response.data.accounts || []);
-          }
-          setTotalPages(1); // No pagination for search results
-        } else {
-          // Load paginated accounts without search
-          const response = await http.get(`/accounts?page=${currentPage}&limit=${5}`);
-          setAccounts(response.data.accounts || []);
-          setTotalPages(response.data.meta.total_pages || 1);
+          fetchedAccounts = fetchedAccounts.filter(
+            (account) =>
+              account.account_number.toString().includes(searchQuery) ||
+              account.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
         }
+        setAccounts(fetchedAccounts);
+        setTotalPages(response.data.meta.total_pages || 1); // Note: totalPages is based on the initial response, adjust if needed
       } catch (error) {
         console.error("Error loading accounts:", error);
-        setAccounts([]);
       }
     };
     loadAccounts();
@@ -80,13 +74,22 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
 
   const searchAccount = useCallback(async (accountNumber) => {
     try {
-      const response = await http.get(`/accounts`); // Fetch all accounts
-      const allAccounts = response.data.accounts || [];
-      const filteredAccounts = allAccounts.filter(
-        (acc) => acc.account_number.toString().includes(accountNumber)
-      );
-      setAccounts(filteredAccounts);
-      return filteredAccounts.length > 0 ? filteredAccounts[0] : null;
+      const response = await AccountService.findByNumber(accountNumber);
+      if (response.data) {
+        setAccounts((prevAccounts) => {
+          const exists = prevAccounts.some(
+            (acc) =>
+              acc.account_number === response.data.account_number &&
+              acc.id === response.data.id
+          );
+          if (!exists) {
+            return [...prevAccounts, response.data];
+          }
+          return prevAccounts;
+        });
+        return response.data;
+      }
+      return null;
     } catch (error) {
       console.error("Error searching for account:", error);
       return null;

@@ -1,9 +1,9 @@
 import http from "../http-common";
 
-const getAll = async (page = 1, perPage = 10, name = "") => {
+const getAll = async (page = 1, perPage = 10, name = "", accountNumber = "") => {
   try {
     const response = await http.get("/accounts", {
-      params: { page, per_page: perPage, name }
+      params: { page, per_page: perPage, name, account_number: accountNumber }
     });
     return response.data;
   } catch (error) {
@@ -11,6 +11,8 @@ const getAll = async (page = 1, perPage = 10, name = "") => {
     return null;
   }
 };
+
+
 
 const get = async (id) => {
   try {

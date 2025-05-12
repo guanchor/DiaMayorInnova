@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Modal from "../../../modal/Modal";
-import http from "../../../../http-common";
 import AccountService from "../../../../services/AccountService";
 import PaginationMenu from "../../../pagination-menu/PaginationMenu";
 import "./EntryForm.css";
 
 const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise }) => {
   const [accounts, setAccounts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // New state for search query
+  const [searchQuery, setSearchQuery] = useState("");
   const accountNumberInputRef = useRef(null);
   const modalRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,34 +16,22 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
   useEffect(() => {
     const loadAccounts = async () => {
       try {
-        const response = await http.get(`/accounts?page=${currentPage}&limit=${5}`);
-        let fetchedAccounts = response.data.accounts;
-
-        // Filter accounts client-side based on searchQuery
-        if (searchQuery) {
-          fetchedAccounts = fetchedAccounts.filter(
-            (account) =>
-              account.account_number.toString().includes(searchQuery) ||
-              account.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-        setAccounts(fetchedAccounts);
-        setTotalPages(response.data.meta.total_pages || 1); // Note: totalPages is based on the initial response, adjust if needed
+        const isNumber = /^\d+$/.test(searchQuery);
+        const response = await AccountService.getAll(currentPage, 5, isNumber ? "" : searchQuery, isNumber ? searchQuery : "");
+        setAccounts(response.accounts || []);
+        setTotalPages(response.meta?.total_pages || 1);
       } catch (error) {
         console.error("Error loading accounts:", error);
       }
     };
-    loadAccounts();
-  }, [currentPage, searchQuery]); // Add searchQuery as a dependency
 
-  const openAccountModal = async () => {
-    try {
-      const response = await http.get(`/accounts`);
-      setAccounts(response.data.accounts); // Reload all accounts when opening the modal
-      modalRef.current?.showModal();
-    } catch (error) {
-      console.error("Error loading accounts:", error);
-    }
+    loadAccounts();
+  }, [searchQuery, currentPage]);
+
+  const openAccountModal = () => {
+    setSearchQuery(""); // reset search
+    setCurrentPage(1);
+    modalRef.current?.showModal();
   };
 
   useEffect(() => {
@@ -54,7 +41,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
         openAccountModal();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
@@ -62,7 +48,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
   const handleAccountSelect = (account) => {
     const updated = {
       ...annotation,
-      id: annotation.id,
       number: aptNumber,
       account_number: account.account_number,
       account_name: account.name,
@@ -71,30 +56,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
     updateAnnotation(updated);
     modalRef.current?.close();
   };
-
-  const searchAccount = useCallback(async (accountNumber) => {
-    try {
-      const response = await AccountService.findByNumber(accountNumber);
-      if (response.data) {
-        setAccounts((prevAccounts) => {
-          const exists = prevAccounts.some(
-            (acc) =>
-              acc.account_number === response.data.account_number &&
-              acc.id === response.data.id
-          );
-          if (!exists) {
-            return [...prevAccounts, response.data];
-          }
-          return prevAccounts;
-        });
-        return response.data;
-      }
-      return null;
-    } catch (error) {
-      console.error("Error searching for account:", error);
-      return null;
-    }
-  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -111,45 +72,30 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
     const updatedAnnotation = { ...annotation, [name]: processedValue };
 
     if (name === "account_number") {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
       updateAnnotation(updatedAnnotation);
 
       if (!value) {
-        updateAnnotation({
-          ...updatedAnnotation,
-          account_id: "",
-          account_name: "",
-        });
-        return;
-      }
-
-      const foundAccount = accounts.find((acc) => acc.account_number === value);
-      if (foundAccount) {
-        updateAnnotation({
-          ...updatedAnnotation,
-          account_id: foundAccount.id,
-          account_name: foundAccount.name,
-        });
+        updateAnnotation({ ...updatedAnnotation, account_id: "", account_name: "" });
         return;
       }
 
       debounceTimeout.current = setTimeout(async () => {
-        const account = await searchAccount(value);
-        if (account) {
+        const isNumber = /^\d+$/.test(value);
+        const response = await AccountService.getAll(1, 5, isNumber ? "" : value, isNumber ? value : "");
+        const matches = response.accounts || [];
+        const found = matches.find(acc => acc.account_number === value);
+        if (found) {
           updateAnnotation({
             ...updatedAnnotation,
-            account_id: account.id,
-            account_name: account.name || "",
+            account_id: found.id,
+            account_name: found.name
           });
         } else {
           updateAnnotation({
             ...updatedAnnotation,
             account_id: "",
-            account_name: "",
-            account_number: value,
+            account_name: ""
           });
         }
       }, 500);
@@ -176,27 +122,23 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset to the first page on new search
+    setCurrentPage(1);
   };
 
   useEffect(() => {
     return () => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     };
   }, []);
 
   return (
     <div className="entry_form_wrapper">
       <p className="entry_apt">{aptNumber}</p>
-      <form action="" className="entry_form">
+      <form className="entry_form">
         <div className="entry_form_inputs__wrapper">
           <div className="form_group">
             <input
               type="number"
-              id="account_number"
-              aria-labelledby="tittle_account-number"
               name="account_number"
               placeholder="477"
               onChange={handleChange}
@@ -209,10 +151,8 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
           <div className="form_group tittle_account-name--no-visible">
             <input
               type="text"
-              id="account_name"
-              aria-labelledby="tittle_account-name"
-              placeholder="Hacienda Pública, IGIC soportado"
               name="account_name"
+              placeholder="Hacienda Pública, IGIC soportado"
               onChange={handleChange}
               value={annotation.account_name || ""}
               disabled={exercise?.finished}
@@ -222,8 +162,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
           <div className="form_group">
             <input
               type="text"
-              id="debit"
-              aria-labelledby="tittle_debit"
               name="debit"
               placeholder="1000.00"
               onChange={handleChange}
@@ -236,8 +174,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
           <div className="form_group">
             <input
               type="text"
-              id="credit"
-              aria-labelledby="tittle_credit"
               name="credit"
               placeholder="1000.00"
               onChange={handleChange}
@@ -250,7 +186,6 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
         </div>
         <button
           className="btn-trash"
-          aria-label="Eliminar Apunte"
           onClick={handleDelete}
           disabled={exercise?.finished}
         >
@@ -264,7 +199,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-            placeholder="Search by number or description..."
+            placeholder="Search by number or name..."
             className="search-input"
           />
         </div>

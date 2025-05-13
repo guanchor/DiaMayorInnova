@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "../../../modal/Modal";
 import AccountService from "../../../../services/AccountService";
 import PaginationMenu from "../../../pagination-menu/PaginationMenu";
@@ -14,22 +14,25 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
   const debounceTimeout = useRef(null);
 
   useEffect(() => {
+    console.log("useEffect déclenché - searchQuery:", searchQuery, "currentPage:", currentPage); // Log 1
     const loadAccounts = async () => {
       try {
         const isNumber = /^\d+$/.test(searchQuery);
+        console.log("loadAccounts - Appel à AccountService.getAll avec:", { currentPage, limit: 5, name: isNumber ? "" : searchQuery, account_number: isNumber ? searchQuery : "" }); // Log 2
         const response = await AccountService.getAll(currentPage, 5, isNumber ? "" : searchQuery, isNumber ? searchQuery : "");
+        console.log("loadAccounts - Réponse:", response); // Log 3
         setAccounts(response.accounts || []);
         setTotalPages(response.meta?.total_pages || 1);
       } catch (error) {
         console.error("Error loading accounts:", error);
       }
     };
-
     loadAccounts();
   }, [searchQuery, currentPage]);
 
   const openAccountModal = () => {
-    setSearchQuery(""); // reset search
+    console.log("openAccountModal appelé"); // Log 4
+    setSearchQuery("");
     setCurrentPage(1);
     modalRef.current?.showModal();
   };
@@ -46,6 +49,7 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
   }, []);
 
   const handleAccountSelect = (account) => {
+    console.log("handleAccountSelect - Compte sélectionné:", account); // Log 5
     const updated = {
       ...annotation,
       number: aptNumber,
@@ -57,8 +61,34 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
     modalRef.current?.close();
   };
 
+  const searchAccount = async (accountNumber) => {
+    try {
+      console.log("searchAccount - Appel à AccountService.findByNumber avec:", accountNumber); // Log 6
+      const response = await AccountService.findByNumber(accountNumber);
+      console.log("searchAccount - Réponse:", response); // Log 7
+      if (response.data) {
+        setAccounts(prevAccounts => {
+          const exists = prevAccounts.some(acc =>
+            acc.account_number === response.data.account_number &&
+            acc.id === response.data.id
+          );
+          if (!exists) {
+            return [...prevAccounts, response.data];
+          }
+          return prevAccounts;
+        });
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error al buscar la cuenta:", error);
+      return null;
+    }
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+    console.log("handleChange - name:", name, "value:", value); // Log 8
     let processedValue = value;
 
     if (name === "debit" || name === "credit") {
@@ -80,22 +110,32 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
         return;
       }
 
+      const foundAccount = accounts.find(acc => acc.account_number === value);
+      if (foundAccount) {
+        console.log("Compte trouvé localement:", foundAccount); // Log 9
+        updateAnnotation({
+          ...updatedAnnotation,
+          account_id: foundAccount.id,
+          account_name: foundAccount.name
+        });
+        return;
+      }
+
       debounceTimeout.current = setTimeout(async () => {
-        const isNumber = /^\d+$/.test(value);
-        const response = await AccountService.getAll(1, 5, isNumber ? "" : value, isNumber ? value : "");
-        const matches = response.accounts || [];
-        const found = matches.find(acc => acc.account_number === value);
-        if (found) {
+        console.log("handleChange - Déclenchement différé pour account_number:", value); // Log 10
+        const account = await searchAccount(value);
+        if (account) {
           updateAnnotation({
             ...updatedAnnotation,
-            account_id: found.id,
-            account_name: found.name
+            account_id: account.id,
+            account_name: account.name || ""
           });
         } else {
           updateAnnotation({
             ...updatedAnnotation,
             account_id: "",
-            account_name: ""
+            account_name: "",
+            account_number: value
           });
         }
       }, 500);
@@ -112,15 +152,18 @@ const EntryForm = ({ aptNumber, annotation, updateAnnotation, onDelete, exercise
 
   const handleDelete = (event) => {
     event.preventDefault();
+    console.log("handleDelete appelé"); // Log 11
     onDelete();
   };
 
   const changePage = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
+    console.log("changePage - Nouvelle page:", newPage); // Log 12
     setCurrentPage(newPage);
   };
 
   const handleSearchChange = (event) => {
+    console.log("handleSearchChange - Nouvelle recherche:", event.target.value); // Log 13
     setSearchQuery(event.target.value);
     setCurrentPage(1);
   };
